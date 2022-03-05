@@ -79,7 +79,7 @@ void	free_list(t_list *list)
 
 char	*ft_strdup(char *str)
 {
-	char	*res;	
+	char	*res;
 	int	i;
 
 	i = 0;
@@ -155,7 +155,7 @@ t_list	*generate_list(int ac, char **av)
 		else if (strcmp(av[i], ";") == 0)
 		{
 			tmp->type = SEMICOLON;
-			tmp->next = init_list(tmp);
+			tmp->next = init_list(NULL);
 			tmp = tmp->next;
 			i++;
 			continue ;
