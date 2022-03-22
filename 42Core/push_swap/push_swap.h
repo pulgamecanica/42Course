@@ -19,8 +19,8 @@
 # include "get_next_line.h"
 # include "stack.h"
 
-t_stack		*get_cheapest_elem(t_stack **a, t_stack **b);
-t_stack		*element_after_me(t_stack **stack, t_stack *elem);
+t_stack	*get_cheapest_elem(t_stack **a, t_stack **b);
+t_stack	*element_after_me(t_stack **stack, t_stack *elem);
 void	sa(t_stack **a);
 void	sb(t_stack **b);
 void	ss(t_stack **a, t_stack **b);
@@ -34,11 +34,11 @@ void	rrb(t_stack **b);
 void	rrr(t_stack **a, t_stack **b);
 void	sort_three(t_stack **stack);
 void	sort_small_stack(t_stack **a, t_stack **b);
-void	sort_mean_to_b(t_stack **a, t_stack **b, int mean, int len, int abs_mean);
+void	sort_mean_to_b(t_stack **a, t_stack **b, int len, int abs_mean);
 void	place_best_top(t_stack **a, t_stack **b, t_stack *elem);
-int	check_repeats(t_stack *stack, int checker);
-int	check_errors(char *str, int checker);
-int	topr_cost(t_stack *stack, t_stack *elem);
-int	toprr_cost(t_stack *stack, t_stack *elem);
+int		check_repeats(t_stack *stack, int checker);
+int		check_errors(char *str, int checker);
+int		topr_cost(t_stack *stack, t_stack *elem);
+int		toprr_cost(t_stack *stack, t_stack *elem);
 
 #endif

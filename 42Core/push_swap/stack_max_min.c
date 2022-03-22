@@ -17,7 +17,7 @@ int	is_sorted(t_stack *stack)
 	t_stack	*temp;
 
 	temp = stack;
-	while(temp->next != NULL)
+	while (temp->next != NULL)
 	{
 		if ((int)(temp->content) > (int)(temp->next->content))
 			return (0);
@@ -29,11 +29,11 @@ int	is_sorted(t_stack *stack)
 int	get_mean(t_stack *stack)
 {
 	t_stack	*temp;
-	int	mean;
+	int		mean;
 
 	temp = stack;
 	mean = 0;
-	while(temp != NULL)
+	while (temp != NULL)
 	{
 		mean += (int)(temp->content);
 		temp = temp->next;
@@ -61,8 +61,8 @@ t_stack	*get_max(t_stack *a)
 
 t_stack	*get_min(t_stack *a)
 {
-	t_stack *temp;
-	t_stack *result;
+	t_stack	*temp;
+	t_stack	*result;
 
 	temp = a;
 	result = temp;

@@ -14,8 +14,8 @@
 
 static void	revrotate(t_stack **stack)
 {
-	t_stack *last;
-	t_stack *temp;
+	t_stack	*last;
+	t_stack	*temp;
 
 	temp = *stack;
 	if (temp && ft_lstsize(*stack) > 1)

@@ -12,6 +12,22 @@
 
 #include "cub3d.h"
 
+// static int can_move(t_config *conf, t_point p, t_vector vec)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (i < conf->pov->mag)
+// 	{
+// 		vec.mag = i;
+// 		p = add_vec(p, vec);
+// 		if (conf->map[(int)(p.y / TILE_SIZE)][(int)(p.x / TILE_SIZE)] != '1')
+// 			return (-1);
+// 		i++;
+// 	}
+// 	return (1);
+// }
+
 static void	move_right(t_config *conf)
 {
 	t_point	p;

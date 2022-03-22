@@ -14,8 +14,8 @@
 
 static void	swap(t_stack **stack)
 {
-	t_stack *first;
-	t_stack *second;
+	t_stack	*first;
+	t_stack	*second;
 	t_stack	*third;
 
 	first = *stack;

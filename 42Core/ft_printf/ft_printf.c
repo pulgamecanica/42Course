@@ -5,35 +5,51 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: arosado- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/24 23:08:35 by arosado-          #+#    #+#             */
-/*   Updated: 2021/10/24 23:08:37 by arosado-         ###   ########.fr       */
+/*   Created: 2021/11/01 16:17:29 by arosado-          #+#    #+#             */
+/*   Updated: 2021/11/01 16:17:31 by arosado-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-int	ft_printf(const char *str, ...)
+static int	handle_format(const char *str, int *i, va_list a)
 {
 	int		t;
-	int		i;
-	va_list	l;
+	t_flags	*f;
 
-	va_start(l, str);
+	t = 0;
+	f = getfl(str, i);
+	if (f)
+	{
+		t = ((int (*)())ft_f(str[*(i)++]))(va_arg(a, void *), f);
+		free(f);
+	}
+	return (t);
+}
+
+int	ft_printf(const char *str, ...)
+{
+	int		i;
+	int		t;
+	va_list	a;
+
+	va_start(a, str);
 	i = 0;
 	t = 0;
 	while (str[i] != '\0')
 	{
-		if (ft_strchr("%", str[i]))
+		if (str[i] == '%')
 		{
-			i++;
-			if (str[i] != '\0' && ft_strchr("cspdiuxX", str[i]))
+			if (ft_strchr("cspiduxX0123456789 +-.#", str[++i]))
 			{
-				t += (((int (*)())ft_getf(str[i++]))(va_arg(l, void *), 1));
+				t += handle_format(str, &i, a);
+				i++;
 				continue ;
 			}
 		}
-		write(1, &str[i++], 1);
+		ft_putchar_fd(str[i], 1);
 		t++;
+		i++;
 	}
-	va_end(l);
+	va_end(a);
 	return (t);
 }

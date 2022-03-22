@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   errors.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: arosado- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/24 13:00:58 by arosado-          #+#    #+#             */
+/*   Updated: 2021/12/24 13:01:00 by arosado-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 int	check_repeats(t_stack *stack, int checker)
 {
-	t_stack *temp;
-	t_stack *temp2;
+	t_stack	*temp;
+	t_stack	*temp2;
 
 	temp = stack;
 	while (temp)
@@ -24,10 +36,9 @@ int	check_repeats(t_stack *stack, int checker)
 	return (1);
 }
 
-
 int	check_errors(char *str, int checker)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (str[0] == '-')
@@ -47,5 +58,5 @@ int	check_errors(char *str, int checker)
 			ft_putstr_fd("Error\n", 2);
 		return (-1);
 	}
-	return (0);	
+	return (0);
 }

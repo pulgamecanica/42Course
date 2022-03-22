@@ -1,44 +1,94 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_utils_basehex.c                          :+:      :+:    :+:   */
+/*   ft_printf_hex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arosado- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/24 23:15:48 by arosado-          #+#    #+#             */
-/*   Updated: 2021/10/24 23:15:50 by arosado-         ###   ########.fr       */
+/*   Created: 2021/11/01 16:50:55 by arosado-          #+#    #+#             */
+/*   Updated: 2021/11/03 01:24:45 by arosado-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-void	ft_putnbrhex_fd(unsigned int nbr, int fd)
+static t_numf	*get_format(unsigned int numlen, t_flags *flags, const char *op)
 {
-	char	*base;
+	t_numf	*n;
 
-	base = "0123456789abcdef";
-	if (nbr >= (unsigned int)16)
-		ft_putnbrhex_fd(nbr / 16, fd);
-	ft_putchar_fd(base[nbr % 16], fd);
+	n = clean_format();
+	if (flags->flag_cardinal && op)
+		set_prefix(n, ft_strdup(op));
+	if (flags->flag_dot && flags->maxfw > numlen)
+	{
+		set_prezeros(n, ft_getprefix('0', flags->maxfw - numlen));
+		numlen = flags->maxfw;
+	}
+	else if (flags->minfw > numlen && flags->flag_zero && !flags->flag_dot)
+	{
+		set_prezeros(n, ft_getprefix('0', flags->minfw
+				- numlen - ft_strlen(n->prefix)));
+		numlen = flags->minfw;
+	}
+	if (flags->minfw > numlen + ft_strlen(n->prefix))
+		set_prewidth(n, ft_getprefix(' ', flags->minfw
+				- numlen - ft_strlen(n->prefix)));
+	return (n);
 }
 
-void	ft_putnbrupperhex_fd(unsigned int nbr, int fd)
+int	ft_fhex(unsigned int nbr, t_flags *flags)
 {
-	char	*base;
+	int				total;
+	t_numf			*format;
 
-	base = "0123456789ABCDEF";
-	if (nbr >= 16)
-		ft_putnbrupperhex_fd(nbr / 16, fd);
-	ft_putchar_fd(base[nbr % 16], fd);
+	if (nbr == 0)
+		format = get_format(ft_numlen(nbr, 16, flags->flag_dot), flags, NULL);
+	else
+		format = get_format(ft_numlen(nbr, 16, flags->flag_dot), flags, "0x");
+	if (flags->flag_minus)
+	{
+		ft_putstr_fd(format->prefix, 1);
+		ft_putstr_fd(format->prezeros, 1);
+		ft_putanynbr_fd(nbr, "0123456789abcdef", flags->flag_dot);
+		ft_putstr_fd(format->prewidth, 1);
+	}
+	else
+	{
+		ft_putstr_fd(format->prewidth, 1);
+		ft_putstr_fd(format->prefix, 1);
+		ft_putstr_fd(format->prezeros, 1);
+		ft_putanynbr_fd(nbr, "0123456789abcdef", flags->flag_dot);
+	}
+	total = ft_strlen(format->prefix) + ft_strlen(format->prezeros)
+		+ ft_strlen(format->prewidth) + ft_numlen(nbr, 16, flags->flag_dot);
+	free_format(format);
+	return (total);
 }
 
-int	count_hexnumupper(unsigned int nbr, int fd)
+int	ft_fhexupper(unsigned int nbr, t_flags *flags)
 {
-	ft_putnbrupperhex_fd((unsigned int)nbr, fd);
-	return (unsigned_num_counter(nbr, 16));
-}
+	int				total;
+	t_numf			*format;
 
-int	count_hexnum(unsigned int nbr, int fd)
-{
-	ft_putnbrhex_fd((unsigned int)nbr, fd);
-	return (unsigned_num_counter(nbr, 16));
+	if (nbr == 0)
+		format = get_format(ft_numlen(nbr, 16, flags->flag_dot), flags, NULL);
+	else
+		format = get_format(ft_numlen(nbr, 16, flags->flag_dot), flags, "0X");
+	if (flags->flag_minus)
+	{
+		ft_putstr_fd(format->prefix, 1);
+		ft_putstr_fd(format->prezeros, 1);
+		ft_putanynbr_fd(nbr, "0123456789ABCDEF", flags->flag_dot);
+		ft_putstr_fd(format->prewidth, 1);
+	}
+	else
+	{
+		ft_putstr_fd(format->prewidth, 1);
+		ft_putstr_fd(format->prefix, 1);
+		ft_putstr_fd(format->prezeros, 1);
+		ft_putanynbr_fd(nbr, "0123456789ABCDEF", flags->flag_dot);
+	}
+	total = ft_strlen(format->prefix) + ft_strlen(format->prezeros)
+		+ ft_strlen(format->prewidth) + ft_numlen(nbr, 16, flags->flag_dot);
+	free_format(format);
+	return (total);
 }

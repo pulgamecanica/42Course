@@ -14,8 +14,8 @@
 
 static void	rotate(t_stack **stack)
 {
-	t_stack *temp;
-	t_stack *first;
+	t_stack	*temp;
+	t_stack	*first;
 
 	if (*stack && ft_lstsize(*stack) > 1)
 	{
@@ -53,7 +53,6 @@ void	rb(t_stack **b)
 
 void	rr(t_stack **a, t_stack **b)
 {
-
 	rotate(a);
 	rotate(b);
 	write(1, "rr\n", 3);

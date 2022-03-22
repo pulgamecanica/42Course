@@ -6,14 +6,14 @@ FLAGS	= -Wall -Werror -Wextra -fsanitize=address -D SHOW=${SHOW}
 RM	= rm -f
 INCS	= libft/includes
 LIBFT	= -Llibft -lft
-GEN	= `ruby -e "puts (-500..500).to_a.shuffle.first(100).join(' ')"`
+GEN	= `ruby -e "puts (-500..500).to_a.shuffle.first(500).join(' ')"`
 CHECK	= ./tests/checker_OS
 
 ${NAME}: runlibft
 	${CC} ${FLAGS} -I ${INCS} ${LIBFT} ${SRCS} -o ${NAME}
 
 ignore: runlibft
-	${CC} ${SRCS} -o ${NAME} -I ${INCS} ${LIBFT}
+	${CC} -I ${INCS} ${LIBFT} ${SRCS} -o ${NAME}
 
 all: ${NAME}
 

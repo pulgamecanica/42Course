@@ -38,7 +38,7 @@ endif
 all: $(NAME)
 
 $(NAME): runlibft $(OBJ)
-	$(CC) -o $(NAME) $(OBJ) $(LFLAGS)
+	$(CC) -o $(NAME) $(OBJ) $(LFLAGS) -fsanitize=address
 
 show:
 	@printf "UNAME		: $(UNAME)\n"

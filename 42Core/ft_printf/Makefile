@@ -23,14 +23,16 @@ ${NAME}: runlibft ${OBJS}
 	${RL} ${NAME}
 
 runlibft:
-	make -C libft
+	make -C libft bonus
 
 clean:
 	${RM} ${OBJS}
+	${MAKE} -C libft clean
 
 fclean: clean
 	${RM} ${NAME}
 	${RM} ${TNAME}
+	${MAKE} -C libft fclean
 
 re: fclean all
 

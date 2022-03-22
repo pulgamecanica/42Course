@@ -12,15 +12,16 @@
 
 #include "../push_swap.h"
 
-static void	error_reply()
+static void	error_reply(void)
 {
-	char *error;
+	char	*error;
 
 	error = get_next_line(2);
 	if (error && !ft_strncmp("Error\n", error, 5))
-		ft_putstr_fd("\033[0;32mError, Precisely there are errors on your input...\033[0m\n", 2);
+		ft_putstr_fd("\033[0;32mError, Precisely ", 2);
 	else
-		ft_putstr_fd("\033[0;31mError, hold on! there are errors on your input\033[0m\n", 2);
+		ft_putstr_fd("\033[0;31mError, hold on! ", 2);
+	ft_putstr_fd("there are errors on your input\033[0m\n", 2);
 }
 
 static void	make_action(t_stack **a, t_stack **b, char *str)
@@ -51,9 +52,9 @@ static void	make_action(t_stack **a, t_stack **b, char *str)
 		ft_printf("\033[0;33mERROR\nAction not founded\033[0m\n");
 }
 
-static void read_actions(t_stack **a, t_stack **b)
+static void	read_actions(t_stack **a, t_stack **b)
 {
-	char *line;
+	char	*line;
 
 	while (1)
 	{
@@ -65,18 +66,19 @@ static void read_actions(t_stack **a, t_stack **b)
 	if (is_sorted(*a) && !ft_lstsize(*b))
 		ft_printf("\033[0;32mOK\033[0m\n");
 	else
-		ft_printf("\033[0;31mKO\033[0m\n");	
+		ft_printf("\033[0;31mKO\033[0m\n");
 }
 
 int	main(int ac, char **av)
 {
 	t_stack	*a;
 	t_stack	*b;
-	
+
 	a = NULL;
 	b = NULL;
 	if (ac > 1)
 	{
+		a = init_stack(ac, av, 1);
 		a = init_stack(ac, av, 1);
 		if (!a || !check_repeats(a, 1))
 			error_reply();

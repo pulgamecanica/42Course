@@ -12,14 +12,12 @@
 
 #include "push_swap.h"
 
-int	main(int ac, char **av)
+static void	sort(int ac, char **av)
 {
 	t_stack	*a;
 	t_stack	*b;
 
-	a = NULL;
-	if (ac > 1)
-		a = init_stack(ac, av, 0);
+	a = init_stack(ac, av, 0);
 	if (a && ft_lstsize(a) > 1 && check_repeats(a, 0))
 	{
 		b = NULL;
@@ -29,7 +27,7 @@ int	main(int ac, char **av)
 			sort_small_stack(&a, &b);
 		else
 		{
-			sort_mean_to_b(&a, &b, get_mean(a), ft_lstsize(a), get_mean(a));
+			sort_mean_to_b(&a, &b, ft_lstsize(a), get_mean(a));
 			sort_three(&a);
 			while (ft_lstsize(b))
 			{
@@ -41,4 +39,13 @@ int	main(int ac, char **av)
 	}
 	ft_lstclear(&a, NULL);
 	ft_lstclear(&b, NULL);
+}
+
+int	main(int ac, char **av)
+{
+	if (ac > 1)
+	{
+		sort(ac, av);
+	}
+	return (0);
 }

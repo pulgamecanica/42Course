@@ -16,11 +16,11 @@
 static int	choose_color(char c)
 {
 	if (c == '0' || ft_strchr("NSWE", c))
-		return (gen_trgb(0, 245, 233, 66));
+		return (gen_trgb(10, 237, 255, 237));
 	else if (c == '1')
-		return (gen_trgb(0, 245, 66, 155));
+		return (gen_trgb(10, 26, 83, 92));
 	else
-		return (gen_trgb(0, 66, 176, 245));
+		return (gen_trgb(10, 78, 205, 196));
 }
 
 static int	minimap_xs(t_config *conf)

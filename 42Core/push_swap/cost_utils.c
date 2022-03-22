@@ -27,7 +27,8 @@ t_stack	*element_after_me(t_stack **stack, t_stack *elem)
 {
 	t_stack	*temp;
 
-	if ((int)(*stack)->content > (int)elem->content && ((int)ft_lstlast(*stack)->content) < (int)elem->content)
+	if ((int)(*stack)->content > (int)elem->content
+		&& ((int)ft_lstlast(*stack)->content) < (int)elem->content)
 		return (*stack);
 	if ((int)get_min(*stack)->content > (int)elem->content)
 		return (get_min(*stack));

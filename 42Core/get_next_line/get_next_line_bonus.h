@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line bonus.h                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arosado- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/23 16:09:47 by arosado-          #+#    #+#             */
-/*   Updated: 2021/10/23 16:09:54 by arosado-         ###   ########.fr       */
+/*   Created: 2021/11/04 16:44:14 by arosado-          #+#    #+#             */
+/*   Updated: 2021/11/04 16:44:18 by arosado-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef GET_NEXT_LINE_BONUS_H
@@ -24,16 +24,8 @@
 # include <libgen.h>
 # include <stdlib.h>
 
-typedef struct s_read
-{
-	char	temp;
-	int		r_total;
-	int		r_count;
-}		t_read;
-
-void	ft_putstr(char *str);
-char	*str_appendc(char *str, char c);
 char	*get_next_line(int fd);
-t_read	*new_read(void);
+char	*ft_strchr(const char *s, int c);
+int		ft_strlen(char *str);
 
 #endif

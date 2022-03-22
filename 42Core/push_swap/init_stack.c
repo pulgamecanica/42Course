@@ -50,7 +50,6 @@ t_stack	*init_stack(int ac, char **av, int checker)
 	if (ac == 2)
 		return (init_stack_split(ft_split(av[1], ' '), checker));
 	i = 0;
-	first = NULL;
 	while (++i < ac)
 	{
 		if (check_errors(av[i], checker))
