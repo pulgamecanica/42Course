@@ -1,6 +1,5 @@
 SRCS	= ${wildcard src/*.c}
 OBJS	= ${SRCS:.c=.o}
-BOBJS	= ${BONUSES:.c=.o}
 INS	= includes
 NAME	= libft.a
 LIB	= ar rc
@@ -20,7 +19,6 @@ all: ${NAME}
 
 clean:
 	${RM} ${OBJS}
-	${RM} ${BOBJS}
 
 fclean: clean
 	${RM} ${NAME}

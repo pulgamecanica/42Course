@@ -1,0 +1,13 @@
+NO ./tools/assets/Wall-000.xpm
+WE ./tools/assets/Wall-004.xpm
+SO ./tools/assets/Wall-008.xpm
+EA ./tools/assets/Wall-033.xpm
+
+
+C 200,200,200
+F 100,100,100
+
+1111
+1001
+10W1
+1111

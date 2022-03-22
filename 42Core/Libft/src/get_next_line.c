@@ -46,7 +46,8 @@ static char	*ft_strjoin_line(char *s1, char *s2)
 	}
 	if (s2 == NULL || s1 == NULL)
 		return (NULL);
-	new = (char *)malloc(sizeof(char) * (ft_strlen_line(s1) + ft_strlen_line(s2) + 1));
+	new = (char *)malloc(sizeof(char)
+			* (ft_strlen_line(s1) + ft_strlen_line(s2) + 1));
 	if (new == NULL)
 		return (NULL);
 	i = -1;

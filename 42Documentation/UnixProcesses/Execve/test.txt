@@ -3,3 +3,5 @@ main2.c
 main.c
 run.sh
 test.txt
+Error, didn't execute!
+Finished Executing
