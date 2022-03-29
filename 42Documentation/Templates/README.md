@@ -30,6 +30,6 @@
 +   fclean: run clean and clean the executable $(NAME)
 +   re: run fclean & all
 +   show: show compilation information (flags, includes, SO, compliler, sources, objects, and executable)
-+   test: run re & execute ./$(NAME) without arguments & run fclean
++   test: run re & execute ./$(NAME) without arguments & run show & run fclean
 
 <img width="1058" alt="Screen Shot 2022-03-29 at 11 06 02 PM" src="https://user-images.githubusercontent.com/28810331/160715139-cc37caa1-fb4b-4f9d-a762-526cb3d138ce.png">
