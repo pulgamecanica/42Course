@@ -1,9 +1,11 @@
 #!/bin/sh
-# A simple script with a function...
 
-echo "Enter Project Name..."
-
-read PROJECT
+if [[ "$1" != "" ]];then
+	PROJECT="$1"
+else
+	echo "Enter Project Name..."
+	read PROJECT
+fi
 
 echo "Creating C++ Project [$PROJECT]"
 
@@ -116,7 +118,5 @@ int	main(void)
 	cout << "Hello Friend\nPulgamecanica greets you :D\n";
 	return (0);
 }
-
 EOF
 echo "$PROJECT succesfully created! :D!"
-
