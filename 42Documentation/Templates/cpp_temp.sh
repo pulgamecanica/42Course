@@ -122,7 +122,7 @@ cat << EOF >> $PROJECT/srcs/main.cpp
 
 int	main(void)
 {
-	cout << "Hello Friend\nPulgamecanica greets you :D\n";
+	std::cout << "Hello Friend\nPulgamecanica greets you :D\n";
 	return (0);
 }
 EOF
@@ -132,7 +132,6 @@ echo "Creating Sample ${PROJECT}.hpp"
 HEADER=$(echo $PROJECT | tr '[:lower:]' '[:upper:]')
 
 cat << EOF >> $PROJECT/includes/$PROJECT.hpp
-
 //***************************//
 //*Template by pulgamecanica*//
 //***************************//
@@ -141,7 +140,6 @@ cat << EOF >> $PROJECT/includes/$PROJECT.hpp
 # define __${HEADER}_HPP__
 
 #include <iostream>
-using namespace std;
 
 #endif
 EOF
@@ -149,4 +147,57 @@ EOF
 echo "$PROJECT succesfully created! :D!"
 }
 
-cpp_new $1
+cpp_class()
+{
+if [[ "$1" != "" ]];then
+	CLASS="$1"
+else
+	echo "Enter Class Name..."
+	read CLASS
+fi
+
+touch srcs/${CLASS}.cpp
+
+touch includes/${CLASS}.hpp
+
+cat << EOF >> srcs/${CLASS}.cpp
+//***************************//
+//*Template by pulgamecanica*//
+//***************************//
+
+#include "${CLASS}.hpp"
+
+${CLASS}::${CLASS}() {
+	// TODO (default constructor)
+}
+
+${CLASS}::~${CLASS}() {
+	// TODO (destructor)
+}
+EOF
+
+
+
+HEADERC=$(echo $CLASS | tr '[:lower:]' '[:upper:]')
+cat << EOF >> includes/${CLASS}.hpp
+//***************************//
+//*Template by pulgamecanica*//
+//***************************//
+
+#ifndef __${HEADERC}_HPP__
+# define __${HEADERC}_HPP__
+
+class $CLASS {
+	public:
+		$CLASS();		// Constructor
+		~$CLASS();		// Destructor
+		void set();		// Setter
+};
+
+#endif
+
+EOF
+}
+
+#cpp_new $1
+#cpp_class $1
