@@ -1,5 +1,13 @@
 #!/bin/bash
 
+C_BLACK='\033[0;30m'
+C_RED='\033[0;31m'
+C_GREEN='\033[0;32m'
+C_YELLOW='\033[0;33m'
+C_BLUE='\033[0;34m'
+C_WHITE='\033[0;37m'
+C_END='\033[0m'
+
 cpp_new()
 {
 if [[ "$1" != "" ]];then
@@ -9,7 +17,7 @@ else
 	read PROJECT
 fi
 
-echo "Creating C++ Project [$PROJECT]"
+echo "${C_RED}Creating C++ Project ${C_YELLOW}[$PROJECT]${C_END}"
 
 mkdir $PROJECT
 
@@ -22,8 +30,6 @@ touch $PROJECT/Makefile
 touch $PROJECT/includes/$PROJECT.hpp
 
 touch $PROJECT/srcs/main.cpp
-
-echo "Creating Makefile..."
 
 echo "# Makefile created automatically from script\n"				>> $PROJECT/Makefile
 
@@ -111,7 +117,7 @@ C_WHITE		= \033[0;37m
 C_END		= \033[0m
 EOF
 
-echo "Creating Sample main.cpp"
+printf "${C_GREEN}    create    ${C_END}${PROJECT}/Makefile\n"
 
 cat << EOF >> $PROJECT/srcs/main.cpp
 //***************************//
@@ -127,7 +133,7 @@ int	main(void)
 }
 EOF
 
-echo "Creating Sample ${PROJECT}.hpp"
+printf "${C_GREEN}    create    ${C_END}${PROJECT}/srcs/main.cpp\n"
 
 HEADER=$(echo $PROJECT | tr '[:lower:]' '[:upper:]')
 
@@ -144,7 +150,9 @@ cat << EOF >> $PROJECT/includes/$PROJECT.hpp
 #endif
 EOF
 
-echo "$PROJECT succesfully created! :D!"
+printf "${C_GREEN}    create    ${C_END}${PROJECT}/includes/${PROJECT}.hpp\n"
+
+printf "${C_YELLOW}${PROJECT}${C_BLUE} succesfully created :D${C_END}\n"
 }
 
 cpp_class()
@@ -176,7 +184,7 @@ ${CLASS}::~${CLASS}() {
 }
 EOF
 
-
+printf "${C_GREEN}    create    ${C_END}srcs/${CLASS}.cpp\n"
 
 HEADERC=$(echo $CLASS | tr '[:lower:]' '[:upper:]')
 cat << EOF >> includes/${CLASS}.hpp
@@ -197,6 +205,10 @@ class $CLASS {
 #endif
 
 EOF
+
+printf "${C_GREEN}    create    ${C_END}includes/${CLASS}.hpp\n"
+
+printf "${C_YELLOW}${CLASS}${C_BLUE} succesfully created! :D!${C_END}\n"
 }
 
 #cpp_new $1
