@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cpp_new()
 {
@@ -127,15 +127,18 @@ int	main(void)
 }
 EOF
 
-echo "Creating Sample $PROJECT.hpp"
+echo "Creating Sample ${PROJECT}.hpp"
+
+HEADER=$(echo $PROJECT | tr '[:lower:]' '[:upper:]')
 
 cat << EOF >> $PROJECT/includes/$PROJECT.hpp
+
 //***************************//
 //*Template by pulgamecanica*//
 //***************************//
 
-#ifndef __${PROJECT^^}_HPP__
-# define __${PROJECT^^}_HPP__
+#ifndef __${HEADER}_HPP__
+# define __${HEADER}_HPP__
 
 #include <iostream>
 using namespace std;
