@@ -1,6 +1,6 @@
-#MAKEFLAGS += --silent
+MAKEFLAGS += --silent
 
-SRC	=	srcs/first_cpp_program.cpp
+SRC	=	$(wildcard srcs/*.cpp)
 
 NAME	=	first_program
 
@@ -37,7 +37,7 @@ $(NAME):	$(OBJ)
 test:		re
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-			@./$(NAME)
+			@./$(NAME) "test"
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cpp_new()
+{
 if [[ "$1" != "" ]];then
 	PROJECT="$1"
 else
@@ -17,6 +19,10 @@ mkdir $PROJECT/srcs
 
 touch $PROJECT/Makefile
 
+touch $PROJECT/includes/$PROJECT.hpp
+
+touch $PROJECT/srcs/main.cpp
+
 echo "Creating Makefile..."
 
 echo "# Makefile created automatically from script\n"				>> $PROJECT/Makefile
@@ -25,17 +31,17 @@ DATE=`date`
 
 echo	"# C++ $PROJECT [$DATE]\n"						>> $PROJECT/Makefile
 
-echo	"#MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n"	>> $PROJECT/Makefile
+echo	"MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n"	>> $PROJECT/Makefile
 
-echo	"NAME	=	$PROJECT\n"						>> $PROJECT/Makefile
+echo	"NAME	=	$PROJECT"						>> $PROJECT/Makefile
 
 cat << EOF									>> $PROJECT/Makefile
 
-SRC	=	srcs/main.cpp
+SRC	=	\$(wildcard srcs/*.cpp)
 
 CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -fsanitize=address
 
-INC	=	-I .
+INC	=	-I includes
 
 OBJS_D	=	objs
 
@@ -108,10 +114,11 @@ EOF
 echo "Creating Sample main.cpp"
 
 cat << EOF >> $PROJECT/srcs/main.cpp
-// Automatic script
-#include <iostream>
-#include <string>
-using namespace std;
+//***************************//
+//*Template by pulgamecanica*//
+//***************************//
+
+#include "${PROJECT}.hpp"
 
 int	main(void)
 {
@@ -119,4 +126,24 @@ int	main(void)
 	return (0);
 }
 EOF
+
+echo "Creating Sample $PROJECT.hpp"
+
+cat << EOF >> $PROJECT/includes/$PROJECT.hpp
+//***************************//
+//*Template by pulgamecanica*//
+//***************************//
+
+#ifndef __${PROJECT^^}_HPP__
+# define __${PROJECT^^}_HPP__
+
+#include <iostream>
+using namespace std;
+
+#endif
+EOF
+
 echo "$PROJECT succesfully created! :D!"
+}
+
+cpp_new $1

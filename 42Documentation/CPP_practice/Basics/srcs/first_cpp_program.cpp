@@ -41,7 +41,7 @@ void	new_assign(void)
 	cout << a + b << endl;
 }
 
-int	main(void)
+int	first_program(void)
 {
 	cout << "Hello Dude! :D\n";
 	new_assign();
