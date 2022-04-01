@@ -182,6 +182,13 @@ ${CLASS}::${CLASS}() {
 ${CLASS}::~${CLASS}() {
 	// TODO (destructor)
 }
+
+${CLASS} ${CLASS}::operator= (${CLASS} param) {
+	${CLASS} new_obj;
+	// TODO (Assignment operatior)
+        (void)param;
+	return (new_obj);
+}
 EOF
 
 printf "${C_GREEN}    create    ${C_END}srcs/${CLASS}.cpp\n"
@@ -197,9 +204,11 @@ cat << EOF >> includes/${CLASS}.hpp
 
 class $CLASS {
 	public:
-		$CLASS();		// Constructor
-		~$CLASS();		// Destructor
-		void set();		// Setter
+		$CLASS();			// Constructor
+		~$CLASS();			// Destructor
+		$CLASS	operator= ($CLASS);	// Assign Operatior
+		void	print();		// Class String representation
+		void	set();			// Setter
 };
 
 #endif
