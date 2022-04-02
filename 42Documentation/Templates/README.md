@@ -22,7 +22,8 @@
 >	**cpp_class** Class_name
 
 #####	Examples: 
-<img width="337" alt="Screen Shot 2022-04-01 at 12 46 11 AM" src="https://user-images.githubusercontent.com/28810331/161167296-1a15	1537-8843-4683-8f3b-8870a9082bf2.png">
+<img width="337" alt="Screen Shot 2022-04-01 at 12 46 11 AM" src="https://user-images.githubusercontent.com/28810331/161167296-1a151537-8843-4683-8f3b-8870a9082bf2.png">
+
 <img width="367" alt="Screen Shot 2022-04-01 at 12 44 19 AM" src="https://user-images.githubusercontent.com/28810331/161167112-376e73bd-5fba-4409-a3fb-17d984f462cc.png">
 
 
