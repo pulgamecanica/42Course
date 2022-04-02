@@ -17,7 +17,7 @@ else
 	read PROJECT
 fi
 
-echo "${C_RED}Creating C++ Project ${C_YELLOW}[$PROJECT]${C_END}"
+printf "${C_RED}Creating C++ Project ${C_YELLOW}[$PROJECT]${C_END}\n"
 
 mkdir $PROJECT
 

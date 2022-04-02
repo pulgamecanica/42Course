@@ -5,3 +5,5 @@ run.sh
 test.txt
 Error, didn't execute!
 Finished Executing
+Error, didn't execute!
+Finished Executing
