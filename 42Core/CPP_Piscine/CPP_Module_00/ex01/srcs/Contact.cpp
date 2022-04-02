@@ -4,9 +4,8 @@
 
 #include "Contact.hpp"
 
-Contact::Contact() {
-	is_saved = false;
-};
+Contact::Contact() {is_saved = false;}
+
 Contact::~Contact() {}
 
 Contact::Contact(std::string fn, std::string ln, std::string nn, std::string pn, std::string ds) {
@@ -32,14 +31,15 @@ Contact Contact::operator= (Contact c)
 }
 
 void Contact::print_short() {
-	std::cout << "|" << first_name << "|" << last_name << "|" << nickname << "|" << std::endl;
+	std::cout << "|";
+	std::cout.width(10); std::cout << std::right << first_name.substr(0, 9) + (first_name.length() > 9 ? "." : "");
+	std::cout << "|";
+	std::cout.width(10); std::cout << std::right << last_name.substr(0, 9) + (first_name.length() > 9 ? "." : " ");;
+	std::cout << "|";
+	std::cout.width(10); std::cout << std::right << nickname.substr(0, 9) + (first_name.length() > 9 ? "." : " ");;
+	std::cout << "|" << std::endl;
 }
 
-void Contact::print() {
-	std::cout << "First Name: " << first_name << "\nLast Name: " << last_name << "\nNickname: " << nickname << "\nPhone Number: " << phone_number << "\nDarkest Secret: " << darkest_secret << std::endl;
-}
+void Contact::print() {std::cout << "First Name: " << first_name << "\nLast Name: " << last_name << "\nNickname: " << nickname << "\nPhone Number: " << phone_number << "\nDarkest Secret: " << darkest_secret << std::endl;}
 
-bool Contact::saved()
-{
-	return (is_saved);
-}
+bool Contact::saved() {return (is_saved);}

@@ -23,6 +23,7 @@ class PhoneBook {
 		~PhoneBook();
 		void		print();
 		void		add_contact(Contact);
+		void		print_contact(int);
 };
 
 #endif
