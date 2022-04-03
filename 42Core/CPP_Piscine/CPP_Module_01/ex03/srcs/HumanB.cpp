@@ -4,17 +4,18 @@
 
 #include "HumanB.hpp"
 
-HumanB::HumanB() {
-	// TODO (default constructor)
+HumanB::HumanB(std::string str): name(str) {
+	;
 }
 
 HumanB::~HumanB() {
-	// TODO (destructor)
+
 }
 
-HumanB HumanB::operator= (HumanB param) {
-	HumanB new_obj;
-	// TODO (Assignment operatior)
-        (void)param;
-	return (new_obj);
+void	HumanB::setWeapon(Weapon& wp) {
+	w = &wp;
+}
+
+void	HumanB::attack() {
+	std::cout << name << " attacks with their " << w->getType() << std::endl;
 }

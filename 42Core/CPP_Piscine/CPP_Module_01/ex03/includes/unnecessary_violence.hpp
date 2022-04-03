@@ -6,5 +6,8 @@
 # define __UNNECESSARY_VIOLENCE_HPP__
 
 #include <iostream>
+#include "Weapon.hpp"
+#include "HumanA.hpp"
+#include "HumanB.hpp"
 
 #endif

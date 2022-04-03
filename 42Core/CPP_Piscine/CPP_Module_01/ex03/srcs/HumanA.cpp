@@ -4,17 +4,13 @@
 
 #include "HumanA.hpp"
 
-HumanA::HumanA() {
-	// TODO (default constructor)
+HumanA::HumanA(std::string str, Weapon& wp): name(str), w(wp)
+{
+	;	
 }
 
-HumanA::~HumanA() {
-	// TODO (destructor)
-}
+HumanA::~HumanA() {}
 
-HumanA HumanA::operator= (HumanA param) {
-	HumanA new_obj;
-	// TODO (Assignment operatior)
-        (void)param;
-	return (new_obj);
+void	HumanA::attack() {
+	std::cout << name << " attacks with their " << w.getType() << std::endl;
 }

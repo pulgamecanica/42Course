@@ -5,14 +5,15 @@
 #ifndef __HUMANA_HPP__
 # define __HUMANA_HPP__
 
+#include "Weapon.hpp"
+
 class HumanA {
+	std::string name;
+	Weapon&		w;
 	public:
-		HumanA();			// Constructor
-		~HumanA();			// Destructor
-		HumanA	operator= (HumanA);	// Assign Operatior
-		void	print();		// Class String representation
-		void	set();			// Setter
+		HumanA(std::string, Weapon&);
+		~HumanA();
+		void	attack();
 };
 
 #endif
-

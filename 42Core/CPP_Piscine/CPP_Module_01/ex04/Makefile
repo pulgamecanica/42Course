@@ -1,7 +1,10 @@
-# Makefile created automatically from script\n
-# C++ moar_brainz [Sat Apr  2 19:57:33 WEST 2022]\n
-MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
-NAME	=	moar_brainz
+# Makefile created automatically from script
+
+# C++ sed_is_for_losers [Sun Apr  3 20:47:21 WEST 2022]
+
+MAKEFLAGS += --silent	# Silence makefile [Commented by default]
+
+NAME	=	sed_is_for_losers
 
 SRC	=	$(wildcard srcs/*.cpp)
 

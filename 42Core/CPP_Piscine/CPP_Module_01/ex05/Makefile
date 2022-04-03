@@ -1,7 +1,10 @@
-# Makefile created automatically from script\n
-# C++ moar_brainz [Sat Apr  2 19:57:33 WEST 2022]\n
-MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
-NAME	=	moar_brainz
+# Makefile created automatically from script
+
+# C++ harl_2_0 [Sun Apr  3 22:37:04 WEST 2022]
+
+MAKEFLAGS += --silent	# Silence makefile [Commented by default]
+
+NAME	=	harl_2_0
 
 SRC	=	$(wildcard srcs/*.cpp)
 
@@ -18,7 +21,7 @@ UNAME	:=	$(shell uname)
 RM		= rm -rf
 
 ifeq ($(UNAME), Darwin)
-	CC = g++
+	CC = clang++
 else ifeq ($(UNAME), FreeBSD)
 	CC = clang++
 else

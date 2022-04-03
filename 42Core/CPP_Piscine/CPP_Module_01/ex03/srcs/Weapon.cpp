@@ -5,16 +5,18 @@
 #include "Weapon.hpp"
 
 Weapon::Weapon() {
-	// TODO (default constructor)
+	type = "";
+}
+Weapon::Weapon(std::string str) {
+	type = str;
 }
 
-Weapon::~Weapon() {
-	// TODO (destructor)
+Weapon::~Weapon() {}
+
+void	Weapon::setType(std::string str) {
+	this->type = str;
 }
 
-Weapon Weapon::operator= (Weapon param) {
-	Weapon new_obj;
-	// TODO (Assignment operatior)
-        (void)param;
-	return (new_obj);
+const std::string& Weapon::getType() {
+	return (type);
 }

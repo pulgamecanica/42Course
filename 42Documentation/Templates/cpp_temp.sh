@@ -58,7 +58,7 @@ UNAME	:=	\$(shell uname)
 RM		= rm -rf
 
 ifeq (\$(UNAME), Darwin)
-	CC = clang++
+	CC = g++
 else ifeq (\$(UNAME), FreeBSD)
 	CC = clang++
 else

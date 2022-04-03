@@ -5,14 +5,16 @@
 #ifndef __HUMANB_HPP__
 # define __HUMANB_HPP__
 
+#include "Weapon.hpp"
+
 class HumanB {
+	std::string name;
+	Weapon*		w;
 	public:
-		HumanB();			// Constructor
-		~HumanB();			// Destructor
-		HumanB	operator= (HumanB);	// Assign Operatior
-		void	print();		// Class String representation
-		void	set();			// Setter
+		HumanB(std::string);
+		~HumanB();
+		void	attack();
+		void	setWeapon(Weapon&);
 };
 
 #endif
-
