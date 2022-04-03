@@ -25,7 +25,7 @@ PhoneBook PhoneBook::operator-- () {
 void PhoneBook::print() {
 	std::cout << "**********************************************" << std::endl;
 	std::cout << "|  INDEX   |FIRST_NAME| LASTNAME | NICKNAME |" << std::endl;
-	std::cout << "|---------- ---------- ----------- ----------|" << std::endl;
+	std::cout << "|---------- ---------- ----------- ---------|" << std::endl;
 	if (list_size <= 0)
 		std::cout << "|Your PhoneBook is empty... :(               |" <<  std::endl;
 	for (int i = 0; i < list_size; i++)

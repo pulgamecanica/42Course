@@ -3,7 +3,7 @@
 //***************************//
 
 #include "my_awesome_phone_book.hpp"
-#include <climits>
+#include <sstream>
 
 void menu(){
 	std::cout << C_GREEN << "	ADD" << C_END << "	: add a new contact to your phone book (max. 8)" << std::endl;
@@ -32,18 +32,28 @@ Contact create_contact(void) {
 	return (c);
 }
 
-void	inspect_contact(PhoneBook pb) {
-	std::string	line;
-	
+static int stoi(std::string str)
+{
+	int i;
+	std::istringstream(str) >> i;
+	return (i);
+}
+
+void inspect_contact(PhoneBook pb) {
+	std::string		line;
+	int			number;
+
 	pb.print();
 	std::cout << "Which User Index do you want to inspect?" << std::endl << "$ ";
 	getline(std::cin, line);
-	try {
-		pb.print_contact(std::stoi(line));
+	number = stoi(line);
+	pb.print_contact(number);
+/*	try {
+		pb.print_contact(number);
 	}
 	catch(std::exception &err) {
 		std::cout << "Wrong Format... Must be a number... ;X" << std::endl;
-	}
+	}*/
 }
 
 int main(void) {
@@ -53,8 +63,9 @@ int main(void) {
 	while (true) {
 		menu();
 		std::cout << "$ ";
-		std::cin >> line;
-		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+		getline(std::cin, line);
+//		std::cin >> line;
+//		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 		if (check_line(line)) {
 			if (line.compare("ADD") == 0)
 				pb.add_contact(create_contact());
@@ -68,4 +79,4 @@ int main(void) {
 	}
 	std::cout << "Bye Bye, Phone Book deleted ..." << std::endl;
 	return (0);
-}	
+}
