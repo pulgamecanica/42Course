@@ -2,10 +2,11 @@
 //*Template by pulgamecanica*//
 //***************************//
 
-#ifndef __HARL_2_0_HPP__
-# define __HARL_2_0_HPP__
+#ifndef __HARLFILTER_HPP__
+# define __HARLFILTER_HPP__
 
 #include <iostream>
 #include "Harl.hpp"
+
 
 #endif
