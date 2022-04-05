@@ -72,7 +72,7 @@ endif
 
 \$(NAME):	\$(OBJ)
 			@printf "Compiling \$(C_YELLOW)\$(NAME)\$(C_END) ... \n"
-			\$(CC) \$(CFLAGS) \$(FSANIT) \$(OBJ) -o \$(NAME)
+			\$(CC) \$(CFLAGS) \$(OBJ) -o \$(NAME)
 			@printf "\$(C_GREEN)DONE\$(C_END)\n"
 
 test:		re
@@ -100,7 +100,7 @@ show:
 	@printf "\$(C_GREEN)"
 	@printf "UNAME		: \$(UNAME)\n"
 	@printf "NAME  		: \$(C_YELLOW)\$(NAME)\$(C_GREEN)\n"
-	@printf "CC		: \$(CC)\n"
+	@printf "CC			: \$(CC)\n"
 	@printf "CFLAGS		: \$(CFLAGS)\n"
 	@printf "INCLUDES	: \$(INC)\n"
 	@printf "SRC		: \$(C_YELLOW)\$(SRC)\$(C_GREEN)\n"
@@ -179,15 +179,20 @@ ${CLASS}::${CLASS}() {
 	// TODO (default constructor)
 }
 
+${CLASS}::${CLASS}(const ${CLASS}& param) {
+	// TODO (copy constructor)
+	(void)param;
+}
+
 ${CLASS}::~${CLASS}() {
 	// TODO (destructor)
 }
 
 ${CLASS} ${CLASS}::operator= (${CLASS} param) {
-	${CLASS} new_obj;
 	// TODO (Assignment operatior)
-        (void)param;
-	return (new_obj);
+	// std::swap()
+	(void)param;
+	return (*this);
 }
 EOF
 
@@ -204,11 +209,12 @@ cat << EOF >> includes/${CLASS}.hpp
 
 class $CLASS {
 	public:
-		$CLASS();			// Constructor
-		~$CLASS();			// Destructor
-		$CLASS	operator= ($CLASS);	// Assign Operatior
-		void	print();		// Class String representation
-		void	set();			// Setter
+		$CLASS();
+		$CLASS(const ${CLASS}&);
+		~$CLASS();
+		$CLASS	operator= ($CLASS);
+		void	print();
+		void	set();
 };
 
 #endif

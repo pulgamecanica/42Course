@@ -5,6 +5,7 @@
 NEED_ZS=$(grep "~/.cpp_temp.sh" ~/.zshrc | wc -l)
 NEED_BP=$(grep "~/.cpp_temp.sh" ~/.bash_profile | wc -l)
 
+rm ~/.cpp_temp.sh
 chmod 777 cpp_temp.sh
 cp cpp_temp.sh ~/.cpp_temp.sh
 if [[ $((NEED_ZS)) -eq 0  || $((NEED_BP)) -eq 0 ]]; then
