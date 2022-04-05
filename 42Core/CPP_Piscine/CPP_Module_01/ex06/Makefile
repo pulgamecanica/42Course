@@ -1,8 +1,8 @@
 # Makefile created automatically from script
-# C++ sed_is_for_losers [Sun Apr  3 20:47:21 WEST 2022]
+# C++ harlFilter [Sun Apr  3 23:38:32 WEST 2022]
 MAKEFLAGS += --silent	# Silence makefile [Commented by default]
 
-NAME	=	sed_is_for_losers
+NAME	=	harlFilter
 
 SRC	=	$(wildcard srcs/*.cpp)
 

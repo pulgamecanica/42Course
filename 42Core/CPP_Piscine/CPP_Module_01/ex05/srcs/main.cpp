@@ -6,6 +6,11 @@
 
 int	main(void)
 {
-	std::cout << "Hello Friend\nPulgamecanica greets you :D\n";
+	Harl h;
+
+	h.complain("DEBUG");
+	h.complain("ERROR");
+	h.complain("WARNING");
+	h.complain("INFO");
 	return (0);
 }
