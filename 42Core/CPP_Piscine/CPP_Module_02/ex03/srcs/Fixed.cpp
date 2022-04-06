@@ -28,7 +28,7 @@ Fixed::~Fixed() {
 	std::cout << "Fixed Point"; std::cout.width(30); std::cout << "[Object Destroyed]" << std::endl;
 }
 
-Fixed& Fixed::operator= (Fixed param) {
+Fixed& Fixed::operator= (const Fixed& param) {
 	std::cout << "Fixed Point"; std::cout.width(30); std::cout << "[Assignment operator]" << std::endl;
 	std::swap(num, param.num);
 	return (*this);

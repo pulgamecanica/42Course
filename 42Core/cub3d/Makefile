@@ -25,7 +25,7 @@ OBJ		= $(SRC:%.c=%.o)
 RM		= rm -f
 
 ifeq ($(UNAME), Darwin)
-	CC = clang
+	CC = gcc
 	LFLAGS = -lmlx -L$(INCLIB) -framework OpenGL -framework AppKit -L${INCFTLIB} -lft
 else ifeq ($(UNAME), FreeBSD)
 	CC = clang
