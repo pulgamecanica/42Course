@@ -38,6 +38,13 @@
 +   test: run re & execute ./$(NAME) without arguments & run show & run fclean
 +   MAKEFLAGS += --silent --> to silence the makefile messages
 
+### Video :D
+
+
+https://user-images.githubusercontent.com/28810331/162333739-3ea444f6-1331-43e2-ac8e-817d60d41a34.mp4
+
+
+
 ##### TODO
 -   std::ostream&   operator<<(std::ostream&, const Fixed&);
 -   Fixed&              operator= (Fixed);
