@@ -1,18 +1,17 @@
-# Makefile created automatically from script
+# Makefile created automatically from script\n
+# C++ BSP_TESTER [Thu Apr  7 16:41:18 WEST 2022]\n
+# MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
+NAME	=	BSP_TESTER
 
-# C++ New_App [Wed Apr  6 13:51:41 WEST 2022]
-
-MAKEFLAGS += --silent	# Silence makefile [Commented by default]
-
-NAME	=	New_App
-
-SRC	=	$(wildcard srcs/*.cpp)
+SRC	=	$(wildcard srcs/*.cpp srcs/*/*.cpp)
 
 CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -fsanitize=address
 
-INC	=	-I includes
+INC	=	-I includes -I ../ex03/includes/ -I/Library/Frameworks/SDL2.framework/Headers
 
 OBJS_D	=	objs
+
+LFLAGS	= -L ../ex03/ -lbsp  -F /Library/Frameworks -framework SDL2
 
 OBJ	=	$(SRC:srcs/%.cpp=$(OBJS_D)/%.o)
 
@@ -21,7 +20,8 @@ UNAME	:=	$(shell uname)
 RM		= rm -rf
 
 ifeq ($(UNAME), Darwin)
-	CC = clang++
+	CC = g++
+# 	LFLAGS	+= -framework SDL2
 else ifeq ($(UNAME), FreeBSD)
 	CC = clang++
 else
@@ -31,11 +31,12 @@ endif
 
 $(OBJS_D)/%.o:srcs/%.cpp
 			@mkdir -p $(OBJS_D)
+# 			@mkdir -p $(OBJS_D)/mlx_utils
 			$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
 $(NAME):	$(OBJ)
 			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
-			$(CC) $(CFLAGS) $(FSANIT) $(OBJ) -o $(NAME)
+			$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LFLAGS) $(INC)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
 test:		re
@@ -63,7 +64,7 @@ show:
 	@printf "$(C_GREEN)"
 	@printf "UNAME		: $(UNAME)\n"
 	@printf "NAME  		: $(C_YELLOW)$(NAME)$(C_GREEN)\n"
-	@printf "CC		: $(CC)\n"
+	@printf "CC			: $(CC)\n"
 	@printf "CFLAGS		: $(CFLAGS)\n"
 	@printf "INCLUDES	: $(INC)\n"
 	@printf "SRC		: $(C_YELLOW)$(SRC)$(C_GREEN)\n"

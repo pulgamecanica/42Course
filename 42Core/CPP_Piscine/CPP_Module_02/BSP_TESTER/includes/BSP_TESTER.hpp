@@ -2,8 +2,8 @@
 //*Template by pulgamecanica*//
 //***************************//
 
-#ifndef __NEW_APP_HPP__
-# define __NEW_APP_HPP__
+#ifndef __BSP_TESTER_HPP__
+# define __BSP_TESTER_HPP__
 
 #include <iostream>
 

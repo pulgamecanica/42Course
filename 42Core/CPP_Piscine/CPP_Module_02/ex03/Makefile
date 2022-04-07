@@ -20,6 +20,12 @@ UNAME	:=	$(shell uname)
 
 RM		= rm -rf
 
+LIB	= ar rc
+
+RL	= ranlib
+
+LIBNAME = libbsp.a
+
 ifeq ($(UNAME), Darwin)
 	CC = g++
 else ifeq ($(UNAME), FreeBSD)
@@ -33,19 +39,10 @@ $(OBJS_D)/%.o:srcs/%.cpp
 			@mkdir -p $(OBJS_D)
 			$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
-$(NAME):	$(OBJ)
-			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
-			$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
-			@printf "$(C_GREEN)DONE$(C_END)\n"
-
-test:		re
-			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
-			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-			@./$(NAME)
-			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
-			@$(MAKE) show
-			@$(MAKE) fclean
+$(NAME): ${OBJ}
+	${LIB} ${LIBNAME} ${OBJ}
+	${RL} ${LIBNAME}
+	@printf "$(C_GREEN)CREATED: ${LIBNAME} $(C_END)\n"
 
 all:		$(NAME)
 
@@ -54,7 +51,7 @@ clean:
 			@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean: 	clean
-			$(RM) $(NAME)
+			$(RM) $(NAME) ${LIBNAME}
 			@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 re: fclean all

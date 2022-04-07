@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <cmath>
+#include "colors.h"
 
 class Fixed {
 	int	num;
@@ -17,7 +18,7 @@ class Fixed {
 		Fixed(const int);
 		Fixed(const float);
 		~Fixed();
-		Fixed&				operator= (const Fixed&);
+		Fixed&				operator= (Fixed);
 		bool				operator> (const Fixed&) const;
 		bool				operator< (const Fixed&) const;
 		bool				operator== (const Fixed&) const;

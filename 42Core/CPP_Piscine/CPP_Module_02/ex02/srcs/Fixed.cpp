@@ -58,38 +58,38 @@ std::ostream& operator<<(std::ostream& s, const Fixed& fn) {
 }
 
 bool Fixed::operator> (const Fixed& fp) const {
-	std::cout << "Fixed Point"; std::cout.width(15);std::cout << num << " > " << fp.num << "[operator>]" << std::endl;
+	std::cout << "Fixed Point"; std::cout.width(15);std::cout << this->toFloat() << " > " << fp.toFloat() << "[operator>]" << std::endl;
 	return (num > fp.num);
 }
 
 bool Fixed::operator< (const Fixed& fp) const {
-	std::cout << "Fixed Point"; std::cout.width(15); std::cout << num << " < " << fp.num << "[operator<]" << std::endl;
+	std::cout << "Fixed Point"; std::cout.width(15); std::cout << this->toFloat() << " < " << fp.toFloat() << "[operator<]" << std::endl;
 	return (num < fp.num);
 }
 
 bool Fixed::operator== (const Fixed& fp) const {
-	std::cout << "Fixed Point"; std::cout.width(15); std::cout << num << " == " << fp.num << "[operator==]" << std::endl;
+	std::cout << "Fixed Point"; std::cout.width(15); std::cout << this->toFloat() << " == " << fp.toFloat() << "[operator==]" << std::endl;
 	return (fp.num == num);
 }
 
 bool Fixed::operator!= (const Fixed& fp) const {
-	std::cout << "Fixed Point"; std::cout.width(15); std::cout << num << " != " << fp.num << "[operator!=]" << std::endl;
+	std::cout << "Fixed Point"; std::cout.width(15); std::cout << this->toFloat() << " != " << fp.toFloat() << "[operator!=]" << std::endl;
 	return (fp.num != num);
 }
 
 bool Fixed::operator<= (const Fixed& fp) const {
-	std::cout << "Fixed Point"; std::cout.width(15); std::cout << num << " <= " << fp.num << "[operator<=]" << std::endl;
+	std::cout << "Fixed Point"; std::cout.width(15); std::cout << this->toFloat() << " <= " << fp.toFloat() << "[operator<=]" << std::endl;
 	return (*this == fp || *this < fp);
 }
 
 bool Fixed::operator>= (const Fixed& fp) const {
-	std::cout << "Fixed Point"; std::cout.width(15); std::cout << num << " >= " << fp.num << "[operator>=]" << std::endl;
+	std::cout << "Fixed Point"; std::cout.width(15); std::cout << this->toFloat() << " >= " << fp.toFloat() << "[operator>=]" << std::endl;
 	return (*this == fp || *this > fp);
 }
 
 Fixed Fixed::operator+ (const Fixed& fp) const
 {
-	std::cout << "Fixed Point"; std::cout.width(15); std::cout << num << " + " << fp.num << "[operator+]" << std::endl;
+	std::cout << "Fixed Point"; std::cout.width(15); std::cout << this->toFloat() << " + " << fp.toFloat() << "[operator+]" << std::endl;
 	Fixed new_fp;
 
 	new_fp.setRawBits(num + fp.num);
@@ -97,7 +97,7 @@ Fixed Fixed::operator+ (const Fixed& fp) const
 }
 
 Fixed Fixed::operator- (const Fixed& fp) const {
-	std::cout << "Fixed Point"; std::cout.width(15); std::cout << num << " - " << fp.num << "[operator-]" << std::endl;
+	std::cout << "Fixed Point"; std::cout.width(15); std::cout << this->toFloat() << " - " << fp.toFloat() << "[operator-]" << std::endl;
 	Fixed new_fp;
 
 	new_fp.setRawBits(num - fp.num);
@@ -105,12 +105,12 @@ Fixed Fixed::operator- (const Fixed& fp) const {
 }
 
 Fixed Fixed::operator* (const Fixed& fp) const {
-	std::cout << "Fixed Point"; std::cout.width(15); std::cout << num << " * " << fp.num << "[operator*]" << std::endl;
+	std::cout << "Fixed Point"; std::cout.width(15); std::cout << this->toFloat() << " * " << fp.toFloat() << "[operator*]" << std::endl;
 	return (Fixed(this->toFloat() * fp.toFloat()));
 }
 
 Fixed Fixed:: operator/ (const Fixed& fp) const {
-	std::cout << "Fixed Point"; std::cout.width(15); std::cout << num << " / " << fp.num << "[operator/]" << std::endl;
+	std::cout << "Fixed Point"; std::cout.width(15); std::cout << this->toFloat() << " / " << fp.toFloat() << "[operator/]" << std::endl;
 	return (Fixed(this->toFloat() / fp.toFloat()));
 }
 
@@ -122,8 +122,9 @@ Fixed& Fixed::operator++(void) {
 
 Fixed Fixed::operator++(int) {
 	std::cout << "Fixed Point"; std::cout.width(15); std::cout << "[operator++]" << std::endl;
+	Fixed tmp(*this);
 	num++;
-	return (*this);
+	return (tmp);
 }
 
 Fixed& Fixed::operator--(void) {
@@ -134,8 +135,9 @@ Fixed& Fixed::operator--(void) {
 
 Fixed Fixed::operator--(int) {
 	std::cout << "Fixed Point"; std::cout.width(15); std::cout << "[operator--]" << std::endl;
+	Fixed tmp(*this);
 	num--;
-	return (*this);
+	return (tmp);
 }
 
 Fixed& Fixed::min(Fixed& fp1, Fixed& fp2) {
