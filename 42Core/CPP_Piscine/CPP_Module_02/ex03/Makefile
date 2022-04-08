@@ -2,7 +2,7 @@
 
 # C++ bsp [Wed Apr  6 23:22:41 WEST 2022]
 
-MAKEFLAGS += --silent	# Silence makefile [Commented by default]
+#MAKEFLAGS += --silent	# Silence makefile [Commented by default]
 
 NAME	=	bsp
 
@@ -66,7 +66,7 @@ show:
 	@printf "SRC		: $(C_YELLOW)$(SRC)$(C_GREEN)\n"
 	@printf "OBJ		: $(C_YELLOW)[$(OBJS_D)] --> $(OBJ)$(C_END)\n"
 
-.PHONY: all test re
+.PHONY: all re
 
 C_BLACK		= \033[0;30m
 C_RED		= \033[0;31m
