@@ -17,9 +17,10 @@ class ClapTrap {
 		ClapTrap(std::string);
 		~ClapTrap();
 		ClapTrap	operator= (ClapTrap&);
-		void attack(const std::string&);
-		void takeDamage(unsigned int);
-		void beRepaired(unsigned int);
+		void		attack(const std::string&);
+		void		takeDamage(unsigned int);
+		void		beRepaired(unsigned int);
+		std::string&	getName();
 };
 
 #endif

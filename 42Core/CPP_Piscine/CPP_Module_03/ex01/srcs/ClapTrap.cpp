@@ -5,20 +5,20 @@
 #include "ClapTrap.hpp"
 
 ClapTrap::ClapTrap() {
-	std::cout << "Creating ClapTrap from default constructor" << std::endl;
+	std::cout << "ClapTrap created from default constructor" << std::endl;
 	name = "";
-	hp = 10;
-	ep = 10;
-	attack_dmg = 0;
+	hp = 100;
+	ep = 50;
+	attack_dmg = 20;
 }
 
 ClapTrap::ClapTrap(std::string str)
 {
-	std::cout << "Creating *" << str << "* ClapTrap from constructor[str&]" << std::endl;
+	std::cout << "ClapTrap *" << str << "* created from constructor[str&]" << std::endl;
 	name = str;
-	hp = 10;
-	ep = 10;
-	attack_dmg = 0;
+	hp = 100;
+	ep = 50;
+	attack_dmg = 20;
 }
 
 ClapTrap::~ClapTrap() {
@@ -37,22 +37,22 @@ void ClapTrap::attack(const std::string& target) {
 	std::cout << "[attack(" << target << ")]";std::cout.width(20);
 	if (hp > 0 && ep > 0)
 	{
-		std::cout << name << " attacks! " << target << " lost " << attack_dmg << " hit points... RIP X(" << std::endl;
+		std::cout << "ClapTrap *" << name << "* attacks! " << target << " lost " << attack_dmg << " hit points... RIP X(" << std::endl;
 		ep--;
 	}
 	else
-		std::cout << name << " has no energy left... :O" << std::endl;
+		std::cout << "ClapTrap *"<< name << "* has no energy left... :O" << std::endl;
 }
 
 void ClapTrap::takeDamage(unsigned int amount) {
 	hp -= amount;
 	if (hp < 0)
 		hp = 0;
-	std::cout << name << " takes " << amount << " damage hp(" << hp << ")" << std::endl;
+	std::cout << "ClapTrap " << name << " takes " << amount << " damage hp(" << hp << ")" << std::endl;
 }
 
 void ClapTrap::beRepaired(unsigned int amount) {
-	std::cout << "[beRepaired(" << amount << ")]";std::cout.width(20);
+	std::cout << "ClapTrap [beRepaired(" << amount << ")]";std::cout.width(20);
 	if (hp > 0 && ep > 0)
 	{
 		hp += amount;
@@ -62,3 +62,5 @@ void ClapTrap::beRepaired(unsigned int amount) {
 	else
 		std::cout << name << " has no energy left... :O" << std::endl;
 }
+
+std::string& ClapTrap::getName() {return (name);};

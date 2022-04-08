@@ -1,7 +1,7 @@
 # Makefile created automatically from script\n
 # C++ ex00 [Fri Apr  8 12:44:58 PM WEST 2022]\n
 MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
-NAME	=	claptrap
+NAME	=	scavtrap
 
 SRC	=	$(wildcard srcs/*.cpp)
 
@@ -34,16 +34,17 @@ $(NAME):	$(OBJ)
 			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
 			$(CC) $(CFLAGS) $(FSANIT) $(OBJ) -o $(NAME)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
-			@printf	"       $(C_RED),$(C_YELLOW)		\n"
-			@printf	"       $(C_BLACK)|		\n"
-			@printf	"    ]  |$(C_YELLOW).-._		\n"
-			@printf	"    $(C_BLACK)\\ $(C_YELLOW)|\'($(C_BLUE)0$(C_YELLOW))'| $(C_BLACK)_]	\n"
-			@printf	"     \`$(C_YELLOW)|=\\#/=|$(C_BLACK)\\/$(C_YELLOW)	\n"
-			@printf "      :  $(C_RED)_$(C_YELLOW)  :		\n"
-			@printf	"       \\/_\\/ 	\n"
+			@printf " $(C_WHITE) -.:.       .-:  \n"
+			@printf	"    .-_$(C_GREEN):   $(C_WHITE)_:	\n"
+			@printf	"      $(C_RED)H$(C_BLACK)|    $(C_RED)H$(C_BLACK)\n"
+			@printf	"    ]  |$(C_RED).-._		\n"
+			@printf	"    $(C_BLACK)\\ $(C_RED)|\'($(C_YELLOW)O$(C_RED))'| $(C_BLACK)_]	\n"
+			@printf	"     \`$(C_RED)|=\\#/=|$(C_BLACK)\\/$(C_RED)	\n"
+			@printf "      :  $(C_YELLOW)_$(C_RED)  :		\n"
+			@printf	"      -\\/_\\/- 	\n"
 			@printf	"        $(C_BLACK)|=| 		\n"
 			@printf	"        \`-'		\n"
-			@printf	"$(C_BLUE)              claptrap$(C_END)\n"
+			@printf	"$(C_BLUE)              sc4v-tp$(C_END)\n"
 
 test:		re
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
