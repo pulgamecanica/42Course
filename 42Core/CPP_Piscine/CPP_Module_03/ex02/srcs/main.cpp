@@ -2,7 +2,7 @@
 //*Template by pulgamecanica*//
 //***************************//
 
-#include "ex01.hpp"
+#include "ex02.hpp"
 
 int	main(void)
 {
@@ -10,7 +10,7 @@ int	main(void)
 	FragTrap f1("Good Boy");
 	FragTrap f2;
 
-	
+
 	s1.guardGate();
 	s1.attack("CowMan");
 	s1.beRepaired(40);
