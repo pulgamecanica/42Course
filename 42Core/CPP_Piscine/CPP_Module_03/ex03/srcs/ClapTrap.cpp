@@ -87,6 +87,7 @@ void ClapTrap::useEnergy() {
 bool ClapTrap::canPerform() {
 	return (hp > 0 && ep > 0);
 }
+
 int ClapTrap::getAtackDmg() {return (attack_dmg);};
 
 const std::string& ClapTrap::getName() {return (name);};

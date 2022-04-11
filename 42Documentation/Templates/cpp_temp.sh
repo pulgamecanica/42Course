@@ -31,21 +31,21 @@ touch $PROJECT/includes/$PROJECT.hpp
 
 touch $PROJECT/srcs/main.cpp
 
-echo "# Makefile created automatically from script\n"				>> $PROJECT/Makefile
+echo "# Makefile created automatically from script\n" >> $PROJECT/Makefile
 
 DATE=`date`
 
-echo	"# C++ $PROJECT [$DATE]\n"						>> $PROJECT/Makefile
+echo	"# C++ $PROJECT [$DATE]\n" >> $PROJECT/Makefile
 
-echo	"MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n"	>> $PROJECT/Makefile
+echo	"MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n" >> $PROJECT/Makefile
 
-echo	"NAME	=	$PROJECT"						>> $PROJECT/Makefile
+echo	"NAME	=	$PROJECT" >> $PROJECT/Makefile
 
-cat << EOF									>> $PROJECT/Makefile
+cat << EOF >> $PROJECT/Makefile
 
 SRC	=	\$(wildcard srcs/*.cpp)
 
-CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address
 
 INC	=	-I includes
 
@@ -100,7 +100,7 @@ show:
 	@printf "\$(C_GREEN)"
 	@printf "UNAME		: \$(UNAME)\n"
 	@printf "NAME  		: \$(C_YELLOW)\$(NAME)\$(C_GREEN)\n"
-	@printf "CC			: \$(CC)\n"
+	@printf "CC		: \$(CC)\n"
 	@printf "CFLAGS		: \$(CFLAGS)\n"
 	@printf "INCLUDES	: \$(INC)\n"
 	@printf "SRC		: \$(C_YELLOW)\$(SRC)\$(C_GREEN)\n"
@@ -147,6 +147,16 @@ cat << EOF >> $PROJECT/includes/$PROJECT.hpp
 
 #include <iostream>
 
+/*
+# define BLACK	"\033[0;30m"
+# define RED	"\033[0;31m"
+# define GREEN	"\033[0;32m"
+# define YELLOW	"\033[0;33m"
+# define BLUE	"\033[0;34m"
+# define WHITE	"\033[0;37m"
+# define ENDC	"\033[0m"
+*/
+
 #endif
 EOF
 
@@ -164,9 +174,23 @@ else
 	read CLASS
 fi
 
-touch srcs/${CLASS}.cpp
-
-touch includes/${CLASS}.hpp
+{
+touch srcs/${CLASS}.cpp && touch includes/${CLASS}.hpp
+} || {
+echo "Sorry something went wrong... please make sure you are inside a cpp project..."
+echo "--------------------"
+echo "|- Project"
+echo "|  - includes/"
+echo "|  | - project.hpp"
+echo "|  | - Object.hpp"
+echo "|  | - .......hpp"
+echo "|  - srcs/"
+echo "|  | - main.cpp"
+echo "|  | - Object.cpp"
+echo "|  | - .......cpp"
+echo "--------------------"
+exit
+}
 
 cat << EOF >> srcs/${CLASS}.cpp
 //***************************//
@@ -185,15 +209,23 @@ ${CLASS}::${CLASS}(const ${CLASS}& param) {
 }
 
 ${CLASS}::~${CLASS}() {
+	std::cout << "${CLASS}" << " destroyed" << std::endl;
 	// TODO (destructor)
 }
 
-${CLASS} ${CLASS}::operator= (${CLASS} param) {
+${CLASS}& ${CLASS}::operator= (const ${CLASS}& param) {
 	// TODO (Assignment operatior)
 	// std::swap()
 	(void)param;
 	return (*this);
 }
+
+std::ostream& operator<<(std::ostream& s, const ${CLASS}& param) {
+	// s << param.CONST_METHOD()
+	(void)param;
+	return (s);
+}
+
 EOF
 
 printf "${C_GREEN}    create    ${C_END}srcs/${CLASS}.cpp\n"
@@ -207,15 +239,17 @@ cat << EOF >> includes/${CLASS}.hpp
 #ifndef __${HEADERC}_HPP__
 # define __${HEADERC}_HPP__
 
+#include <iostream>
+
 class $CLASS {
 	public:
-		$CLASS();
-		$CLASS(const ${CLASS}&);
-		~$CLASS();
-		$CLASS	operator= ($CLASS);
-		void	print();
-		void	set();
+		${CLASS}();
+		${CLASS}(const ${CLASS}&);
+		~${CLASS}();
+		${CLASS}&	operator= (const ${CLASS}&); // const for safety... not super nesessary
 };
+
+std::ostream&	operator<<(std::ostream&, const ${CLASS}&);
 
 #endif
 
@@ -224,7 +258,8 @@ EOF
 printf "${C_GREEN}    create    ${C_END}includes/${CLASS}.hpp\n"
 
 printf "${C_YELLOW}${CLASS}${C_BLUE} succesfully created! :D!${C_END}\n"
+
 }
 
-#cpp_new $1
-#cpp_class $1
+# cpp_new $1
+cpp_class $1
