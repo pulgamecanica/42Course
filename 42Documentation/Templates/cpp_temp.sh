@@ -262,4 +262,4 @@ printf "${C_YELLOW}${CLASS}${C_BLUE} succesfully created! :D!${C_END}\n"
 }
 
 # cpp_new $1
-cpp_class $1
+# cpp_class $1
