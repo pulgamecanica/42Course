@@ -1,37 +1,18 @@
-# Makefile created automatically from script\n
-# C++ BSP_TESTER [Thu Apr  7 16:41:18 WEST 2022]\n
-# ***************************************************
-# iOS INSTALL
-# Download the latest version os SDL
-# https://www.libsdl.org/
-# If you have enough permissions then:
-#  copy the installed folder --> /Library/Frameworks
-# else
-#  copy to /USER/Library/Frameworks
-# Link: -F /Library/Frameworks -framework SDL2
-# **************************************************
-# Linux/Unix SDL INSTALL
-# $ git clone https://github.com/libsdl-org/SDL
-# $ cd SDL/
-# $ mkdir build
-# $ cd build
-# $ ../configure
-# $ make
-# $ sudo make install
-# Then compile with: `sdl2-config --cflags --libs`
-# ***************************************************
-MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
-NAME	=	BSP_TESTER
+# Makefile created automatically from script
 
-SRC	=	$(wildcard srcs/*.cpp srcs/*/*.cpp)
+# C++ polymorphism [Tue Apr 12 17:58:57 WEST 2022]
 
-CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -fsanitize=address
+MAKEFLAGS += --silent	# Silence makefile [Commented by default]
 
-INC	=	-I includes -I ../ex03/includes/
+NAME	=	polymorphism
+
+SRC	=	$(wildcard srcs/*.cpp)
+
+CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address
+
+INC	=	-I includes
 
 OBJS_D	=	objs
-
-LFLAGS	= -L ../ex03/ -lbsp
 
 OBJ	=	$(SRC:srcs/%.cpp=$(OBJS_D)/%.o)
 
@@ -41,23 +22,20 @@ RM		= rm -rf
 
 ifeq ($(UNAME), Darwin)
 	CC = g++
- 	LFLAGS	+= -F /Users/arosado-/Library/Frameworks -framework SDL2
-	INC += -I/Users/arosado-/Library/Frameworks/SDL2.framework/Headers
 else ifeq ($(UNAME), FreeBSD)
 	CC = clang++
 else
 	CC	= g++
-	CFLAGS += -D LINUX `sdl2-config --cflags --libs`
+	CFLAGS += -D LINUX
 endif
 
 $(OBJS_D)/%.o:srcs/%.cpp
 			@mkdir -p $(OBJS_D)
-# 			@mkdir -p $(OBJS_D)/mlx_utils
 			$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
 $(NAME):	$(OBJ)
 			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
-			$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LFLAGS) $(INC)
+			$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
 test:		re
@@ -85,7 +63,7 @@ show:
 	@printf "$(C_GREEN)"
 	@printf "UNAME		: $(UNAME)\n"
 	@printf "NAME  		: $(C_YELLOW)$(NAME)$(C_GREEN)\n"
-	@printf "CC			: $(CC)\n"
+	@printf "CC		: $(CC)\n"
 	@printf "CFLAGS		: $(CFLAGS)\n"
 	@printf "INCLUDES	: $(INC)\n"
 	@printf "SRC		: $(C_YELLOW)$(SRC)$(C_GREEN)\n"

@@ -15,9 +15,10 @@ class DiamondTrap: public ScavTrap, public FragTrap {
 		DiamondTrap();
 		DiamondTrap(std::string);
 		DiamondTrap(DiamondTrap&);
-		virtual ~DiamondTrap();
+		~DiamondTrap();
 		DiamondTrap	operator= (DiamondTrap);
 		void	whoAmI();
+		using ScavTrap::attack;
 };
 
 #endif

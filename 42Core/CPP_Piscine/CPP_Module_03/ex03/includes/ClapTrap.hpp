@@ -16,14 +16,14 @@ class ClapTrap {
 		ClapTrap();
 		ClapTrap(std::string);
 		ClapTrap(std::string, int, int, int);
-		~ClapTrap();
-		ClapTrap&	operator= (ClapTrap&);
-		void		attack(const std::string&);
+		virtual ~ClapTrap();
+		virtual ClapTrap&	operator= (ClapTrap&);
+		virtual void		attack(const std::string&);
 		void		takeDamage(unsigned int);
 		void		beRepaired(unsigned int);
 		void		useEnergy();
 		bool		canPerform();
-		const std::string&	getName();
+		virtual const std::string&	getName();
 		int	getAtackDmg();
 };
 

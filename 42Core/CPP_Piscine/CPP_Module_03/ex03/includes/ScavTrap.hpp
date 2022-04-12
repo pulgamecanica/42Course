@@ -12,8 +12,8 @@ class ScavTrap: virtual public ClapTrap {
 		ScavTrap();
 		ScavTrap(std::string);
 		ScavTrap(ScavTrap&);
-		~ScavTrap();
-		ScavTrap&	operator= (ScavTrap&); // This copy assignment I like a lot :D No need to create nothing only pass references
+		virtual ~ScavTrap();
+		virtual ScavTrap&	operator= (ScavTrap&); // This copy assignment I like a lot :D No need to create nothing only pass references
 		void		attack(const std::string&);
 		void		guardGate();
 };
