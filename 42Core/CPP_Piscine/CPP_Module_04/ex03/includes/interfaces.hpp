@@ -2,13 +2,10 @@
 //*Template by pulgamecanica*//
 //***************************//
 
-#ifndef __POLYMORPHISM_HPP__
-# define __POLYMORPHISM_HPP__
+#ifndef __INTERFACES_HPP__
+# define __INTERFACES_HPP__
 
 #include <iostream>
-#include "Animal.hpp"
-#include "Cat.hpp"
-#include "Dog.hpp"
 
 /*
 # define BLACK	"\033[0;30m"

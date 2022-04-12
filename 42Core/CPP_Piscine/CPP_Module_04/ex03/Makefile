@@ -1,10 +1,10 @@
 # Makefile created automatically from script
 
-# C++ polymorphism [Tue Apr 12 17:58:57 WEST 2022]
+# C++ interfaces [Tue Apr 12 23:33:15 WEST 2022]
 
 MAKEFLAGS += --silent	# Silence makefile [Commented by default]
 
-NAME	=	polymorphism
+NAME	=	interfaces
 
 SRC	=	$(wildcard srcs/*.cpp)
 
@@ -21,7 +21,7 @@ UNAME	:=	$(shell uname)
 RM		= rm -rf
 
 ifeq ($(UNAME), Darwin)
-	CC = c++
+	CC = g++
 else ifeq ($(UNAME), FreeBSD)
 	CC = clang++
 else

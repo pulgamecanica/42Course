@@ -16,11 +16,9 @@ class Animal {
 		Animal(const Animal&);
 		virtual ~Animal();
 		virtual Animal&	operator= (const Animal&);
-		virtual void makeSound() const;
+		virtual void makeSound() const = 0;
 		std::string getType() const;
 };
-
-std::ostream&	operator<<(std::ostream&, const Animal&);
 
 #endif
 

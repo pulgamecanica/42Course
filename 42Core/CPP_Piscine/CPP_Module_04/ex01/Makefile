@@ -8,7 +8,7 @@ NAME	=	i_dont_want_to_set_the_world_on_fire
 
 SRC	=	$(wildcard srcs/*.cpp)
 
-CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address -g
 
 INC	=	-I includes
 
@@ -21,7 +21,7 @@ UNAME	:=	$(shell uname)
 RM		= rm -rf
 
 ifeq ($(UNAME), Darwin)
-	CC = g++
+	CC = c++
 else ifeq ($(UNAME), FreeBSD)
 	CC = clang++
 else

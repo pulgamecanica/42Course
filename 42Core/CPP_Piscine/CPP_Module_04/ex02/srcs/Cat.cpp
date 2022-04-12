@@ -28,7 +28,7 @@ Cat& Cat::operator= (const Cat& param) {
 }
 
 std::ostream& operator<<(std::ostream& s, const Cat& param) {
-	return (s << (Animal)param);
+	return (s << param.getType());
 }
 
 void Cat::makeSound() const {

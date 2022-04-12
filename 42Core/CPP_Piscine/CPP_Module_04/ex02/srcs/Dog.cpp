@@ -27,7 +27,7 @@ Dog& Dog::operator= (const Dog& param) {
 }
 
 std::ostream& operator<<(std::ostream& s, const Dog& param) {
-	return (s << (Animal)param);
+	return (s << param.getType());
 }
 
 void Dog::makeSound() const {

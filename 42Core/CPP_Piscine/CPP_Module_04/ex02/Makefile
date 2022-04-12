@@ -4,11 +4,11 @@
 
 MAKEFLAGS += --silent	# Silence makefile [Commented by default]
 
-NAME	=	polymorphism
+NAME	=	abstract_class
 
 SRC	=	$(wildcard srcs/*.cpp)
 
-CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address -g
 
 INC	=	-I includes
 
