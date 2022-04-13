@@ -11,7 +11,7 @@
 ##### 	Follow this instructions to install the commands in your environment...
 ```bash
     git clone https://github.com/pulgamecanica/42Course.git && cd 42course/42Documentation/Templates/
-    sh setup.sh
+    sh set_up.sh
 ```
 ---
 ### Usage
@@ -26,10 +26,9 @@
 
 <img width="367" alt="Screen Shot 2022-04-01 at 12 44 19 AM" src="https://user-images.githubusercontent.com/28810331/161167112-376e73bd-5fba-4409-a3fb-17d984f462cc.png">
 
-
 ---
 ### Makefile:
-    Rules --> [all, clean, fclean, re, show, NAME: PROJECT_NAME]
+    Rules --> [all, clean, fclean, re, show, test, NAME: PROJECT_NAME]
 +   all: compile the project $(NAME)
 +   clean: clean all .o (binary/objects files)
 +   fclean: run clean and clean the executable $(NAME)
@@ -38,18 +37,7 @@
 +   test: run re & execute ./$(NAME) without arguments & run show & run fclean
 +   MAKEFLAGS += --silent --> to silence the makefile messages
 
-### Video :D
-
-
-https://user-images.githubusercontent.com/28810331/162333739-3ea444f6-1331-43e2-ac8e-817d60d41a34.mp4
-
-
-
-##### TODO
--   std::ostream&   operator<<(std::ostream&, const Fixed&);
--   Fixed&              operator= (Fixed);
--   object params
--   remove print
--   Add Lib Rule to Makefile
+### Video Tutorial  :D
+![Template](https://user-images.githubusercontent.com/28810331/163208471-42f32401-08de-4cfc-807e-a33979bc7e30.gif)
 
 <img width="1058" alt="Screen Shot 2022-03-29 at 11 06 02 PM" src="https://user-images.githubusercontent.com/28810331/160715139-cc37caa1-fb4b-4f9d-a762-526cb3d138ce.png">
