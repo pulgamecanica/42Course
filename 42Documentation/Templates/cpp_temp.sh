@@ -174,6 +174,7 @@ else
 	read CLASS
 fi
 
+ERROR=0
 {
 touch srcs/${CLASS}.cpp && touch includes/${CLASS}.hpp
 } || {
@@ -189,8 +190,9 @@ echo "|  | - main.cpp"
 echo "|  | - Object.cpp"
 echo "|  | - .......cpp"
 echo "--------------------"
-exit
+ERROR=1
 }
+if [[ "$ERROR" -eq 0 ]];then 
 
 cat << EOF >> srcs/${CLASS}.cpp
 //***************************//
@@ -258,7 +260,7 @@ EOF
 printf "${C_GREEN}    create    ${C_END}includes/${CLASS}.hpp\n"
 
 printf "${C_YELLOW}${CLASS}${C_BLUE} succesfully created! :D!${C_END}\n"
-
+fi
 }
 
 # cpp_new $1
