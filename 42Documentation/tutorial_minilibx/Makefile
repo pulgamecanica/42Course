@@ -5,7 +5,7 @@ LIBFT   = ./libft#							# path to libft library
 LIBMLX  = /usr/local/lib#						# could be /usr/lib or minilibx_opengl_20191021/, depends on where you decided to put your mlx library 
 UNAME   := $(shell uname)#						# UNAME will get the OS name, this will help define behaviors for certain OS's
 CFLAGS  = -Wall -Werror -Wextra -O3 -g -I$(INC) -I${INCFT} -Iinclude#	# C Flags (gcc) & linking. "-Iinclude" if you created the folder "include" to put your project headers"
-LFLAGS  = -L$(LIBMLX) -lmlx -L${LIBFT} -lft#				# if you decided to install libmlx.a locally you don't need "-L$(LIBMLX) -lmlx" the school also has it locally as well...
+LFLAGS  = -L$(LIBMLX) -lmlx# -L${LIBFT} -lft#				# if you decided to install libmlx.a locally you don't need "-L$(LIBMLX) -lmlx" the school also has it locally as well...
 SRC     = $(wildcard src/*.c)#						# list your source files
 OBJ     = $(SRC:%.c=%.o)#						# convert source files to binary list
 
