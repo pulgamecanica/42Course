@@ -21,11 +21,8 @@ endif
 
 all: $(NAME)
 
-$(NAME): runlibft $(OBJ) show
+$(NAME): $(OBJ) show
 	$(CC) -o $(NAME) $(OBJ) $(LFLAGS)
-
-runlibft:
-	@#RUN LIBFT IF YOU NEED IT : #make -C libft --no-print-directory
 
 clean:
 	rm -f $(OBJ)
@@ -33,6 +30,10 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+test: re
+	clear
+	@./$(NAME)
 
 show:
 	@printf "UNAME		: $(UNAME)\n"
