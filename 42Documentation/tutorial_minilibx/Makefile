@@ -16,7 +16,7 @@ else ifeq ($(UNAME), FreeBSD) # FreeBSD
 	CC = clang
 else #Linux and others...
 	CC = clang
-	LFLAGS += -lbsd -lft-lXext -lX11 -lm
+	LFLAGS += -lbsd -lXext -lX11 -lm
 endif
 
 all: $(NAME)
