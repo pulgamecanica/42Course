@@ -36,3 +36,7 @@
 - Functions called on key_down
 
 		static void change_direction(t_game *game, int key_pressed); Change direction if possible.
+https://user-images.githubusercontent.com/28810331/172267639-c7ef31c5-207e-43b0-8557-c2da18143a04.mp4
+
+<img width="812" alt="Screen Shot 2022-06-07 at 0 48 44" src="https://user-images.githubusercontent.com/28810331/172267394-38b41ed9-02a0-4aae-a7ee-5f497143a6a3.png">
+<img width="825" alt="Screen Shot 2022-06-07 at 0 48 40" src="https://user-images.githubusercontent.com/28810331/172267398-db619275-2c25-48c3-9a44-f3d21dea1f55.png">
