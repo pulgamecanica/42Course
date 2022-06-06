@@ -1,10 +1,10 @@
-# Snake Challenge
+# [Snake Challenge](https://pulgamecanica.herokuapp.com/posts/10/show)
 ***
 
-#### This exercise was a challenge I created and posted on my blog
-#### This is my solution to the challenge
+### This exercise was a challenge I created and posted on my blog
+#### *SPOILER ALERT* This is my solution to the challenge, I describe bellow how I solved the challenge.
 
-##### About the food:
+#### About the food:
 - I decided to add an element to the game struct **t_point food;**
 
 		It's a point that represents the position of the food
