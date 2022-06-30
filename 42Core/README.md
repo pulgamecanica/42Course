@@ -93,13 +93,13 @@ Find your own solutions, and if you are inspired with mine im gladd ;)
     <tr>
       <td>Philosophers</td>
       <td>C, Makefile & Unix Threads</td>
-      <td><a href="Philosophers">Philosophers</a></td>
+      <td><a href="philosophers">Philosophers</a></td>
       <td>N/A</td>
     </tr>
     <tr>
       <td>Minishell</td>
       <td>C, Makefile & Bash</td>
-      <td><a href="Minishell">Minishell</a></td>
+      <td><a href="minishell">Minishell</a></td>
       <td>N/A</td>
     </tr>
     <tr>
