@@ -1,6 +1,7 @@
 echo "*******TESTING******"
 make
 count=100
+mkdir traces
 for i in $(seq $count); do
 	make run > tests/traces/trace${i}.txt
 	cat tests/traces/trace${i}.txt | wc -l
