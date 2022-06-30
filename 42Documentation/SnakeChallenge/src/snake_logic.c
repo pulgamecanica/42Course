@@ -28,12 +28,12 @@ static void	fix_position(t_game *game)
 	{
 		if (game->snake.coords[i].x >= 0)
 			game->snake.coords[i].x = game->snake.coords[i].x
-				% game_width(game);
+				% (game_width(game) + 1);
 		else
 			game->snake.coords[i].x = game_width(game);
 		if (game->snake.coords[i].y >= 0)
 			game->snake.coords[i].y = game->snake.coords[i].y
-				% game_height(game);
+				% (game_height(game) + 1);
 		else
 			game->snake.coords[i].y = game_height(game);
 		i++;
@@ -55,8 +55,7 @@ static void	update_food(t_game *game)
 	t_point	head;
 
 	head = game->snake.coords[0];
-	if (head.x == game->food.x && head.y == game->food.y
-		&& game->snake.len <= MAX_LEN - 1)
+	if (head.x == game->food.x && head.y == game->food.y)
 	{
 		game->food = (t_point){rand() % game_width(game),
 			rand() % game_height(game)};
@@ -64,10 +63,31 @@ static void	update_food(t_game *game)
 			game->snake.coords, sizeof(t_point));
 		game->snake.len++;
 		game->speed -= (game->snake.len / 5);
+		if (game->speed < 1)
+		 	game->speed = 1;
+		if (game->food_img.img_ptr)
+			mlx_destroy_image(game->img.win.mlx_ptr, game->food_img.img_ptr);
+		game->food_img.img_ptr = NULL;
+      	printf("Score: %d\n", game->snake.len - 3);
 	}
-	draw_square((t_square){game->food.x * game->tile_size,
-		game->food.y * game->tile_size, game->tile_size - 1,
-		rand() % 2147483647}, game->img);
+	if (!game->food_img.img_ptr)
+		game->food_img.img_ptr = random_food(game->tile_size, game->img.win.mlx_ptr);
+	if (!game->food_img.img_ptr)
+  		printf("Couldn't open Food File \n");
+	else 
+	{	
+		game->food_img.addr = mlx_get_data_addr(game->food_img.img_ptr, &(game->food_img.bpp),
+		&(game->food_img.line_len), &(game->food_img.endian));	
+		for (int i = 2; i <= game->tile_size - 2; i++)
+		{
+			int j = 2;
+			for (j = 2; j <= game->tile_size - 2; j++)
+			{
+				if (get_pixel_img(game->food_img, j, i) != -16777216)
+					put_pixel_img(game->img, j + (game->food.x * game->tile_size), i + (game->food.y * game->tile_size), get_pixel_img(game->food_img, j, i));
+			}
+		}
+   	}
 	if (game->snake.len >= MAX_LEN)
 		printf("MAX SIZE REACHED, CAN'T GROW ANYMORE!\n");
 }
@@ -83,7 +103,7 @@ static void	snake_died(t_game *game)
 	{
 		if (head.x == game->snake.coords[i].x
 			&& head.y == game->snake.coords[i].y)
-			exit_game(&game->img);
+			exit_game(&game->img.win);
 	}
 }
 
@@ -120,6 +140,8 @@ static void	change_direction(t_game *game, int key_pressed)
 	else if (key_pressed == LEFT && game->snake.direction.x != -1
 		&& game->snake.direction.y != 0)
 			game->snake.direction = (t_point){-1, 0};
+	else
+		return ;
 	game->snake.can_change = false;
 }
 
@@ -129,7 +151,7 @@ int	read_keys(int key_pressed, void *param)
 
 	game = (t_game *)param;
 	if (key_pressed == ESC || !game->img.img_ptr)
-		exit_game(&game->img);
+		exit_game(&game->img.win);
 	else if (key_pressed == PAUSE)
 		game->pause = !game->pause;
 	else if (key_pressed == DOWN || key_pressed == KEY_S)

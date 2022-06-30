@@ -2,7 +2,7 @@ SHOW	= 0
 SRCS	= ${wildcard *.c}
 NAME	= push_swap
 CC	= gcc
-FLAGS	= -Wall -Werror -Wextra -fsanitize=address -D SHOW=${SHOW}
+FLAGS	= -fsanitize=address -D SHOW=${SHOW} -w
 RM	= rm -f
 INCS	= libft/includes
 LIBFT	= -Llibft -lft

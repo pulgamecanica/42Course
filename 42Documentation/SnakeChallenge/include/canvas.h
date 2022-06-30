@@ -63,8 +63,9 @@ typedef struct s_square {
 t_win	new_program(int w, int h, char *str);
 t_img	new_img(int w, int h, t_win window);
 void	put_pixel_img(t_img img, int x, int y, int color);
+int		get_pixel_img(t_img img, int x, int y);
 /* HELPER FUNCTIONS */
-int		exit_game(t_img *img);
+int		exit_game(t_win *win);
 void	draw_square(t_square square, t_img img);
 int		read_keys(int key_pressed, void *param);
 

@@ -42,13 +42,21 @@ int	main(void)
 {
 	t_win	win;
 	t_img	img;
+	t_img	food_img;
 	t_game	game;
 
 	win = new_program(800, 800, "SnakeGame");
 	if (!win.win_ptr)
 		return (2);
 	img = new_img(800, 800, win);
-	game = (t_game){0x212121, 100, 20, init_snake(), false, img, {5, 5}};
+	food_img = new_img(20, 20, win);
+	{
+		food_img.win = win;
+		food_img.w = 30;
+		food_img.h = 30;
+		food_img.img_ptr = NULL;
+	}
+	game = (t_game){0x212121, 100, 30, init_snake(), false, img, food_img, {5, 5}};
 	{
 		draw_square((t_square){0, 0, img.w, game.bg_color}, img);
 		mlx_put_image_to_window (img.win.mlx_ptr, img.win.win_ptr,

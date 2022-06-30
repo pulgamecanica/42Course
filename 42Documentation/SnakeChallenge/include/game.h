@@ -42,6 +42,7 @@ typedef struct s_game
 	t_snake		snake;
 	t_bool		pause;
 	t_img		img;
+	t_img		food_img;
 	t_point		food;
 
 }		t_game;
@@ -52,5 +53,6 @@ int		game_height(t_game *game);
 void	put_snake(t_game *game);
 void	remove_snake(t_game *game);
 int		update(t_game *game);
+void *	random_food(int, void *);
 
 #endif

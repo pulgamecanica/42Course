@@ -81,3 +81,13 @@ void	put_pixel_img(t_img img, int x, int y, int color)
 	dst = img.addr + (y * img.line_len + x * (img.bpp / 8));
 	*(unsigned int *) dst = color;
 }
+
+int	get_pixel_img(t_img img, int x, int y)
+{
+	char	*dst;
+
+	if (x >= img.w || y >= img.h || x < 0 || y < 0)
+		return (0xFF);
+	dst = img.addr + (y * img.line_len + x * (img.bpp / 8));
+	return (*(unsigned int *) dst);
+}
