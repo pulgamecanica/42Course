@@ -10,7 +10,7 @@ Find your own solutions, and if you are inspired with mine im gladd ;)
 	DISCLAIMER: Most of the Projects were not sumbited like this for evaluation! For instance I use wildcards on the Makefiles which is forbidden in 42. Also I use printf when it's not allowed in philosophers and so on...
 	Why? Well because I'm lazy ngl. And I don't believe it's worth to refactor it atm.
 
-* Tip: Visit my [https://github.com/pulgamecanica/42Course/tree/main/42Documentation](Documentation), you can find exercises that I developed before doing some projects and I also have some challenges and testers.
+* Tip: Visit my [Documentation](https://github.com/pulgamecanica/42Course/tree/main/42Documentation), you can find exercises that I developed before doing some projects and I also have some challenges and testers.
 
 ## Devopment Dependencies
 
