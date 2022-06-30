@@ -18,4 +18,12 @@ I have tests inside most the projects, they usually come with a shell script to 
 
 _Random Documentation is anything from games, exams, guides, templates ;etc..._
 
+<details>
+<summary>Visual Map</summary>
+
+<img width="757" alt="Screen Shot 2022-06-30 at 0 37 47" src="https://user-images.githubusercontent.com/28810331/176724926-fd051f18-cc41-4d77-ab08-40820fa16bbc.png">
+
+</details>
+
+
 For any further questions contact me at: **pulgamecanica11@gmail.com**
