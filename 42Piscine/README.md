@@ -26,7 +26,9 @@ The Piscine is Divided in 3 main groups. Rushes, Exams and Exercises(Days).
 | Day10 | C | [Day10/](Day10) | [tests_day10](Day10/tests) |
 | Day11 | C | [Day11/](Day11) | [tests_day11](Day11/tests) |
 | Day12 | C | [Day12/](Day04) | [tests_day12](Day12/tests) |
- 
+
+<img width="936" alt="Screen Shot 2022-06-30 at 15 52 37" src="https://user-images.githubusercontent.com/28810331/176725351-baef877a-708c-41b7-bad9-b55033d5d216.png">
+
 ## To Use my Tests you must follow this steps:
 
 ### Instalation
