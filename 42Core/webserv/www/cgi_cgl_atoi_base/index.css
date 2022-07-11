@@ -1,0 +1,84 @@
+body {
+	margin: 0;
+	border: none;
+	box-sizing: border-box;
+	background-color: lightblue;
+	text-align: center;
+}
+
+.container {
+	display: flex;
+	flex-flow: row;
+	align-items: center;
+	gap: 1rem;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	min-height: 100vh;
+	padding: 2rem;
+}
+
+.container #card1 {
+	border-radius: 0.5rem;
+}
+
+.container #card2 {
+	background-color: rgba(122, 122, 122, 0.75);
+	border-radius: 1rem;
+	padding: 1rem;
+}
+
+.container span {
+	font-size: 150%;
+	font-style: bold;
+	text-decoration: underline;
+}
+
+.container .form {
+	padding: 2rem;
+	background-color: rgba(0, 0, 0, 0.25);
+	border-radius: 0.5rem;
+}
+
+h1, h2, h3, h4, h5 {
+	padding: 0.5rem 0;
+	margin: 0;
+}
+
+.container .form form {
+	padding-top: 0.5rem;
+}
+
+.container .form form * {
+	margin: auto;
+	display: block;
+	padding: 0.5rem;
+}
+
+.container .form form .error input {
+	border: 2px solid red;
+	border-radius: 0.25rem;
+}
+
+.container .form form .success input {
+	border: 2px solid green;
+	border-radius: 0.25rem;
+}
+
+.container .str {
+
+}
+
+.container .base {
+}
+
+.container .base span {
+}
+
+#fetch-response {
+	border: 1px solid black;
+	display: inline-block;
+	background-color: white;
+	padding: 1rem;
+	margin-bottom: 5rem;
+	border-radius: 1rem;
+}

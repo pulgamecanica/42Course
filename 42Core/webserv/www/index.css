@@ -1,0 +1,32 @@
+body {
+	background-color: pink;
+}
+
+body * {
+	color: pink;
+	animation: text_fade 10s ease 1;
+}
+
+body img {
+	animation: image_fade 10s ease 1;
+}
+
+@keyframes text_fade {
+	from {
+		color: red;
+	}
+	to {
+		color: pink;
+	}
+}
+
+@keyframes image_fade {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+
