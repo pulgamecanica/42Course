@@ -18,8 +18,10 @@ uint64_t			timestamp_in_ms(void);
 int 				ft_tolower(int);
 int 				ft_toupper(int);
 char * 				get_local_time(void);
-const std::string &	readFileStream(std::ifstream const &, std::string & buff);
-const std::string &	readFileString(std::string const &, std::string & buff);
-bool 				isDirectory(const std::string & path);
+const std::string &	readFileStream(std::ifstream const &, std::string &);
+const std::string &	readFileString(std::string const &, std::string &);
+const std::string	autoindex_header(std::string const &);
+bool 				isDirectory(const std::string &);
+bool 				isFile(const std::string &);
 
 #endif

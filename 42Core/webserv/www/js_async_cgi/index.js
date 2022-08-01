@@ -2,7 +2,7 @@ function cgi_fetch(form) {
 	let country = form.elements["lcountries"].value.trim();
 	let age = form.elements["lage"].value.trim();
 	let post_body = "country=" + country + "&age=" + age;
-	const cgi_request = new Request('/www/cgi-bin/c_cgi.c?id=666', {method: 'POST', body: post_body});
+	const cgi_request = new Request('/test/cgi-bin/c_cgi.c?id=666', {method: 'POST', body: post_body});
 
 	fetch(cgi_request)
 	.then(data => {

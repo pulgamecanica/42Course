@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Pulga's Home!</title>
+	<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="home.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<span class="title"><h1>42 Browser</h1></span>
+		<span class="smoke-animation"></span>
+		<form action="42cgi-bin/search_query.py" id="cgi-form">
+			<input type="text" class="auto-sumbit" id="query" name="query" placeholder="Search here...">
+			<small></small>
+		</form> 
+
+		<svg id="container-svg">
+		    <polygon class="svg-active svg-gray" id="gandalf" points="
+		    330,115 335,120 340,125 345,138 350,145 357,155 359,160 363,168 364,170 365,175 365,179 364,180 364,185 364,190 384,195 399,201 412,211 413,214 400,228 391,232 395,240
+		    400,250 403,260 405,263 406,266 407,272 409,278 408,285 409,290 410,298 412,300 415,310 415,312 417,319 418,324 420,327 405,325 415,340 420,350 424,360 428,370 429,380 431,390 434,400 436,410 440,423 440,430 435,444 440,455 443,464 416,488 415,500 415,515 420,530 425,545 433,565 438,580 440,590 444,600 450,610 460,630 470,655 460,655 460,665 473,690 460,710 420,750
+		    410,760 400,765 390,766 380,764 370,761 340,764 310,755 300,752 290,750 270,740 260,738 245,735 243,730 230,720 247,685 229,680 218,655 223,645 210,630 211,690 212,708 214,748 200,748 200,648 198,625 185,588 170,560 172,550 166,540 166,525 166,485 160,450 158,420 156,400 156,390 159,380 160,360 165,340 175,325 185,322 185,250 189,220 180,200 190,180 190,167 204,180 205,190 210,200 205,220 208,230 201,240 201,260 204,264 199,274 199,325 209,330 203,336 220,340 240,296 239,284 245,270 270,255 280,240 260,220
+		    259,210 263,200 280,190 295,188 305,188 318,160 318,150 328,114 
+		    " />
+		</svg>
+		<span id="dialog-thinking">
+			<div class="video-wrapper">
+				<video playsinline autoplay muted loop poster="images/lotr3.jpeg">
+					<source src="videos/lotr2.mp4" type="video/webm">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+		</span>
+		<span class="tooltiptext" id="query-box"></span>
+
+	</div>
+</body>
+
+</html>

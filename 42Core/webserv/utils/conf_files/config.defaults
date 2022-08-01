@@ -1,0 +1,40 @@
+server {
+	listen					8081
+	server_name				defaults www.defaults.com
+	root					www/
+	autoindex				on
+	client_max_body_size	1028
+	index					index.html index.htm
+
+	location /page1 {
+		client_max_body_size	128
+		limit_methods	GET
+	}
+
+	location /page2/ {
+		limit_methods	POST
+	}	
+
+}
+
+server {
+	listen	localhost:4200
+	server_name		example.mz
+	autoindex	on
+
+	location /index {
+		root	www/
+		limit_methods	GET
+	}
+
+}
+
+server {
+	listen localhost:4200
+	server_name	another_example
+
+	location /go {
+		redirect 308 https://www.google.com
+		limit_methods	GET
+	}
+}

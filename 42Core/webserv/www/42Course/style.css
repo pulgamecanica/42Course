@@ -1,0 +1,217 @@
+body {
+	background-color: rgba(42, 42, 42, 0.42);
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	position: relative;
+	flex-direction: column;
+}
+
+body .container {
+	background-image: url("images/bg.jpeg");
+	background-position: center;
+	background-size: cover;
+	width: 1400px;
+	height: 800px;
+	margin: auto;
+	cursor: url("images/cursor_sword.png"), auto;
+	position: relative;
+}
+
+body .container #dialog-thinking {
+	visibility: hidden;
+	border-radius: 50%;
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 200px;
+	height: 150px;
+	background-color: rgba(0, 0, 0, 0.9);
+	color: silver;
+	font-size: 20px;
+}
+
+body .container #dialog-thinking video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body .container #dialog-thinking .video-wrapper {
+  height: 150px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+body .container #dialog-thinking:after {
+	content: "..";
+	position: absolute;
+	bottom: 0;
+	left: 100%;
+	font-size: 100px;
+	color: rgba(22, 22, 22, 0.5);
+	transform: rotateZ(15deg);
+	border: none;
+}
+
+body .container .tooltiptext {
+	visibility: hidden;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	position: absolute;
+	left: 30%;
+	top: 100px;
+	width: 450px;
+	height: 600px;
+	background-color: rgba(222, 222, 222, 0.75);
+	border: 2px rgba(22, 22, 22, 0.5) solid;
+	color: black;
+	z-index: 10;
+}
+
+body .container .tooltiptext:after {
+	content: "";
+	position: absolute;
+	top: 10%;
+	right: 100%;
+	border-width: 1rem;
+	border-style: solid;
+	border-color: transparent rgba(22, 22, 22, 0.5) transparent transparent;
+}
+
+body .container form {
+	position: absolute;
+	top: 50%;
+	right: 10%;
+	z-index: 2;
+}
+
+body .container form small {
+	display: block;
+	color: red;
+	text-align: center;
+	padding: 0 0.5rem;
+	margin: 0.25rem 1rem;
+	border-radius: 1rem;
+	background-color: rgba(255, 255, 255, 0.55);
+}
+
+body .container form input {
+	background-color: rgba(255, 255, 255, 0.85);
+	border-radius: 0.5rem;
+	border: none;
+	font-size: 25px;
+	margin: 0;
+	padding: 0.25rem;
+}
+
+body .container .title {
+	position: absolute;
+	display: inline-block;
+	padding-top: 0.5rem;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+body .container #container-svg {
+	width: 1400px;
+	height: 800px;
+	position: absolute;
+	z-index: 1;
+}
+
+body .container .svg-active {
+	fill: transparent;
+}
+
+body .container .svg-active:hover {
+	fill: rgba(0, 0, 0, 0.25);
+}
+
+body .container .smoke-animation {
+	position: absolute;
+	top: 375px;
+	left: 750px;
+	width: 100px;
+	height: 100px;
+	background-image: url("images/smoke1.gif");
+	background-size: cover;
+	background-position: center;
+	opacity: 0.75;
+	transform: rotateZ(30deg);
+}
+
+body .container .title h1 {
+	margin: 0 auto;
+	padding: 0.25rem 0.75rem;
+	text-align: center;
+	border-radius: 0.25rem;
+	background-color: rgba(0, 0, 0, 0.25);
+}
+
+body .container #query-box {
+	
+}
+
+body .container #query-box h3 {
+	text-align: center;
+	padding: 0;
+	margin: 0;
+	border-bottom: 1px lightgray solid;
+	color: rgb(100, 66, 225);
+}
+
+body .container #query-box .result-num {
+	font-size: 80%;
+	text-decoration: underline;
+	font-style: italic;
+}
+
+body .container #query-box .query {
+	font-size: 90%;
+	color: black;
+}
+
+body .container #query-box .result {
+	margin: 0.5rem 0;
+	border-bottom: 1px lightgray solid;
+}
+
+body .container #query-box .result:hover {
+	background-color: rgba(0, 0, 0, 0.25);
+}
+
+body .container #query-box .result * {
+	padding: 0;
+	margin: 0;
+}
+
+body .container #query-box .result .result-legend {
+	font-size: 80%;
+	color: gray;
+}
+body .container #query-box .results-container {
+	overflow-y: scroll;
+	height: 100%;
+}
+body .container #query-box {}
+body .container #query-box {}
+body .container #query-box {}
+body .container #query-box {}
+body .container #query-box {}
+body .container #query-box {}
+body .container #query-box {}
+body .container #query-box {}
+body .container #query-box {}

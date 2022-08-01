@@ -8,8 +8,7 @@ static void help(char *prog_name) {
 
 int	main(int ac, char **av)
 {
-	if (ac != 2)
-	{
+	if (ac != 2) {
 		help(av[0]);
 		return (1);
 	}

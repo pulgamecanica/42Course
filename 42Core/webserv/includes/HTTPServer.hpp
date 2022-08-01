@@ -40,6 +40,10 @@ class HTTPServer {
 			public:
 				virtual const char * what() const throw();
 		};
+		class EpollDeleteException: public std::exception {
+			public:
+				virtual const char * what() const throw();
+		};
 		class EpollWaitException: public std::exception {
 			public:
 				virtual const char * what() const throw();
@@ -51,7 +55,8 @@ class HTTPServer {
 		HTTPServer(std::string const &) throw (std::exception);
 		~HTTPServer();
 		void	addSocket(Socket &) throw (std::exception);
-		void	cleanEpollAndClientsList() ;
+		void	cleanEpollAndClientsList();
+		void	removeClient(std::pair<int, int> &);
 		int		getEpollFd() const;
 		int		numSockets() const;
 		void	run();
@@ -60,8 +65,10 @@ class HTTPServer {
 		std::vector<Socket>					_sockets;
 		std::map<int, std::vector<Client> >	_clients;
 		Config								_config;
+		Socket &	getOrCreateSocket(std::string const &, int);
 		void	acceptConnectionAt(int) throw (std::exception); 
 		bool	isSocketFd(int);
+		void	initMsg(void);
 		HTTPServer(const HTTPServer &);
 };
 std::ostream &	operator<<(std::ostream &, const HTTPServer&);

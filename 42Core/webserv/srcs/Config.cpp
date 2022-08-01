@@ -1,13 +1,29 @@
 #include "Config.hpp"
 #include "utils.hpp"
 
+static const std::map<int, std::string> genRedirectStatusCodes() {
+    std::map<int, std::string> map;
+
+    map[300] = "Multiple Choice";
+    map[301] = "Moved Permanently";
+    map[302] = "Found";
+    map[303] = "See Other";
+    map[304] = "Not Modified";
+    map[307] = "Temporary Redirect";
+    map[308] = "Permanent Redirect";
+    return (map);
+}
+
 const std::string Config::_server_directives[SERVER_CONTEXT_DIRECTIVES] = {"root", "listen", "server_name", "error_page", "client_max_body_size", "location", "index", "autoindex"};
-const std::string Config::_location_directives[LOCATION_CONTEXT_DIRECTIVES] = {"root", "index", "limit_methods", "autoindex", "error_page", "client_max_body_size", "cgi", "cgi-bin"};
+const std::string Config::_location_directives[LOCATION_CONTEXT_DIRECTIVES] = {"root", "index", "limit_methods", "autoindex", "error_page", "client_max_body_size", "cgi", "cgi-bin", "upload", "redirect"};
 const std::string Config::ServerConfig::Methods::_valid_methods[4] = {"GET", "POST", "DELETE", "PUT"};
 const int Config::ServerConfig::ErrorCodePage::_allErrorCodes[ALL_ERROR_CODES] = {
 	400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418,
 	421, 422, 423, 424, 425, 426, 428, 429, 431, 451, 500, 501, 502, 503, 504, 505, 506, 507, 508, 510, 511
 };
+
+std::map<int, std::string> Config::ServerConfig::Redirect::_redirect_status_codes = genRedirectStatusCodes();
+
 const char * Config::InvalidConfigurationFileException::what() const throw() {return ("Invalid File, make sure you have permissions, that the file exists and the extension is .conf");}
 const char * Config::InvalidDirectiveException::what() const throw() {return ("Directive is invalid");}
 const char * Config::WrongSyntaxException::what() const throw() {return ("Wrong Directive Syntax");}
@@ -21,7 +37,6 @@ const char * Config::WrongSyntaxException::what() const throw() {return ("Wrong 
  *    - No context (Outside any scope)
  *    - Server context (Inside the server Scope) [server {...}]
  *    - Location context (Inside the server Scope, inside Location scope) [server {... location {...}}]
- *
  * @param content 
  *  First check if the file is valid and create a file input stream to read from.
  *  Create a line tmp variable and an integer to keep track of the context [0: No Context, 1: Server context, 2:  Location context].
@@ -32,10 +47,9 @@ const char * Config::WrongSyntaxException::what() const throw() {return ("Wrong 
  *   2.b - Split the string in 2 pieces. [1:directive, 2:directive_content]
  *         The first piece is the line from the begining to the first separator.
  *         The second piece is the line from the first separator to the end. (empty if there is no separator)
- *   3   - 
- *  
- *  
- *
+ *   3.a  - Check for '}' to close the context. And read next line
+ *   3.b  - Based on the context, check for valid directives and create them.
+            After creating the directive, setUp the Directive context.  
  */
 Config::Config(std::string const & file_str) throw(std::exception) {
     std::ifstream   file;
@@ -53,6 +67,7 @@ Config::Config(std::string const & file_str) throw(std::exception) {
         if (!line.length() || line[0] == '#')
             continue;
         directive = line.substr(0, line.find_first_of(SEPARATORS));
+        directive = strtrim(directive);
         if (line.find_first_of(SEPARATORS) == std::string::npos) {
             directive_content = "";
         } else {
@@ -86,8 +101,10 @@ Config::Config(std::string const & file_str) throw(std::exception) {
                     _directive = createDirective(directive, directive_content);
                     if (_directive != 0) {
                         _directive->setDirective(_servers.back(), context);
-                        if (directive == "location")
+                        if (directive == "location") {
+                            _servers.back().setDefaults();
                             context++;
+                        }
                         delete (_directive);
                     }
                     else
@@ -136,7 +153,7 @@ Config::~Config() {
  *  Set's all default values on construction.
  *  It can be setted up accordingly with the directives.
  */
-Config::ServerConfig::ServerConfig() : _autoindex(false), _max_body_size(0), _ip("127.0.0.1"), _port(80), _root_path("www") {
+Config::ServerConfig::ServerConfig() : _autoindex(false), _max_body_size(0), _ip("127.0.0.1"), _port(80), _root_path("www/") {
     if (CONSTRUCTORS_DESTRUCTORS_DEBUG)
 	   std::cout << WHITE << "ServerConfig created" << ENDC << std::endl;
 }
@@ -261,7 +278,7 @@ Config::ServerConfig::ErrorCodePage::ErrorCodePage(const std::string & content) 
         throw InvalidDirectiveException();
     _error_path = content.substr(found + 1);
     if (CONSTRUCTORS_DESTRUCTORS_DEBUG)
-        std::cout << WHITE <<"ErrorCode created [" << _error_path << "]" << std::endl;
+        std::cout << WHITE << "ErrorCode created [" << _error_path << "]" << std::endl;
 }
 Config::ServerConfig::ErrorCodePage::~ErrorCodePage() {
     if (CONSTRUCTORS_DESTRUCTORS_DEBUG)
@@ -374,7 +391,7 @@ Config::ServerConfig::Listen::~Listen() {
  *  Takes a string terminated by '{', the previous content of the string is the route of the location.
  */
 Config::ServerConfig::Location::Location(std::string const & content) throw (std::exception):
-    Directive(LOCATION), _target(content), _max_body_size(-1), _autoindex(false) {
+    Directive(LOCATION), _target(content), _max_body_size(0), _redirect_status(0), _autoindex(false) {
     if (content.empty() || content[content.length() - 1] != '{')
         throw WrongSyntaxException();
     _target = _target.substr(0, content.length() - 1);
@@ -387,6 +404,32 @@ Config::ServerConfig::Location::Location(std::string const & content) throw (std
 Config::ServerConfig::Location::~Location() {
     if (CONSTRUCTORS_DESTRUCTORS_DEBUG)
         std::cout << RED << "Location Directive destroyed" << ENDC << std::endl;
+}
+/*
+ * @brief Construct a Server Name
+ * @param content
+ *
+ */
+Config::ServerConfig::Redirect::Redirect(const std::string & content) throw (std::exception):
+    Directive(REDIRECT) {
+    std::string tmp;
+    std::stringstream ss;
+
+    ss << content.substr(0, 3);
+    ss >> _status_code;
+    if (_redirect_status_codes.find(_status_code) == _redirect_status_codes.end())
+        throw WrongSyntaxException();
+    tmp = content.substr(3);
+    tmp = strtrim(tmp);
+    if (tmp.empty() || tmp.find(SEPARATORS) != std::string::npos)
+        throw WrongSyntaxException();
+    _redirect_uri = tmp;
+    if (CONSTRUCTORS_DESTRUCTORS_DEBUG)
+        std::cout << WHITE << "Redirect created [" << _redirect_uri<< "]" << ENDC << std::endl;
+}
+Config::ServerConfig::Redirect::~Redirect() {
+    if (CONSTRUCTORS_DESTRUCTORS_DEBUG)
+        std::cout << RED << "Redirect Directive destroyed" << ENDC << std::endl;
 }
 /*
  * @brief Construct a Root
@@ -430,6 +473,17 @@ Config::ServerConfig::ServerName::~ServerName() {
     if (CONSTRUCTORS_DESTRUCTORS_DEBUG)
         std::cout << RED << "ServerName Directive destroyed" << ENDC << std::endl;
 }
+Config::ServerConfig::Upload::Upload(const std::string & content) throw (std::exception):
+    Directive(ROOT), _upload_path(content) {
+    if (content.empty() || content.find(SEPARATORS) != std::string::npos || content[content.length() - 1] != '/')
+        throw WrongSyntaxException();
+    if (CONSTRUCTORS_DESTRUCTORS_DEBUG)
+       std::cout << WHITE << "Upload created [" << _upload_path << "]" << ENDC << std::endl;
+}
+Config::ServerConfig::Upload::~Upload() {
+    if (CONSTRUCTORS_DESTRUCTORS_DEBUG)
+       std::cout << RED << "Upload destroyed" << ENDC << std::endl;
+}
 
 bool Config::validDirective(const std::string & str, const std::string * list, int len) const {
 	int i(0);
@@ -440,43 +494,48 @@ bool Config::validDirective(const std::string & str, const std::string * list, i
 }
 
 Config::ServerConfig::Directive * Config::createDirective(std::string const & name, std::string const & content) throw(std::exception) {
-    if (name == "listen") {
+    if (name == "listen")
         return (new ServerConfig::Listen(content));
-    }
-    else if (name == "error_page") {
+    else if (name == "error_page")
         return (new ServerConfig::ErrorCodePage(content));
-    }
-    else if (name == "root") {
+    else if (name == "root")
         return (new ServerConfig::Root(content));
-    }
-    else if (name == "limit_methods") {
+    else if (name == "limit_methods")
         return (new ServerConfig::Methods(content));
-    }
-    else if (name == "location") {
+    else if (name == "location")
         return (new ServerConfig::Location(content));
-    }
-    else if (name == "server_name") {
+    else if (name == "server_name")
         return (new ServerConfig::ServerName(content));
-    }
-    else if (name == "client_max_body_size")  {
+    else if (name == "client_max_body_size")
         return (new ServerConfig::ClientMaxBodySize(content));
-    }
-    else if (name == "index") {
+    else if (name == "index")
         return (new ServerConfig::Index(content));
-    }
-    else if (name == "autoindex") {
+    else if (name == "autoindex")
         return (new ServerConfig::AutoIndex(content));
-    }
-    else if (name == "cgi") {
+    else if (name == "cgi")
         return (new ServerConfig::Cgi(content));
-    }
-    else if (name == "cgi-bin") {
+    else if (name == "cgi-bin")
         return (new ServerConfig::CgiBin(content));
-    }
+    else if (name == "redirect")
+        return (new ServerConfig::Redirect(content));
+    else if (name == "upload")
+        return (new ServerConfig::Upload(content));
     return (0);
 }
 
 int Config::ServerConfig::getPort() const {return (_port);}
+
+void Config::ServerConfig::setDefaults() {
+    Config::ServerConfig::Location & loc = _locations.back();
+
+    loc._autoindex = _autoindex;
+    loc._max_body_size = _max_body_size;
+    loc._root_path = _root_path;
+    loc._indexes = _indexes;
+    //loc._location_errors_map = _server_errors_map;
+    if (CONSTRUCTORS_DESTRUCTORS_DEBUG)
+        std::cout << "Setted Defaults" << std::endl;
+}
 
 std::string const & Config::ServerConfig::getIp() const {return (_ip);}
 
@@ -496,6 +555,18 @@ Config::ServerConfig::Location * Config::ServerConfig::findLocation(std::string 
     if (matches == 0)
         return (0);
     return (new Location(*tmp_it));
+}
+
+bool Config::ServerConfig::checkMaxBody(int len) const {
+    if (len > _max_body_size && _max_body_size > 0)
+        return (false);
+    return (true);
+}
+
+bool Config::ServerConfig::Location::checkMaxBody(int len) const {
+    if (len > _max_body_size && _max_body_size > 0)
+        return (false);
+    return (true);
 }
 
 int Config::ServerConfig::Directive::getId() const {return (_id);}
@@ -631,8 +702,16 @@ void Config::ServerConfig::Listen::setDirective(ServerConfig & serv_conf, int co
 }
 
 void Config::ServerConfig::Location::setDirective(ServerConfig & serv_conf, int context) const {
-    if (context == SERVER_CONTEXT)
+    if (context == SERVER_CONTEXT) {
         serv_conf._locations.push_back(*this);
+    }
+}
+
+void Config::ServerConfig::Redirect::setDirective(ServerConfig & serv_conf, int context) const {
+    if (context == LOCATION_CONTEXT) {
+        serv_conf._locations.back()._redirect_uri = _redirect_uri;
+        serv_conf._locations.back()._redirect_status = _status_code;
+    }
 }
 
 void Config::ServerConfig::Root::setDirective(ServerConfig & serv_conf, int context) const {
@@ -646,6 +725,12 @@ void Config::ServerConfig::ServerName::setDirective(ServerConfig & serv_conf, in
     if (context == SERVER_CONTEXT)
         serv_conf._names = _server_names;
 }
+
+void Config::ServerConfig::Upload::setDirective(ServerConfig & serv_conf, int context) const {
+    if (context == LOCATION_CONTEXT)
+        serv_conf._locations.back()._upload_path = _upload_path;
+}
+
 // std::string const &Config::ServerConfig::Location::getLocation() const{return _location;}
 // bool &Config::ServerConfig::Location::l_getAutoindex() {return _autoindex;}
 // std::string Config::ServerConfig::Location::l_getRoot() const {return _l_root;}

@@ -14,6 +14,7 @@
 
 #include "Config.hpp"
 #include "webserv.hpp"
+#include "utils.hpp"
 
 /************************Socket***************************/
 /* This object represents a single server configuration  */
@@ -38,7 +39,7 @@ class Socket {
 				virtual const char * what() const throw();
 		} e_listen;
 
-		Socket(const std::string &, int, Config::ServerConfig const &);
+		Socket(const std::string &, int);
 		~Socket();
 		Socket(const Socket &);
 		int acceptConnection();
@@ -46,7 +47,9 @@ class Socket {
 		int getPort() const;
 		int getSocketFd() const;
 		int getAddressLen() const;
-		Config::ServerConfig const & getServerConfig() const;
+
+		void addServerConf(Config::ServerConfig &);
+		Config::ServerConfig const & getServerConfig(std::string const &) const;
 
 		const std::string & getIpAddress() const;
 		struct sockaddr_in getAddress() const;
@@ -56,7 +59,8 @@ class Socket {
 		int _port;
 		std::string _ip_address;
     	struct sockaddr_in _address;
-		Config::ServerConfig _server_config;
+    	std::vector<Config::ServerConfig> _conf_servers;
+		//Config::ServerConfig _server_config;
 		Socket();
 };
 std::ostream&	operator<<(std::ostream&, const Socket&);

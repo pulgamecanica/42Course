@@ -15,7 +15,7 @@ int main() {
 
     char* const ENV[3] = {"PATH=HelloWorld", "QUERY_STRING=?id=123&name=andre#world", NULL};
 
-    char* const arg[3] = {"/home/pulgamecanica/Desktop/my_webserv/utils/CGI_Scripts/C++_CGI/cgi_country", NULL};
+    char* const arg[3] = {"/home/pulgamecanica/Desktop/my_webserv/utils/CGI_Scripts/C++_CGI/cpp_cgi", NULL};
 
 // open file
     int fd = open("tempfile.txt", O_RDWR);
@@ -34,7 +34,7 @@ int main() {
 
     if (fork() == 0) {
         dup2(fd, STDIN_FILENO);
-        execve("/home/pulgamecanica/Desktop/my_webserv/utils/CGI_Scripts/C++_CGI/cgi_country", arg, ENV);
+        execve("/home/pulgamecanica/Desktop/my_webserv/utils/CGI_Scripts/C++_CGI/cpp_cgi", arg, ENV);
     }
     else {
         wait(NULL);

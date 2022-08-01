@@ -2,8 +2,19 @@
 
 const char * Response::CGIFailure::what() const throw() {return ("CGI couldn't be executed.");}
 
-static const std::map<int, std::string> insert_to_map() {
-	std::map<int, std::string> _codeMessage;
+static void push_back_env(std::vector<char *> & vec, std::string const & name, std::string const & value) {
+	if (!name.empty() && !value.empty()) {
+		std::string tmp(value);
+		tmp = name + "=" + strtrim(tmp);
+		if (tmp.length() < 8000){
+			char *str = strdup(tmp.c_str());
+			vec.push_back(str);
+		}
+	}
+}
+
+static const std::map<int, std::string> insert_to_error_map() {
+	std::map<int, std::string>	_codeMessage;
 	_codeMessage[200] = "OK";
 	_codeMessage[400] = "Bad Request";
 	_codeMessage[403] = "Forbbiden";
@@ -18,167 +29,117 @@ static const std::map<int, std::string> insert_to_map() {
 	return (_codeMessage); 
 }
 
-static void push_back_env(std::vector<char *> & vec, std::string const & name, std::string const & value) {
-	if (!name.empty() && !value.empty()) {
-		std::string tmp(value);
-		tmp = name + "=" + strtrim(tmp);
-		if (tmp.length() < 8000)
-			vec.push_back(strdup(tmp.c_str()));
-	}
+static const std::map<std::string, std::string> insert_to_mime_map() {
+	std::map<std::string, std::string> mime_map;
+
+	mime_map["txt"]		= "text/plain";
+	mime_map["html"]	= "text/html";
+	mime_map["css"]		= "text/css";
+	mime_map["js"]		= "text/javascript";
+	mime_map["json"]	= "application/json";
+	mime_map["jsonld"]	= "application/ld+json";
+	mime_map["xml"]		= "application/xml";
+	mime_map["pdf"]		= "application/pdf";
+	mime_map["doc"]		= "application/msword";
+	mime_map["docx"]	= "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+	mime_map["ppt"]		= "application/vnd.ms-powerpoint";
+	mime_map["pptx"]	= "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+	mime_map["odt"]		= "application/vnd.oasis.opendocument.text";
+	mime_map["xls"]		= "application/vnd.ms-excel";
+	mime_map["xlsx"]	= "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+	mime_map["odp"]		= "application/vnd.oasis.opendocument.presentation";
+	mime_map["ods"]		= "application/vnd.oasis.opendocument.spreadsheet";
+
+	mime_map["jpeg"]	= "image/jpeg";
+	mime_map["jpg"]		= "image/jpeg";
+	mime_map["png"]		= "image/png";
+	mime_map["apng"]	= "image/apng";
+	mime_map["avif"]	= "image/avif";
+	mime_map["gif"]		= "image/gif";
+	mime_map["svg"]		= "image/svg+xml";
+	mime_map["webp"]	= "image/webp";
+	mime_map["webm"]	= "video/webm";
+	mime_map["bmp"]		= "image/bmp";
+	mime_map["ico"]		= "image/x-icon";
+	mime_map["tif"]		= "image/tiff";
+	mime_map["tiff"]	= "image/tiff";
+
+	mime_map["mp3"]		= "audio/mpeg";
+	mime_map["aac"]		= "audio/aac";
+	mime_map["wav"]		= "audio/wave";
+	mime_map["flac"]	= "audio/flac";
+	mime_map["mpeg"]	= "audio/mpeg";
+	mime_map["mp4"]		= "video/mp4";
+	mime_map["avi"]		= "video/x-msvideo";
+	mime_map["3gp"]		= "video/3gpp";
+
+	mime_map["bz"]		= "application/x-bzip";
+	mime_map["bz2"]		= "application/x-bzip2";
+	mime_map["gz"]		= "application/gzip";
+	mime_map["zip"]		= "application/zip";
+	mime_map["7z"]		= "application/x-7z-compressed";
+	mime_map["tar"]		= "application/x-tar";
+//	vec.push_back(std::make_pair("", "application/octet-stream"));
+	return (mime_map);
 }
 
-std::map<int, std::string> Response::_codeMessage = insert_to_map();
+std::map<int, std::string> Response::_codeMessage = insert_to_error_map();
+std::map<std::string, std::string> Response::_mime_types = insert_to_mime_map();
 
-void Response::setMimeType(std::string const & file_name) {
-	size_t pos(file_name.find_last_of('.'));
-	if (pos == std::string::npos) {
-		_content_type = "text/html";
-		return;
-	}
-	std::string ext = file_name.substr(pos + 1);
-    std::transform(ext.begin(), ext.end(), ext.begin(), ::ft_tolower);
-	//TEXT
-	if(ext == "txt")
-		_content_type = "text/plain";
-	else if(ext == "html")
-		_content_type = "text/html";
-	else if(ext == "css")
-		_content_type = "text/css";
-	else if(ext == "js") //javascript // "; parametre" - charset=/anything/ makes it invalid!
-		_content_type = "text/javascript";
-	else if(ext == "json")
-		_content_type = "application/json";
-	else if(ext == "jsonld")
-		_content_type = "application/ld+json";
-	else if(ext == "xml")
-		_content_type = "application/xml";
-	else if(ext == "pdf")
-		_content_type = "application/pdf";
-	else if(ext == "doc") //DOCUMENTS
-		_content_type = "application/msword";
-	else if(ext == "docx")
-		_content_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-	else if(ext == "ppt")
-		_content_type = "application/vnd.ms-powerpoint";
-	else if(ext == "pptx")
-		_content_type = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
-	else if(ext == "odt")
-		_content_type = "application/vnd.oasis.opendocument.text";
-	else if(ext == "xls")
-		_content_type = "application/vnd.ms-excel";
-	else if(ext == "xlsx")
-		_content_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-	else if(ext == "odp")
-		_content_type = "application/vnd.oasis.opendocument.presentation";
-	else if(ext == "ods")
-		_content_type = "application/vnd.oasis.opendocument.spreadsheet";
-	//IMAGE
-	else if(ext == "jpeg" || ext == "jpg")
-		_content_type = "image/jpeg";
-	else if(ext == "png")
-		_content_type = "image/png";
-	else if(ext == "apng")
-		_content_type = "image/apng";
-	else if(ext == "avif")
-		_content_type = "image/avif";
-	else if(ext == "gif")
-		_content_type = "image/gif";
-	else if(ext == "svg")
-		_content_type = "image/svg+xml";
-	else if(ext == "webp")
-		_content_type = "image/webp";
-	else if(ext == "webm")
-		_content_type = "video/webm";
-	else if(ext == "bmp")
-		_content_type = "image/bmp";
-	else if(ext == "ico || cur")
-		_content_type = "image/x-icon";
-	else if(ext == "tif" || ext == "tiff")
-		_content_type = "image/tiff";
-	//SOUND
-	else if(ext == "mp3")
-		_content_type = "audio/mpeg";
-	else if(ext == "aac")
-		_content_type = "audio/aac";
-	else if(ext == "wav")
-		_content_type = "audio/wave";
-	//VIDEO
-	else if(ext == "flac")
-		_content_type = "audio/flac";
-	else if(ext == "mpeg")
-		_content_type = "audio/mpeg";
-	else if(ext == "mp4")
-		_content_type = "video/mp4";
-	else if(ext == "avi")
-		_content_type = "video/x-msvideo";
-	//AUDIO-VIDEO
-	else if(ext == "3gp")
-		_content_type = "video/3gpp; audio/3gpp"; // - audio if file does not contain video
-	//ARCHIVES
-	else if(ext == "bz")
-		_content_type = "application/x-bzip";
-	else if(ext == "bz2")
-		_content_type = "application/x-bzip2";
-	else if(ext == "gz")
-		_content_type = "application/gzip";
-	else if(ext == "zip")
-		_content_type = "application/zip";
-	else if(ext == "7z")
-		_content_type = "application/x-7z-compressed";
-	else if(ext == "tar")
-		_content_type = "application/x-tar";
-	//DEFAULT
-	else 
-		_content_type = "application/octet-stream"; // default for binary files. It means unknown binary file
-}
-
-Response::Response(Request const & request, Config::ServerConfig const & sc): _keep_alive(true),  _autoindex(false), _cgi_response(false), _req(request), _server_config(sc) {
-	std::string		location;
-	std::ifstream	file;
-	std::vector<std::string>::iterator	i_it;
+Response::Response(Request const & request, Config::ServerConfig const & sc):
+	_keep_alive(true),  _autoindex(false), _cgi_response(false), _req(request), _server_config(sc) {
+	std::string							location;
+	std::ifstream						file;
 	
 	_status_code = _req.getErrorCode();
 	_date = get_local_time();
 	_server_name = "Breno_Tony_Pulga";
-	if (_status_code == 0 && _req._loc) {
+	if (_req.isTargetRedirect() && _req._loc) {
+		_status_code = _req._loc->_redirect_status;
+	} else if (_req.getErrorCode() == 0 && _req._loc) {
 		_status_code = 404;
 		if (_req.isTargetCGI()) {
-			location = _req.getCGIFile();
-			file.open(location.c_str(), std::ifstream::binary);
-			if (file.is_open() && !isDirectory(location)) {
-				_status_code = execCGI();
+			if(CONSTRUCTORS_DESTRUCTORS_DEBUG)
+				std::cout << YELLOW << "CGI location " << _req.getCGIFile() << std::endl;
+			if (isDirectory(_req._loc->_cgi_bin)) {
+				if(CONSTRUCTORS_DESTRUCTORS_DEBUG)
+					std::cout << YELLOW << "Executing CGI... " << std::endl;
+				_status_code = execCGI(); // implement what breno suggested, create cgi object
 				if (_status_code <= 0)
 					_status_code = 500;
 			}
+			else if (CONSTRUCTORS_DESTRUCTORS_DEBUG || DEBUG_MSG){
+				std::cout << RED << "CGI Failed because the cgi-bin [" << _req._loc->_cgi_bin << "] is not a valid directory!" << ENDC << std::endl;
+			}
+		} else if (_req.getMethod() == "DELETE") {
+			location = _req.getFinalPath();
+			if (isFile(location) && !isDirectory(location))
+				_status_code = 200;
 		} else if (_req.isTargetDir()) {
-			if(CONSTRUCTORS_DESTRUCTORS_DEBUG)
-				std::cout << WHITE << "Try Index: ";
-			for(i_it = _req._loc->_indexes.begin(); i_it != _req._loc->_indexes.end(); ++i_it) {
-				location = _req.getFinalPath() + *i_it;
+			location = _req.getIndex();
+			if (isFile(location)) {
 				if(CONSTRUCTORS_DESTRUCTORS_DEBUG)
-    				std::cout << *i_it << " ";
+					std::cout << GREEN << "[founded]" << ENDC << std::endl;
 				file.open(location.c_str(), std::ifstream::binary);
-				if (file.is_open() && !isDirectory(location)) {
-    				if(CONSTRUCTORS_DESTRUCTORS_DEBUG)
-						std::cout << GREEN << "[founded]" << ENDC << std::endl;;
+				if(file.is_open()) {
 					readFileStream(file, _content);
 					_status_code = 200;
 					setMimeType(location);
-					break ;
+				} else {
+					_status_code = 403;
 				}
-			}
-			// try server indexes
-			if (_req._loc->_autoindex && _content.empty()) {
-				_status_code = 200;
-				_autoindex = true;
-			}
-			else if (_content.empty()) {
-				_status_code = 403;
+			} else {
+				if (_req._loc->_autoindex) {
+					_status_code = 200;
+					_autoindex = true;
+				} else if (isDirectory(_req.getFinalPath())) {
+					_status_code = 403;
+				}
 			}
 		} else {
 			location = _req.getFinalPath();
 			file.open(location.c_str(), std::ifstream::binary);
-			if(file.is_open() && !isDirectory(location)) {
+			if(file.is_open() && isFile(location)) {
 				if(CONSTRUCTORS_DESTRUCTORS_DEBUG)
 					std::cout << GREEN << "[founded] " << location << ENDC << std::endl;;
 				readFileStream(file, _content);
@@ -186,8 +147,8 @@ Response::Response(Request const & request, Config::ServerConfig const & sc): _k
 				setMimeType(location);
 			}
 		}
+		file.close();
 	}
-	file.close();
     if(CONSTRUCTORS_DESTRUCTORS_DEBUG)
 		std::cout << WHITE << "Response Created " << ENDC << std::endl;
 }
@@ -197,8 +158,26 @@ Response::~Response() {
 		std::cout << "Response" << " destroyed" << std::endl;
 }
 
-int Response::execCGI() throw (std::exception) {
+void Response::setMimeType(std::string const & file_name) {
+	size_t pos(file_name.find_last_of('.'));
+
+	if (pos != std::string::npos) {
+		std::string ext = file_name.substr(pos + 1);
+	    std::transform(ext.begin(), ext.end(), ext.begin(), ::ft_tolower);
+	    if (_mime_types.find(ext) != _mime_types.end()) {
+	    	_content_type = _mime_types[ext];
+	    	return ;
+	    } else {
+			_content_type = "text/html";
+	    }
+	} else {
+		_content_type = "application/octet-stream";
+	}
+}
+
+int Response::execCGI() {
 	std::vector<char *> env;
+	std::vector<char *>::iterator it;
 	std::vector<char *> arg;
 	std::stringstream ss;
 
@@ -207,7 +186,7 @@ int Response::execCGI() throw (std::exception) {
 	//push_back_env(env, "AUTH_TYPE", "");
 	push_back_env(env, "CONTENT_LENGTH", ss.str());
 	push_back_env(env, "CONTENT_TYPE", "application/x-www-form-urlencoded"); //+ _req.getContentType());
-	push_back_env(env, "DOCUMENT_ROOT", _req.getCGIBinPath());
+	push_back_env(env, "DOCUMENT_ROOT", _req._loc->_upload_path); // UPLOAD PATH HERE!!!!!!
 	push_back_env(env, "GATEWAY_INTERFACE", "CGI/1.1");
 	push_back_env(env, "HTTP_ACCEPT", "application/x-www-form-urlencoded,text/xml,application/xml,application/xhtml+xml,text/html,text/plain,charset=utf-8;");
 	//push_back_env(env, "HTTP_COOKIE", "");
@@ -217,7 +196,7 @@ int Response::execCGI() throw (std::exception) {
 	push_back_env(env, "PATH_TRANSLATED", _req.getCGIBinPath());
 	push_back_env(env, "QUERY_STRING", _req.getQuery());
 	//push_back_env(env, "REMOTE_ADDR", "");
-	push_back_env(env, "REMOTE_HOST", _req.getRemoteHost());
+	push_back_env(env, "REMOTE_HOST", _server_config.getIp());
 	//push_back_env(env, "REMOTE_IDENT", "");
 	//push_back_env(env, "REMOTE_PORT", "");
 	//push_back_env(env, "REMOTE_USER", "");
@@ -227,9 +206,13 @@ int Response::execCGI() throw (std::exception) {
 	push_back_env(env, "SCRIPT_NAME", _req.getCGIFile());
 	push_back_env(env, "SERVER_ADMIN", "pulgamecanica11@gmail.com");
 	push_back_env(env, "SERVER_NAME", "BRTOAN");
-	push_back_env(env, "SERVER_PORT", "4242");
+	ss.str(std::string());
+	ss << _server_config.getPort();
+	push_back_env(env, "SERVER_PORT", ss.str());
 	push_back_env(env, "SERVER_PROTOCOL", "HTTP/1.1");
 	push_back_env(env, "SERVER_SOFTWARE", "Webserv42.0 (Linux)");
+	if (!_req.getCookies().empty())
+		push_back_env(env, "HTTP_COOKIE", _req.getCookies());
 	env.push_back(NULL);
 	arg.push_back(strdup(_req.getCGIFile().c_str()));
 	arg.push_back(NULL);
@@ -252,9 +235,18 @@ int Response::execCGI() throw (std::exception) {
 	if (pid == 0) {
 		dup2(tmp_fd_in, STDIN_FILENO);
 		dup2(tmp_fd_out, STDOUT_FILENO);
-		execve(_req.getCGIFile().c_str(), &arg[0], &env[0]);
+		if (chdir(_req._loc->_cgi_bin.c_str()) != -1) {
+			execve(_req.getCGIFile().c_str(), &arg[0], &env[0]);
+		}
 		exit(EXIT_FAILURE);
     }
+    //free env & arg
+    for (it = env.begin(); it != env.end(); ++it)
+    	if (*it)
+    		free (*it);
+    for (it = arg.begin(); it != arg.end(); ++it)
+    	if (*it)
+    		free (*it);
     int child_status;
 	waitpid(pid, &child_status, 0);
     close(tmp_fd_in);
@@ -263,10 +255,16 @@ int Response::execCGI() throw (std::exception) {
     int valread = -1;
     while(valread != 0) {
     	bzero(buff, 1024);
-		valread = read(tmp_fd_out, buff, 1024);
+		valread = read(tmp_fd_out, buff, 1023);
 		if (valread < 0)
 			return (-1);
 		_content += buff;
+    }    
+    if (child_status != 0) {
+		if(CONSTRUCTORS_DESTRUCTORS_DEBUG)
+			std::cout << RED << "CGI Failed: " << std::endl << YELLOW << _content << ENDC << std::endl;
+    	_content = "ERROR!!!";
+    	return (500);
     }
     close(tmp_fd_out);
     dup2(restore_input, STDIN_FILENO);
@@ -283,10 +281,10 @@ int Response::execCGI() throw (std::exception) {
 const std::string Response::createAutoindexResponse() {
 	std::string		file_icon, css_icon, html_icon, js_icon, py_icon, folder_icon, html_content;
 	std::ifstream	icon;
-	DIR				*dr;
+	DIR	*			dr;
 	struct dirent *	de;
     struct stat		st;
-    struct tm	tm_time;
+    struct tm		tm_time;
 
 	readFileString("utils/folder.svg", folder_icon);
 	readFileString("utils/file.svg", file_icon);
@@ -296,24 +294,13 @@ const std::string Response::createAutoindexResponse() {
 	readFileString("utils/py_file.svg", py_icon);
     dr = opendir(_req.getFinalPath().c_str());
 	if (dr == NULL) {
-		_status_code = 403;
+		_status_code = 404;
 	} else {
-		html_content = "<html>\n<head><meta content=\"text/html;charset=utf-8\" http-equiv=\"Content-Type\"><meta content=\"utf-8\" http-equiv=\"encoding\"><title>HTTP Autoindex</title><style> \
-			div {display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 80%; padding: 0.25rem; border-radius: 0.75rem;} div:hover {background-color: rgba(0, 0, 0, 0.25);} \
-			svg {display: inline-block; width: 25px; height: 25px; margin-right: 0.25rem;} a {position: relative; display: inline; vertical-align: top;} .file_name {position: absolute; top: 0; left: 30px; white-space: nowrap;} \
-			.flexible {display: flex; flex-direction: row; justify-content: space-around; gap: 1rem;} a:hover .folder .folder-front {transform: translate(0px, 230px) rotateX(60deg);} \
-			a:hover .default-file .pencil { display: block; transform: translate(-20px, -35px); animation: 5s draw ease-in infinite; } @keyframes draw { \
-			0% {transform: translate(-25px, -30px);} 5% {transform: translate(-20px, -35px);} 10% {transform: translate(-15px, -30px);} 15% {transform: translate(-10px, -35px);} 20% {transform: translate(-5px, -30px);} \
-			25% {transform: translate(-0px, -30px);} 30% {transform: translate(-25px, -20px);} 35% {transform: translate(-18px, -25px);} 40% {transform: translate(-11px, -21px);} 45% {transform: translate(-5px, -25px);} \
-			50% {transform: translate(-0px, -22px);} 55% {transform: translate(-24px, -15px);} 60% {transform: translate(-21px, -18px);} 65% {transform: translate(-12px, -12px);} 70% {transform: translate(-7px, -17px);} \
-			75% {transform: translate(-0px, -12px);} 80% {transform: translate(-5px, -23px);} 90% {transform: translate(-25px, -30px);} 100% {transform: translate(-25px, -30px);} } \
-			a:hover .file .top-bar {animation: 2s shrink ease-out;} a:hover .html-file .html-tag {animation: 2s flick ease-out infinite;} \
-			@keyframes flick {to {opacity: 0;}} @keyframes shrink {0% {transform: rotateY(25deg) translate(0px,0px);} 70% {transform: rotateY(65deg) translate(40px,0px);} 90% {transform: rotateY(80deg) translate(150px,0px);} 100% {transform: rotateY(85deg) translate(285px,0px);}} \
-			</style></head>\n<body>\n<h3>Autoindex for " + _req.getFinalPath() + "</h3><hr>";
+		html_content = autoindex_header(_req.getFinalPath());
 		while ((de = readdir(dr)) != NULL) {
 			if (*de->d_name == 0 || (*de->d_name == '.' && *(de->d_name + 1) == 0))
 				continue ;
-			std::string file_path(_req.getFinalPath() + "/" + de->d_name);
+			std::string file_path(_req.getFinalPath() + de->d_name);
 			int fd = open(file_path.c_str(), O_RDONLY);
 			if (fd < 0 || fstat(fd, &st) == -1) {
 				html_content += "<div>Failed to open " + file_path + "</div>";
@@ -351,19 +338,64 @@ const std::string Response::createAutoindexResponse() {
 const std::string Response::CGIResponse() {
 	std::string response;
 	std::stringstream ss;
+	std::stringstream ss2;
 
 	ss << _status_code;
 	response += "HTTP/1.1 " + ss.str() + " " + _codeMessage[_status_code] + "\n";
 	response += "Date: " + _date;
 	response += "Server: " + _server_name + "\n";
+	response += "Access-Control-Allow-Origin: *\n";
 	response += "Connection: close\n";
 	ss.str(std::string());
-	ss << _content.length();
+	ss2 << _content;
+	std::string line;
+	int	content_len(0);
+	while (getline(ss2, line)) {
+		if (line.empty())
+			break;
+	}
+	while (getline(ss2, line))
+		content_len += line.length();
+	ss << content_len;
 	response += "Content-Length: " + ss.str() + "\n";
 	response += _content;
 	return (response);
 }
 
+const std::string Response::createRedirectionResponse() {
+	std::string response_content;
+	std::stringstream ss;
+
+	ss << _status_code;
+	response_content += "HTTP/1.1 " + ss.str() + " " + Config::ServerConfig::Redirect::_redirect_status_codes[_status_code] + "\n";
+	response_content += "Date:" + _date;
+	response_content += "Server: Breno_Tony_Pulga\n";
+	response_content += "Location: " + _req._loc->_redirect_uri +"\n";
+	response_content += "Connection: close\n";
+	_keep_alive = false;
+	std::cout << CYAN << "REDIRECTING TO: " << _req._loc->_redirect_uri << ENDC;
+	return (response_content);
+}
+
+const std::string Response::deleteResponse() {
+	std::string response_content;
+	std::stringstream ss;
+	std::string html_content;
+
+	html_content = "<html><body>""<h1>File Deleted: ";
+	html_content += _req.getFinalPath();
+	html_content += "</h1></body></html>";
+	response_content += "HTTP/1.1 200 " + _codeMessage[200] + "\n";
+	response_content += "Date:" + _date;
+	response_content += "Server: Breno_Tony_Pulga\n";
+	ss << html_content.length();
+	response_content += "Content-Length: " + ss.str() + "\n";
+	response_content += "Connection: close\n";
+	response_content += "\r\n";
+	response_content += html_content;
+	_keep_alive = false;
+	return (response_content);	
+}
 
 const std::string Response::createResponse() {
 	std::string response;
@@ -371,9 +403,17 @@ const std::string Response::createResponse() {
 	std::ostringstream so;
 	std::ifstream file;
 	
+	if (_req.isTargetRedirect()) {
+		return (createRedirectionResponse());
+	}
 	if (_cgi_response && _status_code == 200) {
 		_keep_alive = false;
 		return (CGIResponse());
+	}
+	if (_req.getMethod() == "DELETE" && _status_code == 200) {
+		if(remove(_req.getFinalPath().c_str()) != 0)
+			_status_code = 404;
+		return (deleteResponse());
 	}
 	if (_status_code == 200 && _req._loc) {
 		if (_content.length() > 0) {
@@ -384,10 +424,12 @@ const std::string Response::createResponse() {
 	}
 	so << _status_code;
 	if (_status_code != 200) {
-		_keep_alive = false;
+		//_keep_alive = false;
 		if(CONSTRUCTORS_DESTRUCTORS_DEBUG)
 			std::cout << RED << "Render Error => Looking inside error maps for custom error..." << ENDC << std::endl;
 		if (_req._loc) {
+			/* FIND LOCATION ERROR MAP 					*/
+			/* FIND THE ERROR ON THE LOCATION ERRORS MAP*/
 			std::map<std::string, std::vector<int> >::iterator l_it;
 			for (l_it = _req._loc->_location_errors_map.begin(); l_it != _req._loc->_location_errors_map.end() && html_content.empty(); ++l_it) {
 				std::vector<int>::iterator e_it;
@@ -413,6 +455,8 @@ const std::string Response::createResponse() {
 				}
 			}
 		}
+		/* FIND SERVER ERROR MAP 					*/
+		/* FIND THE ERROR ON THE SERVER ERRORS MAP  */
 		std::map<std::string, std::vector<int> >::const_iterator l_it;
 		for (l_it = _server_config._server_errors_map.begin(); l_it != _server_config._server_errors_map.end() && html_content.empty(); ++l_it) {
 			std::vector<int>::const_iterator e_it;
@@ -437,8 +481,11 @@ const std::string Response::createResponse() {
 				break ;
 			}
 		}
-		if (!html_content.length())
+		if (!html_content.length()) {
+			/* DEFAULT ERROR (NO CUSTOM ERROR FOUNDED)*/
+			_content_type = "text/html";
 			html_content = "<html>\n<head><title>" + so.str() + "</title></head>\n<body bgcolor=\"gray\">\n<center><h1>" + so.str() + " " + _codeMessage[_status_code] + "</h1></center>\n<hr><center>brtopu/1.0</center>\n</body>\n</html>\n";
+		}
 	}
 	response += "HTTP/1.1 " + so.str() + " " + _codeMessage[_status_code] + "\n";
 	response += "Date: " + _date;

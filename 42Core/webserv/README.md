@@ -1,8 +1,113 @@
 # webserver
-Let's create a simple server using C++
-
+Epoll HTTP Web Server with C++98
 ***
 
+### Introduction
+    ARPANET: Advanced Research Projects Agency Network
+    HTTP: Hyper Text Transfer Protocole
+    HTML: Hyper Text Markup Language
+    CSS: Cascading Style Sheets
+    RFC: Read For Comment
+    
+    "Development of HTTP was initiated by Tim Berners-Lee at CERN in 1989 and summarized in a simple document describing the behavior of a client and a server using the first HTTP protocol version that was named 0.9" (Wikipedia)
+    The RFC system was invented by Steve Crocker in 1969 to help record unofficial notes on the development of ARPANET. Which later was used to define how the HTTP should work among other things.
+    In the RFC it's defined the semantics used to best create HTTP Requests and Responses.
+    
+    What is a Client and a Server?
+    A Server is a computer program which stores, manages, sends and recieves data. In particular an HTTP Server recieves an HTTP Request, and creates an HTTP Response.
+    An HTTP server is usefull to navigate through resources in a given enviroment. For example, a website is a set of files which togeather make a functional webpage.
+    Usually websites use HTML to define their content, a CSS stylesheet to modify the properties of the content (color, position, size; etc) and a script which can dinamicly modify the website (usually javascript).
+    A Client is a program which can create an HTTP Request, and receive an HTTP Response.
+    Web Browsers are the most common clients, which also can display the resources Requested in a readable way, using an HTML interpreter.
+    Browsers will interpret the Request content, and will identify all the resources that are needed (images, videos, embeded links; etc) and will create a Request to show all resources needed by the webpage.
+    What is a Socket
+    .... explain sockets, host: ports ips etc etc
+***
+
+    For example
+    The HTML document bellow, on the third line is requesting a CSS stylesheet, on line 4 it's requesting a JS script and on the last lines it's requesting an image.
+    This HTML document needs 3 resouces and each will be requested individually, it's up to the Client to request it, and how to do it.
+```html
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="index.css">
+<script src="index.js"></script>
+<body>
+ <h1>Hello, this is Home</h1>
+ <h3>Click on the screen.</h3>
+ <p>Coding is fun!</p>
+ <img src="/random/content/mexico.jpg", width="500px" height="auto">
+</body>
+</html>
+```
+    Assuming that this HTML document is named index.html and the following configuration:
+    The Route(location) "/" accepts the GET method, and has the indexes: "index.html & index.htm" and the root is "www/"
+<details>
+  <summary><h3>Configuration images</h3></summary>
+    
+![Screenshot from 2022-07-17 11-56-37](https://user-images.githubusercontent.com/28810331/179395051-a0dae928-8076-4023-8156-bc5f3b29b4ab.png)
+![Screenshot from 2022-07-17 11-56-58](https://user-images.githubusercontent.com/28810331/179395054-bb179041-2f4e-4f29-9526-6c4f03d0741a.png)
+</details>
+
+<details>
+  <summary><h3>Requests and Responses Walkthrough</h3></summary>
+  
+    The Following image shows the whole process of retrieving a webpage:
+![image(3)](https://user-images.githubusercontent.com/28810331/179395199-32fdc267-f9d4-4e44-9878-2a7f332a9055.png)
+
+    You get this as a result:
+![Screenshot from 2022-07-17 12-04-26](https://user-images.githubusercontent.com/28810331/179395293-258feddb-3801-480a-8d39-9ac901b08f30.png)
+</details>
+
+### Configuration
+    The webserver can be configured with directives. Each Directive serves one purpose although some Directives are obsolete when used in a certain context.
+    This websserver a configuration file based on the NGINX configuration file.
+    All Featured Directives are listed bellow on the table.
+    The Configuration File has 2 contexts, server & location context. The Location context must belong to a server context. CGI is suported.
+<details>
+  <summary><h3>Directives</h3></summary>
+Example:
+
+```python
+server {
+  # INSIDE SERVER CONTEXT
+  # (SP) Space
+  DIRECTIVE (SP) VALUE
+  location / {
+    #INSIDE LOCATION CONTEXT
+    DIRECTIVE (SP) VALUE
+  }
+}
+```
+
+| Directive | Description | Example |
+| --------- | ----------- | ------- |
+| autoindex | directory listing on & off | autoindex off \| on  |
+| cgi | cgi set up a new cgi support extension. Each cgi directive will add an executable to the location. The cgi URI should always make a request to the executable including the extension. When the URI target is an executable which is not defined, the first executable for the extension is used. | cgi \<extension\> \<path_to_executable\> |
+| cgi-bin | cgi-bin will set up the path to the executable where it should be executed also, it's setted up as an enviromental variable. | cgi-bin \<path_to_bin\> |
+| client_max_body_size | Limit client body size, if the request exceeds the number of bytes, the error 414 is returned | client_max_body_size #bytes|
+| error_page | Setup default error pages. You can define one or more error codes. The path where the server searches for the errors should be the last parameter of the directive. Webserv only supports custom HTML error pages. Webserv will look for "error path + error code + .html". The error pages are inherited from the server context to the location context.| error_page code1 [code2] [codeN] ... \<path\> |
+| limit_methods | Define a list of accepted HTTP methods for the route (inside location scope), if not defined any, the default is to accept GET only. | limit_methods METHODS |
+| listen | Choose the port and host of each ’server', localhost and "*" is accepted. | listen host:port |
+| location | Setup routes with one or multiple rules/configuration | location route { ... }|
+| root | Set up a root path to  | root \<path\> |
+| redirect | Redirect to another location.  | redirect [full URI or relative URI] |
+| server_name | Setup the server_names or not | server_name name1 [name2] ...|
+| upload | upload | upload |
+
+</details>
+
+### TODO
+  - File Upload
+  - Limit Body Size
+  - PUT & DELETE actions
+  - Coockies
+
+### BUGS
+  - Autoindex is on
+  - Location root doesn't exist
+  - Should Return 404 not found -> returns 403 Forbidden
+  
 ### RFC's
 
 [HTTP Semantics RFC](https://www.rfc-editor.org/rfc/rfc9110.pdf)
@@ -31,42 +136,6 @@ Let's create a simple server using C++
     + [https://copyconstruct.medium.com/the-method-to-epolls-madness-d9d2d6378642](https://copyconstruct.medium.com/the-method-to-epolls-madness-d9d2d6378642)
     + [https://www.youtube.com/watch?v=O-yMs3T0APU](https://www.youtube.com/watch?v=O-yMs3T0APU)
     + [https://www.youtube.com/watch?v=dEHZb9JsmOU](https://www.youtube.com/watch?v=dEHZb9JsmOU)
-
-<details>
-  <summary><h3>Directives</h3></summary>
-
-We deleoped a configuration file based on the NGINX configuration file.
-All Featured Directives are listed bellow on the table.
-The Configuration File has 2 contexts, server & location context. The Location context must belong to a server context.
-Example:
-
-```python
-server {
-  # INSIDE SERVER CONTEXT
-  # (SP) Space
-  DIRECTIVE (SP) VALUE
-  location / {
-    #INSIDE LOCATION CONTEXT
-    DIRECTIVE (SP) VALUE
-  }
-}
-```
-
-| Directive | Description | Example |
-| --------- | ----------- | ------- |
-| autoindex | directory listing on & off | autoindex off \| on  |
-| cgi | cgi | cgi |
-| cgi-bin | cgi-bin | cgi-bin |
-| client_max_body_size | Limit client body size | client_max_body_size #bytes|
-| error_page | Setup default error pages. You can define one or more error codes. The path where the server searches for the errors should be the last parameter of the directive. Webserv only supports custom HTML error pages. Webserv will look for "error path + error code + .html". The error pages are inherited from the server context to the location context.| error_page code1 [code2] ... path |
-| limit_methods | Define a list of accepted HTTP methods for the route (inside location scope), if not defined any, the default is to accept GET only. | limit_methods METHOD |
-| listen | Choose the port and host of each ’server' | listen host:port |
-| location | Setup routes with one or multiple rules/configuration | location route { ... }|
-| root | root | root |
-| server_name | Setup the server_names or not | server_name name1 [name2] ...|
-| upload | upload | upload |
-
-</details>
 
 <details>
   <summary><h3>Tony Extra Info</h3></summary>
@@ -258,7 +327,7 @@ if (server._methods.compare(method) == false) {
 std::vector<std::string>::iterator it = _location.begin()
 for (; it != _location.end() ; it++){
   if ((direction == *it)) // ============= IF LOCATION IT REQUEST FOUND
-    if (file_open(_l_root/file) == 0) ==== IF REQUESTED FILE NOT FOUND
+    if (file_open(_l_root/file) == 0) { // ==== IF REQUESTED FILE NOT FOUND
       std::string buffer;
       int contentlength = read(WHATSERVER?/error/404.html)
       std::stringstream error;

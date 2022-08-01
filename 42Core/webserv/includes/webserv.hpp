@@ -5,6 +5,12 @@
 #  define CONSTRUCTORS_DESTRUCTORS_DEBUG 0
 # endif
 
+# ifndef DEBUG_MSG
+#  define DEBUG_MSG 0
+# endif
+
+#define TIME_TO_DIE 5000
+
 #include "colors.hpp"
 #include <iostream>
 
