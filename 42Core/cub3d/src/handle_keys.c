@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 
+/*
 static void	paint_window(t_config *conf)
 {
 	t_image		*img_map;
@@ -34,6 +35,7 @@ static void	paint_window(t_config *conf)
 		conf->img_map->win->win_ptr, img_map->img_ptr, 0, 0);
 }
 
+
 int	handle_keys(int key_code, void *params)
 {
 	t_config	*conf;
@@ -41,6 +43,7 @@ int	handle_keys(int key_code, void *params)
 	conf = params;
 	if (key_code == KEY_ESC)
 		exit_game(conf);
+
 	if (key_code == KEY_W || key_code == KEY_S || key_code == KEY_D
 		|| key_code == KEY_A)
 		move(key_code, conf);
@@ -49,6 +52,34 @@ int	handle_keys(int key_code, void *params)
 		rotate(key_code, conf);
 	else
 		return (0);
+
 	paint_window(conf);
 	return (EXIT_SUCCESS);
+}
+*/
+static void	keys_update(int key_code, void *params, int up_down)
+{
+	t_config	*conf;
+
+	conf = params;
+	if ((key_code == KEY_W || key_code == KEY_UP) && conf->pov->n_down != up_down)
+		conf->pov->n_down = up_down;
+	else if ((key_code == KEY_S || key_code == KEY_DOWN) && conf->pov->s_down != up_down)
+		conf->pov->s_down = up_down;
+	else if ((key_code == KEY_D || key_code == KEY_RIGHT) && conf->pov->e_down != up_down)
+		conf->pov->e_down = up_down;
+	else if ((key_code == KEY_A || key_code == KEY_LEFT) && conf->pov->w_down != up_down)
+		conf->pov->w_down = up_down;
+}
+
+int     handle_key_up(int key_code, void *params)
+{
+        keys_update(key_code, params, 0);
+        return (0);
+}
+
+int     handle_key_down(int key_code, void *params)
+{
+        keys_update(key_code, params, 1);
+        return (0);
 }

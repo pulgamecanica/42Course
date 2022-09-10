@@ -16,7 +16,7 @@
 # include <math.h>
 
 // I HATE THE NORM SO SO SO SO SO SO SO SO MUCH FOR MAKING ME DO THIS ;(
-# define WIN_W		1600	
+# define WIN_W		1000
 # define PI 3.14159265
 
 typedef struct s_point

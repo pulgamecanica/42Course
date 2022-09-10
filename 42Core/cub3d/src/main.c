@@ -111,11 +111,18 @@ int	main(int ac, char **av)
 	{
 		ft_printf("ERROR <Map Format>\n");
 		return (-1);
-	}	
+	}
 	print_config(conf);
 	win = new_window(WIN_H, WIN_W, "cub3D");
-	mlx_hook(win->win_ptr, 2, 1, handle_keys, conf);
+/*
+	mlx_hook(win->win_ptr, 2, 0, handle_keys, conf);
+        mlx_hook(win->win_ptr, 3, 0, handle_keys, conf);
+*/
+        mlx_hook(win->win_ptr, 3, 1L<<1, handle_key_up, conf);
+	mlx_hook(win->win_ptr, 2, 1L<<0, handle_key_down, conf);
+
 	mlx_hook(win->win_ptr, 17, 0, exit_game, NULL);
+	mlx_loop_hook(win->mlx_ptr, update, conf);
 	init_game_window(conf, win);
 	mlx_loop(win->mlx_ptr);
 	destroy_walls(win, conf->walls);

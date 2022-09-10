@@ -87,6 +87,7 @@ typedef struct s_config
 /* height	: height * TILE_SIZE   */
 /* angle	: pov angle            */
 /* mag 		: magnitude (speed)    */
+/* *_up		: northUP, southUP ... */
 /* ******************************* */
 typedef struct s_pov
 {
@@ -97,6 +98,10 @@ typedef struct s_pov
 	int			height;
 	int			angle;
 	int			mag;
+	int			n_down;
+	int			s_down;
+	int			e_down;
+	int			w_down;
 }		t_pov;
 
 typedef struct s_sprite

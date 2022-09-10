@@ -32,6 +32,7 @@ static int	shade(double distance, int color, t_config *conf)
 	int		g;
 	int		b;
 
+	(void)div;
 	if (conf->pov->width < conf->pov->height)
 		div = conf->pov->width;
 	else
