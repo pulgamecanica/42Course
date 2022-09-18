@@ -1,7 +1,7 @@
 # Makefile created automatically from script\n
 # C++ ft_containers [Fri Apr 29 12:36:41 WEST 2022]\n
 
-MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
+#MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
 
 NAME	=	containers
 
@@ -46,13 +46,13 @@ $(NAME):	$(STD_OBJ) $(FT_OBJ)
 			$(CC) $(CFLAGS) $(STD_OBJ) -o std_$(NAME)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
-test:		re
+test:		all
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-			@./ft_$(NAME)
+			@./std_$(NAME) && ./std_$(NAME) > std_log.txt
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-			@./std_$(NAME)
+			@./ft_$(NAME) && ./ft_$(NAME) > ft_log.txt
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show
