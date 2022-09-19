@@ -49,10 +49,10 @@ $(NAME):	$(STD_OBJ) $(FT_OBJ)
 test:		all
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-			@./std_$(NAME) && ./std_$(NAME) > std_log.txt
+			@time ./std_$(NAME) && ./std_$(NAME) > std_log.txt
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-			@./ft_$(NAME) && ./ft_$(NAME) > ft_log.txt
+			@time ./ft_$(NAME) && ./ft_$(NAME) > ft_log.txt
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show

@@ -21,23 +21,33 @@ void print_vector_status(container::vector<T> &vec) {
 	std::cout << "Max Size: " << vec.max_size() << std::endl;
 	std::cout << "Capacity: " << vec.capacity() << std::endl;
 	std::cout << "Empty? " << (vec.empty() ? "YES" : "NO") << std::endl;
+	std::cout << "Content: ";
 	if (vec.size() < 50) {
-		std::cout << "Content: ";
 		for (container::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
-				std::cout << ' ' << *it;
+			std::cout << ' ' << *it;
 		std::cout << std::endl;
+	} else {
+		unsigned short int i = 0;
+		for (container::vector<int>::iterator it = vec.begin(); it != vec.end() && i < 20; ++it, ++i)
+			std::cout << ' ' << *it;
+		say(" more than 50 elements....", RED);
 	}
-	say("End of Info", BLUE);
 }
 
 void test_vector_constructors(void) {
-	say("Construct an array of 100 elements from 0 to 1", RED);
-	container::vector<int> vec1;
-	vec1.reserve(999);
+	say("****************", RED);
+	say("* CONSTRUCTORS *", RED);
+	say("****************", RED);
+
+	say("Construct a vector of 100,000 with the value 9", YELLOW);
+	container::vector<int> vec1 (100000, 9);
 	print_vector_status(vec1);
-	say("Construct an array of 100,000 elements with an iterator", RED);
-	container::vector<int> vec2 (100000, 9);
+	say("Construct a vector of 3,000,000 with default value", YELLOW);
+	container::vector<int> vec2 (3000000);
 	print_vector_status(vec2);
+	say("Construct an empty vector", YELLOW);
+	container::vector<int> vec3;
+	print_vector_status(vec3);
 }
 
 void test_vector_iterators(void) {
@@ -46,28 +56,51 @@ void test_vector_iterators(void) {
 
 void test_vector_capacity(void) {
 	{
-		say("*Resize*", BLUE);
+		say("******************************************", RED);
+		say("* RESIZING A VECTOR & RESERVING CAPACITY *", RED);
+		say("******************************************", RED);
+	
 		container::vector<int> myvector;
 
+		say("Construct a vector [1..9]", YELLOW);
 		for (int i=1;i<10;i++) myvector.push_back(i);
-		// set some initial content:
 		print_vector_status(myvector);
+		say("Resize(5)", YELLOW);
 		myvector.resize(5);
 		print_vector_status(myvector);
+		say("Resize(8, 100)", YELLOW);
 		myvector.resize(8,100);
 		print_vector_status(myvector);
+		say("Resize(12)", YELLOW);
 		myvector.resize(12);
 		print_vector_status(myvector);
-
-
-		std::cout << "myvector contains:";
-		// for (size_t i=0;i<myvector.size();i++)
-		for (container::vector<int>::iterator it = myvector.begin(); it != myvector.end(); ++it)
-			std::cout << ' ' << *it;
-		std::cout << '\n';
+		say("Reserve(50)", YELLOW);
+		myvector.reserve(50);
+		print_vector_status(myvector);
+		say("Add 100000 random elements to see how the vector grows in capacity", YELLOW);
+		for (int i=1;i<100000;i++) myvector.push_back(rand() % i);
+		print_vector_status(myvector);
 	}
 
 
+}
+
+void test_vector_element_access(void) { 
+	say("******************", RED);
+	say("* ELEMENT ACCESS *", RED);
+	say("******************", RED);
+
+	container::vector<std::string> myvector;
+	try {
+		std::cout << myvector.at(0) << std::endl;
+	} catch (std::out_of_range &e) {
+		std::cout << RED << e.what() << ENDC << std::endl;
+	}
+	try {
+		std::cout << myvector.at(9) << std::endl;
+	} catch (std::out_of_range &e) {
+		std::cout << RED << e.what() << ENDC << std::endl;
+	}
 }
 
 int	main(void) {
@@ -90,13 +123,14 @@ int	main(void) {
 	}
 	{
 		try {
-			
+			srand(0);
 			test_vector_constructors();
 			test_vector_iterators();
 			test_vector_capacity();
+			test_vector_element_access(); 
 
 		} catch (std::exception &e) {
-			std::cout << RED << e.what() << std::endl;
+			std::cout << RED << e.what() << ENDC << std::endl;
 		}
 	}
 	return (0);

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <vector.hpp>
+#include <stdlib.h>
 #include <assert.h>
 
 # define BLACK	"\033[0;30m"
