@@ -1,8 +1,16 @@
+#include <algorithm>
 #include <stdexcept>
 #include <iostream>
 #include <typeinfo>
+#include <sstream>
 #include "iterator.hpp"
 #include "reverse_iterator.hpp"
+#include "enable_if.hpp"
+
+#ifndef LINUX
+# define LINUX 0
+#endif
+
 // #include "enable_if.hpp"
 // template<class T, class Allocator = std::allocator<T> >
 
@@ -129,36 +137,60 @@ namespace ft {
 					_capacity = n;
 				}
 			}
-
 			/*
 			 * ELEMENT ACCESS
 			 */
-
 			reference operator[] (size_type n) {
 				return (*(_ptr + n));
 			}
+
 			const_reference operator[] (size_type n) const {
 				return (*(_ptr + n));
 			}
 
 			reference at (size_type n) {
-				if (n >= 0 && n < _size)
-					return (*(_ptr + n));
-				else {
-					throw std::out_of_range("vector");
-				}
+				if (n >= _size)
+					throw std::out_of_range(_at_exception_msg(n));
+				return (*(_ptr + n));
 			}
 
 			const_reference at (size_type n) const {
-				if (n >= 0 && n < _size)
-					return (*(_ptr + n));
-				else {
-					throw std::out_of_range("vector");
-				}
+				if (n >= _size)
+					throw std::out_of_range(_at_exception_msg(n));
+				return (*(_ptr + n));
+			}
+
+			reference front() {
+				return (*_ptr);
+			}
+			
+			const_reference front() const {
+				return (*_ptr);
+			}
+
+			reference back() {
+				return (*(_ptr + _size - 1));
+			}
+			const_reference back() const {
+				return (*(_ptr + _size - 1));
 			}
 			/*
 			 * MODIFIER
 			 */
+			template <class InputIterator>
+			void assign (InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type * = 0) {
+				clear();
+				while(first != last) {
+					push_back(*first);
+				}
+			}
+
+			void assign (size_type n, const value_type& val) {
+				clear();
+				while(n--)
+					push_back(val);
+			}
+
 			void push_back (const value_type& val) {
 				if (!_capacity)
 					reserve(1);
@@ -167,17 +199,174 @@ namespace ft {
 				_alloc.construct(_ptr + _size++, val);
 			}
 
+			void pop_back() {
+				if (!empty()) {
+					_alloc.destroy(_ptr + _size - 1);
+					_size--;
+				}
+			}
+
+			iterator insert (iterator position, const value_type& val) {
+				size_type idx = position - begin();
+	            while (_capacity < _size + 1)
+	            	reserve(_capacity * 2);
+	            pointer ptr = _ptr + idx;
+	            std::copy(ptr, _ptr + _size, ptr + 1);
+	            _alloc.construct(ptr, val);
+	           	_size++;
+	            return (ptr);
+
+			}
+
+    		void insert (iterator position, size_type n, const value_type& val) {
+				size_type idx = position - begin();
+	            while (_capacity < _size + n)
+	            	reserve(_capacity * 2);
+	            pointer ptr = _ptr + idx;
+	            std::copy(ptr, _ptr + _size, ptr + n);
+	            while (n--) {
+	            	_alloc.construct(ptr + n, val);
+	           		_size++;
+	            }
+    		}
+
+			template <class InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type * = 0) {
+				size_type n = last - first;
+				size_type idx = position - begin();
+	            while (_capacity < _size + n)
+	            	reserve(_capacity * 2);
+	            pointer ptr = _ptr + idx;
+	            std::copy(ptr, _ptr + _size, ptr + n);
+	            for (size_type i = 0; first != last && i < n; first++, _size++, i++)
+	            	_alloc.construct(ptr + i, *first);
+			}
+
+			iterator erase (iterator position) {
+				size_type idx = position - begin();
+	            pointer ptr = _ptr + idx;
+	            std::copy(ptr + 1, _ptr + _size, ptr);
+	            pop_back();
+	            return (position);
+			}
+
+			iterator erase (iterator first, iterator last) {
+				size_type idx = first - begin();
+				size_type elems = last - first;
+	            pointer ptr = _ptr + idx;
+	            std::copy(ptr + idx + elems, _ptr + _size, ptr);
+	            while (first++ != last)
+	            	pop_back();
+				return (first);
+			}
+
 			void clear() {
 				for (size_type i = 0; i < _size; i++)
 					_alloc.destroy(_ptr + i);
 				_size = 0;
 			}
 
+			void swap (vector& x) {
+        		std::swap(_ptr, x._ptr);
+            	std::swap(_capacity, x._capacity);
+            	std::swap(_size, x._size);
+			}
+			/*
+			 * ALLOCATOR
+			 */
+			allocator_type get_allocator() const {
+				return (allocator_type(_alloc));
+			}
 
 		private:
+			const std::string _at_exception_msg(size_type n) const {
+				if (LINUX) {
+					std::stringstream ss;
+					ss << "vector::_M_range_check: __n (which is " << n << ") >= this->size() (which is " << _size << ")";
+					return (ss.str());
+				} else {
+					return ("vector");
+				}
+			}
+
+			// const void _shift(iterator start_pos =, size_type n = 1) {
+			// 	while (_capacity < _size + n)
+			// 		reserve(_capacity * 2);
+
+			// 	vector tmp_vec = *this;
+			// 	iterator it = start_pos;
+			// 	for (size_type i = 0; i < n; i++)
+			// 		_sizeAlloc();
+			// 	for (size_type i = start + n; i < size(); it++, i++)
+			// 		_setValue(_buff + i, *it);
+			// }
+
 			allocator_type  _alloc;
 			size_type		_size;
 			size_type		_capacity;
 			pointer			_ptr;
 	};
+	/*
+	 * NON-MEMBER FUNCTION OVERLOADS
+	 */
+	template <class T, class Alloc>
+	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		if (lhs.size() == rhs.size())
+			return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+		return (false);
+	}
+
+	template <class T, class Alloc>
+	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		return (!(lhs == rhs));
+	}
+
+	template <class T, class Alloc>
+	bool operator< (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		if (lhs.size() == rhs.size()) {
+			for (unsigned long int i = 0; i < lhs.size(); ++i)
+				if (lhs[i] != rhs[i])
+					return (lhs[i] < rhs[i]);
+			return (false);
+		}
+		return (lhs.size() < rhs.size());
+	}
+
+	template <class T, class Alloc>
+	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		if (lhs.size() == rhs.size()) {
+			for (unsigned long int i = 0; i < lhs.size(); ++i)
+				if (lhs[i] != rhs[i])
+					return (lhs[i] <= rhs[i]);
+			return (true);
+		}
+		return (lhs.size() < rhs.size());
+	}
+
+	template <class T, class Alloc>
+	bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		if (lhs.size() == rhs.size()) {
+			for (unsigned long int i = 0; i < lhs.size(); ++i)
+				if (lhs[i] != rhs[i])
+					return (lhs[i] > rhs[i]);
+			return (false);
+		}
+		return (lhs.size() > rhs.size());
+	}
+
+	template <class T, class Alloc>
+	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+		if (lhs.size() == rhs.size()) {
+			for (unsigned long int i = 0; i < lhs.size(); ++i)
+				if (lhs[i] != rhs[i])
+					return (lhs[i] >= rhs[i]);
+			return (true);
+		}
+		return (lhs.size() > rhs.size());
+	}
+
+	template <class T, class Alloc>
+	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) {
+		x.swap(y);
+	}
 }

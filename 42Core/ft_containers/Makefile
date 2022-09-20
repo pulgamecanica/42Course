@@ -28,7 +28,7 @@ ifeq ($(UNAME), Darwin)
 else ifeq ($(UNAME), FreeBSD)
 	CC = clang++
 else
-	CC	= g++
+	CC	= c++
 	CFLAGS += -D LINUX
 endif
 
