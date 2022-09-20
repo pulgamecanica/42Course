@@ -41,9 +41,9 @@ namespace ft {
 			typedef ft::reverse_iterator<const T>				const_reverse_iterator;//<const_iterator>
 			typedef typename iterator::difference_type			difference_type;
 
-			explicit vector (const allocator_type& alloc = allocator_type()): _alloc(alloc), _size(0), _capacity(0), _ptr(pointer()) {};
+			explicit vector(const allocator_type& alloc = allocator_type()): _alloc(alloc), _size(0), _capacity(0), _ptr(pointer()) {};
 
-			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _alloc(alloc), _size(n), _capacity(n) {
+			explicit vector(size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()): _alloc(alloc), _size(n), _capacity(n) {
 				if (n > max_size())
 					throw std::length_error("cannot create a vector with a size larger than max_size");
 				_ptr = _alloc.allocate(n);
@@ -103,7 +103,7 @@ namespace ft {
 				return (_alloc.max_size());
 			};
 
-			void resize (size_type n, value_type val = value_type()) {
+			void resize(size_type n, value_type val = value_type()) {
 				if (n > _capacity)
 					reserve(n);
 				if (n > _size) {
@@ -124,7 +124,7 @@ namespace ft {
 				return (_size == 0);
 			}
 
-			void reserve (size_type n) {
+			void reserve(size_type n) {
 				if (n > _capacity) {
 					pointer tmp = _alloc.allocate(n);
 					for (size_type i = 0; i < _size; ++i)
@@ -140,24 +140,24 @@ namespace ft {
 			/*
 			 * ELEMENT ACCESS
 			 */
-			reference operator[] (size_type n) {
-				return (*(_ptr + n));
+			reference operator[](size_type n) {
+				return (reference(*(_ptr + n)));
 			}
 
-			const_reference operator[] (size_type n) const {
-				return (*(_ptr + n));
+			const_reference operator[](size_type n) const {
+				return (const_reference(*(_ptr + n)));
 			}
 
-			reference at (size_type n) {
+			reference at(size_type n) {
 				if (n >= _size)
 					throw std::out_of_range(_at_exception_msg(n));
-				return (*(_ptr + n));
+				return (_ptr[n]);
 			}
 
-			const_reference at (size_type n) const {
+			const_reference at(size_type n) const {
 				if (n >= _size)
 					throw std::out_of_range(_at_exception_msg(n));
-				return (*(_ptr + n));
+				return (_ptr[n]);
 			}
 
 			reference front() {
@@ -182,16 +182,17 @@ namespace ft {
 				clear();
 				while(first != last) {
 					push_back(*first);
+					first++;
 				}
 			}
 
-			void assign (size_type n, const value_type& val) {
+			void assign(size_type n, const value_type& val) {
 				clear();
-				while(n--)
+				while(_size < n)
 					push_back(val);
 			}
 
-			void push_back (const value_type& val) {
+			void push_back(const value_type& val) {
 				if (!_capacity)
 					reserve(1);
 				else if (_size >= _capacity)
@@ -206,7 +207,7 @@ namespace ft {
 				}
 			}
 
-			iterator insert (iterator position, const value_type& val) {
+			iterator insert(iterator position, const value_type& val) {
 				size_type idx = position - begin();
 	            while (_capacity < _size + 1)
 	            	reserve(_capacity * 2);
@@ -218,7 +219,7 @@ namespace ft {
 
 			}
 
-    		void insert (iterator position, size_type n, const value_type& val) {
+    		void insert(iterator position, size_type n, const value_type& val) {
 				size_type idx = position - begin();
 	            while (_capacity < _size + n)
 	            	reserve(_capacity * 2);
@@ -231,7 +232,7 @@ namespace ft {
     		}
 
 			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type * = 0) {
+			void insert(iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type * = 0) {
 				size_type n = last - first;
 				size_type idx = position - begin();
 	            while (_capacity < _size + n)
@@ -242,7 +243,7 @@ namespace ft {
 	            	_alloc.construct(ptr + i, *first);
 			}
 
-			iterator erase (iterator position) {
+			iterator erase(iterator position) {
 				size_type idx = position - begin();
 	            pointer ptr = _ptr + idx;
 	            std::copy(ptr + 1, _ptr + _size, ptr);
@@ -250,7 +251,7 @@ namespace ft {
 	            return (position);
 			}
 
-			iterator erase (iterator first, iterator last) {
+			iterator erase(iterator first, iterator last) {
 				size_type idx = first - begin();
 				size_type elems = last - first;
 	            pointer ptr = _ptr + idx;
@@ -266,7 +267,7 @@ namespace ft {
 				_size = 0;
 			}
 
-			void swap (vector& x) {
+			void swap(vector& x) {
         		std::swap(_ptr, x._ptr);
             	std::swap(_capacity, x._capacity);
             	std::swap(_size, x._size);
@@ -310,19 +311,19 @@ namespace ft {
 	 * NON-MEMBER FUNCTION OVERLOADS
 	 */
 	template <class T, class Alloc>
-	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator==(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		if (lhs.size() == rhs.size())
-			return (ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+			return (std::equal(lhs.begin(), lhs.end(), rhs.begin()));
 		return (false);
 	}
 
 	template <class T, class Alloc>
-	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator!=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		return (!(lhs == rhs));
 	}
 
 	template <class T, class Alloc>
-	bool operator< (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator<(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		if (lhs.size() == rhs.size()) {
 			for (unsigned long int i = 0; i < lhs.size(); ++i)
 				if (lhs[i] != rhs[i])
@@ -333,7 +334,7 @@ namespace ft {
 	}
 
 	template <class T, class Alloc>
-	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator<=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		if (lhs.size() == rhs.size()) {
 			for (unsigned long int i = 0; i < lhs.size(); ++i)
 				if (lhs[i] != rhs[i])
@@ -344,7 +345,7 @@ namespace ft {
 	}
 
 	template <class T, class Alloc>
-	bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator>(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		if (lhs.size() == rhs.size()) {
 			for (unsigned long int i = 0; i < lhs.size(); ++i)
 				if (lhs[i] != rhs[i])
@@ -355,7 +356,7 @@ namespace ft {
 	}
 
 	template <class T, class Alloc>
-	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
+	bool operator>=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs) {
 		if (lhs.size() == rhs.size()) {
 			for (unsigned long int i = 0; i < lhs.size(); ++i)
 				if (lhs[i] != rhs[i])
@@ -366,7 +367,7 @@ namespace ft {
 	}
 
 	template <class T, class Alloc>
-	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y) {
+	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y) {
 		x.swap(y);
 	}
 }
