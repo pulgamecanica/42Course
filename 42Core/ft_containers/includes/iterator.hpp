@@ -25,6 +25,7 @@ namespace ft {
 
             iterator(const iterator& ref) : _ptr(ref._ptr) {}
 
+
             virtual ~iterator() {}
 
             iterator& operator=(const iterator& ref) {
@@ -101,7 +102,7 @@ namespace ft {
             }
 
             bool operator!=(const iterator& ref) const {
-                return (!(ref == *this));
+                return (!(*this ==  ref));
             }
 
             bool operator<(const iterator& ref) const {

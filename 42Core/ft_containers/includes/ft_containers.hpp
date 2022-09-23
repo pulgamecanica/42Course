@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <vector.hpp>
+#include <map.hpp>
 #include <stdlib.h>
 #include <assert.h>
 
@@ -18,9 +19,5 @@
 # define BLUE	"\033[0;34m"
 # define WHITE	"\033[0;37m"
 # define ENDC	"\033[0m"
-
-#ifndef LINUX
-# define LINUX 0
-#endif
 
 #endif

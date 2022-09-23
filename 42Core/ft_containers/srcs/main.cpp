@@ -23,12 +23,32 @@ void print_vector_status(container::vector<T> &vec) {
 	std::cout << "Empty? " << (vec.empty() ? "YES" : "NO") << std::endl;
 	std::cout << "Content: ";
 	if (vec.size() < 50) {
-		for (container::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it)
+		for (typename container::vector<T>::iterator it = vec.begin(); it != vec.end(); ++it)
 			std::cout << ' ' << *it;
 		std::cout << std::endl;
 	} else {
 		unsigned short int i = 0;
-		for (container::vector<int>::iterator it = vec.begin(); it != vec.end() && i < 20; ++it, ++i)
+		for (typename container::vector<T>::iterator it = vec.begin(); it != vec.end() && i < 20; ++it, ++i)
+			std::cout << ' ' << *it;
+		say(" more than 50 elements....", RED);
+	}
+}
+
+template<class T>
+void print_vector_status(const container::vector<T> &vec) {
+	say("Vector Status", BLUE);
+	std::cout << "Size: " << vec.size() << std::endl;
+	std::cout << "Max Size: " << vec.max_size() << std::endl;
+	std::cout << "Capacity: " << vec.capacity() << std::endl;
+	std::cout << "Empty? " << (vec.empty() ? "YES" : "NO") << std::endl;
+	std::cout << "Content: ";
+	if (vec.size() < 50) {
+		for (typename container::vector<T>::const_iterator it = vec.begin(); it != vec.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << std::endl;
+	} else {
+		unsigned short int i = 0;
+		for (typename container::vector<T>::const_iterator it = vec.begin(); it != vec.end() && i < 20; ++it, ++i)
 			std::cout << ' ' << *it;
 		say(" more than 50 elements....", RED);
 	}
@@ -38,28 +58,179 @@ void test_vector_constructors(void) {
 	say("****************", RED);
 	say("* CONSTRUCTORS *", RED);
 	say("****************", RED);
+	{
+		say("Construct a vector of 100,000 with the value 9", YELLOW);
+		container::vector<int> vec1 (100000, 9);
+		print_vector_status(vec1);
+		say("Construct a vector of 3,000,000 with default value", YELLOW);
+		container::vector<int> vec2 (3000000);
+		print_vector_status(vec2);
+		say("Construct an empty vector", YELLOW);
+		container::vector<int> vec3;
+		print_vector_status(vec3);
+	}
+	{
+		say("Copy Constructor test", YELLOW);
+		container::vector<int> vct(5);
+		container::vector<int>::iterator it = vct.begin(), ite = vct.end();
 
-	say("Construct a vector of 100,000 with the value 9", YELLOW);
-	container::vector<int> vec1 (100000, 9);
-	print_vector_status(vec1);
-	say("Construct a vector of 3,000,000 with default value", YELLOW);
-	container::vector<int> vec2 (3000000);
-	print_vector_status(vec2);
-	say("Construct an empty vector", YELLOW);
-	container::vector<int> vec3;
-	print_vector_status(vec3);
+		std::cout << "len: " << (ite - it) << std::endl;
+		for (; it != ite; ++it)
+			*it = (ite - it);
+
+		it = vct.begin();
+		container::vector<int> vct_range(it, --(--ite));
+		for (int i = 0; it != ite; ++it)
+			*it = ++i * 5;
+
+		it = vct.begin();
+		container::vector<int> vct_copy(vct);
+		for (int i = 0; it != ite; ++it)
+			*it = ++i * 7;
+		vct_copy.push_back(42);
+		vct_copy.push_back(21);
+
+		std::cout << "\t-- PART ONE --" << std::endl;
+		print_vector_status(vct);
+		print_vector_status(vct_range);
+		print_vector_status(vct_copy);
+
+		vct = vct_copy;
+		vct_copy = vct_range;
+		vct_range.clear();
+
+		std::cout << "\t-- PART TWO --" << std::endl;
+		print_vector_status(vct);
+		print_vector_status(vct_range);
+		print_vector_status(vct_copy);
+
+	}
 }
 
+// class Obj {
+// 	public:
+// 		Obj(): _n(0) {}
+// 		Obj(size_t n): _n(n) {}
+// 		size_t m() const {return(_n);}
+// 	private:
+// 		int _n;
+// };
+// std::ostream& operator<<(std::ostream& os, const Obj& obj) {
+// 	os << obj.m() << std::endl;
+//     return os;
+// }
+
 void test_vector_iterators(void) {
-	;
+	say("**************", RED);
+	say("* IITERATORS *", RED);
+	say("**************", RED);
+	{
+		const int size = 5;
+		container::vector<std::string> vct(size);
+		container::vector<std::string>::iterator it(vct.begin());
+		container::vector<std::string>::const_iterator ite(vct.end());
+
+		for (int i = 1; ite != it; ++i)
+			*it++ = std::string(i, i + 65);
+		print_vector_status(vct);
+
+		it = vct.begin();
+		ite = vct.begin();
+
+		std::cout << *(++ite) << std::endl;
+		std::cout << *(ite++) << std::endl;
+		std::cout << *ite++ << std::endl;
+		std::cout << *++ite << std::endl;
+
+		it->length();
+		ite->length();
+
+		std::cout << *(++it) << std::endl;
+		std::cout << *(it++) << std::endl;
+		std::cout << *it++ << std::endl;
+		std::cout << *++it << std::endl;
+
+		std::cout << *(--ite) << std::endl;
+		std::cout << *(ite--) << std::endl;
+		std::cout << *--ite << std::endl;
+		std::cout << *ite-- << std::endl;
+
+		(*it).length();
+		(*ite).length();
+
+		std::cout << *(--it) << std::endl;
+		std::cout << *(it--) << std::endl;
+		std::cout << *it-- << std::endl;
+		std::cout << *--it << std::endl;
+	}
+	{
+		say("Rev iterators", YELLOW);
+		const int size = 5;
+		container::vector<int> vct(size);
+		container::vector<int>::iterator it_ = vct.begin();
+		container::vector<int>::reverse_iterator it(it_);
+
+		for (int i = 0; i < size; ++i)
+			vct[i] = (i + 1) * 5;
+		print_vector_status(vct);
+
+		std::cout << (it_ == it.base()) << std::endl;
+		std::cout << (it_ == (it + 3).base()) << std::endl;
+
+		std::cout << *(it.base() + 1) << std::endl;
+		// std::cout << *(it - 3) << std::endl;
+		std::cout << *(it - 3).base() << std::endl;
+		it -= 3;
+		std::cout << *it.base() << std::endl;
+
+		std::cout << "TEST OFFSET" << std::endl;
+		// std::cout << *(it) << std::endl;
+		std::cout << *(it).base() << std::endl;
+		std::cout << *(it - 0) << std::endl;
+		std::cout << *(it - 0).base() << std::endl;
+		std::cout << *(it - 1).base() << std::endl;
+	}
+	{
+		// const int size = 5;
+		// container::vector<int> vct(size);
+		// container::vector<int>::reverse_iterator it = vct.rbegin();
+		// container::vector<int>::const_reverse_iterator ite = vct.rbegin();
+
+		// for (int i = 0; i < size; ++i)
+		// 	it[i] = (size - i) * 5;
+
+		// it = it + 5;
+		// it = 1 + it;
+		// it = it - 4;
+		// std::cout << *(it += 2) << std::endl;
+		// std::cout << *(it -= 1) << std::endl;
+
+		// *(it -= 2) = 42;
+		// *(it += 2) = 21;
+
+		// std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
+
+		// std::cout << "(it == const_it): " << (ite == it) << std::endl;
+		// std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+		// std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+
+		// print_vector_status(vct);
+	}
+}
+
+
+static void	checkErase(container::vector<std::string> const &vct, container::vector<std::string>::const_iterator const &it) {
+	static int i = 0;
+	std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
+	print_vector_status(vct);
 }
 
 void test_vector_capacity(void) {
+	say("************", RED);
+	say("* CAPACITY *", RED);
+	say("************", RED);	
 	{
-		say("******************************************", RED);
-		say("* RESIZING A VECTOR & RESERVING CAPACITY *", RED);
-		say("******************************************", RED);
-	
+		say("Resizing A VECTOR & RESERVING CAPACITY", YELLOW);
 		container::vector<int> myvector;
 
 		say("Construct a vector [1..9]", YELLOW);
@@ -80,8 +251,36 @@ void test_vector_capacity(void) {
 		say("Add 100000 random elements to see how the vector grows in capacity", YELLOW);
 		for (int i=1;i<100000;i++) myvector.push_back(rand() % i);
 		print_vector_status(myvector);
-	}
 
+	}
+	{
+		say("erase() tests:", YELLOW);
+		container::vector<std::string> vct(10);
+
+		for (unsigned long int i = 0; i < vct.size(); ++i)
+			vct[i] = std::string((vct.size() - i), i + 65);
+		print_vector_status(vct);
+
+		checkErase(vct, vct.erase(vct.begin() + 2));
+
+		checkErase(vct, vct.erase(vct.begin()));
+		checkErase(vct, vct.erase(vct.end() - 1));
+
+		checkErase(vct, vct.erase(vct.begin(), vct.begin() + 3));
+		checkErase(vct, vct.erase(vct.end() - 3, vct.end() - 1));
+
+		vct.push_back("Hello");
+		vct.push_back("Hi there");
+		print_vector_status(vct);
+		checkErase(vct, vct.erase(vct.end() - 3, vct.end()));
+
+		vct.push_back("ONE");
+		vct.push_back("TWO");
+		vct.push_back("THREE");
+		vct.push_back("FOUR");
+		print_vector_status(vct);
+		checkErase(vct, vct.erase(vct.begin(), vct.end()));
+	}
 
 }
 
@@ -89,7 +288,6 @@ void test_vector_element_access(void) {
 	say("******************", RED);
 	say("* ELEMENT ACCESS *", RED);
 	say("******************", RED);
-
 	{
 		say("at() exceptions", YELLOW);
 		container::vector<std::string> myvector;
@@ -106,7 +304,6 @@ void test_vector_element_access(void) {
 			std::cout << RED << e.what() << ENDC << std::endl;
 		}
 	}
-
 	{
 		say("back() & front()", YELLOW);
 		container::vector<int> myvector;
@@ -123,6 +320,38 @@ void test_vector_element_access(void) {
 		myvector.push_back(16);
 		myvector.front() -= myvector.back();
 		std::cout << "myvector.front() is now " << myvector.front() << '\n';
+	}
+	{
+		say("more back() & front()", YELLOW);
+		container::vector<int> vct(7);
+
+		for (unsigned long int i = 0; i < vct.size(); ++i)
+		{
+			vct.at(i) = (vct.size() - i) * 3;
+			std::cout << "vct.at(): " << vct.at(i) << " | ";
+			std::cout << "vct[]: " << vct[i] << std::endl;
+		}
+		print_vector_status(vct);
+
+
+		container::vector<int> const vct_c(vct);
+
+		print_vector_status(vct_c);
+
+		std::cout << "front(): " << vct.front() << " " << vct_c.front() << std::endl;
+		std::cout << "back(): " << vct.back() << " " <<  vct_c.back() << std::endl;
+
+
+		try {
+			vct.at(10) = 42;
+		}
+		catch (std::out_of_range &e) {
+			std::cout << "Catch out_of_range exception!" << std::endl;
+		}
+		catch (std::exception &e) {
+			std::cout << "Catch exception: " << e.what() << std::endl;
+		}
+
 	}
 }
 
@@ -194,6 +423,40 @@ void test_vector_modifiers(void) {
 		for (it=myvector.begin(); it<myvector.end(); it++)
 			std::cout << ' ' << *it;
 		std::cout << '\n';
+
+		say("Insert Test 2", YELLOW);
+		container::vector<int> vct(8);
+		container::vector<int> vct2;
+		container::vector<int> vct3;
+
+		for (unsigned long int i = 0; i < vct.size(); ++i)
+			vct[i] = (vct.size() - i) * 3;
+		print_vector_status(vct);
+
+		vct2.insert(vct2.end(), 42);
+		print_vector_status(vct2);
+		vct2.insert(vct2.begin(), 2, 21);
+		print_vector_status(vct2);
+
+		vct2.insert(vct2.end() - 2, 42);
+		print_vector_status(vct2);
+
+		vct2.insert(vct2.end(), 2, 84);
+		print_vector_status(vct2);
+
+		vct2.resize(4);
+		print_vector_status(vct2);
+
+		vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
+		vct.clear();
+		print_vector_status(vct2);
+
+		print_vector_status(vct);
+
+		for (int i = 0; i < 5; ++i)
+			vct3.insert(vct3.end(), i);
+		vct3.insert(vct3.begin() + 1, 2, 111);
+		print_vector_status(vct3);
 	}
 	{
 		say("Testing erase()", YELLOW);
@@ -238,8 +501,63 @@ void test_vector_modifiers(void) {
 	}
 }
 
+void test_vector_non_member_functions() {
+	say("************************", RED);
+	say("* NON_MEMBER FUNCTIONS *", RED);
+	say("************************", RED);
+	{
+		container::vector<int> foo (3,42);   // three ints with a value of 100
+		container::vector<int> bar (2,42);   // two ints with a value of 200
+
+		if (foo==bar) std::cout << "foo and bar are equal\n";
+		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+		if (foo< bar) std::cout << "foo is less than bar\n";
+		if (foo> bar) std::cout << "foo is greater than bar\n";
+		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+	}
+	say("******************", GREEN);
+	{
+		container::vector<int> foo (3,200);   // three ints with a value of 100
+		container::vector<int> bar (3,200);   // two ints with a value of 200
+
+		if (foo==bar) std::cout << "foo and bar are equal\n";
+		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+		if (foo< bar) std::cout << "foo is less than bar\n";
+		if (foo> bar) std::cout << "foo is greater than bar\n";
+		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+	}
+	say("******************", GREEN);
+	{
+		container::vector<int> foo (3,200);
+		container::vector<int> bar (3,100);
+
+		if (foo==bar) std::cout << "foo and bar are equal\n";
+		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+		if (foo< bar) std::cout << "foo is less than bar\n";
+		if (foo> bar) std::cout << "foo is greater than bar\n";
+		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+	}
+	say("******************", GREEN);
+	{
+		container::vector<int> foo (10,200);
+		container::vector<int> bar (103,42);
+		print_vector_status(foo);
+		print_vector_status(bar);
+
+		if (foo==bar) std::cout << "foo and bar are equal\n";
+		if (foo!=bar) std::cout << "foo and bar are not equal\n";
+		if (foo< bar) std::cout << "foo is less than bar\n";
+		if (foo> bar) std::cout << "foo is greater than bar\n";
+		if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+		if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+	}
+}
+
 int	main(void) {
-	std::cout << "Testing Container -> " << (FT == 0 ? "std" : "ft") << std::endl;
+	// std::cout << "Testing Container -> " << (FT == 0 ? "std" : "ft") << std::endl;
 	say("Pulgamecanica greets you :D Welcome to ft_containers", WHITE);
 	{
 		// container::vector<int> first;                                // empty vector of ints
@@ -264,61 +582,14 @@ int	main(void) {
 			test_vector_capacity();
 			test_vector_element_access(); 
 			test_vector_modifiers();
+			test_vector_non_member_functions();
 		} catch (std::exception &e) {
 			std::cout << RED << e.what() << ENDC << std::endl;
 		}
 	}
 	{
-		say("************************", RED);
-		say("* NON_MEMBER FUNCTIONS *", RED);
-		say("************************", RED);
-		{
-			container::vector<int> foo (3,42);   // three ints with a value of 100
-			container::vector<int> bar (2,42);   // two ints with a value of 200
-
-			if (foo==bar) std::cout << "foo and bar are equal\n";
-			if (foo!=bar) std::cout << "foo and bar are not equal\n";
-			if (foo< bar) std::cout << "foo is less than bar\n";
-			if (foo> bar) std::cout << "foo is greater than bar\n";
-			if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
-			if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
-		}
-		say("******************", GREEN);
-		{
-			container::vector<int> foo (3,200);   // three ints with a value of 100
-			container::vector<int> bar (3,200);   // two ints with a value of 200
-
-			if (foo==bar) std::cout << "foo and bar are equal\n";
-			if (foo!=bar) std::cout << "foo and bar are not equal\n";
-			if (foo< bar) std::cout << "foo is less than bar\n";
-			if (foo> bar) std::cout << "foo is greater than bar\n";
-			if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
-			if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
-		}
-		say("******************", GREEN);
-		{
-			container::vector<int> foo (3,200);   // three ints with a value of 100
-			container::vector<int> bar (3,100);   // two ints with a value of 200
-
-			if (foo==bar) std::cout << "foo and bar are equal\n";
-			if (foo!=bar) std::cout << "foo and bar are not equal\n";
-			if (foo< bar) std::cout << "foo is less than bar\n";
-			if (foo> bar) std::cout << "foo is greater than bar\n";
-			if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
-			if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
-		}
-		say("******************", GREEN);
-		{
-			container::vector<int> foo (10,200);   // three ints with a value of 100
-			container::vector<int> bar (103,42);   // two ints with a value of 200
-
-			if (foo==bar) std::cout << "foo and bar are equal\n";
-			if (foo!=bar) std::cout << "foo and bar are not equal\n";
-			if (foo< bar) std::cout << "foo is less than bar\n";
-			if (foo> bar) std::cout << "foo is greater than bar\n";
-			if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
-			if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
-		}
+		
 	}
+	
 	return (0);
 }
