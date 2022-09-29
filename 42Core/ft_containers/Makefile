@@ -54,6 +54,9 @@ test:		all
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@time ./ft_$(NAME) && ./ft_$(NAME) > ft_log.txt
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
+			@printf "\n$(C_BLUE)DIFF STD && FT $(C_END)\n"
+			@diff ft_log.txt std_log.txt | wc -l && echo "Different lines"
+			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show
 			@$(MAKE) fclean
@@ -65,7 +68,7 @@ clean:
 			@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean: 	clean
-			$(RM) ft_$(NAME) std_$(NAME)
+			$(RM) ft_$(NAME) std_$(NAME) ft_log.txt std_log.txt
 			@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 re: fclean all

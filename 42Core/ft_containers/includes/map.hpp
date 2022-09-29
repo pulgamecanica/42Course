@@ -9,6 +9,7 @@
 // #include "lexicographical_compare.hpp"
 // #include "enable_if.hpp"
 // #include "equal.hpp"
+#include "pair.hpp"
 
 #ifndef LINUX
 # define LINUX 0

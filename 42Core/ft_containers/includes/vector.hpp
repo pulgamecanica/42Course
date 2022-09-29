@@ -78,7 +78,7 @@ namespace ft {
 				_capacity = 0;
 			}
 			/*
-			 * ITERATORS 
+			 * ITERATORS
 			 */
 			iterator begin() {
 				return (iterator(_ptr));
@@ -91,7 +91,7 @@ namespace ft {
 			iterator end() {
 				return (iterator(_ptr + _size));
 			}
-			
+
 			const_iterator end() const {
 				return (const_iterator(_ptr + _size));
 			}
@@ -138,7 +138,7 @@ namespace ft {
 			size_type capacity() const {
 				return (_capacity);
 			}
-			
+
 			bool empty() const {
 				return (_size == 0);
 			}
@@ -188,7 +188,7 @@ namespace ft {
 			reference front() {
 				return (*_ptr);
 			}
-			
+
 			const_reference front() const {
 				return (*_ptr);
 			}
@@ -196,7 +196,7 @@ namespace ft {
 			reference back() {
 				return (*(_ptr + _size - 1));
 			}
-			
+
 			const_reference back() const {
 				return (*(_ptr + _size - 1));
 			}
