@@ -556,6 +556,58 @@ void test_vector_non_member_functions() {
 	}
 }
 
+// void test_map_constructors() {
+// 	say("****************", RED);
+// 	say("* CONSTRUCTORS *", RED);
+// 	say("****************", RED);
+// 	{
+// 		say("Construct an empty vector", YELLOW);
+// 		std::map<char,int> mymap;
+// 		say("Insert Values", YELLOW);
+// 		mymap['b'] = 100;
+// 		mymap['a'] = 200;
+// 		mymap['c'] = 300;
+// 		for (std::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+//     		std::cout << it->first << " => " << it->second << std::endl;
+// 	}
+// }
+
+void bt_test(void) {
+	say("****************", RED);
+	say("* Testing PAIR *", RED);
+	say("****************", RED);
+	container::pair<int, char> pair;
+	pair = container::make_pair(999, 'a');
+	std::cout << pair.first << ", " << pair.second << std::endl;
+	say("****************", RED);
+	say("* Testing NODE *", RED);
+	say("****************", RED);
+	ft::Node<ft::pair<int, char> > *root = new ft::Node<ft::pair<int, char> >(ft::make_pair(999, 'a'));
+	ft::Node<ft::pair<int, char> > *child1 = new ft::Node<ft::pair<int, char> >(ft::make_pair(1, 'z'));
+	ft::Node<ft::pair<int, char> > *child2 = new ft::Node<ft::pair<int, char> >(ft::make_pair(4999, 'y'));
+	root->put_left(child1);
+	root->put_right(child2);
+	root->display(root);
+
+	// ft::RedBlackTree<ft::pair<int, char> > rbt;
+	// ft::pair<int, char> p1 = ft::make_pair(9, 'a');
+	// ft::pair<int, char> p2 = ft::make_pair(2, 'b');
+	// ft::pair<int, char> p3 = ft::make_pair(3, 'c');
+	// ft::pair<int, char> p4 = ft::make_pair(4, 'd');
+	// ft::pair<int, char> p5 = ft::make_pair(5, 'e');
+	// rbt.insert(p1);
+	// rbt.insert(p2);
+	// rbt.insert(p2);
+	// rbt.insert(p3);
+	// rbt.insert(p4);
+	// rbt.insert(p5);
+	// rbt.displayRBT();
+	// (void)rbt;
+	delete(root);
+	delete(child1);
+	delete(child2);
+}
+
 int	main(void) {
 	// std::cout << "Testing Container -> " << (FT == 0 ? "std" : "ft") << std::endl;
 	say("Pulgamecanica greets you :D Welcome to ft_containers", WHITE);
@@ -588,7 +640,8 @@ int	main(void) {
 		}
 	}
 	{
-		
+		// test_map_constructors();
+		bt_test();
 	}
 	
 	return (0);

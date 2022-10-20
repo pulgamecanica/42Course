@@ -11,9 +11,14 @@
 // #include "equal.hpp"
 #include "pair.hpp"
 
-#ifndef LINUX
-# define LINUX 0
-#endif
+#include "rbt.hpp"
+
+#ifndef MAP_CPP
+# define MAP_CPP
+
+# ifndef LINUX
+#  define LINUX 0
+# endif
 
 // https://cplusplus.com/reference/map/map/
 // https://cplusplus.com/reference/map/map/map/
@@ -27,7 +32,9 @@ namespace ft {
 	        typedef std::pair<const key_type, mapped_type>			value_type;
 	        typedef Compare											key_compare;
 	        typedef Alloc											allocator_type;
-
+	        
 		private:
 	};
 }
+
+#endif

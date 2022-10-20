@@ -11,6 +11,9 @@
 #include <map.hpp>
 #include <stdlib.h>
 #include <assert.h>
+#include "rbt.hpp"
+#include "node.hpp"
+#include "pair.hpp"
 
 # define BLACK	"\033[0;30m"
 # define RED	"\033[0;31m"
