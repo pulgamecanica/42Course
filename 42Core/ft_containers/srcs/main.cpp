@@ -585,24 +585,60 @@ void bt_test(void) {
 	ft::Node<ft::pair<int, char> > *root = new ft::Node<ft::pair<int, char> >(ft::make_pair(999, 'a'));
 	ft::Node<ft::pair<int, char> > *child1 = new ft::Node<ft::pair<int, char> >(ft::make_pair(1, 'z'));
 	ft::Node<ft::pair<int, char> > *child2 = new ft::Node<ft::pair<int, char> >(ft::make_pair(4999, 'y'));
+	ft::Node<ft::pair<int, char> > *child3 = new ft::Node<ft::pair<int, char> >(ft::make_pair(49929, 'e'));
 	root->put_left(child1);
 	root->put_right(child2);
-	root->display(root);
+	child2->put_right(child3);
+	std::cout << "Size: " << root->size() << " | Height: " << root->height() << std::endl;
+	ft::Node<ft::pair<int, char> >::display(root);
+	say("***************", RED);
+	say("* Testing RBT *", RED);
+	say("***************", RED);
+	ft::RedBlackTree<int> rbt;
+	rbt.insert(9);
+	rbt.insert(1);
+	rbt.insert(10);
+	rbt.insert(99);
+	rbt.insert(100);
+	rbt.insert(0);
+	rbt.insert(3);
+	rbt.insert(4);
+	rbt.displayRBT();
+	say("***************", RED);
+	say("* Find in RBT *", RED);
+	say("***************", RED);
+	ft::Node<int> *res = rbt.find(3);
+	ft::Node<int> *res2 = rbt.find(30);
+	ft::Node<int> *res3 = rbt.find(99);
+	if (res)
+		res->print_node_info();
+	else
+		std::cout<<"\n\t NOT FOUND" << std::endl;
+	if (res2)
+		res2->print_node_info();
+	else
+		std::cout<<"\n\t NOT FOUND" << std::endl;
+	if (res3)
+		res3->print_node_info();
+	else
+		std::cout<<"\n\t NOT FOUND" << std::endl;
+	say("*******************", RED);
+	say("* Remove from RBT *", RED);
+	say("*******************", RED);
+	rbt.erase(4);
+	rbt.displayRBT();
+	say("*******************", RED);
+	say("* Remove from RBT *", RED);
+	say("*******************", RED);
+	rbt.erase(99);
+	rbt.displayRBT();
+	say("*******************", RED);
+	say("* Remove from RBT *", RED);
+	say("*******************", RED);
+	rbt.erase(10);
+	rbt.displayRBT();
 
-	// ft::RedBlackTree<ft::pair<int, char> > rbt;
-	// ft::pair<int, char> p1 = ft::make_pair(9, 'a');
-	// ft::pair<int, char> p2 = ft::make_pair(2, 'b');
-	// ft::pair<int, char> p3 = ft::make_pair(3, 'c');
-	// ft::pair<int, char> p4 = ft::make_pair(4, 'd');
-	// ft::pair<int, char> p5 = ft::make_pair(5, 'e');
-	// rbt.insert(p1);
-	// rbt.insert(p2);
-	// rbt.insert(p2);
-	// rbt.insert(p3);
-	// rbt.insert(p4);
-	// rbt.insert(p5);
-	// rbt.displayRBT();
-	// (void)rbt;
+
 	delete(root);
 	delete(child1);
 	delete(child2);
