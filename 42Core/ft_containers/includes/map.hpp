@@ -21,7 +21,7 @@
 namespace ft {
 
 template < class Key, class Value, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,Value> > >
-class map : public RedBlackTree<const Key, Value, ft::pair<const Key, Value>, Compare, Alloc> {
+class map : public virtual RedBlackTree<const Key, Value, ft::pair<const Key, Value>, Compare, Alloc> {
 	public:
 		typedef RedBlackTree<const Key, Value, ft::pair<const Key, Value>, Compare, Alloc>	BTBase;
 		using typename	BTBase::allocator_type;

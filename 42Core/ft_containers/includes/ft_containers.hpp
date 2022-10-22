@@ -8,6 +8,8 @@
 #include <iostream>
 #include <vector>
 #include <vector.hpp>
+#include <set>
+#include "set.hpp"
 #include <map>
 #include <map.hpp>
 #include <stdlib.h>
