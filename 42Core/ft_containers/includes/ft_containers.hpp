@@ -8,6 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <vector.hpp>
+#include <map>
 #include <map.hpp>
 #include <stdlib.h>
 #include <assert.h>

@@ -3,6 +3,8 @@
 
 # include <cstddef>
 # include <iterator>
+#include "iterator_traits.hpp"
+
 
 // https://stackoverflow.com/questions/6471019/can-should-i-inherit-from-an-stl-reverse_iterator
 // https://cplusplus.com/reference/reverse_iterator/reverse_reverse_iterator/base/
@@ -13,11 +15,11 @@ namespace ft {
     class reverse_iterator {
         public:
             typedef Iterator                                                iterator_type;
-            typedef typename iterator_traits<Iterator>::iterator_category   iterator_category;
-            typedef typename iterator_traits<Iterator>::value_type          value_type;
-            typedef typename iterator_traits<Iterator>::difference_type     difference_type;
-            typedef typename iterator_traits<Iterator>::pointer             pointer;
-            typedef typename iterator_traits<Iterator>::reference           reference;
+            typedef typename ft::iterator_traits<Iterator>::iterator_category   iterator_category;
+            typedef typename ft::iterator_traits<Iterator>::value_type          value_type;
+            typedef typename ft::iterator_traits<Iterator>::difference_type     difference_type;
+            typedef typename ft::iterator_traits<Iterator>::pointer             pointer;
+            typedef typename ft::iterator_traits<Iterator>::reference           reference;
 
             reverse_iterator(): _it() {}
             

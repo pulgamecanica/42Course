@@ -10,6 +10,9 @@
 #include "enable_if.hpp"
 #include "equal.hpp"
 
+#ifndef VECTOR_HPP
+# define VECTOR_HPP
+
 #ifndef LINUX
 # define LINUX 0
 #endif
@@ -359,3 +362,5 @@ namespace ft {
 		x.swap(y);
 	}
 }
+
+#endif

@@ -10,35 +10,48 @@
 # define B_BLACK true
 
 namespace ft {
-    template <typename T>
-    struct Node {
+    template <typename T, class C>
+    class Node {
+    public:
+        typedef T           value_type;
+        typedef T&          value_reference;
+        typedef const T&    const_reference;
+        typedef T*          node_pointer;
+        typedef const T*    const_node_pointer;
+        typedef C           key_compare;
+        
+        explicit Node(value_type const& val = value_type(), bool color = B_RED) :
+            data(val), parent(NULL), left(NULL), right(NULL), color(color) {}
+        
+        Node(const Node& node) :
+            data(node.data), parent(node.parent), left(node.left), right(node.right), color(B_RED) {}
 
-        Node() : parent(NULL), left(NULL), right(NULL), color(B_RED) {}
 
-        Node(const T &data, Node *parent = NULL, Node *left = NULL, Node *right = NULL) : data(data) {
-            this->parent = parent;
-            this->left = left;
-            this->right = right;
-            this->color = B_RED;
+        Node&   operator=(const Node& x) {
+            if (this != &x) {
+                this->data = x.data;
+                this->parent = x.parent;
+                this->left = x.left;
+                this->right = x.right;
+                this->color = x.color;
+            }
+            return *this;
         }
 
-        Node(const Node<T> &rhs) : data(rhs.data) {
-            this->parent = rhs.parent;
-            this->left = rhs.left;
-            this->right = rhs.right;
-        }
+        virtual ~Node() {}
 
-        virtual ~Node() {
+        value_reference getData() { return (data); }
 
-        }
+        bool operator==(const Node& other) { return (this->data == other.data); }
+        bool operator!=(const Node& other) { return (this->data != other.data); }
+        bool operator>(const Node& other)  { return (this->data > other.data); }
+        bool operator<(const Node& other)  { return (this->data < other.data); }
+        bool operator<=(const Node& other) { return (this->data <= other.data); }
+        bool operator>=(const Node& other) { return (this->data >= other.data); }
 
-        T getData() {
-            return (data);
-        }
-
-        static T getData(Node *node) {
-            return (static_cast<Node<T>*>(node)->data);
-        }
+        // static T getData(Node *node) {
+        //     return (static_cast<Node<T>*>(node)->data);
+        // }
 
         /* NULL links are black */
         bool isRed(Node x) {
@@ -46,39 +59,7 @@ namespace ft {
                 return false;
             return x.color == B_RED;
         }
-
-        /* Travell left */
-        Node *min() {
-            Node *node = this;
-
-            while (node->left && node->left->parent)
-                node = node->left;
-            return (node);
-        }
-
-        /*
-        const Node* minimum() const
-        {
-            return const_cast<Node*>(this->minimum());
-        }
-        */
-
-        /* Travell right */
-        Node *max() {
-            Node *node = this;
-
-            while (node->right && node->right->parent)
-                node = node->right;
-            return (node);
-        }
-
-        /*
-        const Node* maximum() const
-        {
-            return const_cast<Node*>(this->maximum());
-        }
-        */
-
+       
         size_t size() const {
             size_t size(1);
             if (this->left && this->left->parent)
@@ -103,68 +84,43 @@ namespace ft {
             return (height);
         }
 
-        /*  * * * * * * * * * * * * * * * * * * * *
-        *
-        * * * * * * * * * * * * * * * * * * * * * *
-        *
-        * * * * * * * * * * * * * * * * * * * * * */
-
-        // void set_parent_child(Node *node) {
-        //     if (this->parent->parent)
-        //     {
-        //         if (this->parent->left == this)
-        //             this->parent->left = node;
-        //         else
-        //             this->parent->right = node;
-        //     }
-        // }
 
         /*  * * * * * * * * * * * * * * * * * * * *
-        *
         *              /
         *            (p)
         *           /   \     (x) <- New
         * Left -> (l)   (r)
         *        /   \
-        *
         * * * * * * * * * * * * * * * * * * * * * *
-        *
         *               (p)
         *              /   \
         *            (l)   (r)  
         *           /   \
         *  New -> (x)
         *        /   \
-        *
         * * * * * * * * * * * * * * * * * * * * * */
         void put_left(Node *node) {
             this->left = node;
             node->parent = this;
         }
-
         /*  * * * * * * * * * * * * * * * * * * * *
-        *
         *            \
         *            (p)           (x) <- New
         *           /   \     
         *         (l)   (r) <- Rigth
         *              /   \
-        *
         * * * * * * * * * * * * * * * * * * * * * *
-        *
         *               (p)
         *              /   \
         *            (l)   (r)
         *                 /   \
         *                     (x) <- New
         *                    /   \
-        *
         * * * * * * * * * * * * * * * * * * * * * */
         void put_right(Node *node) {
             this->right = node;
             node->parent = this;
         }
-
         /*
          * Get the next smaller number
          * - If the node is a red black tree child, then:
@@ -172,17 +128,16 @@ namespace ft {
          *   - For the middle node, the the successor is the second parent.
          *   - For the left node, the successor is the next min node.
          * - If the node is not a red black tree the next successor is just the next min.
-        */
-        // Node *successor() {
-        //     Node* node = this;
+         */
+        Node *successor() {
+            Node* node = this;
 
-        //     if (node->right->parent)
-        //         return (node->right->min());
-        //     while (node->parent->parent && node == node->parent->right)
-        //         node = node->parent;
-        //     return (node->parent);
-        // }
-
+            if (node && node->right && node->right->parent)
+                return (node->right->min());
+            while (node && node->parent && node->parent->parent && node == node->parent->right)
+                node = node->parent;
+            return (node->parent);
+        }
         /*
          * Get the next bigger number
          * - If the node is a red black tree child, then:
@@ -190,82 +145,79 @@ namespace ft {
          *   - For the middle node, the the successor is the second parent.
          *   - For the right node, the successor is the next max node.
          * - If the node is not a red black tree the next successor is just the next max.
-        */
-        // Node *predecessor() {
-        //     Node* node = this;
+         */
+        Node *predecessor() {
+            Node* node = this;
 
-        //     if (node->left->parent)
-        //         return (node->left->max());
-        //     while (node->parent->parent && node == node->parent->left)
-        //         node = node->parent;
-        //     return (node->parent);
-        // }
+            if (node && node->left && node->left->parent)
+                return (node->left->max());
+            while (node && node->parent && node->parent->parent && node == node->parent->left)
+                node = node->parent;
+            return (node->parent);
+        }
         
-        static void display(Node *p){
+        void display() {
+            display(this);
+        }
+
+        void display(Node *p){
             if(p!=NULL) {
-                std::cout<<"\n\t NODE: ";
-                std::cout<<"\n Key: "<<p->data;
-                std::cout<<"\n Colour: ";
-                if(p->color==B_BLACK)
-                    std::cout<<"Black";
-                else
-                    std::cout<<"Red";
-                if(p->parent!=NULL)
-                    std::cout<<"\n Parent: "<<p->parent->data;
-                else
-                    std::cout<<"\n There is no parent of the node.  ";
-                if(p->right!=NULL)
-                    std::cout<<"\n Right Child: "<<p->right->data;
-                else
-                    std::cout<<"\n There is no right child of the node.  ";
-                if(p->left!=NULL)
-                    std::cout<<"\n Left Child: "<<p->left->data;
-                else
-                    std::cout<<"\n There is no left child of the node.  ";
-                std::cout<<std::endl;
+                p->print_node_info();
                 if(p->left) {
-                    std::cout<<"\n\nLeft:\n";
+                    std::cout << "\n\nLeft:\n";
                     display(p->left);
                 }
-                /*else
-                cout<<"\nNo Left Child.\n";*/
                 if(p->right) {
-                    std::cout<<"\n\nRight:\n";
+                    std::cout << "\n\nRight:\n";
                     display(p->right);
                 }
-            /*else
-                cout<<"\nNo Right Child.\n"*/
             }
         }
 
         void print_node_info() {
-            std::cout<<"\n\t FOUND NODE: ";
-            std::cout<<"\n Key: "<<data;
-            std::cout<<"\n Colour: ";
-            if(color=='b')
-                std::cout<<"Black";
+            std::cout << "\n\t NODE: ";
+            std::cout << "\n Key: "<<data;
+            std::cout << "\n Color: " << ((color) ? "Black" : "Red");
+            if(parent != NULL)
+                std::cout << "\n Parent: " << parent->data;
             else
-                std::cout<<"Red";
-            if(parent!=NULL)
-                std::cout<<"\n Parent: "<<parent->data;
+                std::cout << "\n There is no parent of the node.  ";
+            if(right != NULL)
+                std::cout << "\n Right Child: " << right->data;
             else
-                std::cout<<"\n There is no parent of the node.  ";
-            if(right!=NULL)
-                std::cout<<"\n Right Child: "<<right->data;
+                std::cout << "\n There is no right child of the node.  ";
+            if(left != NULL)
+                std::cout << "\n Left Child: " << left->data;
             else
-                std::cout<<"\n There is no right child of the node.  ";
-            if(left!=NULL)
-                std::cout<<"\n Left Child: "<<left->data;
-            else
-                std::cout<<"\n There is no left child of the node.  ";
-            std::cout<<std::endl;
+                std::cout << "\n There is no left child of the node.  ";
+            std::cout << std::endl;
         }
+
+        /* Travell left */
+        Node *min() {
+            Node *node = this;
+
+            while (node->left && node->left->parent)
+                node = node->left;
+            return (node);
+        }
+
+        /* Travell right */
+        Node *max() {
+            Node *node = this;
+
+            while (node->right && node->right->parent)
+                node = node->right;
+            return (node);
+        }
+
         T data;
         Node *parent, *left, *right;
         bool color;
     };
-    template <typename T>
-    std::ostream&   operator<<(std::ostream& s, const Node<T>& node) {
+
+    template <typename T, class C>
+    std::ostream&   operator<<(std::ostream& s, const Node<T, C>& node) {
         return (s << node.data);
     }
 }

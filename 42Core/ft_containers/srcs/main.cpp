@@ -582,89 +582,389 @@ void bt_test(void) {
 	say("****************", RED);
 	say("* Testing NODE *", RED);
 	say("****************", RED);
-	ft::Node<ft::pair<int, char> > *root = new ft::Node<ft::pair<int, char> >(ft::make_pair(999, 'a'));
-	ft::Node<ft::pair<int, char> > *child1 = new ft::Node<ft::pair<int, char> >(ft::make_pair(1, 'z'));
-	ft::Node<ft::pair<int, char> > *child2 = new ft::Node<ft::pair<int, char> >(ft::make_pair(4999, 'y'));
-	ft::Node<ft::pair<int, char> > *child3 = new ft::Node<ft::pair<int, char> >(ft::make_pair(49929, 'e'));
+	ft::Node<ft::pair<int, char>, std::less<int> > *root = new ft::Node<ft::pair<int, char>, std::less<int> >(ft::make_pair(999, 'a'));
+	ft::Node<ft::pair<int, char>, std::less<int> > *child1 = new ft::Node<ft::pair<int, char>, std::less<int> >(ft::make_pair(1, 'z'));
+	ft::Node<ft::pair<int, char>, std::less<int> > *child2 = new ft::Node<ft::pair<int, char>, std::less<int> >(ft::make_pair(4999, 'y'));
+	ft::Node<ft::pair<int, char>, std::less<int> > *child3 = new ft::Node<ft::pair<int, char>, std::less<int> >(ft::make_pair(49929, 'e'));
 	root->put_left(child1);
 	root->put_right(child2);
 	child2->put_right(child3);
 	std::cout << "Size: " << root->size() << " | Height: " << root->height() << std::endl;
-	ft::Node<ft::pair<int, char> >::display(root);
+	root->display();
 	say("***************", RED);
 	say("* Testing RBT *", RED);
 	say("***************", RED);
-	ft::RedBlackTree<int> rbt;
-	rbt.insert(9);
-	rbt.insert(1);
-	rbt.insert(10);
-	rbt.insert(99);
-	rbt.insert(100);
-	rbt.insert(0);
-	rbt.insert(3);
-	rbt.insert(4);
+	ft::RedBlackTree<int, char, ft::pair<int, char> > rbt;
+	say("***************", RED);
+	say("* Testing Map *", RED);
+	say("***************", RED);
+	// rbt.insert(9);
+	// rbt.insert(1);
+	// rbt.insert(10);
+	// rbt.insert(99);
+	// rbt.insert(100);
+	// rbt.insert(130);
+	// rbt.insert(0);
+	// rbt.insert(3);
+	// rbt.insert(4);
 	rbt.displayRBT();
+	say("************", RED);
+	say("* Copy RBT *", RED);
+	say("************", RED);
+	// ft::RedBlackTree<int, char, ft::pair<int, char> > tmp;
+	// tmp = rbt;
 	say("***************", RED);
 	say("* Find in RBT *", RED);
 	say("***************", RED);
-	ft::Node<int> *res = rbt.find(3);
-	ft::Node<int> *res2 = rbt.find(30);
-	ft::Node<int> *res3 = rbt.find(99);
-	if (res)
-		res->print_node_info();
-	else
-		std::cout<<"\n\t NOT FOUND" << std::endl;
-	if (res2)
-		res2->print_node_info();
-	else
-		std::cout<<"\n\t NOT FOUND" << std::endl;
-	if (res3)
-		res3->print_node_info();
-	else
-		std::cout<<"\n\t NOT FOUND" << std::endl;
-	say("*******************", RED);
-	say("* Remove from RBT *", RED);
-	say("*******************", RED);
-	rbt.erase(4);
-	rbt.displayRBT();
-	say("*******************", RED);
-	say("* Remove from RBT *", RED);
-	say("*******************", RED);
-	rbt.erase(99);
-	rbt.displayRBT();
-	say("*******************", RED);
-	say("* Remove from RBT *", RED);
-	say("*******************", RED);
-	rbt.erase(10);
-	rbt.displayRBT();
+	// ft::Node<int, std::less<int> > *res = rbt.find(3);
+	// ft::Node<int, std::less<int> > *res2 = rbt.find(30);
+	// ft::Node<int, std::less<int> > *res3 = rbt.find(99);
+	// if (res)
+	// 	res->print_node_info();
+	// else
+	// 	std::cout<<"\n\t NOT FOUND" << std::endl;
+	// if (res2)
+	// 	res2->print_node_info();
+	// else
+	// 	std::cout<<"\n\t NOT FOUND" << std::endl;
+	// if (res3)
+	// 	res3->print_node_info();
+	// else
+	// 	std::cout<<"\n\t NOT FOUND" << std::endl;
+	// say("*******************", RED);
+	// say("* Remove from RBT *", RED);
+	// say("*******************", RED);
+	// rbt.erase(4);
+	// rbt.displayRBT();
+	// say("*******************", RED);
+	// say("* Remove from RBT *", RED);
+	// say("*******************", RED);
+	// rbt.erase(99);
+	// rbt.displayRBT();
+	// say("*******************", RED);
+	// say("* Remove from RBT *", RED);
+	// say("*******************", RED);
+	// rbt.erase(10);
+	// rbt.displayRBT();
+	// say("****************", RED);
+	// say("* Iterator RBT *", RED);
+	// say("****************", RED);
+	ft::RedBlackTree<int, char, ft::pair<int, char> >::iterator it = rbt.begin();;
 
-
+	for (; it != rbt.end(); it++) {
+		std::cout << *it << ", ";
+	}
+	std::cout << *it << std::endl;
 	delete(root);
 	delete(child1);
 	delete(child2);
 }
 
+bool fncomp (char lhs, char rhs) {return lhs<rhs;}
+
+struct classcomp {
+	bool operator() (const char& lhs, const char& rhs) const
+	{return lhs<rhs;}
+};
+
+void test_map_constructors() {
+	container::map<char,int> first;
+
+	first['a']=10;
+	first['b']=30;
+	first['c']=50;
+	first['d']=70;
+
+
+	container::map<char,int> second (first.begin(),first.end());
+
+	container::map<char,int> third (second);
+
+	container::map<char,int,classcomp> fourth;                 // class as Compare
+
+	bool(*fn_pt)(char,char) = fncomp;
+	container::map<char,int,bool(*)(char,char)> fifth (fn_pt); // function pointer as Compare
+}
+
+void test_map_iterators() {
+ 	say("*****************", RED);
+	say("* Map iterators *", RED);
+	say("*****************", RED);
+	{
+		say("*******************", RED);
+		say("* Map begin & end *", RED);
+		say("*******************", RED);
+		container::map<char,int> mymap;
+
+		mymap['b'] = 100;
+		mymap['a'] = 200;
+		mymap['c'] = 300;
+
+		// show content:
+		for (container::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+	}
+	{
+		say("*********************", RED);
+		say("* Map rbegin & rend *", RED);
+		say("*********************", RED);
+		container::map<char,int> mymap;
+
+		mymap['x'] = 100;
+  		mymap['y'] = 200;
+  		mymap['z'] = 300;
+
+		container::map<char,int>::reverse_iterator rit;
+  		for (rit=mymap.rbegin(); rit!=mymap.rend(); ++rit)
+    		std::cout << rit->first << " => " << rit->second << '\n';
+	}
+}
+
+void test_map_capacity() {
+	say("****************", RED);
+	say("* Map capacity *", RED);
+	say("****************", RED);
+	{
+		say("************", RED);
+		say("* Empty *", RED);
+		say("************", RED);
+		container::map<char,int> mymap;
+
+		mymap['a']=10;
+		mymap['b']=20;
+		mymap['c']=30;
+
+		while (!mymap.empty())
+		{
+		std::cout << mymap.begin()->first << " => " << mymap.begin()->second << '\n';
+		mymap.erase(mymap.begin());
+		}
+	}
+	{
+		say("****************", RED);
+		say("* EXTREME Size *", RED);
+		say("****************", RED);
+		std::map<int,char> mymap;
+
+		size_t num = 100000;
+		for(size_t x=0;x<num;x++) {
+			size_t random = 100000 + (rand() % 9000000);
+	  		mymap[random] = random % 128;
+	  		mymap[random] = random % 128;
+			mymap[random] = random % 128;
+		}
+		std::cout << "mymap.size() is " << mymap.size() << '\n';
+	}
+	{
+		say("************", RED);
+		say("* Max Size *", RED);
+		say("************", RED);
+		int i;
+		container::map<int,int> mymap;
+
+		if (mymap.max_size()>1000) {
+			for (i=0; i<1000; i++) mymap[i]=0;
+				std::cout << "The map contains 1000 elements.\n";
+		}
+		else
+			std::cout << "The map could not hold 1000 elements.\n";
+	}
+}
+
+void test_map_element_access() {
+	say("******************", RED);
+	say("* Element Access *", RED);
+	say("******************", RED);
+	{
+		say("**************", RED);
+		say("* operator[] *", RED);
+		say("**************", RED);
+
+		container::map<char,std::string> mymap;
+
+		mymap['a']="an element";
+		mymap['b']="another element";
+		mymap['c']=mymap['b'];
+
+		std::cout << "mymap['a'] is " << mymap['a'] << '\n';
+		std::cout << "mymap['b'] is " << mymap['b'] << '\n';
+		std::cout << "mymap['c'] is " << mymap['c'] << '\n';
+		std::cout << "mymap['d'] is " << mymap['d'] << '\n';
+
+		std::cout << "mymap now contains " << mymap.size() << " elements.\n";
+	}
+	{
+		say("******", RED);
+		say("* at *", RED);
+		say("******", RED);	
+		container::map<std::string,int> mymap;
+
+        mymap["alpha"] = 0;
+        mymap["beta"] = 0;
+        mymap["gamma"] = 0; 
+
+		mymap.at("alpha") = 10;
+		mymap.at("beta") = 20;
+		mymap.at("gamma") = 30;
+
+		for (container::map<std::string,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+	}
+}
+
+void test_map_modifiers() {
+	say("*************", RED);
+	say("* Modifiers *", RED);
+	say("*************", RED);
+	{
+		say("**********", RED);
+		say("* Insert *", RED);
+		say("**********", RED);
+		container::map<char,int> mymap;
+
+		// first insert function version (single parameter):
+		mymap.insert ( container::pair<char,int>('a',100) );
+		mymap.insert ( container::pair<char,int>('z',200) );
+
+		container::pair<container::map<char,int>::iterator,bool> ret;
+		ret = mymap.insert ( container::pair<char,int>('z',500) );
+		if (ret.second==false) {
+		std::cout << "element 'z' already existed";
+		std::cout << " with a value of " << ret.first->second << '\n';
+		}
+
+		// second insert function version (with hint position):
+		container::map<char,int>::iterator it = mymap.begin();
+		mymap.insert (it, container::pair<char,int>('b',300));  // max efficiency inserting
+		mymap.insert (it, container::pair<char,int>('c',400));  // no max efficiency inserting
+
+		// third insert function version (range insertion):
+		container::map<char,int> anothermap;
+		anothermap.insert(mymap.begin(),mymap.find('c'));
+
+		// showing contents:
+		std::cout << "mymap contains:\n";
+		for (it=mymap.begin(); it!=mymap.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+
+		std::cout << "anothermap contains:\n";
+		for (it=anothermap.begin(); it!=anothermap.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+	}
+	{
+		say("**********", RED);
+		say("* Erase *", RED);
+		say("**********", RED);
+		container::map<char,int> mymap;
+		container::map<char,int>::iterator it;
+
+		// insert some values:
+		mymap['a']=10;
+		mymap['b']=20;
+		mymap['c']=30;
+		mymap['d']=40;
+		mymap['e']=50;
+		mymap['f']=60;
+
+		it=mymap.find('b');
+		mymap.erase (it);                   // erasing by iterator
+
+		mymap.erase ('c');                  // erasing by key
+
+		it=mymap.find ('e');
+		mymap.erase ( it, mymap.end() );    // erasing by range
+
+		// show content:
+		for (it=mymap.begin(); it!=mymap.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+	}
+	{
+		say("********", RED);
+		say("* Swap *", RED);
+		say("********", RED);
+ 		container::map<char,int> foo,bar;
+
+		foo['x']=100;
+		foo['y']=200;
+
+		bar['a']=11;
+		bar['b']=22;
+		bar['c']=33;
+
+		foo.swap(bar);
+
+		std::cout << "foo contains:\n";
+		for (container::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+
+		std::cout << "bar contains:\n";
+		for (container::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+	}
+	{
+		say("********", RED);
+		say("* Clear *", RED);
+		say("********", RED);
+		container::map<char,int> mymap;
+
+		mymap['x']=100;
+		mymap['y']=200;
+		mymap['z']=300;
+
+		std::cout << "mymap contains:\n";
+		for (container::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+
+		mymap.clear();
+		mymap['a']=1101;
+		mymap['b']=2202;
+
+		std::cout << "mymap contains:\n";
+		for (container::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+			std::cout << it->first << " => " << it->second << '\n';
+	}
+}
+
+void test_map_non_member_functions() {
+	say("**************", RED);
+	say("* NON_MEMBER *", RED);
+	say("**************", RED);
+	container::map<char,int> foo,bar;
+	foo['a']=100;
+	foo['b']=200;
+	bar['a']=10;
+	bar['z']=1000;
+
+	// foo ({{a,100},{b,200}}) vs bar ({a,10},{z,1000}}):
+	if (foo==bar) std::cout << "foo and bar are equal\n";
+	if (foo!=bar) std::cout << "foo and bar are not equal\n";
+	if (foo< bar) std::cout << "foo is less than bar\n";
+	if (foo> bar) std::cout << "foo is greater than bar\n";
+	if (foo<=bar) std::cout << "foo is less than or equal to bar\n";
+	if (foo>=bar) std::cout << "foo is greater than or equal to bar\n";
+}
+
 int	main(void) {
+	srand(0);
 	// std::cout << "Testing Container -> " << (FT == 0 ? "std" : "ft") << std::endl;
 	say("Pulgamecanica greets you :D Welcome to ft_containers", WHITE);
 	{
-		// container::vector<int> first;                                // empty vector of ints
-		// container::vector<int> second (4,100);                       // four ints with value 100
-		// container::vector<int> third (second.begin(),second.end());  // iterating through second
-		// container::vector<int> fourth (third);                       // a copy of third
+		container::vector<int> first;                                // empty vector of ints
+		container::vector<int> second (4,100);                       // four ints with value 100
+		container::vector<int> third (second.begin(),second.end());  // iterating through second
+		container::vector<int> fourth (third);                       // a copy of third
 
-		// // the iterator constructor can also be used to construct from arrays:
-		// int myints[] = {16,2,77,29};
-		// container::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
+		// the iterator constructor can also be used to construct from arrays:
+		int myints[] = {16,2,77,29};
+		container::vector<int> fifth (myints, myints + sizeof(myints) / sizeof(int) );
 
-		// std::cout << "The contents of fifth are [";
-		// for (container::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
-		// 	std::cout << ' ' << *it;
-		// std::cout << " ]\n";
+		std::cout << "The contents of fifth are [";
+		for (container::vector<int>::iterator it = fifth.begin(); it != fifth.end(); ++it)
+			std::cout << ' ' << *it;
+		std::cout << " ]\n";
 	}
 	{
 		try {
-			srand(0);
 			test_vector_constructors();
 			test_vector_iterators();
 			test_vector_capacity();
@@ -676,9 +976,157 @@ int	main(void) {
 		}
 	}
 	{
-		// test_map_constructors();
-		bt_test();
+		try {
+			bt_test();
+			test_map_constructors();
+			test_map_iterators();
+			test_map_capacity();
+			test_map_element_access(); 
+			test_map_modifiers();
+			test_map_non_member_functions();
+		} catch (std::exception &e) {
+			std::cout << RED << e.what() << ENDC << std::endl;
+		}
 	}
 	
 	return (0);
 }
+
+
+
+
+
+
+/*
+ * INTRA 42 TESTS
+ */
+
+
+
+// #include <iostream>
+// #include <string>
+// #include <deque>
+// #if FT //CREATE A REAL STL EXAMPLE
+// 	#include <map>
+// 	#include <stack>
+// 	#include <vector>
+// 	namespace ft = std;
+// #else
+// 	#include <../includes/map.hpp>
+// 	#include <../includes/stack.hpp>
+// 	#include <../includes/vector.hpp>
+// #endif
+
+// #include <stdlib.h>
+
+// #define MAX_RAM 4294967296
+// #define BUFFER_SIZE 4096
+// struct Buffer
+// {
+// 	int idx;
+// 	char buff[BUFFER_SIZE];
+// };
+
+
+// #define COUNT (MAX_RAM / (int)sizeof(Buffer))
+
+// template<typename T>
+// class MutantStack : public ft::stack<T>
+// {
+// public:
+// 	MutantStack() {}
+// 	MutantStack(const MutantStack<T>& src) { *this = src; }
+// 	MutantStack<T>& operator=(const MutantStack<T>& rhs) 
+// 	{
+// 		this->c = rhs.c;
+// 		return *this;
+// 	}
+// 	~MutantStack() {}
+
+// 	typedef typename ft::stack<T>::container_type::iterator iterator;
+
+// 	iterator begin() { return this->c.begin(); }
+// 	iterator end() { return this->c.end(); }
+// };
+
+// int main(int argc, char** argv) {
+// 	if (argc != 2)
+// 	{
+// 		std::cerr << "Usage: ./test seed" << std::endl;
+// 		std::cerr << "Provide a seed please" << std::endl;
+// 		std::cerr << "Count value:" << COUNT << std::endl;
+// 		return 1;
+// 	}
+// 	const int seed = atoi(argv[1]);
+// 	srand(seed);
+
+// 	ft::vector<std::string> vector_str;
+// 	ft::vector<int> vector_int;
+// 	ft::stack<int> stack_int;
+// 	ft::vector<Buffer> vector_buffer;
+// 	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
+// 	ft::map<int, int> map_int;
+
+// 	for (int i = 0; i < COUNT; i++)
+// 	{
+// 		vector_buffer.push_back(Buffer());
+// 	}
+
+// 	for (int i = 0; i < COUNT; i++)
+// 	{
+// 		const int idx = rand() % COUNT;
+// 		vector_buffer[idx].idx = 5;
+// 	}
+// 	ft::vector<Buffer>().swap(vector_buffer);
+
+// 	try
+// 	{
+// 		for (int i = 0; i < COUNT; i++)
+// 		{
+// 			const int idx = rand() % COUNT;
+// 			vector_buffer.at(idx);
+// 			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
+// 		}
+// 	}
+// 	catch(const std::exception& e)
+// 	{
+// 		//NORMAL ! :P
+// 	}
+	
+// 	for (int i = 0; i < COUNT; ++i)
+// 	{
+// 		map_int.insert(ft::make_pair(rand(), rand()));
+// 	}
+
+// 	int sum = 0;
+// 	for (int i = 0; i < 10000; i++)
+// 	{
+// 		int access = rand();
+// 		sum += map_int[access];
+// 	}
+// 	std::cout << "should be constant with the same seed: " << sum << std::endl;
+
+// 	{
+// 		ft::map<int, int> copy = map_int;
+// 	}
+// 	MutantStack<char> iterable_stack;
+// 	for (char letter = 'a'; letter <= 'z'; letter++)
+// 		iterable_stack.push(letter);
+// 	for (MutantStack<char>::iterator it = iterable_stack.begin(); it != iterable_stack.end(); it++)
+// 	{
+// 		std::cout << *it;
+// 	}
+// 	std::cout << std::endl;
+// 	return (0);
+// }
+
+
+
+
+
+
+
+
+
+
+
