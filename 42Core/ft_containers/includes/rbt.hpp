@@ -112,11 +112,11 @@ namespace ft {
 
         /* Modifiers */
         virtual void        erase(iterator position) {
-            btnode *erase = findbyiterator(position);
+            node_pointer erase = findbyiterator(position);
             if (erase == _last)
                 return ;
             RedBlackDelete(erase);
-            // delete(erase);
+            delete(erase);
             --_size;
         }
         virtual size_type   erase(const key_type& k) {
@@ -126,10 +126,12 @@ namespace ft {
             erase(it);
             return 1;
         }
-        virtual void        erase(iterator first, iterator last) {
-            while (first != last) {
+        virtual void erase(iterator first, iterator last) {
+            iterator tmp = first;
+            while (tmp != last) {
+                tmp++;
                 erase(first);
-                first++;
+                first = tmp;
             }
         }
 

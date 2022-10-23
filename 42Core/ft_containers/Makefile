@@ -7,7 +7,7 @@ NAME	=	containers
 
 SRC	=	$(wildcard srcs/*.cpp)
 
-CFLAGS	=	-Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address
 
 INC	=	-I includes
 

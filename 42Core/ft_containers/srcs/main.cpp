@@ -658,6 +658,7 @@ void bt_test(void) {
 	delete(root);
 	delete(child1);
 	delete(child2);
+	delete(child3);
 }
 
 bool fncomp (char lhs, char rhs) {return lhs<rhs;}
@@ -865,7 +866,7 @@ void test_map_modifiers() {
 		mymap['d']=40;
 		mymap['e']=50;
 		mymap['f']=60;
-
+		
 		it=mymap.find('b');
 		mymap.erase (it);                   // erasing by iterator
 
