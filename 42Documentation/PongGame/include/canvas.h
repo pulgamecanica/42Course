@@ -29,14 +29,14 @@
 #  define KEY_W 13
 #  define KEY_S 1
 # else
-#  define ESC
-#  define ENTER
-#  define HELP
-#  define PAUSE
-#  define UP
-#  define DOWN
-#  define KEY_W
-#  define KEY_S
+#  define ESC 65307
+#  define ENTER 65293
+#  define HELP 4
+#  define PAUSE 112
+#  define UP 65362
+#  define DOWN 65364
+#  define KEY_W 119
+#  define KEY_S 115
 # endif
 
 typedef struct s_win
