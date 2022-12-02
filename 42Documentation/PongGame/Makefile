@@ -15,8 +15,9 @@ ifeq ($(UNAME), Darwin)
 else ifeq ($(UNAME), FreeBSD)
 	CC = clang
 else
-	CC = clang
-	LFLAGS += -lbsd -lft-lXext -lX11 -lm
+	CC = gcc
+	CFLAGS += -D LINUX
+	LFLAGS += -lbsd -lXext -lX11 -lm
 endif
 
 all: $(NAME) show

@@ -61,10 +61,10 @@ int	main(void)
 	}
 	{
 		// mlx_key_hook(win.win_ptr, read_keys, &game);
-		mlx_hook(win.win_ptr, 2, 0,  key_pressed, &game);
-		mlx_hook(win.win_ptr, 3, 0,  key_released, &game);
+		mlx_hook(win.win_ptr, 2, 1L<<0,  key_pressed, &game);
+		mlx_hook(win.win_ptr, 3, 1L<<1,  key_released, &game);
 		mlx_loop_hook(win.mlx_ptr, update, &game);
-		mlx_hook(win.win_ptr, 17, 0, exit_game, &win);
+		mlx_hook(win.win_ptr, 17, 0, exit_game, &game.img);
 	}
 	mlx_loop(win.mlx_ptr);
 	return (0);
