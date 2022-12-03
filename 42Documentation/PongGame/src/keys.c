@@ -72,5 +72,8 @@ int	key_pressed(int key_pressed, void *param)
 		game->pause = !game->pause;
 		pause_panel(game);
 	}
+	else if (key_pressed == ENTER) {
+		game->party = !game->party;
+	}
 	return execute_action(key_pressed, game, true);
 }

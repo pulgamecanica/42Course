@@ -66,6 +66,7 @@ typedef struct s_game
 	t_ball		ball;
 	t_list		**powers;
 	t_bool		pause;
+	t_bool		party;
 	t_bool		over;
 	t_img		img;
 	t_actions	actions;
