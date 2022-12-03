@@ -46,12 +46,18 @@ static int execute_action(int key, t_game *game, t_bool action)
 	return (1);
 }
 
+static void pause_panel(t_game *game) {
+	if (game->pause)
+	{
+		mlx_string_put(game->img.win.mlx_ptr, game->img.win.win_ptr, game->img.w / 2 - 15, game->img.h / 2, 0x0fff, "Pause");
+	}
+}
+
 int	key_released(int key_released, void *param)
 {
 	t_game	*game;
 
 	game = (t_game *)param;
-	printf("Released: %d\n", key_released);
 	return execute_action(key_released, game, false);
 }
 
@@ -60,10 +66,11 @@ int	key_pressed(int key_pressed, void *param)
 	t_game	*game;
 
 	game = (t_game *)param;
-	printf("Pressed: %d\n", key_pressed);
 	if (key_pressed == ESC || !game->img.img_ptr)
-		exit_game(&game->img);
-	else if (key_pressed == PAUSE)
+		exit_game(game);
+	else if (key_pressed == PAUSE) {
 		game->pause = !game->pause;
+		pause_panel(game);
+	}
 	return execute_action(key_pressed, game, true);
 }

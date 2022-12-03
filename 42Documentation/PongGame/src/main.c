@@ -12,6 +12,8 @@
 
 #include <time.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
 #include "canvas.h"
 #include "game.h"
 
@@ -40,20 +42,68 @@
 // I suggest you to avoid *alloc functions
 /**************************************************************************/
 
+#define WIDTH 1400
+#define HEIGHT 800
+#define TILE_SIZE 10
+
+pthread_mutex_t *powers_mutex;
+
+static void	*routine(void *arg)
+{
+	int sleep_time;
+	t_game *game;
+
+	game = (t_game *)arg;
+	if (game->over)
+		return (arg);
+	sleep_time = 1000000;
+	sleep_time += rand() % 10000000 + 3000000;
+	printf("Waiting %d seconds for next power\n", sleep_time / 1000000);
+	usleep(sleep_time);
+	pthread_mutex_lock(powers_mutex);
+	ft_lstadd_front(game->powers, ft_lstnew(init_power(game)));
+    pthread_mutex_unlock(powers_mutex);
+    routine(arg);
+    return (arg);
+}
+
+static void powers_thread(t_game *game)
+{
+	int fail;
+	pthread_t *thread;
+	
+	thread = (pthread_t *)ft_calloc(sizeof(pthread_t), 1);
+	if (!thread)
+		return;
+	powers_mutex = (pthread_mutex_t *)ft_calloc(sizeof(pthread_mutex_t), 1);
+	if (!powers_mutex)
+	{
+		free(thread);
+		return ;
+	}
+
+	pthread_mutex_init(powers_mutex, NULL);
+	fail = pthread_create(thread , NULL, &routine, game);
+	if (fail)
+		return ;
+}
+
 int	main(void)
 {
 	t_win	win;
 	t_img	img;
 	t_game	game;
+	t_list	**root;
 
 	srand(time(NULL));
-	win = new_program(800, 500, "SnakeGame");
+	root = (t_list **)ft_calloc(sizeof(t_list*), 1);
+	win = new_program(WIDTH, HEIGHT, "SnakeGame");
 	if (!win.win_ptr)
 		return (2);
-	img = new_img(800, 500, win);
-	/* bg_color, speed, tile_size, paddle_l, paddle_r, pause, img, actions */
-	game = (t_game){0x212121, 50, 10, init_paddle(1, 50), init_paddle(78, 100),
-		init_ball(img.w / 2, rand() % img.h, 10), false, img, init_actions()};
+	img = new_img(WIDTH, HEIGHT, win);
+	/* bg_color, score1, score2, speed, tile_size, paddle_l, paddle_r, pause, over, img, actions */
+	game = (t_game){0x212121, 0, 0, 40, TILE_SIZE, init_paddle(1, 50), init_paddle(WIDTH / TILE_SIZE - 2, 100),
+		init_ball(img.w / 2, rand() % img.h, 10), root, false, false, img, init_actions()};
 	{
 		draw_square((t_square){0, 0, img.w, game.bg_color}, img);
 		mlx_put_image_to_window (img.win.mlx_ptr, img.win.win_ptr,
@@ -64,8 +114,11 @@ int	main(void)
 		mlx_hook(win.win_ptr, 2, 1L<<0,  key_pressed, &game);
 		mlx_hook(win.win_ptr, 3, 1L<<1,  key_released, &game);
 		mlx_loop_hook(win.mlx_ptr, update, &game);
-		mlx_hook(win.win_ptr, 17, 0, exit_game, &game.img);
+		mlx_hook(win.win_ptr, 17, 0, exit_game, &game);
 	}
+	powers_thread(&game);
 	mlx_loop(win.mlx_ptr);
+	ft_lstclear(root, free);
+	free(root);
 	return (0);
 }

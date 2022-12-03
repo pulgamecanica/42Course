@@ -13,6 +13,9 @@
 #ifndef GAME_H
 # define GAME_H
 
+#include "libft.h"
+
+
 # define MAX_LEN 100
 
 typedef enum e_bool {
@@ -39,6 +42,7 @@ typedef struct ball
 	t_point position;
 	t_point velocity;
 	int		size;
+	int		color;
 }		t_ball;
 
 typedef struct s_actions
@@ -52,12 +56,16 @@ typedef struct s_actions
 typedef struct s_game
 {
 	int			bg_color;
+	int			score1;
+	int			score2;
 	short int	speed;
 	short int	tile_size;
 	t_paddle	paddle_l;
 	t_paddle	paddle_r;
 	t_ball		ball;
+	t_list		**powers;
 	t_bool		pause;
+	t_bool		over;
 	t_img		img;
 	t_actions	actions;
 }		t_game;
@@ -65,17 +73,22 @@ typedef struct s_game
 t_paddle	init_paddle(int x, short int speed);
 t_actions	init_actions(void);
 t_ball		init_ball(int x, int y, int size);
+t_ball		*init_power(t_game *game);
 t_bool		coord_inside_square(t_square square, t_point coord);
-void		check_paddles_bounce_ball(t_game *game);
+char		*ft_itoa(int n);
+void		check_paddles_bounce_balls(t_game *game);
+void 		update_player_powers(t_ball *ball, t_paddle *paddle);
 int			game_width(t_game *game);
 int			game_height(t_game *game);
 void		put_paddles(t_game *game);
 void		put_ball(t_game *game);
+void		put_powers(t_game *game);
 void		move_paddles(t_game *game);
-void		move_ball(t_game *game);
-void		bounce(t_ball *ball);
+void		move_balls(t_game *game);
 void		remove_paddles(t_game *game);
 void		remove_ball(t_game *game);
+void		remove_powers(t_game *game);
 int			update(t_game *game);
+int			exit_game(t_game *game);
 
 #endif

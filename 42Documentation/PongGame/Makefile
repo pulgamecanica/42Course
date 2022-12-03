@@ -4,8 +4,8 @@ INCFT   = ./libft/include
 LIBFT   = ./libft
 LIBMLX  = /usr/local/lib
 UNAME   := $(shell uname)
-CFLAGS  = -Wall -Werror -Wextra -O3 -g -I$(INC) -I${INCFT} -Iinclude
-LFLAGS  = -L$(LIBMLX) -lmlx
+CFLAGS  = -Wall -Werror -Wextra -O3 -g -I$(INC) -I${INCFT} -Iinclude -ILibft/includes
+LFLAGS  = -L$(LIBMLX) -lmlx -LLibft -lft -lpthread
 SRC     = $(wildcard src/*.c)
 OBJ     = $(SRC:%.c=%.o)
 
@@ -21,6 +21,7 @@ else
 endif
 
 all: $(NAME) show
+	make -C Libft
 
 $(NAME): $(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(LFLAGS)

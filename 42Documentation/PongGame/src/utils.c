@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <string.h>
+#include <stdlib.h>
 #include "canvas.h"
 #include "game.h"
 
@@ -63,11 +65,66 @@ exit_game - Exit the game, destroy image and window
   Parameter:
     [img] Image instance
 */
-int	exit_game(t_img *img)
+int	exit_game(t_game *game)
 {
-	if (img->img_ptr)
-		mlx_destroy_image(img->win.mlx_ptr, img->img_ptr);
-	if (img->win.win_ptr)
-		mlx_destroy_window (img->win.mlx_ptr, img->win.win_ptr);
+	if (game->img.img_ptr)
+		mlx_destroy_image(game->img.win.mlx_ptr, game->img.img_ptr);
+	if (game->img.win.win_ptr)
+		mlx_destroy_window (game->img.win.mlx_ptr, game->img.win.win_ptr);
+	ft_lstclear(game->powers, free);
+	free(game->powers);
 	exit(EXIT_SUCCESS);
 }
+
+/*
+	itoa - itoa function from libft
+*/
+
+static int	numlen(int n)
+{
+	int	i;
+
+	i = 0;
+	if (n == 0)
+		return (1);
+	n = -n;
+	while (n != 0)
+	{
+		n /= 10;
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_itoa(int n)
+{
+	int		i;
+	int		len;
+	char	*str;
+
+	if (n == -2147483648)
+		return (strdup("-2147483648"));
+	i = 0;
+	if (n < 0)
+		i = 1;
+	len = numlen(n) + i;
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	if (str == NULL)
+		return (NULL);
+	if (n < 0)
+		str[0] = '-';
+	str[len] = '\0';
+	n = n * (((n < 0) * -2) + 1);
+	while (len-- != i)
+	{
+		str[len] = (n % 10) + '0';
+		n /= 10;
+	}
+	return (str);
+}
+
+
+
+
+
+

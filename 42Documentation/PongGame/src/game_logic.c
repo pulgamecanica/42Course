@@ -10,8 +10,47 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 #include "canvas.h"
 #include "game.h"
+
+static void check_ball_status(t_game *game) {
+	if (game->ball.position.x < 0)
+		game->score2++;
+	else if (game->ball.position.x > game->img.w)
+		game->score1++;
+	else
+		return;
+	// ft_lstadd_front(game->powers, ft_lstnew(init_power(game)));
+	game->ball = init_ball(game->img.w / 2, rand() % game->img.h, 10);
+}
+
+static void show_score(t_game *game) {
+	char *score1;
+	char *score2;
+	int i;
+
+	score1 = ft_itoa(game->score1);
+	score2 = ft_itoa(game->score2);
+
+	mlx_string_put(game->img.win.mlx_ptr, game->img.win.win_ptr, game->img.w / 2 - game->img.w * 0.25, game->img.h * 0.1, 0xfffff, score1);
+	mlx_string_put(game->img.win.mlx_ptr, game->img.win.win_ptr, game->img.w / 2 + game->img.w * 0.25, game->img.h * 0.1, 0xfffff, score2);
+	free(score1);
+	free(score2);
+	i = 0;
+	while (i < game->img.h)
+	{
+		draw_square((t_square){
+				game->img.w / 2 - game->tile_size / 3,
+				i,
+				game->tile_size / 3,
+				0xaaaaaa
+			}, game->img);
+		i += game->tile_size;
+	}
+}
 
 /* YOU CAN WRITE YOUR OWN FUNCTION DOCUMENTATION HERE*/
 int	update(t_game *game)
@@ -22,36 +61,20 @@ int	update(t_game *game)
 		return (1);
 	fps = game->speed * 10;
 	{
+		// ft_lstadd_front(game->powers, ft_lstnew(init_power(game)));
 		remove_paddles(game);
 		remove_ball(game);
-		check_paddles_bounce_ball(game); 
-		move_ball(game);
+		remove_powers(game);
+		check_paddles_bounce_balls(game); 
+		move_balls(game);
 		move_paddles(game);
+		put_powers(game);
 		put_ball(game);
 		put_paddles(game);
 	}
+	show_score(game);
+	check_ball_status(game);
+	// DELETE POWERS THAT ARE NOT CATCHED
 	return (0);
 }
 
-static t_bool check_paddle_bounce_ball(t_paddle *paddle, t_ball *ball, int tile_size)
-{
-	int i;
-
-	i = 0;
-	while (i < paddle->len)
-	{
-		if (coord_inside_square(
-			(t_square){paddle->coords[i].x * tile_size, paddle->coords[i].y * tile_size, tile_size, 0},
-			ball->position))
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
-void check_paddles_bounce_ball(t_game *game)
-{
-	if (check_paddle_bounce_ball(&game->paddle_l, &game->ball, game->tile_size) ||
-		check_paddle_bounce_ball(&game->paddle_r, &game->ball, game->tile_size))
-		bounce(&game->ball);
-}

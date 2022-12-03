@@ -39,6 +39,9 @@
 #  define KEY_S 115
 # endif
 
+
+struct t_game;
+
 typedef struct s_win
 {
 	void	*mlx_ptr;
@@ -71,7 +74,6 @@ t_win	new_program(int w, int h, char *str);
 t_img	new_img(int w, int h, t_win window);
 void	put_pixel_img(t_img img, int x, int y, int color);
 /* HELPER FUNCTIONS */
-int		exit_game(t_img *img);
 void	draw_square(t_square square, t_img img);
 int		key_pressed(int key_pressed, void *param);
 int		key_released(int key_pressed, void *param);
