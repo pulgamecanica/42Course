@@ -75,6 +75,7 @@ t_img	new_img(int w, int h, t_win window);
 void	put_pixel_img(t_img img, int x, int y, int color);
 /* HELPER FUNCTIONS */
 void	draw_square(t_square square, t_img img);
+void	draw_circle(t_square square, t_img img);
 int		key_pressed(int key_pressed, void *param);
 int		key_released(int key_pressed, void *param);
 

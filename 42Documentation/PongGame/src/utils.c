@@ -39,6 +39,25 @@ void	draw_square(t_square square, t_img img)
 	}
 }
 
+void	draw_circle(t_square square, t_img img)
+{
+	unsigned short int	i;
+	unsigned short int	j;
+
+	i = 0;
+	while (i < square.size && i + square.y < img.h)
+	{
+		j = 0;
+		while (j < square.size && j + square.x < img.w)
+		{
+			if (((j - square.size / 2) * (j - square.size / 2)) + ((i - square.size / 2) * (i - square.size / 2)) < (square.size / 2)*(square.size / 2))
+				put_pixel_img(img, j + square.x, i + square.y, square.color);
+			j++;
+		}
+		i++;
+	}
+}
+
 t_bool	coord_inside_square(t_square square, t_point coord)
 {
 	int min_x = square.x - square.size;

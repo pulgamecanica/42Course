@@ -65,7 +65,7 @@ void move_balls(t_game *game)
 
 void	put_ball(t_game *game)
 {
-	draw_square((t_square){
+	draw_circle((t_square){
 		game->ball.position.x,
 		game->ball.position.y,
 		game->ball.size,

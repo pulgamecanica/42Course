@@ -41,9 +41,9 @@
 // I suggest you to avoid *alloc functions
 /**************************************************************************/
 
-#define WIDTH 1000
-#define HEIGHT 600
-#define TILE_SIZE 10
+#define WIDTH 1500
+#define HEIGHT 1000
+#define TILE_SIZE 20
 
 static void	*routine(void *arg)
 {
@@ -107,8 +107,8 @@ int	main(void)
 		return (2);
 	img = new_img(WIDTH, HEIGHT, win);
 	/* bg_color, score1, score2, speed, tile_size, paddle_l, paddle_r, pause, party, over, img, actions, power_mutex, powern_thread */
-	game = (t_game){0x212121, 0, 0, 40, TILE_SIZE, init_paddle(1, 50), init_paddle(WIDTH / TILE_SIZE - 2, 100),
-		init_ball(img.w / 2, rand() % img.h, 10), root, false, false, false, img, init_actions(), NULL, NULL};
+	game = (t_game){0x212121, 0, 0, 20, TILE_SIZE, init_paddle(1, 50), init_paddle(WIDTH / TILE_SIZE - 2, 100),
+		init_ball(img.w / 2, rand() % img.h, TILE_SIZE), root, false, false, false, img, init_actions(), NULL, NULL};
 	{
 		draw_square((t_square){0, 0, img.w, game.bg_color}, img);
 		mlx_put_image_to_window (img.win.mlx_ptr, img.win.win_ptr,

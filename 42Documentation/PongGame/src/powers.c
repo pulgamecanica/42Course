@@ -63,7 +63,7 @@ void put_powers(t_game *game)
 	while (tmp)
 	{
 		ball = (t_ball *)tmp->content;
-		draw_square((t_square){
+		draw_circle((t_square){
 			ball->position.x,
 			ball->position.y,
 			ball->size,

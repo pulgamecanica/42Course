@@ -24,7 +24,7 @@ static void check_ball_status(t_game *game) {
 	else
 		return;
 	// ft_lstadd_front(game->powers, ft_lstnew(init_power(game)));
-	game->ball = init_ball(game->img.w / 2, rand() % game->img.h, 10);
+	game->ball = init_ball(game->img.w / 2, rand() % game->img.h, game->tile_size);
 }
 
 static void show_score(t_game *game) {
