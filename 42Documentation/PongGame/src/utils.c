@@ -73,6 +73,9 @@ int	exit_game(t_game *game)
 		mlx_destroy_window (game->img.win.mlx_ptr, game->img.win.win_ptr);
 	ft_lstclear(game->powers, free);
 	free(game->powers);
+	game->over = true;
+	pthread_join(*game->powers_thread, NULL);
+	pthread_mutex_destroy(game->powers_mutex);
 	exit(EXIT_SUCCESS);
 }
 

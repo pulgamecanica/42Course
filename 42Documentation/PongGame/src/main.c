@@ -13,7 +13,6 @@
 #include <time.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <pthread.h>
 #include "canvas.h"
 #include "game.h"
 
@@ -46,23 +45,28 @@
 #define HEIGHT 800
 #define TILE_SIZE 10
 
-pthread_mutex_t *powers_mutex;
-
 static void	*routine(void *arg)
 {
-	int sleep_time;
+	static int sleep_time;
 	t_game *game;
 
 	game = (t_game *)arg;
-	if (game->over)
-		return (arg);
 	sleep_time = 1000000;
 	sleep_time += rand() % 10000000 + 3000000;
 	printf("Waiting %d seconds for next power\n", sleep_time / 1000000);
-	usleep(sleep_time);
-	pthread_mutex_lock(powers_mutex);
-	ft_lstadd_front(game->powers, ft_lstnew(init_power(game)));
-    pthread_mutex_unlock(powers_mutex);
+	while (sleep_time > 0)
+	{
+		pthread_mutex_lock(game->powers_mutex);
+		if (game->over)
+			return (arg);
+    	pthread_mutex_unlock(game->powers_mutex);
+		usleep(1000);
+		sleep_time -= 1000;
+	}
+	pthread_mutex_lock(game->powers_mutex);
+	if (!game->over && !game->pause)
+		ft_lstadd_front(game->powers, ft_lstnew(init_power(game)));
+    pthread_mutex_unlock(game->powers_mutex);
     routine(arg);
     return (arg);
 }
@@ -70,20 +74,19 @@ static void	*routine(void *arg)
 static void powers_thread(t_game *game)
 {
 	int fail;
-	pthread_t *thread;
 	
-	thread = (pthread_t *)ft_calloc(sizeof(pthread_t), 1);
-	if (!thread)
+	game->powers_thread = (pthread_t *)ft_calloc(sizeof(pthread_t), 1);
+	if (!game->powers_thread)
 		return;
-	powers_mutex = (pthread_mutex_t *)ft_calloc(sizeof(pthread_mutex_t), 1);
-	if (!powers_mutex)
+	game->powers_mutex = (pthread_mutex_t *)ft_calloc(sizeof(pthread_mutex_t), 1);
+	if (!game->powers_mutex)
 	{
-		free(thread);
+		free(game->powers_thread);
 		return ;
 	}
 
-	pthread_mutex_init(powers_mutex, NULL);
-	fail = pthread_create(thread , NULL, &routine, game);
+	pthread_mutex_init(game->powers_mutex, NULL);
+	fail = pthread_create(game->powers_thread , NULL, &routine, game);
 	if (fail)
 		return ;
 }
@@ -101,9 +104,9 @@ int	main(void)
 	if (!win.win_ptr)
 		return (2);
 	img = new_img(WIDTH, HEIGHT, win);
-	/* bg_color, score1, score2, speed, tile_size, paddle_l, paddle_r, pause, over, img, actions */
+	/* bg_color, score1, score2, speed, tile_size, paddle_l, paddle_r, pause, over, img, actions, power_mutex, powern_thread */
 	game = (t_game){0x212121, 0, 0, 40, TILE_SIZE, init_paddle(1, 50), init_paddle(WIDTH / TILE_SIZE - 2, 100),
-		init_ball(img.w / 2, rand() % img.h, 10), root, false, false, img, init_actions()};
+		init_ball(img.w / 2, rand() % img.h, 10), root, false, false, img, init_actions(), NULL, NULL};
 	{
 		draw_square((t_square){0, 0, img.w, game.bg_color}, img);
 		mlx_put_image_to_window (img.win.mlx_ptr, img.win.win_ptr,

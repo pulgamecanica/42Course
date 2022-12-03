@@ -14,6 +14,7 @@
 # define GAME_H
 
 #include "libft.h"
+#include <pthread.h>
 
 
 # define MAX_LEN 100
@@ -68,6 +69,8 @@ typedef struct s_game
 	t_bool		over;
 	t_img		img;
 	t_actions	actions;
+	pthread_mutex_t *powers_mutex;
+	pthread_t *powers_thread;
 }		t_game;
 
 t_paddle	init_paddle(int x, short int speed);
