@@ -13,7 +13,7 @@
 #include "libft.h"
 #include "stack.h"
 #include "ft_printf.h"
-
+#include <stdint.h>
 void	print_both_stacks(t_stack *s1, t_stack *s2)
 {
 	int	i;
