@@ -20,7 +20,7 @@ Find your own solutions, and if you are inspired with mine im gladd ;)
       <th>Exercices</th>
       <th>Languages</th>
       <th>Solutions</th>
-      <th>Tests</th>
+      <th>Tests / Docs</th>
     </tr>
   </thead>
   <tbody>
@@ -94,7 +94,7 @@ Find your own solutions, and if you are inspired with mine im gladd ;)
       <td>Philosophers</td>
       <td>C, Makefile & Unix Threads</td>
       <td><a href="philosophers">Philosophers</a></td>
-      <td>N/A</td>
+      <td><a href="https://github.com/pulgamecanica/42Course/tree/main/42Documentation/UnixProcesses">Unix Processes</a></td>
     </tr>
     <tr>
       <td>Minishell</td>
@@ -148,7 +148,7 @@ Find your own solutions, and if you are inspired with mine im gladd ;)
       <td>webserv</td>
       <td>Docker, NGINX, WORDPRESS, MARIADB</td>
       <td><a href="webserv">webserv</a></td>
-      <td>N/A</td>
+      <td><a href="https://github.com/pulgamecanica/42Course/tree/main/42Core/webserv/SimpleServer">SimpleServer</a></td>
     </tr>
     <tr>
       <td>exam rank 5</td>
@@ -163,7 +163,7 @@ Find your own solutions, and if you are inspired with mine im gladd ;)
       <td>ft_transcendence</td>
       <td>NestJS, Vue3, PostgreSQL</td>
       <td><a href="ft_transcendence">ft_transcendence</a></td>
-      <td>N/A</td>
+      <td><a href="https://github.com/pulgamecanica/42Course/tree/main/42Documentation/TS_practice">TS Practice</a></td>
     </tr>
   </tbody>
 </table>
