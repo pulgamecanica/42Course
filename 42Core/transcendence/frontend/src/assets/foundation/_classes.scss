@@ -1,0 +1,81 @@
+@use 'vars';
+
+@each $key, $val in vars.$states {
+  .c-button--#{"" + $key} {
+    background: $val;
+  }
+}
+
+.u-text--title {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+}
+
+.u-text {
+  &--left {
+    text-align: left;
+  }
+
+  &--center {
+    text-align: center;
+  }
+
+  &--right {
+    text-align: right;
+  }
+}
+
+@each $key, $val in vars.$states {
+  .u-bg--#{"" + $key} {
+    background: $val !important;
+  }
+
+  .u-text--#{"" + $key} {
+    color: $val !important;
+  }
+}
+
+.u-display--flex {
+  display: flex;
+}
+
+@each $direction in vars.$flex-directions {
+  .u-align--#{$direction} {
+    align-items: $direction;
+  }
+
+  .u-justify--#{$direction} {
+    justify-content: $direction;
+  }
+}
+
+.u-text--small {
+  font-size: 1.4rem;
+}
+
+.u-text--medium {
+  font-size: 2.1rem;
+}
+
+.u-text--big {
+  font-size: 2.8rem;
+}
+
+@each $key, $val in vars.$spacers {
+  .u-p--#{$key} {
+    padding: $val;
+  }
+
+  .u-m--#{$key} {
+    margin: $val;
+  }
+
+  @each $abbr, $direction in vars.$directions {
+    .u-p#{$abbr}--#{$key} {
+      padding-#{$direction}: $val;
+    }
+
+    .u-m#{$abbr}--#{$key} {
+      margin-#{$direction}: $val;
+    }
+  }
+}

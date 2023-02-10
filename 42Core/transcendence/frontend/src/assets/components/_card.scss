@@ -1,0 +1,28 @@
+@use '../foundation/vars';
+
+.c-card {
+  // border-radius: vars.$spacing-unit;
+  background: var(--el-bg-color-overlay);
+  width: 100%;
+  margin-bottom: vars.$spacing-unit*2;
+  border: 1px solid var(--el-border-color);
+
+  &__body, &__header {
+    padding: vars.$spacing-unit*2;
+
+    @media screen and (max-width: 700px) {
+      padding: vars.$spacing-unit*1.5;
+    }
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0;
+
+    @media screen and (max-width: 700px) {
+      flex-direction: column;
+    }
+  }
+}

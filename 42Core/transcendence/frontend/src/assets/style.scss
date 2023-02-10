@@ -1,0 +1,49 @@
+@use 'foundation/vars';
+@use 'foundation/main';
+@use 'foundation/classes';
+
+@forward 'element-plus/theme-chalk/src/dark/var.scss' with (
+  $colors: (
+    'light': var(--light),
+    'dark': var(--darker),
+    'primary': (
+      'base': #334999,
+    ),
+    'secondary': (
+      'base': #606B6C,
+    ),
+    'success': (
+      'base': #397F47,
+    ),
+    'warning': (
+      'base': #B07930,
+    ),
+    'danger': (
+      'base': #741A1A,
+    ),
+    'info': (
+      'base': #113C55,
+    ),
+  )
+);
+
+/*
+#222222
+#FFFFFF
+#1C5D99
+#639FAB
+#BBCDE5
+*/
+
+@use "element-plus/theme-chalk/src/index.scss" as *;
+@use "element-plus/theme-chalk/display.css" as *;
+@use "element-plus/theme-chalk/src/dark/css-vars.scss" as *;
+
+@use "components/card";
+@use "components/button";
+@use "components/list";
+@use "components/avatar";
+@use "components/leaderboard";
+@use "components/friends";
+@use "components/chat";
+@use "components/connection";

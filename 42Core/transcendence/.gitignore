@@ -1,0 +1,9 @@
+# IDEs and ENV
+.vscode
+.env
+.env.prod
+.env.dev
+.editorconfig
+
+# Volumes don't need to be pushed
+/volumes

@@ -1,0 +1,117 @@
+@use '../foundation/vars';
+
+.leaderboard-grid {
+  &__item {
+    margin-top: vars.$spacing-unit*2;
+    margin-bottom: vars.$spacing-unit*2;
+    margin-left: vars.$spacing-unit*2;
+    height: calc(50vh - vars.$spacing-unit*4);
+  }
+
+  &__players {
+
+    > .c-card {
+      height: inherit;
+
+      > .c-card__body {
+        height: inherit;
+        overflow: auto;
+      }
+    }
+  }
+}
+
+.c-header {
+  padding: vars.$spacing-unit*2 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.4rem;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    height: calc(vars.$spacing-unit/4);
+    background: var(--primary);
+  }
+}
+
+// .c-place {
+//  @media screen and (max-width: 700px) {
+//     transform: translateY(4px);
+//   }
+// }
+
+.c-media {
+  display: inline-flex;
+  align-items: center;
+
+  &__content {
+    text-align: left;
+    padding-left: vars.$spacing-unit*2;
+
+    @media screen and (max-width: 700px) {
+      padding-left: vars.$spacing-unit;
+    }
+  }
+
+  &__title {
+    margin-bottom: calc(vars.$spacing-unit/2);
+
+    @media screen and (max-width: 700px) {
+      font-size: 1.4rem;
+    }
+  }
+}
+
+// .c-select {
+//  background: transparent;
+//  padding: vars.$spacing-unit*1.5;
+//  appearance: none;
+//  font-size: 1.4rem;
+//  border-color: rgba(white, 0.2);
+//  transition: all 120ms ease-out 0s;
+
+//  &:hover {
+//    background: var(--darkest);
+//  }
+// }
+
+.leaderboard-scroll {
+  overflow-y: scroll;
+}
+
+.c-flag {
+  $size: vars.$spacing-unit*4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $size;
+  height: $size;
+  background: var(--lightest);
+  color: var(--dark);
+  border-radius: vars.$spacing-unit;
+
+  @media screen and (max-width: 700px) {
+    $size: vars.$spacing-unit*3;
+    width: $size;
+    height: $size;
+  }
+}
+
+.leaderboard-row {
+  display: flex;
+  align-items: center;
+}
+
+.leaderboard-row .c-flag {
+  margin-top: 0;
+}
+
+.leaderboard-row .c-kudos {
+  margin-left: auto;
+}

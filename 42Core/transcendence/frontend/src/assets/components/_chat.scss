@@ -1,0 +1,109 @@
+.chat-tabs {
+  height: calc(50vh - 1.6rem);
+  margin-left: 1.6rem;
+
+  > .el-tabs__header .el-tabs__new-tab {
+    margin: 10px;
+  }
+
+  > .el-tabs__content {
+    width: 100%;
+    height: calc(50vh - 1.6rem - 40px);
+    color: #6b778c;
+    font-weight: 600;
+
+    > .el-tab-pane {
+      height: calc(50vh - 1.6rem - 70px);
+    }
+  }
+}
+
+.chat-panel {
+  height: inherit;
+}
+
+.chat-messages {
+  overflow: auto;
+  height: calc(50vh - 1.6rem - 70px - 48px);
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  font-style: italic;
+
+  > .text {
+    text-align: left;
+  }
+
+  &-welcome {
+    color: rgba(12, 81, 90, 0.822);
+  }
+  &-info {
+    color: rgb(37, 150, 179);
+  }
+  &-connected {
+    font-weight: bold;
+    color: rgb(51, 126, 51);
+  }
+  &-disconnected {
+    font-weight: bold;
+    color: rgb(133, 59, 59);
+  }
+  &-joined {
+    color: rgb(223, 59, 209);
+  }
+  &-left {
+    color: rgb(196, 105, 188);
+  }
+  &-kicked {
+    color: rgb(233, 46, 46);
+  }
+  &-banned {
+    color: rgb(190, 0, 0);
+  }
+  &-muted {
+    color: rgb(236, 109, 50);
+  }
+  &-command {
+    color: rgb(72, 72, 190);
+  }
+  &-gameinvite {
+    color: white;
+  }
+}
+
+.username {
+  font-weight: bold;
+  margin-bottom: 4px;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+}
+
+.join-button,
+.users-button,
+.settings-button {
+  margin-left: 8px;
+}
+
+.chat-users {
+  > .owner {
+    color: blueviolet;
+  }
+  > .admin {
+    color: brown;
+  }
+  > .user {
+    // no-op
+  }
+}

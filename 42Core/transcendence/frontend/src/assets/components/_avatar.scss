@@ -1,0 +1,26 @@
+@use '../foundation/vars';
+
+.c-avatar {
+  $size: vars.$spacing-unit*6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $size;
+  height: $size;
+  box-shadow: inset 0px 0px 0px 1px currentColor;
+  border-radius: 50%;
+  background: var(--lightest);
+  color: var(--dark);
+
+  @media screen and (max-width: 700px) {
+    $size: vars.$spacing-unit*4;
+    width: $size;
+    height: $size;
+  }
+
+  &--lg {
+    $size: vars.$spacing-unit*12;
+    width: $size;
+    height: $size;
+  }
+}

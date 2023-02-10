@@ -1,0 +1,43 @@
+@use '../foundation/vars';
+
+.c-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  &__item {
+    padding: vars.$spacing-unit*1.5 0;
+
+    .c-flag {
+      margin-top: vars.$spacing-unit;
+    }
+
+    @media screen and (max-width: 700px) {
+      .c-flag {
+        margin-top: calc(vars.$spacing-unit/2);
+      }
+    }
+  }
+
+  &__leaderboard {
+    display: grid;
+    grid-template-columns: vars.$spacing-unit*6 3fr 1fr;
+    grid-column-gap: vars.$spacing-unit*3;
+
+    @media screen and (max-width: 700px) {
+      grid-template-columns: vars.$spacing-unit*4 3fr 1fr;
+      grid-column-gap: vars.$spacing-unit;
+    }
+  }
+
+  &__friends {
+    display: grid;
+    grid-template-columns: 3fr vars.$spacing-unit*6;
+    grid-column-gap: vars.$spacing-unit*3;
+
+    @media screen and (max-width: 700px) {
+      grid-template-columns: 3fr vars.$spacing-unit*4;
+      grid-column-gap: vars.$spacing-unit;
+    }
+  }
+}

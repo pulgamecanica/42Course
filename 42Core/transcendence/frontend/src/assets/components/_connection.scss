@@ -1,0 +1,10 @@
+.connection-icon {
+  height: 30px;
+  width: 30px;
+}
+.connection-icon.online path {
+  stroke: green;
+}
+.connection-icon.offline path {
+  stroke: red;
+}

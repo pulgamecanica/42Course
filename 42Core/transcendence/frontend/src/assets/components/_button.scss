@@ -1,0 +1,28 @@
+@use '../foundation/vars';
+
+.c-button {
+  display: inline-block;
+  background: var(--dark);
+  border: 0;
+  // border-radius: vars.$spacing-unit/2;
+  padding: vars.$spacing-unit*1.5 vars.$spacing-unit*2.5;
+  transition: all 120ms ease-out 0s;
+
+  &--block {
+    display: block;
+    width: 100%;
+  }
+
+  &:hover, &:focus {
+    filter: brightness(0.9);
+  }
+
+  &:focus {
+    box-shadow: 0px 0px 0px calc(vars.$spacing-unit/2) var(--primary);
+  }
+
+  &:active {
+    box-shadow: 0px 0px 0px calc(vars.$spacing-unit/2) var(--primary), inset 0px 0px vars.$spacing-unit rgba(black, 0.2);
+    filter: brightness(0.8);
+  }
+}

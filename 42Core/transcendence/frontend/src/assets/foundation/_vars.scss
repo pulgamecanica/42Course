@@ -1,0 +1,62 @@
+html {
+  --black: #000000;
+  --white: #ffffff;
+  --darkest: #101010;
+  --darker: #202020;
+  --dark: #A3AFBF;
+  --medium: #DFE7EF;
+  --light: #B8B8B8;
+  --lighter: #F5F8FC;
+  --lightest: var(--white);
+
+  --primary: #334999;
+  --primary-light: #bac4e8;
+
+  --yellow: #FDCB6E;
+  --orange: #E17055;
+  --teal: #00CEC9;
+
+  --bg: var(--darkest);
+  --color: var(--lightest);
+  --surface: var(--darker);
+}
+
+$spacing-unit: 0.8rem;
+
+$states: (
+  light: var(--lightest),
+  primary: var(--primary),
+  dark: var(--darkest),
+  transparent: transparent,
+  gray: var(--medium),
+  yellow: var(--yellow),
+  orange: var(--orange),
+  teal: var(--teal),
+  light-gradient: linear-gradient(to top, var(--light), var(--lightest)),
+  dark-gradient: linear-gradient(to top, var(--darkest), var(--dark)),
+  gold: #D4AF36,
+  silver: #C0C0C0,
+  bronze: #CD7F32,
+);
+
+$flex-directions: (center, flex-end, flex-start, space-between);
+
+$directions: (
+  l: left,
+  r: right,
+  b: bottom,
+  t: top
+);
+
+$spacers: (
+  2: calc($spacing-unit/4),
+  4: calc($spacing-unit/2),
+  6: calc($spacing-unit/4 * 3),
+  8: $spacing-unit,
+  10: calc($spacing-unit/4 * 5),
+  12: calc($spacing-unit/4 * 6),
+  14: calc($spacing-unit/4 * 7),
+  16: $spacing-unit*2,
+  24: $spacing-unit*3,
+  32: $spacing-unit*4
+);

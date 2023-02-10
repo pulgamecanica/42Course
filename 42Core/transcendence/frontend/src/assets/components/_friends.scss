@@ -1,0 +1,41 @@
+@use '../foundation/vars';
+
+.friends-panel {
+  &__item {
+    margin: vars.$spacing-unit*2;
+    height: calc(100vh - vars.$spacing-unit*4);
+  }
+
+  &__players {
+
+    > .c-card {
+      height: inherit;
+
+      > .c-card__body {
+        height: inherit;
+        overflow: auto;
+      }
+    }
+  }
+}
+
+.status {
+  font-size: 12px;
+  margin-left: 8px;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.status.online {
+  background-color: #00cc00;
+  color: white;
+}
+
+.status.offline {
+  background-color: #cccccc;
+  color: white;
+}
+
+.add-friend-button {
+  align-self: flex-end;
+}

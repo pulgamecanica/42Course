@@ -1,0 +1,91 @@
+version: '3.8'
+services:
+  backend-docker:
+    build: ./backend/
+    container_name: backend-docker
+    restart: on-failure
+    depends_on:
+      - database-docker
+    networks:
+      - database-network
+      - webapp-network
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST_PORT: ${POSTGRES_HOST_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      INTRA_CLIENT_ID: ${INTRA_CLIENT_ID}
+      INTRA_CLIENT_SECRET: ${INTRA_CLIENT_SECRET}
+      INTRA_REDIRECT_URI: ${INTRA_REDIRECT_URI}
+      FRONTEND_URL: ${FRONTEND_URL}
+      SESSION_SECRET: ${SESSION_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      SALT: ${SALT}
+      NODE_ENV: ${NODE_ENV}
+      DEBUG: ${DEBUG}
+    ports:
+      - ${NESTJS_HOST_PORT}:3000
+    volumes:
+      - ./backend/:/usr/src/app
+      - backend-node-modules-exclude:/usr/src/app/node_modules
+      - ./volumes/backend-build:/usr/src/app/client
+
+  database-docker:
+    image: postgres:15.1
+    container_name: database-docker
+    restart: on-failure
+    networks:
+      - database-network
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - ${POSTGRES_HOST_PORT}:5432
+    volumes:
+      - /var/lib/postgresql/data
+
+  adminer-docker:
+    image: adminer:4.8.1
+    container_name: adminer-docker
+    restart: on-failure
+    depends_on:
+      - database-docker
+    networks:
+      - database-network
+    ports:
+      - ${ADMINER_HOST_PORT}:8080
+
+  frontend-docker:
+    build: ./frontend
+    container_name: frontend-docker
+    depends_on:
+      - backend-docker
+    networks:
+      - database-network
+      - webapp-network
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      DEBUG: ${DEBUG}
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+      VITE_IMAGE_KEY: ${VITE_IMAGE_KEY}
+      VITE_IMAGE_URL: ${VITE_IMAGE_URL}
+    ports:
+      - ${VUEJS_HOST_PORT}:8080
+    volumes:
+      - ./frontend/:/usr/src/app
+      - frontend-node-modules-exclude:/usr/src/app/node_modules
+      - ./volumes/frontend-build:/usr/src/app/dist
+
+volumes:
+  # Named volumes. They don't point to a specific directory on the host machine.
+  # They are used to avoid syncing node_modules between the container and the host.
+  backend-node-modules-exclude:
+  frontend-node-modules-exclude:
+
+networks:
+  database-network:
+    driver: bridge
+  webapp-network:
+    driver: bridge
