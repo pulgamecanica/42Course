@@ -1,0 +1,95 @@
+version: "3.9"
+services:
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - internal
+    volumes:
+      - wordpress:/var/www/html
+    depends_on:
+      - wordpress
+      - mariadb
+    restart: always
+    environment:
+      NGINX_WORDPRESS_CONTAINER_NAME: ${NGINX_WORDPRESS_CONTAINER_NAME}
+      WORDPRESS_PORT: ${NGINX_WORDPRESS_PORT}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    image: wordpress
+    expose:
+      - ${NGINX_WORDPRESS_PORT}
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - internal
+    restart: always
+#    depends_on:
+#      mariadb:
+#        condition: service_healthy
+    environment:
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
+      MYSQL_USER: ${MARIADB_USER_NAME}
+      MYSQL_PASSWORD: ${MARIADB_ROOT_PASS}
+      MYSQL_DB_HOST: ${MARIADB_HOST}
+      ADMIN_USER: ${WP_DATABASE_USR}
+      ADMIN_PASSWORD: ${WP_DATABASE_PWD}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      WP_TITLE: ${WP_TITLE}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      WP_USER_LOGIN: ${WP_USER_LOGIN}
+      WP_USER_EMAIL: ${WP_USER_EMAIL}
+      WP_USER_PASS: ${WP_USER_PASS}
+
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    image: mariadb
+    hostname: mariadb
+    expose:
+      - 3306
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - internal
+    restart: on-failure
+    init: true
+    environment:
+      WORDPRESS_DB_NAME:  ${WORDPRESS_DB_NAME}
+      MARIADB_HOST:       ${MARIADB_HOST}
+      MARIADB_PORT:       ${MARIADB_PORT}
+      MARIADB_USER_NAME:  ${MARIADB_USER_NAME}
+      MARIADB_USER_PASS:  ${MARIADB_USER_PASS}
+      MARIADB_ROOT_PASS:  ${MARIADB_ROOT_PASS}
+#    healthcheck: # https://medium.com/geekculture/how-to-successfully-implement-a-healthcheck-in-docker-compose-efced60bc08e
+#      test: [ 'CMD', 'mysqladmin', 'ping', '--silent', '-u', '${MARIADB_USER_NAME}', '-p${MARIADB_USER_PASS}' ]
+#      start_period: 1m
+#      interval: 30s
+#      timeout: 30s
+#      retries: 3
+
+volumes:
+  db:
+    name: db
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${USER}/data/
+      o: bind
+  wordpress:
+    name: wp
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/${USER}/data/
+      o: bind
+
+networks:
+  internal:

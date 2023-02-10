@@ -1,0 +1,13 @@
+FROM debian:10.11
+
+RUN apt-get update -yq
+RUN apt-get install mariadb-server -yq
+
+RUN ln -sf /usr/share/zoneinfo/Europe/Lisbon /etc/localtime
+
+COPY /tools/ /tmp/
+COPY /conf/50-server.cnf /etc/mysql/mariadb.conf.d/
+
+EXPOSE 3306
+
+#RUN mysql_install_db
