@@ -1,0 +1,60 @@
+client 2: just arrived
+client 3: just arrived
+client 4: just arrived
+client 0: HEY!
+client 3: Hellllllooo
+client 4: DAMN
+client 4: I HATE YOUUUUU
+client 5: just arrived
+client 5: just left
+asdfssadfs
+client 4: asdfasf
+client 4: noooo
+client 4: noooooooooo
+client 4: moooooo
+asfas
+client 6: just arrived
+client 6: GET / HTTP/1.1
+client 6: Host: localhost:8080
+client 6: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0
+client 6: Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+client 6: Accept-Language: en-US,en;q=0.5
+client 6: Accept-Encoding: gzip, deflate, br
+client 6: Connection: keep-alive
+client 6: Cookie: adminer_permanent=
+client 6: Upgrade-Insecure-Requests: 1
+client 6: Sec-Fetch-Dest: document
+client 6: Sec-Fetch-Mode: navigate
+client 6: Sec-Fetch-Site: none
+client 6: Sec-Fetch-User: ?1
+client 6: If-None-Match: W/"2c9-uvj/2IIejoXieJ+yXyhHrxMqe5E"
+client 6: 
+client 2: 
+client 0: fassdf
+client 0: asdfas
+client 6: just left
+client 7: just arrived
+client 7: GET / HTTP/1.1
+client 7: Host: localhost:8080
+client 7: User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0
+client 7: Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+client 7: Accept-Language: en-US,en;q=0.5
+client 7: Accept-Encoding: gzip, deflate, br
+client 7: Connection: keep-alive
+client 7: Cookie: adminer_permanent=
+client 7: Upgrade-Insecure-Requests: 1
+client 7: Sec-Fetch-Dest: document
+client 7: Sec-Fetch-Mode: navigate
+client 7: Sec-Fetch-Site: none
+client 7: Sec-Fetch-User: ?1
+client 7: 
+client 0: asdf
+client 4: asdf
+client 7: just left
+client 2: just left
+client 8: just arrived
+
+ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam venenatis ex dolor, eu posuere tortor sollicitudin at. Duis sagittis, risus vel pulvinar accumsan, metus nisl pharetra nunc, eget vehicula nisl sapien vitae mi. Aenean eget nunc bibendum ante eleifend finibus vitae id nisi. Nam non molestie velit. Nam egestas, felis in fringilla fringilla, nisi ante rhoncus mi, eget dictum risus dolor sed magna. Nam sed congue orci. Maecenas pulvinar, dolor eget tempus hendrerit, mi est tristique enim, at gravida sapien dolor et lacus. Aenean in pellentesque leo, facilisis placerat ipsum. Vivamus eget felis velit. Nunc venenatis ex purus, vitae rutrum erat mattis nec.
+
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum laoreet sollicitudin lacus non iaculis. Curabitur non odio sit amet turpis imperdiet sollicitudin. Etiam elit erat, tempor et tellus ac, auctor ultrices tellus. Curabitur non quam vestibulum, pretium enim nec, eleifend urna. Aliquam sed dolor sollicitudin, accumsan risus id, tincidunt massa. Fusce elementum convallis justo aliquet porttitor. Pellentesque blandit, quam et tincidunt elementum, augue leo convallis leo, sed ullamcorper ex augue sit amet lacus. Sed eu elementum nunc. Nullam eu lobortis massa, nec consequat nisl. Proin et ornare enim. In dictum justo quis egestas interdum. 
+client 3: just left
