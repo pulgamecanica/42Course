@@ -46,6 +46,23 @@ void server_emit(server * s, client c, char * msg) {
 		if (c.fd != s->clients[i].fd)
 			write(s->clients[i].fd, str, strlen(str));
 }
+
+/**
+ * add_client(), remove_client()
+ * @params server * s, int client_fd
+ *  - s is an allocated server pointer.
+ *  - client_fd is a valid file descriptior.
+ * @description
+ *  - Attempt to add/remove a client to the server, the function
+ *    uses realloc to allocate enough space for the new client o
+ *    shrink in case of delition.
+ *    The new client will be assigned the next available id.
+ *    If s is NULL the function will have no effect.
+ *    In case the client_fd a negative number or higher than
+ *    FD_SETSIZE the function will have no effect.
+ * @return
+ *   - returns 0 on succes and 1 on failure
+ **/
 int add_client(server * s, int client_fd) {
 	if (!s || client_fd < 0 || client_fd > FD_SETSIZE)
 		return 1;
@@ -134,7 +151,7 @@ void init_fdset(server * s, fd_set * set) {
 		s->max_fd = ft_max(s->max_fd, s->clients[i].fd);
 	}
 	s->max_fd = ft_max(s->max_fd, s->fd);
-	FD_SET(s->fd, set);
+	FD_SET(s->fd, set); // SET THE SERVER FD, READ WHEN CLIENT WANTS TO CONNECT
 }
 void select_loop(server * s) {
 	fd_set rfds;

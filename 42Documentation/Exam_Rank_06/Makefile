@@ -1,4 +1,4 @@
-SRC = $(wildcard *.c)
+SRC = main.c
 OBJ = $(SRC:%.c=%.o)
 NAME = exam06
 CC = gcc
