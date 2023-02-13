@@ -1,4 +1,4 @@
-SRC = main.c
+SRC = mini_serv.c
 OBJ = $(SRC:%.c=%.o)
 NAME = exam06
 CC = gcc
