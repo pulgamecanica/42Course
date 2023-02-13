@@ -25,10 +25,6 @@ typedef struct server {
 	client *clients;
 } server;
 
-int stop_serv = 0;
-void sig_handler(int) {
-	stop_serv = 1;
-}
 void ft_exit(int exit_status, char *msg, server * s) {
 	write(2, msg, strlen(msg));
 	if (s)
@@ -42,7 +38,7 @@ void server_emit(server * s, client c, char * msg) {
         if (!s || !msg)
                 return;
 	sprintf(str, "client %d: %s", c.id, msg);
-        for (i = 0; i < s->num_clients; i++)
+	for (i = 0; i < s->num_clients; i++)
 		if (c.fd != s->clients[i].fd)
 			write(s->clients[i].fd, str, strlen(str));
 }
@@ -67,10 +63,11 @@ int remove_client(server * s, int client_fd) {
 			break;
 	if (i < s->num_clients) {
 		server_emit(s, s->clients[i], "just left\n");
+		close(s->clients[i].fd);
 		s->clients[i] = s->clients[s->num_clients - 1];
 		s->clients = (client *)realloc(s->clients, sizeof(client) * s->num_clients - 1);
 		if (!s->clients)
-			ft_exit(1, "Fatal Error\n", s);
+			s->clients = NULL;
 		s->num_clients--;
 	}
 	return (0);
@@ -121,10 +118,10 @@ void accept_connection(server * s) {
         socklen_t addrlen;
 
 	addrlen = sizeof(cli);
-        connfd = accept(s->fd, (struct sockaddr *)&cli, &addrlen);
-        if (connfd < 0)
+	connfd = accept(s->fd, (struct sockaddr *)&cli, &addrlen);
+	if (connfd < 0)
 		ft_exit(1, "Fatal Error\n", s);
-        else
+	else
 		add_client(s, connfd);
 }
 void init_fdset(server * s, fd_set * set) {
@@ -141,7 +138,7 @@ void select_loop(server * s) {
 	int retval, i, r_size;
 	char * buff, * msg;
 
-	while (!stop_serv) {
+	while (1) {
 		init_fdset(s, &rfds);
 		retval = select(s->max_fd + 1, &rfds, NULL, NULL, 0);
 		if (retval == -1)
@@ -171,7 +168,6 @@ int main(int ac, char *av[]) {
 	int port;
 	server s;
 
-	signal(SIGINT, sig_handler);
 	if (ac != 2)
 		ft_exit(1, "Wrong number of arguments\n", NULL);
 	port = atoi(av[1]);
