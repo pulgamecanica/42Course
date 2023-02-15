@@ -12,6 +12,26 @@
 
 #include "libft.h"
 
+char *ft_strjoin(char *buf, char *add) {
+	char	*newbuf;
+	int		len;
+
+	if (buf == 0)
+		len = 0;
+	else
+		len = ft_strlen(buf);
+	newbuf = ft_calloc(sizeof(*newbuf), (len + ft_strlen(add) + 1));
+	if (newbuf == 0)
+		return (0);
+	if (buf != 0)
+		ft_strlcat(newbuf, buf, len + 1);
+	free(buf);
+	ft_strlcat(newbuf, add, len + ft_strlen(add) + 1);
+        return (newbuf);
+}
+
+/*
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*new;
@@ -32,3 +52,4 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	new[i + k] = '\0';
 	return (new);
 }
+*/

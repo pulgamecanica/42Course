@@ -19,28 +19,31 @@ else
 	CFLAGS += -D LINUX
 endif
 
-$(NAME): ${OBJS}
-	${CC} ${OBJS} ${LFLAGS} -o ${NAME}
+all: ${NAME}
 
-all: LIBFT ${BIN} ${NAME}
+$(NAME): ${BIN} ${OBJS} | ${LIBFT}
+	${CC} ${OBJS} ${LFLAGS} -o ${NAME}
 
 $(BIN)/%o: srcs/%c
 	${CC} -c $< ${CFLAGS} ${LFLAGS} -o $@
 
 $(BIN):
-	mkdir -p $(BIN)
+	@mkdir -p $(BIN)
 
 clean:
 	$(RM) $(OBJ) $(BIN)
 
 fclean: clean
 	$(RM) $(NAME)
-	make fclean -C $(LIBFT) --no-print-directory
+	@make fclean -C $(LIBFT) --no-print-directory
 
-LIBFT:
-	@make -C $(LIBFT) --no-print-directory
+$(LIBFT):
+	@make all -C $(LIBFT) --no-print-directory
 
 re: fclean all
+
+test:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME)
 
 show:
 	@printf "UNAME		: $(UNAME)\n"
@@ -51,3 +54,5 @@ show:
 	@printf "SRC		: $(SRC)\n"
 	@printf "OBJS		: $(OBJS)\n"
 
+
+.PHONY: $(LIBFT) re all clean fclean
