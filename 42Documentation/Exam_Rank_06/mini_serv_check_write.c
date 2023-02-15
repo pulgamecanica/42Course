@@ -46,6 +46,14 @@ typedef struct server {
 } server;
 
 /**
+ * In this version we set the fd_sets global
+ * to only emit when wset has the client fd.
+ * In my opinion this iw wrong, and shouldn't be implemented.
+ * This also affects the selct behaviour terribly...
+ **/
+fd_set wset, rset;
+
+/**
  * Exit with status and a message.
  * @params int exit_status, char * msg, server * s
  *  - exit_status indicates the status return of the program.
@@ -95,7 +103,7 @@ void server_emit(server * s, client c, char * msg, int announcement) {
 	else
 		sprintf(str, "client %d: %s", c.id, msg);
         for (i = 0; i < s->num_clients; i++)
-		if (c.fd != s->clients[i].fd)
+		if (c.fd != s->clients[i].fd && FD_ISSET(s->clients[i].fd, &wset))
 			write(s->clients[i].fd, str, strlen(str));
 	free(str);
 }
@@ -305,6 +313,7 @@ void select_loop(server * s) {
 
 	while (!stop_serv) {
 		init_fdset(s, &rfds);
+		rset = wset = rfds;
 		retval = select(s->max_fd + 1, &rfds, NULL, NULL, 0);
 		if (retval == -1)
 			ft_exit(1, "Fatal Error\n", s);
