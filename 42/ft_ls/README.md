@@ -18,16 +18,27 @@ Mandatory flags [OPTION]:
 	For non-option command-line arguments that are directories, by default ls lists the contents of directories, not recursively, and omitting files with names beginning with ‘.’.
 	For other non-option arguments, by default ls lists just the file name.
 	If no non-option argument is specified, ls operates on the current directory, acting as if it had been invoked with a single argument of ‘.’. 
-
+***
+#### Sorting
+	By default, the output is sorted alphabetically, according to the locale settings in effect.4
+	If standard output is a terminal, the output is in columns (sorted vertically).
+	Control characters are output as question marks; otherwise, the output is listed one per line and control characters are output as-is.
+	
+	(4)
+	If you use a non-POSIX locale (e.g., by setting LC_ALL to ‘en_US’), then ls may produce output that is sorted differently than you’re accustomed to.
+	In that case, set the LC_ALL environment variable to ‘C’.
+***
+#### Exit status
+> - 0 success
+> - 1 minor problems  (e.g., failure to access a file or directory not
+> specified as a command line argument.  This happens when listing a
+> directory in which entries are actively being removed or renamed.)
+> - 2 serious trouble (e.g., memory exhausted, invalid option, failure
+> to access a file or directory specified as a command line argument
+> or a directory loop)
+***
 ### Behaviour analysis
 
-> [default listing]  => short listing, each file will be separated by two spaces
-
-> [default sorting]  => alphabetically
-
-> [default location] => current root, where you execute the command
-
-#### NO FLAGS / NO [OPTION]
 ```bash
 	ls
 ```
