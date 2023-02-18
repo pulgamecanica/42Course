@@ -1,3 +1,6 @@
+#include "ft_ls.h"
+
+/*
 #include "libft.h"
 #include "ft_printf.h"
 #include <stdbool.h>
@@ -9,6 +12,8 @@ typedef struct ls_flags {
 	bool flagr; // -r --reverse
 	bool flagt; // -t
 }	ls_flags;
+*/
+
 
 void	ft_exit(int status, char * msg, bool msg_allocated) {
 	write(2, msg, ft_strlen(msg));
@@ -16,8 +21,6 @@ void	ft_exit(int status, char * msg, bool msg_allocated) {
 		free(msg);
 	exit(status);
 }
-
-#define ft_max(x,y) ((x) > (y) ? (x) : (y))
 
 /**
  * Returns 0 if it's no flag
@@ -35,7 +38,6 @@ void	ft_exit(int status, char * msg, bool msg_allocated) {
  * full:
  *  ls: unrecognized option '--asfas'
  *  Try 'ls --help' for more information.
-
  **/
 int	is_flag(char * str) {
 	if (ft_strlen(str) < 2)
