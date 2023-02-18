@@ -29,25 +29,19 @@ int	main(int ac, char * av[]) {
 
 	config.flags = (ls_flags){false, false, false, false, false, false};
 	config.files = NULL;
-	for (int i = 1; i < ac; i++) {
-		if (!assign_flags(&config.flags, av[i])) {
+	for (int i = 1; i < ac; i++)
+		if (!assign_flags(&config.flags, av[i]))
 			ft_lstadd_front(&config.files, ft_lstnew(init_file(av[i])));
-			write(1, "Add file ", ft_strlen("Add file "));
-			write(1, av[i], ft_strlen(av[i]));
-			write(1, "\n", 1);
-		}
-	}
-	if (!config.files || ft_lstsize(config.files) == 0) {
-		write(1, "Using default .\n", ft_strlen("Using default .\n"));
+	if (!config.files || ft_lstsize(config.files) == 0)
 		ft_lstadd_front(&config.files, ft_lstnew(init_file(".")));
-	}
-
 	// ADD the Logic here
-
+	setup_files(&config);
 	// Print debug info here
-	print_flags(&config.flags);
-	ft_print_files(config.files);
-	ft_lstclear(&config.files, free_file);
+	if (DEBUG) {
+		ft_print_files(config.files);
+		print_flags(&config.flags);
+		ft_lstclear(&config.files, free_file);
+	}
 	return 1;
 }
 

@@ -22,8 +22,13 @@ typedef struct s_file {
   int       total;
   t_list *  children;
 } t_file;
-*/
 
+
+typedef struct ls_config {
+	ls_flags	flags;
+	t_list *	files;
+}	ls_file;
+*/
 
 void free_file(void * ptr) {
   t_file * file;
@@ -38,7 +43,7 @@ void free_file(void * ptr) {
 static void ft_print_file(t_file * file) {
 	ft_printf(""
 	"type: %d, "
-	"name: %s, "
+	"name: %-12.12s, "
 	"mode: %0.3d, "
 	"size: %d, "
 	"total: %d, "
@@ -55,6 +60,42 @@ static void ft_print_file(t_file * file) {
 	ft_lstsize(file->children));
 }
 
+static void	setup_file(void * ptr) {
+	t_file * file, *	tmp;
+	DIR * dir;
+	struct dirent * ent;
+
+	file = (t_file *)ptr;
+	dir	= opendir(file->f_name);
+	if (!dir) {
+		file->f_type = NotFounded;
+		if (DEBUG)
+			ft_printf("File %s not founded :(\n", file->f_name);
+		return ;
+	}
+	if (DEBUG)
+		ft_printf("Opened file %s, setting up children :)\n", file->f_name);
+	while ((ent = readdir(dir))) {
+		if (DEBUG)
+			printf("children %s\n\td_ino [%lu]\n\td_off [%lu]\n\td_reclen [%u]\n\td_type [%d]\n", ent->d_name, ent->d_ino, ent->d_off, ent->d_reclen, ent->d_type);
+		tmp = init_file(ent->d_name);
+		if (!tmp)
+			return ;
+		tmp->f_size = ent->d_reclen;
+		tmp->d_ino = ent->d_ino;
+		ft_lstadd_front(&file->children, ft_lstnew(tmp));
+	}
+	closedir(dir);
+}
+
+void	setup_files(ls_config * config) {
+	if (!config)
+		return;
+	ft_lstiter(config->files, setup_file);
+	// if flag R and childre
+	// ft_lstiter(congig., void (*f)(void *));
+}
+
 void	ft_print_files(t_list * head) {
 	if (!head)
 		return ;
@@ -69,6 +110,7 @@ t_file * init_file(char * str) {
   file = (t_file *)ft_calloc(sizeof(t_file), 1);
   if (!file)
     return NULL;
+	file->f_type = 0;
   file->f_size = 0;
   file->f_create_date = 0;
   file->f_last_modify = 0;
