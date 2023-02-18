@@ -1,132 +1,53 @@
 #include "ft_ls.h"
 
 /*
-#include "libft.h"
-#include "ft_printf.h"
-#include <stdbool.h>
+int			ft_lstsize(t_list *lst);
+void		ft_lstadd_front(t_list **lst, t_list *new);
+void		ft_lstadd_back(t_list **lst, t_list *new);
+void		ft_lstdelone(t_list *lst, void (*del)(void *));
+void		ft_lstdelelem(t_list **lst, t_list *elem, void (*del)(void *));
+void		ft_lstclear(t_list **lst, void (*del)(void *));
+void		ft_lstiter(t_list *lst, void (*f)(void *));
+t_list		*ft_lstnew(void *content);
+t_list		*ft_lstlast(t_list *lst);
+t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
-typedef struct ls_flags {
-	bool flagl; // -l
-	bool flagR; // -R --recursive
-	bool flaga; // -a --all
-	bool flagr; // -r --reverse
-	bool flagt; // -t
-}	ls_flags;
+typedef struct s_file {
+	enum filetype	f_type;
+	size_t		f_size;
+	size_t		f_create_date;
+	size_t		f_last_modify;
+	char *		f_name;
+	short int	f_mode;
+	int				total;
+	t_list *	children;
+}	t_file;
 */
 
+int	main(int ac, char * av[]) {
+	ls_config	config;
 
-void	ft_exit(int status, char * msg, bool msg_allocated) {
-	write(2, msg, ft_strlen(msg));
-	if (msg_allocated)
-		free(msg);
-	exit(status);
-}
-
-/**
- * Returns 0 if it's no flag
- * Returns 1 if it's a simple flag (-)
- * Returns 2 if is's a full flag (--)
- * If the string is only "-" it's concidered
- * as a file instead of flag.
- * If the string is "--" it's concidered as a full
- * flag, and full flag can be empty... apparently
- * But still need to check that it's not a wrong flag.
- * ERROR
- * simple:
- *  ls: invalid option -- '0'
- *  Try 'ls --help' for more information.
- * full:
- *  ls: unrecognized option '--asfas'
- *  Try 'ls --help' for more information.
- **/
-int	is_flag(char * str) {
-	if (ft_strlen(str) < 2)
-		return 0;
-	if (str[0] == '-' && str[1] != '-')
-		return 1;
-	else if (str[0] == '-' && str[1] == '-')
-		return 2;
-	return 0;
-}
-
-void	set_flag(ls_flags * flags, char flag) {
-	char tmp[] = "ls: invalid option -- 'c'\nTry 'ls --help' for more information.\n";
-
-	switch (flag) {
-	case 'l':
-		flags->flagl = true;
-		break ;
-	case 'R':
-		flags->flagR = true;
-		break ;
-	case 'a':
-		flags->flaga = true;
-		break ;
-	case 'r':
-		flags->flagr = true;
-		break ;
-	case 't':
-		flags->flagt = true;
-		break ;
-	default:
-		tmp[23] = flag;
-		ft_exit(2, tmp, false);
-	}
-}
-
-
-/**
- * Returns 1 on success
- * Returns 0 on error
- **/
-void	set_full_flag(ls_flags * flags, char * str) {
-	char * error_msg;
-
-	if (ft_strncmp("--recursive", str, ft_max(ft_strlen(str), ft_strlen("--recursive"))) == 0)
-		set_flag(flags, 'R');
-	else if (ft_strncmp("--all", str, ft_max(ft_strlen(str), ft_strlen("--all"))) == 0)
-		set_flag(flags, 'a');
-	else if (ft_strncmp("--reverse", str, ft_max(ft_strlen(str), ft_strlen("--reverse"))) == 0)
-		set_flag(flags, 'r');
-	else if (ft_strlen(str) != 2) {
-		error_msg = NULL;
-		if (!(error_msg = ft_strjoin(error_msg, "ls: unrecognized option '")))
-			ft_exit(2, "Fatal Memory Could Not Be Allocated\n", false);
-		if (!(error_msg = ft_strjoin(error_msg, str)))
-			ft_exit(2, "Fatal Memory Could Not Be Allocated\n", false);
-		if (!(error_msg = ft_strjoin(error_msg, "'\nTry 'ls --help' for more information.\n")))
-			ft_exit(2, "Fatal Memory Could Not Be Allocated\n", false);
-		ft_exit(2, error_msg, true);
-	}
-}
-
-/**
- * Returns 1 on flag assigned
- * Returns 0 on no flag assigned
- **/
-int	assign_flags(ls_flags * flags, char * str) {
-	size_t	i, flag_type;
-
-	flag_type = is_flag(str);
-	if (!flag_type)
-		return 0;
-	if (flag_type == 2) {
-		set_full_flag(flags, str);
-	} else if (flag_type == 1) {
-		i = 1;
-		while(i < ft_strlen(str)) {
-			set_flag(flags, str[i]);
-			i++;
+	config.flags = (ls_flags){false, false, false, false, false, false};
+	config.files = NULL;
+	for (int i = 1; i < ac; i++) {
+		if (!assign_flags(&config.flags, av[i])) {
+			ft_lstadd_front(&config.files, ft_lstnew(init_file(av[i])));
+			write(1, "Add file ", ft_strlen("Add file "));
+			write(1, av[i], ft_strlen(av[i]));
+			write(1, "\n", 1);
 		}
 	}
-	return 1;
-}
-
-int	main(int ac, char * av[]) {
-	ls_flags flags;
-
-	for (int i = 1; i < ac; i++) {
-		assign_flags(&flags, av[i]);
+	if (!config.files || ft_lstsize(config.files) == 0) {
+		write(1, "Using default .\n", ft_strlen("Using default .\n"));
+		ft_lstadd_front(&config.files, ft_lstnew(init_file(".")));
 	}
+
+	// ADD the Logic here
+
+	// Print debug info here
+	print_flags(&config.flags);
+	ft_print_files(config.files);
+	ft_lstclear(&config.files, free_file);
 	return 1;
 }
+

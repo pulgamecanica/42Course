@@ -1,4 +1,4 @@
-SRC	= srcs/main.c
+SRC	= srcs/main.c srcs/utils.c srcs/file.c srcs/flags.c
 BIN 	= bin
 INCS	= includes/
 LIBFT	= Libft
