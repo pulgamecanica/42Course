@@ -16,18 +16,18 @@ char *ft_strjoin(char *buf, char *add) {
 	char	*newbuf;
 	int		len;
 
-	if (buf == 0)
+	if (buf == NULL)
 		len = 0;
 	else
 		len = ft_strlen(buf);
 	newbuf = ft_calloc(sizeof(*newbuf), (len + ft_strlen(add) + 1));
-	if (newbuf == 0)
-		return (0);
-	if (buf != 0)
+	if (newbuf == NULL)
+		return (NULL);
+	if (buf != NULL)
 		ft_strlcat(newbuf, buf, len + 1);
 	free(buf);
 	ft_strlcat(newbuf, add, len + ft_strlen(add) + 1);
-        return (newbuf);
+	return (newbuf);
 }
 
 /*

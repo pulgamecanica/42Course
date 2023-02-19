@@ -37,12 +37,14 @@ void free_file(void * ptr) {
   if (file->children)
     ft_lstclear(&file->children, free_file);
 	free(file->f_name);
+	free(file->f_path);
 	free(ptr);
 }
 
 static void ft_print_file(t_file * file) {
 	ft_printf(""
 	"type: %d, "
+	"path: %-12.12s, "
 	"name: %-12.12s, "
 	"mode: %0.3d, "
 	"size: %d, "
@@ -51,6 +53,7 @@ static void ft_print_file(t_file * file) {
 	"last_modify: %d, "
 	"# children: %d",
 	file->f_type,
+	file->f_path,
 	file->f_name,
 	file->f_mode,
 	file->f_size,
@@ -64,9 +67,14 @@ static void	setup_file(void * ptr) {
 	t_file * file, *	tmp;
 	DIR * dir;
 	struct dirent * ent;
+	char * full_path;
 
 	file = (t_file *)ptr;
-	dir	= opendir(file->f_name);
+	full_path = ft_strjoin(file->f_path, file->f_name);
+	dir = opendir(full_path);
+	free(full_path);
+//	if (file->path)
+//		dir	= opendir(file->f_name);
 	if (!dir) {
 		file->f_type = NotFounded;
 		if (DEBUG)
@@ -78,7 +86,7 @@ static void	setup_file(void * ptr) {
 	while ((ent = readdir(dir))) {
 		if (DEBUG)
 			printf("children %s\n\td_ino [%lu]\n\td_off [%lu]\n\td_reclen [%u]\n\td_type [%d]\n", ent->d_name, ent->d_ino, ent->d_off, ent->d_reclen, ent->d_type);
-		tmp = init_file(ent->d_name);
+		tmp = init_file(ent->d_name, file->f_name);
 		if (!tmp)
 			return ;
 		tmp->f_size = ent->d_reclen;
@@ -104,7 +112,7 @@ void	ft_print_files(t_list * head) {
 	ft_print_files(head->next);
 }
 
-t_file * init_file(char * str) {
+t_file * init_file(char * str, char * path) {
   t_file *  file;
 
   file = (t_file *)ft_calloc(sizeof(t_file), 1);
@@ -119,6 +127,10 @@ t_file * init_file(char * str) {
     free(file);
     return NULL;
   }
+	if (!path)
+		file->f_path = NULL;
+	else
+		file->f_path = ft_strdup(path);
   file->f_mode = 0;
   file->total = 0;
   file->children = NULL;

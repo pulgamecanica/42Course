@@ -31,17 +31,17 @@ int	main(int ac, char * av[]) {
 	config.files = NULL;
 	for (int i = 1; i < ac; i++)
 		if (!assign_flags(&config.flags, av[i]))
-			ft_lstadd_front(&config.files, ft_lstnew(init_file(av[i])));
+			ft_lstadd_front(&config.files, ft_lstnew(init_file(av[i], NULL)));
 	if (!config.files || ft_lstsize(config.files) == 0)
-		ft_lstadd_front(&config.files, ft_lstnew(init_file(".")));
+		ft_lstadd_front(&config.files, ft_lstnew(init_file(".", NULL)));
 	// ADD the Logic here
 	setup_files(&config);
 	// Print debug info here
 	if (DEBUG) {
 		ft_print_files(config.files);
 		print_flags(&config.flags);
-		ft_lstclear(&config.files, free_file);
 	}
+	ft_lstclear(&config.files, free_file);
 	return 1;
 }
 

@@ -9,7 +9,7 @@ DEBUG	=	-D DEBUG
 LFLAGS	= -I$(INCS) -I$(LIBFT_INCS) -L$(LIBFT) -lft
 UNAME	:= $(shell uname)
 NAME	= ft_ls
-DNAME = debug_lft_s
+DNAME = debug_ft_ls
 RM	= rm -rf
 OBJS	= $(SRC:srcs/%c=$(BIN)/%o)
 DOBJS = $(SRC:srcs/%c=$(DEBUGBIN)/%o)
@@ -23,7 +23,8 @@ else
 	CFLAGS += -D LINUX
 endif
 
-all: ${NAME} $(DNAME)
+all: $(NAME)
+	@./msg_ft_ls
 
 $(NAME): ${BIN} ${OBJS} | ${LIBFT}
 	${CC} ${OBJS} ${LFLAGS} -o ${NAME}
@@ -44,7 +45,7 @@ clean:
 	$(RM) $(BIN) $(DEBUGBIN)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(DNAME)
 	@make fclean -C $(LIBFT) --no-print-directory
 
 $(LIBFT):

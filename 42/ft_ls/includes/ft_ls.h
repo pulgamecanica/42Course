@@ -44,6 +44,7 @@ typedef struct s_file {
 	size_t		f_create_date;
 	size_t		f_last_modify;
 	char *		f_name;
+	char *		f_path;
 	int				f_mode;
 	int				total;
 	t_list *	children;
@@ -56,7 +57,7 @@ void			free_file(void * ptr);
 void			print_flags(ls_flags * flags);
 void			ft_print_files(t_list * head);
 void			setup_files(ls_config * config);
-t_file *	init_file(char * str);
+t_file *	init_file(char * str, char * path);
 int				assign_flags(ls_flags * flags, char * str);
 
 #endif
