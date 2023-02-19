@@ -35,7 +35,8 @@ int	main(int ac, char * av[]) {
 	if (!config.files || ft_lstsize(config.files) == 0)
 		ft_lstadd_front(&config.files, ft_lstnew(init_file(".", NULL)));
 	// ADD the Logic here
-	setup_files(&config);
+//	setup_files(&config);
+	ft_lstiter_param(config.files, setup_file, &config.flags);
 	// Print debug info here
 	if (DEBUG) {
 		ft_print_files(config.files);

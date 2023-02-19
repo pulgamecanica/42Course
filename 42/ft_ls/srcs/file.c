@@ -63,14 +63,16 @@ static void ft_print_file(t_file * file) {
 	ft_lstsize(file->children));
 }
 
-static void	setup_file(void * ptr) {
+void	setup_file(void * ptr, void * ptr2) {
 	t_file * file, *	tmp;
+	ls_flags * flags;
 	DIR * dir;
 	struct dirent * ent;
 	char * full_path;
 
+	flags = (ls_flags *)ptr2;
 	file = (t_file *)ptr;
-	full_path = ft_strjoin(file->f_path, file->f_name);
+	full_path = ft_strjoin(ft_strdup((file->f_path != NULL) ? file->f_path : ""), file->f_name);
 	dir = opendir(full_path);
 	free(full_path);
 //	if (file->path)
@@ -82,8 +84,13 @@ static void	setup_file(void * ptr) {
 		return ;
 	}
 	if (DEBUG)
-		ft_printf("Opened file %s, setting up children :)\n", file->f_name);
-	while ((ent = readdir(dir))) {
+		ft_printf("Opened file %s%s, setting up children :)\n", (file->f_path == NULL) ? "" : file->f_path, file->f_name);
+	while ((ent = readdir(dir))
+		&& ft_strncmp(file->f_name, "..", ft_max(ft_strlen(file->f_name), ft_strlen("..")))
+		&& ft_strncmp(file->f_name, ".", ft_max(ft_strlen(file->f_name), ft_strlen(".")))
+	) {
+		if (ent->d_name[0] == '.' && !flags->flaga)
+			continue ;
 		if (DEBUG)
 			printf("children %s\n\td_ino [%lu]\n\td_off [%lu]\n\td_reclen [%u]\n\td_type [%d]\n", ent->d_name, ent->d_ino, ent->d_off, ent->d_reclen, ent->d_type);
 		tmp = init_file(ent->d_name, file->f_name);
@@ -94,15 +101,17 @@ static void	setup_file(void * ptr) {
 		ft_lstadd_front(&file->children, ft_lstnew(tmp));
 	}
 	closedir(dir);
+	if (flags->flagR && file->children)
+		ft_lstiter_param(file->children, setup_file, ptr2);
 }
 
-void	setup_files(ls_config * config) {
-	if (!config)
-		return;
-	ft_lstiter(config->files, setup_file);
+//void	setup_files(ls_config * config) {
+//	if (!config)
+//		return;
+//	ft_lstiter(config->files, setup_file);
 	// if flag R and childre
 	// ft_lstiter(congig., void (*f)(void *));
-}
+//}
 
 void	ft_print_files(t_list * head) {
 	if (!head)

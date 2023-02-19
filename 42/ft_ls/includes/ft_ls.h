@@ -56,7 +56,7 @@ void			ft_exit(int status, char * msg, bool msg_allocated);
 void			free_file(void * ptr);
 void			print_flags(ls_flags * flags);
 void			ft_print_files(t_list * head);
-void			setup_files(ls_config * config);
+void			setup_file(void * ptr, void * ptr2);
 t_file *	init_file(char * str, char * path);
 int				assign_flags(ls_flags * flags, char * str);
 
