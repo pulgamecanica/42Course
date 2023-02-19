@@ -1,7 +1,10 @@
 ## FT_LS
 This project is a replica of the command ls.
 
-Mandatory flags [OPTION]:
+![image](https://user-images.githubusercontent.com/28810331/219970009-c178316f-88bd-4b27-abe6-714df6a1eff9.png)
+![image](https://user-images.githubusercontent.com/28810331/219969999-3cbfb392-0dac-40dc-b8fe-0b6b41a425d5.png)
+
+Mandatory flags [OPTION]...:
 > - -l : use a long listing format
 > - -R, --recursive : list subdirectories recursively
 > - -a, --all : do not ignore entries starting with .
@@ -62,20 +65,56 @@ I.e, how flags can affect the output, and explain the different types of flags.
 | -l --format=long --format=verbose | Produce long format (See description bellow) | always |
 | -n --numeric-uid-gid | Produce long format, but display right-justified numeric user and group IDs instead of left-justified owner and group names | always |
 | -o | Produce long format, but omit group information. It is equivalent to using --format=long (-l) with --no-group (-G) | always |
-| -s --size | Print the file system allocation of each file to the left of the file name. This is the amount of file system space used by the file | always |
+| -s --size | Print the file system allocation of each file to the left of the file name. This is the amount of file system space used by the file | if ! -f |
 | --si | Append an SI-style abbreviation to each size, such as ‘M’ for megabytes. Powers of 1000 are used, not 1024; ‘M’ stands for 1,000,000 bytes. This option is equivalent to --block-size=si. Use the -h or --human-readable option if you prefer powers of 1024 | always |
 
 	Long Format Description:
-
+	
 	In addition to the name of each file, print the file type, file mode bits, number of hard links, owner name, group name, size, and timestamp, normally the modification timestamp.
 	If the owner or group name cannot be determined, print the owner or group ID instead, right-justified as a cue that it is a number rather than a textual name. Print question marks for other information that cannot be determined. 
 	Normally the size is printed as a byte count without punctuation, but this can be overridden.
 	For example, --human-readable (-h) prints an abbreviated, human-readable count, and ```--block-size="'1"``` prints a byte count with the thousands separator of the current locale.
-	For each directory that is listed, preface the files with a line ‘total blocks’, where blocks is the file system allocation for all files in that directory. The block size currently defaults to 1024 bytes, but this can be overridden. The blocks computed counts each hard link separately; this is arguably a deficiency. 
-	
-***
-| | | |
+	For each directory that is listed, preface the files with a line ‘total blocks’, where blocks is the file system allocation for all files in that directory. The block size currently defaults to 1024 bytes, but this can be overridden. The blocks computed counts each hard link separately; this is arguably a deficiency. Only print total when you list the directory, for example, ls -ld dir/ will not generate total, since only the directory should be printed, not the content.
 
+```
+total 132
+drwxr-xr-x 1 pulgamecanica pulgamecanica   164 Feb 19 18:42 .
+││       │ │ │           │ │           │   │ │ │          │ │
+││       │ │ │           │ │           │   │ │ │          │ └ file name 
+││       │ │ │           │ │           │   │ │ │          │
+││       │ │ │           │ │           │   │ │ └──────────└ timestamp
+││       │ │ │           │ │           │   │ │
+││       │ │ │           │ │           │   └─└ size
+││       │ │ │           │ │           │
+││       │ │ │           │ └───────────└ group name
+││       │ │ │           │
+││       │ │ └───────────└  owner name
+││       │ │
+││       │ └ number of hard links
+││       │
+│└───────└ file mode bits
+│
+└─── file type
+```
+
+> The file type is one of the following characters: 
+> + ‘-’ regular file 
+> + ‘b’ block special file 
+> + ‘c’ character special file 
+> + ‘C’ high performance (“contiguous data”) file 
+> + ‘d’ directory 
+> + ‘D’ door (Solaris) 
+> + ‘l’ symbolic link 
+> + ‘M’ off-line (“migrated”) file (Cray DMF) 
+> + ‘n’ network special file (HP-UX) 
+> + ‘p’ FIFO (named pipe) 
+> + ‘P’ port (Solaris) 
+> + ‘s’ socket 
+> + ‘?’ some other file type
+
+[TODO] Missing info about [Symbolic Modes](https://www.gnu.org/software/coreutils/manual/html_node/Symbolic-Modes.html) to understand file mode bits setup
+
+***
 
 #### Sorting the output
 	By default, the output is sorted alphabetically, according to the locale settings in effect.4
@@ -85,16 +124,23 @@ I.e, how flags can affect the output, and explain the different types of flags.
 	(4)
 	If you use a non-POSIX locale (e.g., by setting LC_ALL to ‘en_US’), then ls may produce output that is sorted differently than you’re accustomed to.
 	In that case, set the LC_ALL environment variable to ‘C’.
-***
-#### Exit status
+![image](https://user-images.githubusercontent.com/28810331/219969909-2d4783de-8050-492f-8268-dc9e2d8bc85d.png)
 
-> - 0 success
-> - 1 minor problems  (e.g., failure to access a file or directory not
-> specified as a command line argument.  This happens when listing a
-> directory in which entries are actively being removed or renamed.)
-> - 2 serious trouble (e.g., memory exhausted, invalid option, failure
-> to access a file or directory specified as a command line argument
-> or a directory loop)
+
+| Flag(s)  | Description | Priority |
+| ------------- | ------------- | ------------- |
+| -C --time=ctime --time=status| In long format, print the status change timestamp (the ctime) instead of the mtime. When sorting by time or when not using long format, sort according to the ctime. See File timestamps | always |
+| -f | Produce an unsorted directory listing. This is equivalent to the combination of --all (-a), --sort=none (-U), -1, --color=none, and --hyperlink=none, while also disabling any previous use of --size (-s) | always, priority of appearance against -l |
+| -r --reverse | Reverse whatever the sorting method is—e.g., list files in reverse alphabetical order, youngest first, smallest first, or whatever. This option has no effect when --sort=none (-U) is in effect | if ! -f && ! -U |
+| -S --sort=size | Sort by file size, largest first | if ! -f && ! -U |
+| -t --sort=time | Sort by modification timestamp (mtime) by default, newest first. The timestamp to order by can be changed with the --time option | if ! -f && ! -U |
+| -u --time=atime --time=access --time=use | In long format, print the last access timestamp (the atime). When sorting by time or when not using long format, sort according to the atime | if ! -f && ! -U |
+| --time=birth --time=creation |  In long format, print the file creation timestamp if available. When sorting by time or when not using long format, sort according to the birth time | if ! -f && ! -U|
+| -U --sort=none | Do not sort; list the files in whatever order they are stored in the directory. (Do not do any of the other unrelated things that -f does.) This can be useful when listing large directories, where sorting can take some time | always |
+| -v --sort=version | Sort by version name and number, lowest first. It behaves like a default sort, except that each sequence of decimal digits is treated numerically as an index/version number. See Version sort ordering | if ! -f && ! -U |
+| --sort=width | Sort by printed width of file names. This can be useful with the --format=vertical (-C) output format, to most densely display the listed files | if ! -f && ! -U |
+| -X --sort=extension | Sort by printed width of file names. This can be useful with the --format=vertical (-C) output format, to most densely display the listed files | if ! -f && ! -U |
+
 ***
 
 #### General output formatting
@@ -141,6 +187,18 @@ I.e, how flags can affect the output, and explain the different types of flags.
 	ls -l
 ```
 
+***
+
+#### Exit status
+
+> - 0 success
+> - 1 minor problems  (e.g., failure to access a file or directory not
+> specified as a command line argument.  This happens when listing a
+> directory in which entries are actively being removed or renamed.)
+> - 2 serious trouble (e.g., memory exhausted, invalid option, failure
+> to access a file or directory specified as a command line argument
+> or a directory loop)
+***
 
 ### Sources
 ```man ls```
