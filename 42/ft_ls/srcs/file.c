@@ -74,13 +74,13 @@ void	setup_file(void * ptr, void * ptr2) {
 	file = (t_file *)ptr;
 	full_path = ft_strjoin(ft_strdup((file->f_path != NULL) ? file->f_path : ""), file->f_name);
 	dir = opendir(full_path);
-	free(full_path);
 //	if (file->path)
 //		dir	= opendir(file->f_name);
 	if (!dir) {
 		file->f_type = NotFounded;
 		if (DEBUG)
-			ft_printf("File %s not founded :(\n", file->f_name);
+			ft_printf("File %s%s not founded :(\n", (file->f_path == NULL) ? "" : file->f_path, file->f_name);
+		free(full_path);
 		return ;
 	}
 	if (DEBUG)
@@ -93,13 +93,16 @@ void	setup_file(void * ptr, void * ptr2) {
 			continue ;
 		if (DEBUG)
 			printf("children %s\n\td_ino [%lu]\n\td_off [%lu]\n\td_reclen [%u]\n\td_type [%d]\n", ent->d_name, ent->d_ino, ent->d_off, ent->d_reclen, ent->d_type);
-		tmp = init_file(ent->d_name, file->f_name);
-		if (!tmp)
+		tmp = init_file(ent->d_name, full_path);
+		if (!tmp) {
+			free(full_path);
 			return ;
+		}
 		tmp->f_size = ent->d_reclen;
 		tmp->d_ino = ent->d_ino;
 		ft_lstadd_front(&file->children, ft_lstnew(tmp));
 	}
+	free(full_path);
 	closedir(dir);
 	if (flags->flagR && file->children)
 		ft_lstiter_param(file->children, setup_file, ptr2);
@@ -138,8 +141,12 @@ t_file * init_file(char * str, char * path) {
   }
 	if (!path)
 		file->f_path = NULL;
-	else
-		file->f_path = ft_strdup(path);
+	else {
+		if (path[ft_strlen(path) - 1] == '/')
+			file->f_path = ft_strdup(path);
+		else
+			file->f_path = ft_strjoin(ft_strdup(path), "/");
+	}
   file->f_mode = 0;
   file->total = 0;
   file->children = NULL;
