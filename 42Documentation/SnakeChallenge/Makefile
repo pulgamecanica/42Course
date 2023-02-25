@@ -4,7 +4,7 @@ INCFT   = ./libft/include
 LIBFT   = ./libft
 LIBMLX  = /usr/local/lib
 UNAME   := $(shell uname)
-CFLAGS  = -Wall -Werror -Wextra -O3 -g -I$(INC) -I${INCFT} -Iinclude
+CFLAGS  = -w -O3 -g -I$(INC) -I${INCFT} -Iinclude
 LFLAGS  = -L$(LIBMLX) -lmlx
 SRC     = $(wildcard src/*.c)
 OBJ     = $(SRC:%.c=%.o)
@@ -15,8 +15,8 @@ ifeq ($(UNAME), Darwin)
 else ifeq ($(UNAME), FreeBSD)
 	CC = clang
 else
-	CC = clang
-	LFLAGS += -lbsd -lft-lXext -lX11 -lm
+	CC = gcc
+	LFLAGS += -lbsd -lXext -lX11 -lm
 endif
 
 all: $(NAME) show
