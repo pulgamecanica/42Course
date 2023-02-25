@@ -12,6 +12,8 @@
 
 #ifndef STACK_H
 # define STACK_H
+#include "libft.h"
+
 
 typedef t_list	t_stack;
 

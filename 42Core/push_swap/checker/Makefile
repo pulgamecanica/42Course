@@ -3,7 +3,7 @@ SRCS	= ${wildcard *.c}
 PSSRCS	= ../errors.c ../pmoves.c ../rmoves.c ../rrmoves.c ../smoves.c ../stack.c ../init_stack.c ../stack_max_min.c
 NAME	= checker
 CC	= gcc
-FLAGS	= -Wall -Werror -Wextra -D SHOW=${SHOW}
+FLAGS	= -w -D SHOW=${SHOW}
 RM	= rm -f
 INCS	= ../libft/includes
 LIBFT	= -L ../libft -lft

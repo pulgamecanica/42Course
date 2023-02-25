@@ -71,6 +71,7 @@ void		ft_lstdelelem(t_list **lst, t_list *elem, void (*del)(void *));
 void		ft_lstclear(t_list **lst, void (*del)(void *));
 void		ft_lstiter(t_list *lst, void (*f)(void *));
 void		ft_lstiter_param(t_list *lst, void (*f)(void *, void *), void * ptr);
+t_list		*ft_lstget(t_list *lst, int index);
 t_list		*ft_lstnew(void *content);
 t_list		*ft_lstlast(t_list *lst);
 t_list		*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));

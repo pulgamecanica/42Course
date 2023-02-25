@@ -48,8 +48,11 @@ static void	make_action(t_stack **a, t_stack **b, char *str)
 		rrb(b);
 	else if (!ft_strncmp(str, "rrr\n", ft_strlen(str)))
 		rrr(a, b);
-	else
+	else {
 		ft_printf("\033[0;33mERROR\nAction not founded\033[0m\n");
+		return ;
+	}
+	print_both_stacks(*a, *b);
 }
 
 static void	read_actions(t_stack **a, t_stack **b)
