@@ -46,14 +46,15 @@ unsigned int	get_pixel_img(t_img img, int x, int y) {
 			+ (y * img.line_len) + (x * img.bpp / 8))));
 }
 
-int	put_pixel_valid(t_img img, int x, int y) {
+static int	put_pixel_valid(t_img img, int x, int y) {
 	if (x >= 0 && y >= 0 && x < img.w && y < img.h) {
-		return (*(unsigned int *)(img.addr + (y * img.line_len + x * (img.bpp / 8))) != 0xFF000000);
+		return (*(unsigned int *)(img.addr + (y * img.line_len + x * (img.bpp / 8))) != 0xFF000000 &&
+		*(unsigned int *)(img.addr + (y * img.line_len + x * (img.bpp / 8))) != 0x00000000);
 	}
 	return 0;
 }
 
-void put_img_to_img(t_img dst, t_img src, int x, int y) {
+void	put_img_to_img(t_img dst, t_img src, int x, int y) {
 	int i;
 	int j;
 

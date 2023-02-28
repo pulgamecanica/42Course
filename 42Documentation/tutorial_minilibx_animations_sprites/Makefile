@@ -1,5 +1,5 @@
 BIN 	= bin
-SRC		= src/main.c src/image_utils.c src/window_utils.c src/sprite.c src/game.c src/animation.c src/utils.c
+SRC		= src/main.c src/image_utils.c src/window_utils.c src/sprite.c src/game.c src/animation.c src/utils.c src/parse_sprite.c
 INCS	= include/
 LIBFT_INCS = $(LIBFT)/includes
 LIBMLX_INCS	= /usr/local/include
@@ -49,7 +49,7 @@ fclean: clean
 re: fclean all
 
 test:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) $(ARGS)
 
 show:
 	@printf "UNAME		: $(UNAME)\n"

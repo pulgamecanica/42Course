@@ -1,0 +1,21 @@
+assets/red_hood.xpm red_hood 
+PLAYER
+run 112,0,112,133 24 5
+iddle 0,0,112,133 1 0
+atack1 112,266,112,133 9 10
+atack2 0,1197,112,133 12 20
+jump 224,399,112,133 13 5
+injured 112,1330,112,133 5 10
+
+iddle mirrored 10
+run mirrored 12
+jump mirrored 30
+atack1 mirrored 15
+injured mirrored 12
+atack2 mirrored 20
+iddle 10
+run 12
+jump 30
+atack1 15
+injured 12
+atack2 20

@@ -10,7 +10,8 @@ t_sprite	new_sprite(char * name, char * file_path, t_win * win) {
 
 static void	add_frame(t_animation * a, t_sprite s, sprite_slice slice, int mirrored) {
 	t_img *	frame;
-	int i, j;
+	int	i;
+	int	j;
 
 	frame = (t_img *)calloc(sizeof(t_img), 1);
 	if (!frame)
@@ -31,14 +32,14 @@ static void	add_frame(t_animation * a, t_sprite s, sprite_slice slice, int mirro
 	ft_lstadd_back(&a->frames, ft_lstnew(frame));
 }
 
-t_animation *	slice_sprite(t_sprite s, sprite_slice slice, int mirrored, int frames, int delay, enum entity e) {
-	int i;
+t_animation *	slice_sprite(t_sprite s, sprite_slice slice, int mirrored, int frames, int delay, enum entity e, char * name) {
 	t_animation *	a;
+	int	i;
 
 	a = (t_animation *)calloc(sizeof(t_animation), 1);
 	if (!a)
 		return NULL;
-	*a = (t_animation){NULL, slice.width, slice.height, delay, 0, 0, 0 /*get_current_time*/, 0, e};
+	*a = (t_animation){NULL, slice.width, slice.height, delay, 0, 0, mirrored, 0, 0, e, ft_strdup(name)};
 	i = 0;
 	while (i < frames) {
 		add_frame(a, s, slice, mirrored);

@@ -1,0 +1,21 @@
+assets/fox.xpm fox 
+OBJ
+run 0,64,32,32 8 5
+iddle 0,32,32,32 14 20
+atack1 0,128,32,32 5 12
+atack2 0,192,32,32 7 20
+jump 0,96,32,32 11 5
+injured 0,160,32,32 5 10
+
+iddle 10
+run 12
+jump 30
+atack1 15
+injured 12
+atack2 20
+iddle mirrored 10
+run mirrored 12
+jump mirrored 30
+atack1 mirrored 15
+injured mirrored 12
+atack2 mirrored 20

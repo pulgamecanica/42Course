@@ -1,3 +1,6 @@
+#include <sys/time.h>
+#include "get_next_line.h"
+#include "utils.h"
 #include "game.h"
 
 uint64_t	gettimeofday_ms(void) {
@@ -10,14 +13,37 @@ uint64_t	gettimeofday_ms(void) {
 uint64_t	timestamp_in_ms(t_game * game) {
 	if (!game)
 		return 0;
-	if (game->created_at == 0) {
+	if (game->created_at == 0)
 		game->created_at = gettimeofday_ms();
-	}
 	return (gettimeofday_ms() - game->created_at);
 }
 
-int			key_released(int key, void *param) {
-	t_game	*game;
+int		ft_list_size(char ** list) {
+	int i;
+
+	if (!list || !*list)
+		return 0;
+	i = 0;
+	while (list[i])
+		i++;
+	return i;
+}
+
+void	free_list(char ** list) {
+	int	i;
+
+	if (!list)
+		return ;
+	i = 0;
+	while(list[i]) {
+		free(list[i]);
+		i++;
+	}
+	free(list);
+}
+
+int		key_released(int key, void *param) {
+	t_game *	game;
 
 	game = (t_game *)param;
 	if (key == UP || key == KEY_W)
@@ -40,8 +66,9 @@ int			key_released(int key, void *param) {
 		return (0);
 	return 0;
 }
+
 int	key_pressed(int key, void *param) {
-	t_game	*game;
+	t_game *	game;
 
 	game = (t_game *)param;	
 	if (key == UP || key == KEY_W)
@@ -59,4 +86,25 @@ int	key_pressed(int key, void *param) {
 	else
 		return (0);
 	return 0;
+}
+
+char * get_next_line_nl(int fd) {
+	char *	line;
+	char *	new_line;
+
+	line = get_next_line(fd);
+	if (!line) {
+		close(fd);
+		return NULL;
+	}
+	if (line[ft_strlen(line) - 1] != '\n')
+		return line;
+	if (ft_strlen(line) <= 1) {
+		free(line);
+		return NULL;
+	}
+	new_line = (char *)ft_calloc(sizeof(char), ft_strlen(line));
+	ft_strlcpy(new_line, line, ft_strlen(line));
+	free(line);
+	return (new_line);
 }

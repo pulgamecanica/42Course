@@ -1,0 +1,21 @@
+assets/link.xpm link
+PLAYER
+run 0,0,64,64 7 20
+iddle 256,64,64,64 1 10
+atack1 320,64,64,64 5 15
+atack2 448,192,64,64 10 25
+jump 64,192,64,64 6 5
+injured 128,128,64,64 6 10
+
+iddle 10
+run 12
+jump 30
+atack1 15
+injured 12
+atack2 20
+iddle mirrored 10
+run mirrored 12
+jump mirrored 30
+atack1 mirrored 15
+injured mirrored 12
+atack2 mirrored 20

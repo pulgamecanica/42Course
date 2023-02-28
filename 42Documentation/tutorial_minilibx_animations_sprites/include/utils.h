@@ -2,6 +2,7 @@
 # define UTILS_H
 
 # include <mlx.h>
+# include <stdint.h>
 
 typedef struct s_win
 {
@@ -32,4 +33,8 @@ void	put_pixel_img(t_img img, int x, int y, int color);
 void	put_img_to_img(t_img dst, t_img src, int x, int y);
 void	destroy_image(t_img img);
 void	destroy_window(t_win w);
+void	free_list(char ** list);
+int		ft_list_size(char ** list);
+char *	get_next_line_nl(int fd);
+
 #endif

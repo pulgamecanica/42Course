@@ -79,11 +79,14 @@ typedef struct s_game {
 /* Game */
 t_ent * new_ent(t_list * a, int x, int y, int width, int height, enum entity e);
 void	destroy_game(t_game * game);
-
 /* Utils */
 uint64_t	gettimeofday_ms(void);
 uint64_t	timestamp_in_ms(t_game * game);
 int			key_released(int key_released, void *param);
 int			key_pressed(int key_released, void *param);
+void		update_ent(void * ptr1, void * ptr2);
+void		add_ent_from_file_to_game(t_game * game, char * path);
+void		update_animaiton(t_animation * a, t_ent * ent, t_img game_img);
+int			ft_exit(t_game * g);
 
 #endif

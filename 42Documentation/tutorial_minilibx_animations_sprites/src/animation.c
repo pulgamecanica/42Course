@@ -1,7 +1,7 @@
 #include "libft.h"
 #include "utils.h"
-#include "animation.h"
 #include "game.h"
+#include "animation.h"
 
 void	update_animaiton(t_animation * a, t_ent * ent, t_img game_img) {
 	t_img *	img;
@@ -37,4 +37,5 @@ void	destroy_animation(void * ptr) {
 		return ;
 	ft_lstiter(a->frames, _helper_destroy_img);
 	ft_lstclear(&a->frames, free);
+	free(a->name);
 }
