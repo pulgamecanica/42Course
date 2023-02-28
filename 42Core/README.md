@@ -165,6 +165,12 @@ Find your own solutions, and if you are inspired with mine im gladd ;)
       <td><a href="ft_transcendence">ft_transcendence</a></td>
       <td><a href="https://github.com/pulgamecanica/42Course/tree/main/42Documentation/TS_practice">TS Practice</a></td>
     </tr>
+    <tr>
+      <td>exam rank 6</td>
+      <td>C (sockets)</td>
+      <td><a href="https://github.com/pulgamecanica/42Course/tree/main/42Documentation/Exam_Rank_06">Exam Rank 06 mini_serv</a></td>
+      <td>N/A</td>
+    </tr>
   </tbody>
 </table>
 
