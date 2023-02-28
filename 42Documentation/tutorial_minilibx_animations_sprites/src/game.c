@@ -52,7 +52,7 @@ void add_ent_from_file_to_game(t_game * game, char * path) {
 		return ;
 	}
 	if (s->animations) {
-		ent = new_ent(s->animations, 40, 45, 64, 64, PLAYER);
+		ent = new_ent(s->animations, 40, 45, s->width, s->height, PLAYER);
 		ft_lstadd_back(&game->ents, ft_lstnew(ent));
 	}
 	destroy_sprite(*s);
