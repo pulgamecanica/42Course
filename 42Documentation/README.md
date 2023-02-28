@@ -8,7 +8,7 @@
 ## List of Content
 
 
-### [ExamRank\[3, 4, 5\]](.)
+### [ExamRank\[3, 4, 5, 6\]](.)
 ***
 ### [libft_tests](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/libft_tests)
     test1 => Mandatory
@@ -30,7 +30,8 @@
 ### [UnixProcesses](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/UnixProcesses)
     [Execve, Fork, Pipe] explained with examples and exercises
 ***
-### [minilibx_tutorial_1](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/tutorial_minilibx) & [minilibx_tutorial_2](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/tutorial_minilibx_part2)
+### [minilibx_tutorial 1](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/tutorial_minilibx) & [minilibx_tutorial_2](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/tutorial_minilibx_part2)
+    Tutorial about how to use minilibx
 ***
 ### [SnakeChallenge](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/SnakeChallenge)
     The snake game developed with minilibx (Challenge solution)
@@ -45,6 +46,18 @@
 ### [bsp_tester](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/bsp_tester)
     Tester for bsp exercise on the C++Piscine
     Developed with SDL
+***
+### [TS_Practice](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/TS_Practice)
+    Basoc TypeScript Excercises and projects before doing ft_transcendence
+***
+### [minilibx_animations_tutorial_figures](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/tutorial_minilibx_animations_figures)
+    Tutorial explaining how to animate figures, and paths using linked lists
+***
+### [minilibx_animations_tutorial_sprites](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/tutorial_minilibx_animations_sprites)
+    Tutorial explaining how to animate sprites, and paths using linked lists 
+***
+### [PongGame](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/PongGame)
+    Developed PongGame using minilibx library using multithreading and powerups, it's a futuristic pong.
 ***
 ### Good Luck and don't drown! Keep Swimming! ;D
 
