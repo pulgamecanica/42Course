@@ -47,7 +47,7 @@
     Tester for bsp exercise on the C++Piscine
     Developed with SDL
 ***
-### [TS_Practice](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/TS_Practice)
+### [TS_Practice](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/TS_practice)
     Basoc TypeScript Excercises and projects before doing ft_transcendence
 ***
 ### [minilibx_animations_tutorial_figures](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/tutorial_minilibx_animations_figures)
