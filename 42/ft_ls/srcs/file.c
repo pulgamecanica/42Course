@@ -13,7 +13,7 @@ t_list    *ft_lstlast(t_list *lst);
 t_list    *ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 typedef struct s_file {
-  enum filetype f_type;
+  enum filetype f_errors;
   size_t    f_size;
   size_t    f_create_date;
   size_t    f_last_modify;
@@ -52,7 +52,7 @@ static void ft_print_file(t_file * file) {
 	"created_at: %d, "
 	"last_modify: %d, "
 	"# children: %d",
-	file->f_type,
+	file->f_errors,
 	file->f_path,
 	file->f_name,
 	file->f_mode,
@@ -63,36 +63,84 @@ static void ft_print_file(t_file * file) {
 	ft_lstsize(file->children));
 }
 
-void	setup_file(void * ptr, void * ptr2) {
-	t_file * file, *	tmp;
-	ls_flags * flags;
-	DIR * dir;
+#include <stdint.h>
+#include <sys/sysmacros.h>
+
+static void	set_file_type(t_file * file, ls_flags * flags) {
+	int result;
+	char * full_path;
+
+	if (!file || !flags)
+		return ;
+	full_path = ft_strjoin(ft_strdup((file->f_path != NULL) ? file->f_path : ""), file->f_name);
+	if (!full_path)
+			ft_exit(1, "Failed to allocate memory\n", 0);
+	//if (flags->flagL)
+	//	lstat();
+	//else
+	result = lstat(full_path, &file->f_stat);
+	if (result == -1) {
+		file->f_errors = NotFounded;
+		if (DEBUG)
+			perror("ft_ls");
+	}
+	if (DEBUG)
+		printf("[%s]\n", full_path);
+	free(full_path);
+	if (!DEBUG)
+		return ;
+	printf("ID of containing device:  [%jx,%jx]\n",
+	       (uintmax_t) major(file->f_stat.st_dev),
+	       (uintmax_t) minor(file->f_stat.st_dev));
+
+	printf("File type:                ");
+
+	switch (file->f_stat.st_mode & S_IFMT) {
+	case S_IFBLK:  printf("block device\n");            break;
+	case S_IFCHR:  printf("character device\n");        break;
+	case S_IFDIR:  printf("directory\n");               break;
+	case S_IFIFO:  printf("FIFO/pipe\n");               break;
+	case S_IFLNK:  printf("symlink\n");                 break;
+	case S_IFREG:  printf("regular file\n");            break;
+	case S_IFSOCK: printf("socket\n");                  break;
+	default:       printf("unknown?\n");                break;
+	}
+
+	printf("I-node number:            %ju\n", (uintmax_t) file->f_stat.st_ino);
+
+	printf("Mode:                     %jo (octal)\n",
+	       (uintmax_t) file->f_stat.st_mode);
+
+	printf("Link count:               %ju\n", (uintmax_t) file->f_stat.st_nlink);
+	printf("Ownership:                UID=%ju   GID=%ju\n",
+	       (uintmax_t) file->f_stat.st_uid, (uintmax_t) file->f_stat.st_gid);
+
+	printf("Preferred I/O block size: %jd bytes\n",
+	       (intmax_t) file->f_stat.st_blksize);
+	printf("File size:                %jd bytes\n",
+	       (intmax_t) file->f_stat.st_size);
+	printf("Blocks allocated:         %jd\n",
+	       (intmax_t) file->f_stat.st_blocks);
+
+	printf("Last status change:       %s", ctime(&file->f_stat.st_ctime));
+	printf("Last file access:         %s", ctime(&file->f_stat.st_atime));
+	printf("Last file modification:   %s", ctime(&file->f_stat.st_mtime));
+	printf("*********************************************************\n");
+}
+
+static void	setup_directory_children(t_file * parent, DIR * dir, ls_flags * flags) {
+	t_file * tmp;
 	struct dirent * ent;
 	char * full_path;
 
-	flags = (ls_flags *)ptr2;
-	file = (t_file *)ptr;
-	full_path = ft_strjoin(ft_strdup((file->f_path != NULL) ? file->f_path : ""), file->f_name);
-	dir = opendir(full_path);
-//	if (file->path)
-//		dir	= opendir(file->f_name);
-	if (!dir) {
-		file->f_type = NotFounded;
-		if (DEBUG)
-			ft_printf("File %s%s not founded :(\n", (file->f_path == NULL) ? "" : file->f_path, file->f_name);
-		free(full_path);
+	if (!parent || !dir || !flags)
 		return ;
-	}
-	if (DEBUG)
-		ft_printf("Opened file %s%s, setting up children :)\n", (file->f_path == NULL) ? "" : file->f_path, file->f_name);
-	while ((ent = readdir(dir))
-		&& ft_strncmp(file->f_name, "..", ft_max(ft_strlen(file->f_name), ft_strlen("..")))
-		&& ft_strncmp(file->f_name, ".", ft_max(ft_strlen(file->f_name), ft_strlen(".")))
-	) {
-		if (ent->d_name[0] == '.' && !flags->flaga)
+	full_path = ft_strjoin(ft_strdup((parent->f_path != NULL) ? parent->f_path : ""), parent->f_name);
+	while ((ent = readdir(dir))) {
+		if (*ent->d_name == '.' && !flags->flaga)
 			continue ;
 		if (DEBUG)
-			printf("children %s\n\td_ino [%lu]\n\td_off [%lu]\n\td_reclen [%u]\n\td_type [%d]\n", ent->d_name, ent->d_ino, ent->d_off, ent->d_reclen, ent->d_type);
+			printf("[%s] %s\n\td_ino [%lu]\n\td_off [%lu]\n\td_reclen [%u]\n\td_type [%d]\n", full_path, ent->d_name, ent->d_ino, ent->d_off, ent->d_reclen, ent->d_type);
 		tmp = init_file(ent->d_name, full_path);
 		if (!tmp) {
 			free(full_path);
@@ -100,12 +148,70 @@ void	setup_file(void * ptr, void * ptr2) {
 		}
 		tmp->f_size = ent->d_reclen;
 		tmp->d_ino = ent->d_ino;
-		ft_lstadd_front(&file->children, ft_lstnew(tmp));
+		set_file_type(tmp, flags);
+		ft_lstadd_front(&parent->children, ft_lstnew(tmp));
 	}
 	free(full_path);
+}
+
+static void setup_file_directory_recursive(void * ptr1, void * ptr2) {
+	t_file * file;
+	ls_flags * flags;
+	DIR * dir;
+	char * full_path;
+
+	file = (t_file *)ptr1;
+	flags = (ls_flags *)ptr2;
+	if (!file || !flags || !ft_strncmp(file->f_name, "..", ft_max(ft_strlen(file->f_name), ft_strlen("..")))
+		|| !ft_strncmp(file->f_name, ".", ft_max(ft_strlen(file->f_name), ft_strlen(".")))
+		|| (file->f_stat.st_mode & S_IFMT) != S_IFDIR)
+		return ;
+	full_path = ft_strjoin(ft_strdup((file->f_path != NULL) ? file->f_path : ""), file->f_name);
+	if (!full_path)
+		return ;
+	dir = opendir(full_path);
+	free(full_path);
+	if (!dir) {
+		file->f_errors = NotFounded;
+		if (DEBUG)
+			ft_printf("File %s%s not founded :( Or some error\n", (file->f_path == NULL) ? "" : file->f_path, file->f_name);
+		return ;
+	}
+	setup_directory_children(file, dir, flags);
 	closedir(dir);
 	if (flags->flagR && file->children)
-		ft_lstiter_param(file->children, setup_file, ptr2);
+		ft_lstiter_param(file->children, setup_file_directory_recursive, ptr2);
+}
+
+void	setup_file(void * ptr1, void * ptr2) {
+	t_file * file;
+	ls_flags * flags;
+	DIR * dir;
+	char * full_path;
+
+	file = (t_file *)ptr1;
+	flags = (ls_flags *)ptr2;
+	if (!file || !flags)
+		ft_exit(1, "Bad Error invalid (void *) cast\n", 0);
+	set_file_type(file, flags);
+	full_path = ft_strjoin(ft_strdup((file->f_path != NULL) ? file->f_path : ""), file->f_name);
+	if (file->f_errors == NoError && (file->f_stat.st_mode & S_IFMT) == S_IFDIR) { // AND FLAG D NOT PRESENT
+		if (!full_path)
+			ft_exit(1, "Failed to allocate memory\n", 0);
+		dir = opendir(full_path);
+		free(full_path);
+		if (!dir) {
+			file->f_errors = NotFounded;
+			if (DEBUG)
+				ft_printf("ls: cannot open directory '%s%s': Permission denied\n", (file->f_path != NULL) ? file->f_path : "", file->f_name);
+			return ;
+		}
+		setup_directory_children(file, dir, flags);
+		closedir(dir);
+		if (flags->flagR && file->children) {
+			ft_lstiter_param(file->children, setup_file_directory_recursive, ptr2);
+		}
+	}
 }
 
 //void	setup_files(ls_config * config) {
@@ -124,13 +230,16 @@ void	ft_print_files(t_list * head) {
 	ft_print_files(head->next);
 }
 
+
+
 t_file * init_file(char * str, char * path) {
   t_file *  file;
 
   file = (t_file *)ft_calloc(sizeof(t_file), 1);
   if (!file)
     return NULL;
-	file->f_type = 0;
+	file->f_errors = 0;
+  file->f_errors = NoError;
   file->f_size = 0;
   file->f_create_date = 0;
   file->f_last_modify = 0;

@@ -11,6 +11,8 @@
 # include <stdlib.h>
 # include <sys/types.h>
 # include <dirent.h>
+# include <time.h>
+# include <sys/stat.h>
 
 typedef struct ls_flags {
 	bool flagl; // -l
@@ -26,20 +28,23 @@ typedef struct ls_config {
 	t_list *	files;
 }	ls_config;
 
-enum	filetype {
-	NotFounded = 0,
-	Regular_File = 45,          // '-'
-	Directory = 100,            // 'd'
-	Character_Device_File = 99, // 'c'
-	Block_Device_File = 98,     // 'b'
-	Local_Socket_File = 115,    // 's'
-	Named_Pipe = 112,           // 'p'
-	Symbolic_Link = 108         // 'l'
+enum	fileErrors {
+	NoError,
+	NotFounded,
+	PermissionDenied
+//	Regular_File = 4,          // '-'
+//	Directory = 100,            // 'd'
+//	Character_Device_File = 99, // 'c'
+//	Block_Device_File = 98,     // 'b'
+//	Local_Socket_File = 115,    // 's'
+//	Named_Pipe = 112,           // 'p'
+//	Symbolic_Link = 108         // 'l'
 };
 
 typedef struct s_file {
-	enum filetype	f_type;
+	enum fileErrors	f_errors;
 	ino_t		d_ino;
+	struct stat	f_stat;
 	size_t		f_size;
 	size_t		f_create_date;
 	size_t		f_last_modify;
@@ -50,6 +55,32 @@ typedef struct s_file {
 	t_list *	children;
 }	t_file;
 
+
+//struct stat {
+//   dev_t     st_dev;         /* ID of device containing file */
+//   ino_t     st_ino;         /* Inode number */
+//   mode_t    st_mode;        /* File type and mode */
+//   nlink_t   st_nlink;       /* Number of hard links */
+//   uid_t     st_uid;         /* User ID of owner */
+//   gid_t     st_gid;         /* Group ID of owner */
+//   dev_t     st_rdev;        /* Device ID (if special file) */
+//   off_t     st_size;        /* Total size, in bytes */
+//   blksize_t st_blksize;     /* Block size for filesystem I/O */
+//   blkcnt_t  st_blocks;      /* Number of 512B blocks allocated */
+//
+//   /* Since Linux 2.6, the kernel supports nanosecond
+//      precision for the following timestamp fields.
+//      For the details before Linux 2.6, see NOTES. */
+//
+//   struct timespec st_atim;  /* Time of last access */
+//   struct timespec st_mtim;  /* Time of last modification */
+//   struct timespec st_ctim;  /* Time of last status change */
+//
+//#define st_atime st_atim.tv_sec      /* Backward compatibility */
+//#define st_mtime st_mtim.tv_sec
+//#define st_ctime st_ctim.tv_sec
+//};
+
 # define ft_max(x,y) ((x) > (y) ? (x) : (y))
 
 void			ft_exit(int status, char * msg, bool msg_allocated);
@@ -57,7 +88,7 @@ void			free_file(void * ptr);
 void			print_flags(ls_flags * flags);
 void			ft_print_files(t_list * head);
 void			setup_file(void * ptr, void * ptr2);
-t_file *	init_file(char * str, char * path);
+t_file *		init_file(char * str, char * path);
 int				assign_flags(ls_flags * flags, char * str);
 
 #endif

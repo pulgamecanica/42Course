@@ -23,7 +23,7 @@ else
 	CFLAGS += -D LINUX
 endif
 
-all: $(NAME)
+all: $(NAME) $(DNAME)
 	@./msg_ft_ls
 
 $(NAME): ${BIN} ${OBJS} | ${LIBFT}
@@ -59,7 +59,9 @@ debug: $(DEBUGBIN) $(DOBJS) | $(LIBFT)
 $(DNAME): debug
 
 test:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(DNAME) $(FT_LS_ARGS)
+	@echo "[MAKEFILE] You can setup test arguments by setting up the env FT_LS_ARGS"
+	@echo "[MAKEFILE] Ex: export FT_LS_ARGS=\"-a --recursive ..\""
 
 show:
 	@printf "UNAME		: $(UNAME)\n"
@@ -71,4 +73,4 @@ show:
 	@printf "OBJS		: $(OBJS)\n"
 
 
-.PHONY: $(LIBFT) re all clean fclean debug
+.PHONY: $(LIBFT) re all clean fclean debug test
