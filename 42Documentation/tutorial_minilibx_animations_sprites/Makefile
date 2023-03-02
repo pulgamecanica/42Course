@@ -31,7 +31,7 @@ $(NAME): ${BIN} ${OBJS} | ${LIBFT}
 	${CC} ${OBJS} ${LFLAGS} -o ${NAME} 
 
 $(BIN)/%o: src/%c
-	${CC} -c $< ${CFLAGS} ${IFLAGS} ${LFLAGS} -o $@
+	${CC} -c $< ${CFLAGS} ${IFLAGS} -o $@
 
 $(BIN):
 	mkdir -p $(BIN)
