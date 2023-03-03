@@ -1,4 +1,4 @@
-SRC	= srcs/main.c srcs/utils.c srcs/file.c srcs/flags.c
+SRC	= srcs/main.c srcs/utils.c srcs/file.c srcs/flags.c srcs/list_files.c srcs/comparators.c
 BIN 	= bin
 DEBUGBIN = dbin
 INCS	= includes/

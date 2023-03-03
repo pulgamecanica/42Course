@@ -47,7 +47,7 @@ typedef struct s_file {
 	struct stat	f_stat;
 	char *		f_name;
 	char *		f_path;
-	int				total;
+	int			total;
 	t_list *	children;
 }	t_file;
 
@@ -86,5 +86,7 @@ void			ft_print_files(t_list * head, int depth, bool various);
 void			setup_file(void * ptr, void * ptr2);
 t_file *		init_file(char * str, char * path);
 int				assign_flags(ls_flags * flags, char * str);
-
+/* comparators */
+int cmp_directory_last(void * ptr1, void * ptr2);
+int cmp_ascii_order(void * ptr1, void * ptr2);
 #endif
