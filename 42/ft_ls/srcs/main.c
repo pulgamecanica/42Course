@@ -34,12 +34,16 @@ int	main(int ac, char * av[]) {
 			ft_lstadd_front(&config.files, ft_lstnew(init_file(av[i], NULL)));
 	if (!config.files || ft_lstsize(config.files) == 0)
 		ft_lstadd_front(&config.files, ft_lstnew(init_file(".", NULL)));
-//	ADD the Logic here
-//	setup_files(&config);
+
+	// WHAT INFORMATION IS LISTED, SET UP ALL THE FILES NEEDED ACCORDING To THE FLAGS
 	ft_lstiter_param(config.files, setup_file, &config.flags);
-//	Print debug info here
+	// SORTING THE OUTPUT
+	//ft_sort_files(config);
+	// ... print the output general formating
+
+	ft_print_files(config.files, 0, ft_lstsize(config.files) > 1);
+	//	Print debug info here
 	if (DEBUG) {
-		ft_print_files(config.files);
 		print_flags(&config.flags);
 	}
 	ft_lstclear(&config.files, free_file);

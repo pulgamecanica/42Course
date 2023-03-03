@@ -41,29 +41,24 @@ void free_file(void * ptr) {
 	free(ptr);
 }
 
+/*
 static void ft_print_file(t_file * file) {
 	ft_printf(""
 	"type: %d, "
 	"path: %-12.12s, "
 	"name: %-12.12s, "
-	"mode: %0.3d, "
-	"size: %d, "
 	"total: %d, "
-	"created_at: %d, "
-	"last_modify: %d, "
 	"# children: %d",
 	file->f_errors,
 	file->f_path,
 	file->f_name,
-	file->f_mode,
-	file->f_size,
 	file->total,
-	file->f_create_date,
-  file->f_last_modify,
 	ft_lstsize(file->children));
 }
+*/
 
 #include <stdint.h>
+#include <errno.h>
 #include <sys/sysmacros.h>
 
 static void	set_file_type(t_file * file, ls_flags * flags) {
@@ -80,7 +75,11 @@ static void	set_file_type(t_file * file, ls_flags * flags) {
 	//else
 	result = lstat(full_path, &file->f_stat);
 	if (result == -1) {
-		file->f_errors = NotFounded;
+		if (EACCES) {
+			file->f_errors = NotFounded;
+		} else {
+			file->f_errors = PermissionDenied;
+		}
 		if (DEBUG)
 			perror("ft_ls");
 	}
@@ -146,7 +145,7 @@ static void	setup_directory_children(t_file * parent, DIR * dir, ls_flags * flag
 			free(full_path);
 			return ;
 		}
-		tmp->f_size = ent->d_reclen;
+		//tmp->f_size = ent->d_reclen;
 		tmp->d_ino = ent->d_ino;
 		set_file_type(tmp, flags);
 		ft_lstadd_front(&parent->children, ft_lstnew(tmp));
@@ -201,7 +200,7 @@ void	setup_file(void * ptr1, void * ptr2) {
 		dir = opendir(full_path);
 		free(full_path);
 		if (!dir) {
-			file->f_errors = NotFounded;
+			file->f_errors = PermissionDenied;
 			if (DEBUG)
 				ft_printf("ls: cannot open directory '%s%s': Permission denied\n", (file->f_path != NULL) ? file->f_path : "", file->f_name);
 			return ;
@@ -222,15 +221,40 @@ void	setup_file(void * ptr1, void * ptr2) {
 	// ft_lstiter(congig., void (*f)(void *));
 //}
 
-void	ft_print_files(t_list * head) {
-	if (!head)
-		return ;
-	ft_print_file(head->content);
-	ft_printf("\n");
-	ft_print_files(head->next);
+void	ft_print_files(t_list * head, int depth, bool various) {
+	t_file	* file;
+
+	if (head) {
+		file = (t_file *)head->content;
+		if (!file)
+			ft_exit(1, "Bad Error invalid (void *) cast\n", 0);
+		// Probably good to check flagD here...
+		if (file->f_errors == PermissionDenied) {
+			ft_printf("ls: cannot open directory '%s%s': Permission denied\n", (file->f_path != NULL) ? file->f_path : "", file->f_name);
+		} else if (file->f_errors == NotFounded) {
+			ft_printf("ls: cannot access '%s%s': No such file or directory\n", (file->f_path == NULL) ? "" : file->f_path, file->f_name);
+		}
+		//ft_print_file(head->content);
+		if (file->f_errors == NoError) {
+			if ((!depth && (file->f_stat.st_mode & S_IFMT) != S_IFDIR) || depth) {
+				if (head->next) {
+					ft_printf("%s  ", file->f_name);
+				} else {
+					ft_printf("%s\n", file->f_name);
+				}
+			}
+		}
+		ft_print_files(head->next, depth, various);
+		if (file->children && (file->f_stat.st_mode & S_IFMT) == S_IFDIR) {
+			if (head->next) {
+				ft_printf("\n");
+			}
+			if ((various || depth) && (!various || !depth))
+				ft_printf("%s%s:\n", (file->f_path == NULL) ? "" : file->f_path, file->f_name);
+			ft_print_files(file->children, ++depth, various);
+		}
+	}
 }
-
-
 
 t_file * init_file(char * str, char * path) {
   t_file *  file;
@@ -240,9 +264,6 @@ t_file * init_file(char * str, char * path) {
     return NULL;
 	file->f_errors = 0;
   file->f_errors = NoError;
-  file->f_size = 0;
-  file->f_create_date = 0;
-  file->f_last_modify = 0;
   file->f_name = ft_strdup(str);
   if (!file->f_name) {
     free(file);
@@ -256,7 +277,6 @@ t_file * init_file(char * str, char * path) {
 		else
 			file->f_path = ft_strjoin(ft_strdup(path), "/");
 	}
-  file->f_mode = 0;
   file->total = 0;
   file->children = NULL;
   return (file);

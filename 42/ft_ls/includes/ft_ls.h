@@ -45,12 +45,8 @@ typedef struct s_file {
 	enum fileErrors	f_errors;
 	ino_t		d_ino;
 	struct stat	f_stat;
-	size_t		f_size;
-	size_t		f_create_date;
-	size_t		f_last_modify;
 	char *		f_name;
 	char *		f_path;
-	int				f_mode;
 	int				total;
 	t_list *	children;
 }	t_file;
@@ -86,7 +82,7 @@ typedef struct s_file {
 void			ft_exit(int status, char * msg, bool msg_allocated);
 void			free_file(void * ptr);
 void			print_flags(ls_flags * flags);
-void			ft_print_files(t_list * head);
+void			ft_print_files(t_list * head, int depth, bool various);
 void			setup_file(void * ptr, void * ptr2);
 t_file *		init_file(char * str, char * path);
 int				assign_flags(ls_flags * flags, char * str);
