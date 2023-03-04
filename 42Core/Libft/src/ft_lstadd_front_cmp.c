@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "libft.h"
 
-void	ft_lstadd_cmp(t_list **lst, t_list *new, int (*cmp)(void *, void *))
+void	ft_lstadd_front_cmp(t_list **lst, t_list *new, int (*cmp)(void *, void *))
 {
 	t_list	*n;
 

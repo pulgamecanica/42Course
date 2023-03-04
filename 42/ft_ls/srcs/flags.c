@@ -29,23 +29,18 @@ static int	is_flag(char * str) {
 
 static void	set_flag(ls_flags * flags, char flag) {
 	char tmp[] = "ls: invalid option -- 'c'\nTry 'ls --help' for more information.\n";
-
 	switch (flag) {
-	case 'l':
-		flags->flagl = true;
-		break ;
-	case 'R':
-		flags->flagR = true;
-		break ;
-	case 'a':
-		flags->flaga = true;
-		break ;
-	case 'r':
-		flags->flagr = true;
-		break ;
-	case 't':
-		flags->flagt = true;
-		break ;
+	case 'l': flags->flagl = true; break ;
+	case 'R': flags->flagR = true; break ;
+	case 'a': flags->flaga = true; break ;
+	case 'r': flags->flagr = true; break ;
+	case 't': flags->flagt = true; break ;
+	case 'L': flags->flagL = true; break ;
+	case 'D': flags->flagD = true; break ;
+	case 'u': flags->flagu = true; break ;
+	case 'f': flags->flagf = true; break ;
+	case 'g': flags->flagg = true; break ;
+	case 'd': flags->flagd = true; break ;
 	default:
 		tmp[23] = flag;
 		ft_exit(2, tmp, false);
@@ -112,12 +107,24 @@ void print_flags(ls_flags * flags) {
 		" -a %s\n"
 		" -r %s\n"
 		" -t %s\n"
+		" -L %s\n"
+		" -D %s\n"
+		" -u %s\n"
+		" -f %s\n"
+		" -g %s\n"
+		" -d %s\n"
 		"delimit %s\n",
 		flags->flagl ? "true" : "false",
 		flags->flagR ? "true" : "false",
 		flags->flaga ? "true" : "false",
 		flags->flagr ? "true" : "false",
 		flags->flagt ? "true" : "false",
+		flags->flagL ? "true" : "false",
+		flags->flagD ? "true" : "false",
+		flags->flagu ? "true" : "false",
+		flags->flagf ? "true" : "false",
+		flags->flagg ? "true" : "false",
+		flags->flagd ? "true" : "false",
 		flags->delimit ? "true" : "false"
 	);
 }

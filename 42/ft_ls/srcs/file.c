@@ -3,9 +3,11 @@
 void free_file(void * ptr) {
   t_file * file;
 
-  file = (t_file *)ptr;
-  if (file->children)
-    ft_lstclear(&file->children, free_file);
+	file = (t_file *)ptr;
+	if (file->children)
+		ft_lstclear(&file->children, free_file);
+	if (file->f_type == Symbolic_Link)
+		free_file(file->f_link_file);
 	free(file->f_name);
 	free(file->f_path);
 	free(ptr);
@@ -28,6 +30,9 @@ void	ft_print_files(t_list * head, int depth, bool various) {
 		if (file->f_errors == NoError) {
 			if ((!depth && (file->f_stat.st_mode & S_IFMT) != S_IFDIR) || depth) {
 				if (head->next) {
+					//if (file->f_type == Symbolic_Link)
+					//	ft_printf("%s -> %s  ", file->f_name, file->f_link_file->f_name);
+					//else
 					ft_printf("%s  ", file->f_name);
 				} else {
 					ft_printf("%s\n", file->f_name);

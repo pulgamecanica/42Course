@@ -20,6 +20,12 @@ typedef struct ls_flags {
 	bool flaga; // -a --all
 	bool flagr; // -r --reverse
 	bool flagt; // -t
+	bool flagL; // -L
+	bool flagD; // -D
+	bool flagu; // -u
+	bool flagf; // -f
+	bool flagg; // -g
+	bool flagd; // -d
 	bool delimit; // -- delimit the options list
 }	ls_flags;
 
@@ -32,17 +38,23 @@ enum	fileErrors {
 	NoError,
 	NotFounded,
 	PermissionDenied
-//	Regular_File = 4,          // '-'
-//	Directory = 100,            // 'd'
-//	Character_Device_File = 99, // 'c'
-//	Block_Device_File = 98,     // 'b'
-//	Local_Socket_File = 115,    // 's'
-//	Named_Pipe = 112,           // 'p'
-//	Symbolic_Link = 108         // 'l'
+};
+
+enum	fileType {
+	Regular_File = 4,          // '-'
+	Directory = 100,            // 'd'
+	Character_Device_File = 99, // 'c'
+	Block_Device_File = 98,     // 'b'
+	Local_Socket_File = 115,    // 's'
+	Named_Pipe = 112,           // 'p'
+	Symbolic_Link = 108,         // 'l'
+	Unknown = -1
 };
 
 typedef struct s_file {
+	struct s_file * f_link_file;
 	enum fileErrors	f_errors;
+	enum fileType	f_type;
 	ino_t		d_ino;
 	struct stat	f_stat;
 	char *		f_name;
@@ -79,14 +91,18 @@ typedef struct s_file {
 
 # define ft_max(x,y) ((x) > (y) ? (x) : (y))
 
+/* utils */
 void			ft_exit(int status, char * msg, bool msg_allocated);
-void			free_file(void * ptr);
-void			print_flags(ls_flags * flags);
-void			ft_print_files(t_list * head, int depth, bool various);
-void			setup_file(void * ptr, void * ptr2);
-t_file *		init_file(char * str, char * path);
-int				assign_flags(ls_flags * flags, char * str);
+/* files */
+void		free_file(void * ptr);
+void		ft_print_files(t_list * head, int depth, bool various);
+void		setup_file(void * ptr, void * ptr2);
+t_file *	init_file(char * str, char * path);
+/* flags */
+int		assign_flags(ls_flags * flags, char * str);
+void	print_flags(ls_flags * flags);
 /* comparators */
-int cmp_directory_last(void * ptr1, void * ptr2);
-int cmp_ascii_order(void * ptr1, void * ptr2);
+int	cmp_not_exist_first_directory_last(void * ptr1, void * ptr2);
+int	cmp_ascii_order(void * ptr1, void * ptr2);
+
 #endif

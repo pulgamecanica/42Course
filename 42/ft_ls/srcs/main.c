@@ -27,21 +27,32 @@ typedef struct s_file {
 int	main(int ac, char * av[]) {
 	ls_config	config;
 
-	config.flags = (ls_flags){false, false, false, false, false, false};
+	config.flags = (ls_flags){false, false, false, false, false, false, false, false, false, false, false, false};
 	config.files = NULL;
 	for (int i = 1; i < ac; i++)
 		if (!assign_flags(&config.flags, av[i]))
-			ft_lstadd_cmp(&config.files, ft_lstnew(init_file(av[i], NULL)), cmp_directory_last);
+			ft_lstadd_front(&config.files, ft_lstnew(init_file(av[i], NULL)));
 	if (!config.files || ft_lstsize(config.files) == 0)
 		ft_lstadd_front(&config.files, ft_lstnew(init_file(".", NULL)));
 
-	// WHAT INFORMATION IS LISTED, SET UP ALL THE FILES NEEDED ACCORDING To THE FLAGS
+	/**
+	 * What Information is Listed?
+	 * set up all the files, recursively if needed, soft links as well
+	 **/
 	ft_lstiter_param(config.files, setup_file, &config.flags);
-	// SORTING THE OUTPUT
-	//ft_sort_files(config);
+	/**
+	 * Sort the Arguments
+	 * The set up files, should already be in order, because are added in order
+	 **/
+	ft_lstsort(&config.files, cmp_not_exist_first_directory_last);
 	// ... print the output general formating
-
-	ft_print_files(config.files, 0, ft_lstsize(config.files) > 1);
+	/**
+	 * Print the output to general formatig, by default by columns
+	 * Separating files by an empty line before, and the file name on top
+	 * Unless it's only the file as argument, then only list file content
+	 **/
+	//ft_print_argument_files()
+	//ft_print_files(config.files, 0, ft_lstsize(config.files) > 1);
 	//	Print debug info here
 	if (DEBUG) {
 		print_flags(&config.flags);

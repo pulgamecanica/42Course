@@ -6,15 +6,13 @@
 static void	set_file_type(t_file * file, ls_flags * flags) {
 	int result;
 	char * full_path;
+	char * link_file_name;
 
 	if (!file || !flags)
 		return ;
 	full_path = ft_strjoin(ft_strdup((file->f_path != NULL) ? file->f_path : ""), file->f_name);
 	if (!full_path)
 			ft_exit(1, "Failed to allocate memory\n", 0);
-	//if (flags->flagL)
-	//	lstat();
-	//else
 	result = lstat(full_path, &file->f_stat);
 	if (result == -1) {
 		if (EACCES) {
@@ -25,8 +23,30 @@ static void	set_file_type(t_file * file, ls_flags * flags) {
 		if (DEBUG)
 			perror("ft_ls");
 	}
+	switch (file->f_stat.st_mode & S_IFMT) {
+	case S_IFBLK: file->f_type = Block_Device_File;		break;
+	case S_IFCHR: file->f_type = Character_Device_File;	break;
+	case S_IFDIR: file->f_type = Directory;				break;
+	case S_IFIFO: file->f_type = Named_Pipe;			break;
+	case S_IFLNK: file->f_type = Symbolic_Link;			break;
+	case S_IFREG: file->f_type = Regular_File;			break;
+	case S_IFSOCK: file->f_type = Local_Socket_File;	break;
+	default: file->f_type = Unknown;				break;
+	}
+	if (file->f_type == Symbolic_Link) {
+		//ft_printf("Symlink %s\n", full_path);
+		link_file_name = (char *)ft_calloc(sizeof(char), 4096);
+		if (readlink(full_path, link_file_name, 4096) == -1)
+			ft_exit(1, "Link Buf biggger than allowed\n", 0);	
+		file->f_link_file = init_file(link_file_name, file->f_path);
+		if (!file->f_link_file)
+			ft_exit(1, "Failed to allocate memory\n", 0);
+		set_file_type(file->f_link_file, flags);
+		free(link_file_name);
+	}
+
 	if (DEBUG)
-		printf("[%s]\n", full_path);
+		ft_printf("[%s]\n", full_path);
 	free(full_path);
 	if (!DEBUG)
 		return ;
@@ -66,6 +86,9 @@ static void	set_file_type(t_file * file, ls_flags * flags) {
 	printf("Last status change:       %s", ctime(&file->f_stat.st_ctime));
 	printf("Last file access:         %s", ctime(&file->f_stat.st_atime));
 	printf("Last file modification:   %s", ctime(&file->f_stat.st_mtime));
+	if (file->f_type == Symbolic_Link) {
+		printf("%s -> %s\n", file->f_name, file->f_link_file->f_name);
+	}
 	printf("*********************************************************\n");
 }
 
@@ -90,7 +113,7 @@ static void	setup_directory_children(t_file * parent, DIR * dir, ls_flags * flag
 		tmp->d_ino = ent->d_ino;
 		set_file_type(tmp, flags); 	
 		// I can sort the files here!!!
-		ft_lstadd_cmp(&parent->children, ft_lstnew(tmp), cmp_ascii_order);
+		ft_lstadd_front_cmp(&parent->children, ft_lstnew(tmp), cmp_ascii_order);
 	}
 	free(full_path);
 }
@@ -140,6 +163,6 @@ void	setup_file(void * ptr1, void * ptr2) {
 	if (!file || !flags)
 		ft_exit(1, "Bad Error invalid (void *) cast\n", 0);
 	set_file_type(file, flags);
-	if (file->f_errors == NoError && (file->f_stat.st_mode & S_IFMT) == S_IFDIR) // AND FLAG D NOT PRESENT
+	if (file->f_errors == NoError && (file->f_stat.st_mode & S_IFMT) == S_IFDIR && !flags->flagD) // AND FLAG D NOT PRESENT
 		setup_file_directory(file, flags);
 }
