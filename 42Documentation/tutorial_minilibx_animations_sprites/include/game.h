@@ -4,17 +4,17 @@
 # ifndef LINUX
 #  define ESC 53
 #  define ENTER 36
-#  define SPACE 0
+#  define SPACE 49
 #  define UP 126
 #  define DOWN 125
-#  define LEFT 125
-#  define RIGHT 125
-#  define KEY_W 0
-#  define KEY_S 0
-#  define KEY_A 115
-#  define KEY_D 0
+#  define LEFT 123
+#  define RIGHT 124
+#  define KEY_W 35
+#  define KEY_S 1
+#  define KEY_A 0
+#  define KEY_D 2
 #  define KEY_P 35
-#  define KEY_TAB 0
+#  define KEY_TAB 48
 # else
 #  define ESC 65307
 #  define ENTER 65293
