@@ -41,6 +41,12 @@ static void	set_flag(ls_flags * flags, char flag) {
 	case 'f': flags->flagf = true; break ;
 	case 'g': flags->flagg = true; break ;
 	case 'd': flags->flagd = true; break ;
+	case '1': flags->flag1 = true; break ;
+	case 'p': flags->flagp = true; break ;
+	case 'm': flags->flagm = true; break ;
+	case 'x': flags->flagx = true; break ;
+	case 'i': flags->flagi = true; break ;
+	case 'C': flags->flagC = true; break ;
 	default:
 		tmp[23] = flag;
 		ft_exit(2, tmp, false);
@@ -56,13 +62,13 @@ static void	set_flag(ls_flags * flags, char flag) {
 static void	set_full_flag(ls_flags * flags, char * str) {
 	char *	error_msg;
 
-	if (ft_strncmp("--recursive", str, ft_max(ft_strlen(str), ft_strlen("--recursive"))) == 0)
+	if (ft_strncmp("--recursive", str, ft_max(ft_strlen(str), 11)) == 0)
 		set_flag(flags, 'R');
-	else if (ft_strncmp("--all", str, ft_max(ft_strlen(str), ft_strlen("--all"))) == 0)
+	else if (ft_strncmp("--all", str, ft_max(ft_strlen(str), 4)) == 0)
 		set_flag(flags, 'a');
-	else if (ft_strncmp("--reverse", str, ft_max(ft_strlen(str), ft_strlen("--reverse"))) == 0)
+	else if (ft_strncmp("--reverse", str, ft_max(ft_strlen(str), 9)) == 0)
 		set_flag(flags, 'r');
-	else if (ft_strncmp("--", str, ft_max(ft_strlen(str), ft_strlen("--"))) == 0) {
+	else if (ft_strncmp("--", str, ft_max(ft_strlen(str), 2)) == 0) {
 		flags->delimit = true;
 	} else {
 		error_msg = NULL;
@@ -102,29 +108,41 @@ void print_flags(ls_flags * flags) {
 	if (!flags)
 		return ;
 	ft_printf("Flags\n"
-		" -l %s\n"
-		" -R %s\n"
-		" -a %s\n"
-		" -r %s\n"
-		" -t %s\n"
-		" -L %s\n"
-		" -D %s\n"
-		" -u %s\n"
-		" -f %s\n"
-		" -g %s\n"
-		" -d %s\n"
+		" -l [%- 15.15s] --> %s\n"
+		" -R [%- 15.15s] --> %s\n"
+		" -a [%- 15.15s] --> %s\n"
+		" -r [%- 15.15s] --> %s\n"
+		" -t [%- 15.15s] --> %s\n"
+		" -L [%- 15.15s] --> %s\n"
+		" -D [%- 15.15s] --> %s\n"
+		" -u [%- 15.15s] --> %s\n"
+		" -f [%- 15.15s] --> %s\n"
+		" -g [%- 15.15s] --> %s\n"
+		" -d [%- 15.15s] --> %s\n"
+		" -1 [%- 15.15s] --> %s\n"
+		" -p [%- 15.15s] --> %s\n"
+		" -m [%- 15.15s] --> %s\n"
+		" -x [%- 15.15s] --> %s\n"
+		" -i [%- 15.15s] --> %s\n"
+		" -C [%- 15.15s] --> %s\n"
 		"delimit %s\n",
-		flags->flagl ? "true" : "false",
-		flags->flagR ? "true" : "false",
-		flags->flaga ? "true" : "false",
-		flags->flagr ? "true" : "false",
-		flags->flagt ? "true" : "false",
-		flags->flagL ? "true" : "false",
-		flags->flagD ? "true" : "false",
-		flags->flagu ? "true" : "false",
-		flags->flagf ? "true" : "false",
-		flags->flagg ? "true" : "false",
-		flags->flagd ? "true" : "false",
+		"long format", flags->flagl ? "true" : "false",
+		"recursive", flags->flagR ? "true" : "false",
+		"almost all", flags->flaga ? "true" : "false",
+		"sort reverse", flags->flagr ? "true" : "false",
+		"sort time", flags->flagt ? "true" : "false",
+		"show file no link", flags->flagL ? "true" : "false",
+		"show dired", flags->flagD ? "true" : "false",
+		"show create timestamp", flags->flagu ? "true" : "false",
+		"unsorted -1 on", flags->flagf ? "true" : "false",
+		"long format no owner", flags->flagg ? "true" : "false",
+		"show dir no listing", flags->flagd ? "true" : "false",
+		"one row per file", flags->flag1 ? "true" : "false",
+		"show '/' for dirs", flags->flagp ? "true" : "false",
+		"coma separator", flags->flagm ? "true" : "false",
+		"show file in cols", flags->flagx ? "true" : "false",
+		"show innode number", flags->flagi ? "true" : "false",
+		"list with columns", flags->flagC ? "true" : "false",
 		flags->delimit ? "true" : "false"
 	);
 }

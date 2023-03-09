@@ -50,7 +50,6 @@ static void m_split(t_list * source, t_list ** frontRef, t_list ** backRef)
 	slow->next = NULL;
 }
 
-
 /**
  * MERGE SORT
  **/
