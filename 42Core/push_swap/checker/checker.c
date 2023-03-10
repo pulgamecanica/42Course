@@ -24,8 +24,11 @@ static void	error_reply(void)
 	ft_putstr_fd("there are errors on your input\033[0m\n", 2);
 }
 
+#include <stdio.h>
 static void	make_action(t_stack **a, t_stack **b, char *str)
 {
+	printf("\033[0;0H\033[2J\n");
+//	printf("WTF?\n");
 	if (!ft_strncmp(str, "sa\n", ft_strlen(str)))
 		sa(a);
 	else if (!ft_strncmp(str, "sb\n", ft_strlen(str)))

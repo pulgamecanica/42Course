@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstget.c                                        :+:      :+:    :+:   */
+/*   ft_lstswap.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arosado- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,23 +11,14 @@
 /* ************************************************************************** */
 #include "libft.h"
 
-t_list		*ft_lstget(t_list *lst, int index)
+int	ft_lstswap(t_list *lst1, t_list *lst2)
 {
-	t_list	*n;
-	int i;
+	void *	tmp;
 
-	i = 0;
-	n = lst;
-	if (n == NULL)
-		return (NULL);
-	if (n->next == NULL)
-		return (n);
-	while (n != NULL)
-	{
-		if (i >= index)
-			return (n);
-		n = n->next;
-		i++;
-	}
-	return (NULL);
+	if (!lst1 || !lst2)
+		return (0);
+	tmp = lst1->content;
+	lst1->content = lst2->content;
+	lst2->content = tmp; 
+	return (1);
 }

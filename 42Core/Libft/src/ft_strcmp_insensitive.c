@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstget.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp_insensitive.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arosado- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/20 14:38:44 by arosado-          #+#    #+#             */
-/*   Updated: 2021/10/20 21:37:29 by arosado-         ###   ########.fr       */
+/*   Created: 2021/10/18 17:05:27 by arosado-          #+#    #+#             */
+/*   Updated: 2021/10/18 17:05:28 by arosado-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "libft.h"
 
-t_list		*ft_lstget(t_list *lst, int index)
+int	ft_strcmp_insensitive(const char *s1, const char *s2)
 {
-	t_list	*n;
-	int i;
+	char	c1;
+	char	c2;
 
-	i = 0;
-	n = lst;
-	if (n == NULL)
-		return (NULL);
-	if (n->next == NULL)
-		return (n);
-	while (n != NULL)
+	while (*s1 && *s2)
 	{
-		if (i >= index)
-			return (n);
-		n = n->next;
-		i++;
+		while (*s1 && !ft_isalnum(*s1))
+			s1++;
+		c1 = ft_tolower(*s1);
+		while (*s2 && !ft_isalnum(*s2))
+			s2++;
+		c2 = ft_tolower(*s2);
+		if (c1 != c2)
+			return ((unsigned char)c1 - (unsigned char)c2);
+		if (!c1 || !c2)
+			break ;
+		s1++;
+		s2++;
 	}
-	return (NULL);
+	return (0);
 }
