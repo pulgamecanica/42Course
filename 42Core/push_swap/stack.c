@@ -21,7 +21,7 @@ void	print_both_stacks(t_stack *s1, t_stack *s2)
 	i = 0;
 	ft_printf("*/----------------------\\*\n");
 	ft_printf(" |	\033[0;36mA\033[0m	 \033[0;37mB\033[0m 	|\n");
-	ft_printf(" | 	\033[0;36#\033[0m	 \033[0;37m#\033[0m	|\n");
+	ft_printf(" | 	\033[0;36m#\033[0m	 \033[0;37m#\033[0m	|\n");
 	while (s1 || s2)
 	{
 		if (s1)
