@@ -42,6 +42,7 @@ t_img	new_img(int w, int h, t_win window);
 void	put_pixel_img(t_img img, int x, int y, int color);
 t_img	new_file_img(char * path, t_win window);
 void	destroy_image(t_img img);
+void	put_img_to_img(t_img dst, t_img src, int x, int y);
 
 #endif
 

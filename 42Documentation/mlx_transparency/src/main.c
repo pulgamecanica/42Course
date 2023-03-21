@@ -24,28 +24,29 @@ void sig_handler() {
 int main(void)
 {
  	t_win	tutorial;
-	t_img	image, other_image;
+	t_img	base_image;
+	t_img	bg;
+	t_img	ring;
 
 	signal(SIGINT, sig_handler);
 	tutorial = new_window(1000, 650, "transparency");
 	if (!tutorial.win_ptr)
 		return (2);
-	image = new_img(300, 300, tutorial);
+	base_image = new_img(1000, 650, tutorial);
 
 	{
-		image = new_file_img("lotr_map.xpm", tutorial);
-		if (!image.img_ptr)
+		bg = new_file_img("lotr_map.xpm", tutorial);
+		if (!bg.img_ptr)
 			return (2);
-		mlx_put_image_to_window (image.win.mlx_ptr, image.win.win_ptr, image.img_ptr, 0, 0);
+		put_img_to_img(base_image, bg, 0, 0);
 	}
-
 	{
-		other_image = new_file_img("ring.xpm", tutorial);
-		if (!other_image.img_ptr)
+		ring = new_file_img("ring.xpm", tutorial);
+		if (!ring.img_ptr)
 			return (2);
-		mlx_put_image_to_window (other_image.win.mlx_ptr, other_image.win.win_ptr, other_image.img_ptr, 0, 0);
+		put_img_to_img(base_image, ring, 50, 100);
 	}
-
+	mlx_put_image_to_window (base_image.win.mlx_ptr, base_image.win.win_ptr, base_image.img_ptr, 0, 0);
 	mlx_loop(tutorial.mlx_ptr);
 	mlx_destroy_window(tutorial.mlx_ptr, tutorial.win_ptr);
 	return (0);
