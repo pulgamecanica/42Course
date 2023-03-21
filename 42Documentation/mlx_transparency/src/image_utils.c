@@ -57,8 +57,7 @@ void	put_img_to_img(t_img dst, t_img src, int x, int y) {
 	while(i < src.w) {
 		j = 0;
 		while (j < src.h) {
-			//if (put_pixel_valid(src, i, j))
-				put_pixel_img(dst, x + i, y + j, get_pixel_img(src, i, j));
+			put_pixel_img(dst, x + i, y + j, get_pixel_img(src, i, j));
 			j++;
 		}
 		i++;
