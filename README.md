@@ -16,6 +16,7 @@
 
 | Folder | About |
 | ------ | ------ |
+| 42 | [42 Projects](42/) |
 | 42Core | [Common Core Projects](42Core/) |
 | 42Piscine | [Piscine at 42Lisboa](42Piscine/) |
 | 42Documentation | [Random Docuentation](42Documentation) |
