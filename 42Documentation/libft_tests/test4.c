@@ -4,7 +4,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
-#include "../libft.h"
+#include "libft.h"
 
 # define NBR(x)		printf("%d", x); fflush(0);
 # define DONE		printf("..DONE\n");

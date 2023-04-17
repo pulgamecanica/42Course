@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <string.h>
-#include "../libft.h"
+#include "libft.h"
 
 int	min(int a, int b) {
 	return ((a < b) ? a : b);
