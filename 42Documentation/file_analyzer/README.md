@@ -19,65 +19,78 @@
 
 ***
 
-### > Group, Author and Ownership
+#### > Group, Author and Ownership
 	
-	The /etc/group file is a text file that defines the groups on the system.  There is one entry per line, with the following format:
+	The /etc/group file is a text file that defines the groups on the system. 
+	There is one entry per line, with the following format:
 
 ```rb
 group_name:password:GID:user_list
-```
 
+"""
 The fields are as follows:
+ group_name
+	the name of the group.
 
->group_name
->	the name of the group.
-> password
->	the (encrypted) group password.  If this field is empty, no password is needed.
-> GID    the numeric group ID.
-> user_list
->	a list of the usernames that are members of this group, separated by commas.
+ password
+	the (encrypted) group password.  If this field is empty, no password is needed.
+ 
+ GID    the numeric group ID.
+ 
+ user_list
+	a list of the usernames that are members of this group, separated by commas.
+"""
+```
 
 There are some helpful functions you can use which will return some scopes of the /etc/group file
 
 ```c
-	// Owner (user)
-	struct passwd {
-		char   *pw_name;       // username
-		char   *pw_passwd;     // user password
-		uid_t   pw_uid;        // user ID
-		gid_t   pw_gid;        // group ID
-		char   *pw_gecos;      // user information
-		char   *pw_dir;        // home directory
-		char   *pw_shell;      // shell program
-	};
-	struct passwd *getpwuid(uid_t uid);
-	
-	// Group
-	struct group {
-		char   *gr_name;        // group name
-		char   *gr_passwd;      // group password
-		gid_t   gr_gid;         // group ID
-		char  **gr_mem;         // NULL-terminated array of pointersto names of group members
-	};
-	struct group *getgrgid(gid_t gid);
+// Owner (user)
+struct passwd {
+	char   *pw_name;       // username
+	char   *pw_passwd;     // user password
+	uid_t   pw_uid;        // user ID
+	gid_t   pw_gid;        // group ID
+	char   *pw_gecos;      // user information
+	char   *pw_dir;        // home directory
+	char   *pw_shell;      // shell program
+};
+struct passwd *getpwuid(uid_t uid);
+
+// Group
+struct group {
+	char   *gr_name;        // group name
+	char   *gr_passwd;      // group password
+	gid_t   gr_gid;         // group ID
+	char  **gr_mem;         // NULL-terminated array of pointersto names of group members
+};
+struct group *getgrgid(gid_t gid);
 ```
-	
-[man 5 group, man 3 getpwuid, man chown, man 3 getgrgid]
+
+> [man 5 group, man 3 getpwuid, man chown, man 3 getgrgid]
 
 ***
 
-### > Sizes [File Size vs Blocks Allocated & Total]
+#### > Sizes [File Size vs Blocks Allocated & Total]
 
 Files are stored on your computer according to a set of rules, this rules are defined by the filesystem.
 File systems will allocate memory to store the file content, file inode id, file metadata, and file x data.
 Files are stored in memory in Blocks, because this makes retreival way easier and more efficient.
 Block size is defined by your filesystem. When you want to access data from a file, the filesystem will access the block that you are requesting.
 For systems that have usually HUGE files, like databases a very Block size makes sence, because it would reduce the number of access operations for each file. The Blocks are bigger and each time you get a lot of data.
+
+
 Big Block size can also be a bad strategy when you have regular files or can't predict file sizes, this is because small files will ocupy a lot of space which is unnecessary.
 My OS filesystem sets the Block size to 512B (byte) that is 2 ** 9 
 
 The blocks allocated field refers to the total blocks that have been allocated for a file: so file_size/512 (bytes)
 Although this might not always be truth because files can have holes.
+
+If you want to see exactly how many bytes a file takes for all the blocks it has, you can run the following command:
+
+```bash
+ls -s --block-size=1 <file>
+```
 
 ***
 
