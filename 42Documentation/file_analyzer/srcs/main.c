@@ -32,10 +32,23 @@ void file_analyser(char *path_to_file) {
 	   return ;
 	}
 
+	/**
+	 * Print the id of the containing device
+	 * Devices are interfaces which help you interact with hardware more less
+	 * There are also virtual devices such as /dev/urandom 
+	 **/
 	printf("ID of containing device:  [%jx,%jx]\n",
 	       (uintmax_t) major(sb.st_dev),
 	       (uintmax_t) minor(sb.st_dev));
 
+	/**
+	 * In Linux there is a philosophu that everything is a file
+	 * that is why there exists some certain files that seam strange
+	 * like block device or character device, this files are not
+	 * your typical kind of files, this files represent a device from
+	 * your computer, like a driver, whcich helps you interact with the
+	 * computer thorugh an interface.
+	 **/
 	printf("File type:                ");
 
 	switch (sb.st_mode & S_IFMT) {
@@ -49,8 +62,16 @@ void file_analyser(char *path_to_file) {
 	default:       printf("unknown?\n");                break;
 	}
 
+	/**
+	 * This is the unique identifier of a file in the computer.
+	 * It helps locate files in the phisical memory, so it's
+	 * fater to write, read or execute. 
+	 **/
 	printf("I-node number:            %ju\n", (uintmax_t) sb.st_ino);
 
+	/**
+	 * File Permissions
+	 **/
 	printf("Mode:                     %jo (octal)\n",
 	       (uintmax_t) sb.st_mode);
 
@@ -58,7 +79,11 @@ void file_analyser(char *path_to_file) {
 	printf("Group rights:             %c%c%c (rwx)\n", sb.st_mode & S_IRGRP ? 'r' : '-', sb.st_mode & S_IWGRP ? 'w' : '-', sb.st_mode & S_IXGRP ? 'x' : '-');
 	printf("Others rights:            %c%c%c (rwx)\n", sb.st_mode & S_IROTH ? 'r' : '-', sb.st_mode & S_IWOTH ? 'w' : '-', sb.st_mode & S_IXOTH ? 'x' : '-');
 
+	/**
+	 * How many files reference this file thorugh hard or soft links.
+	 **/
 	printf("Link count:               %ju\n", (uintmax_t) sb.st_nlink);
+
 	printf("Ownership:                UID=%ju   GID=%ju\n",
 	       (uintmax_t) sb.st_uid, (uintmax_t) sb.st_gid);
 
