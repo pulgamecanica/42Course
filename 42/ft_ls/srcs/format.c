@@ -40,7 +40,7 @@ int	get_max_file_name(t_file * parent) {
 /**
  * Returns the format that one file will use to display informations
 **/
-char	* horizontal_format(t_file * parent, ls_config * config) {
+char	* get_horizontal_format(t_file * parent, ls_config * config) {
 	char *	file_padding;
 	char *	format;
 
@@ -59,11 +59,11 @@ char	* horizontal_format(t_file * parent, ls_config * config) {
 	return format;
 }
 
-char	* multiple_column_format(t_file * parent, ls_config * config) {
-	return horizontal_format(parent, config);
+char	* get_multiple_column_format(t_file * parent, ls_config * config) {
+	return get_horizontal_format(parent, config);
 }
 
-char	* long_format_format(t_file * parent, ls_config * config) {
+char	* get_long_format_format(t_file * parent, ls_config * config) {
 //	get_max_file_name
 	(void)parent;
 	if (config->flags.flagp)
@@ -113,7 +113,7 @@ char	* long_format_format(t_file * parent, ls_config * config) {
 		"%s"/*soft link pointed file name*/
 		);
 }
-char	* one_per_line_format(t_file * parent, ls_config * config) {
+char	* get_one_per_line_format(t_file * parent, ls_config * config) {
 	char *	file_padding;
 	char *	format;
 
