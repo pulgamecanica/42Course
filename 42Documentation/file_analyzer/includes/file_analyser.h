@@ -9,5 +9,8 @@
 #include <time.h>
 #include <stdlib.h>
 #include <sys/sysmacros.h>
+#include <pwd.h>
+#include <grp.h>
+
 
 #endif

@@ -87,12 +87,57 @@ void file_analyser(char *path_to_file) {
 	printf("Ownership:                UID=%ju   GID=%ju\n",
 	       (uintmax_t) sb.st_uid, (uintmax_t) sb.st_gid);
 
+	/**
+	* struct passwd {
+	*	char   *pw_name;       // username
+	*	char   *pw_passwd;     // user password
+	*	uid_t   pw_uid;        // user ID
+	*	gid_t   pw_gid;        // group ID
+	*	char   *pw_gecos;      // user information
+	*	char   *pw_dir;        // home directory
+	*	char   *pw_shell;      // shell program
+	* };
+	**/
+	struct passwd * file_psw;
+	/**
+	* struct group {
+	*	char   *gr_name;        // group name
+	*	char   *gr_passwd;      // group password
+	*	gid_t   gr_gid;         // group ID
+	*	char  **gr_mem;         // NULL-terminated array of pointersto names of group members
+	* };
+	**/
+	struct group * file_grp;
+
+	file_psw = getpwuid(sb.st_uid);
+	file_grp = getgrgid(sb.st_gid);
+
+	if (file_psw) {
+		printf("\nOwner:\n");
+		printf("%-10.10s | %-10.10s | %-10.10s | %-10.10s | %-10.10s | %-10.10s | %-10.10s\n", "username", "password", "user id", "group id", "user info", "home dir", "shell prog");
+		printf("---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ----------\n");		printf("%-10.10s | %-10.10s | %-10d | %-10d | %-10.10s | %-10.10s | %.10s\n",
+			file_psw->pw_name, file_psw->pw_passwd,
+			file_psw->pw_uid, file_psw->pw_gid, file_psw->pw_gecos,
+			file_psw->pw_dir, file_psw->pw_shell);
+	} else {
+		perror("getpwuid");
+	}
+	if (file_grp) {
+		printf("\nGroup:\n");
+		printf("%-10.10s | %-10.10s | %-10.10s | %-10.10s\n", "group name", "password", "group id", "# members");
+		printf("---------- | ---------- | ---------- | ----------\n");
+		printf("%-10.10s | %-10.10s | %-10d | %-10d\n",
+			file_grp->gr_name, file_grp->gr_passwd, file_grp->gr_gid, ft_arrlen(file_grp->gr_mem));
+	} else {
+		perror("getgrgid");
+	}
+
 	printf("Preferred I/O block size: %jd bytes\n",
 	       (intmax_t) sb.st_blksize);
 	printf("File size:                %jd bytes\n",
 	       (intmax_t) sb.st_size);
-	printf("Blocks allocated:         %jd\n",
-	       (intmax_t) sb.st_blocks);
+	printf("Blocks allocated:         %jd (512B each block) & %jd (1024B each block)\n",
+	       (intmax_t) sb.st_blocks, sb.st_blocks / 2);
 
 	printf("Last status change:       %s", ctime(&sb.st_ctime));
 	printf("Last file access:         %s", ctime(&sb.st_atime));
@@ -103,7 +148,7 @@ void file_analyser(char *path_to_file) {
 int main(int ac, char *av[]) {
 	if (ac <= 1) {
 		ft_putendl_fd("[usage]: ./exec path_to_file ...", 2);
-		return(1);
+		return(0);
 	}
 	for (int i = 1; i < ac; i++) {
 		if (i == 1)

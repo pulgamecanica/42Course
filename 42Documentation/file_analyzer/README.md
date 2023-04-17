@@ -9,7 +9,7 @@
 	I-node number: The inode(2) number referes to an identifier the Linux Kernel uses to locate the phisical file in the filesystem.
 	Mode: Referes to the mode of the file and also the type
 	Link count: How many references through hard, or soft links exists for this file
-	Ownership: Who owns the file
+	Ownership: Who owns the file (uid user id of owner, gid group id of owner)
 	Preferred I/O block size:
 	File size: The total bytes this file has
 	Blocks allocated: The space this file ocupies in memory to be stored (not the content of the file)
@@ -19,14 +19,69 @@
 
 ***
 
-### Group, Author and Ownership
+### > Group, Author and Ownership
+	
+	The /etc/group file is a text file that defines the groups on the system.  There is one entry per line, with the following format:
 
+```rb
+group_name:password:GID:user_list
+```
 
+The fields are as follows:
 
+>group_name
+>	the name of the group.
+> password
+>	the (encrypted) group password.  If this field is empty, no password is needed.
+> GID    the numeric group ID.
+> user_list
+>	a list of the usernames that are members of this group, separated by commas.
+
+There are some helpful functions you can use which will return some scopes of the /etc/group file
+
+```c
+	// Owner (user)
+	struct passwd {
+		char   *pw_name;       // username
+		char   *pw_passwd;     // user password
+		uid_t   pw_uid;        // user ID
+		gid_t   pw_gid;        // group ID
+		char   *pw_gecos;      // user information
+		char   *pw_dir;        // home directory
+		char   *pw_shell;      // shell program
+	};
+	struct passwd *getpwuid(uid_t uid);
+	
+	// Group
+	struct group {
+		char   *gr_name;        // group name
+		char   *gr_passwd;      // group password
+		gid_t   gr_gid;         // group ID
+		char  **gr_mem;         // NULL-terminated array of pointersto names of group members
+	};
+	struct group *getgrgid(gid_t gid);
+```
+	
+[man 5 group, man 3 getpwuid, man chown, man 3 getgrgid]
 
 ***
 
-(1) devise: In the Linux Kernel a device is: A Special File which helps interact with an actual driver (Hardware piece on your Computer) usually through an interface.
+### > Sizes [File Size vs Blocks Allocated & Total]
+
+Files are stored on your computer according to a set of rules, this rules are defined by the filesystem.
+File systems will allocate memory to store the file content, file inode id, file metadata, and file x data.
+Files are stored in memory in Blocks, because this makes retreival way easier and more efficient.
+Block size is defined by your filesystem. When you want to access data from a file, the filesystem will access the block that you are requesting.
+For systems that have usually HUGE files, like databases a very Block size makes sence, because it would reduce the number of access operations for each file. The Blocks are bigger and each time you get a lot of data.
+Big Block size can also be a bad strategy when you have regular files or can't predict file sizes, this is because small files will ocupy a lot of space which is unnecessary.
+My OS filesystem sets the Block size to 512B (byte) that is 2 ** 9 
+
+The blocks allocated field refers to the total blocks that have been allocated for a file: so file_size/512 (bytes)
+Although this might not always be truth because files can have holes.
+
+***
+
+(1) devise: In the Linux Kernel a device is: A Special File which helps interact with an actual driver (Hardware piece on your Computer) usually through an interface. There are also virtual drivers which are an abstraction to create a drive with the computer software capabilities, for example the /dev/random and /dev/urandom character devises.
 Devise id's consist in two parts, major and minor, identifying the class of the device and the specific instance of the device respectively.
 [man 3 minor, man 3 major, man 7 attributes, man 2 mknod]
 Classification of the devises helps programmers identify the typeo of the devise file. The three classes are:
@@ -58,7 +113,7 @@ Network devices helps the computer exchange data with other hosts, throught an i
 	- Last status change timestamp (stat.st_ctime; statx.stx_ctime)
 
 To find out the inode mode you can use the following masks:
-```sh
+```rb
 S_IFSOCK   0140000   socket
 S_IFLNK    0120000   symbolic link
 S_IFREG    0100000   regular file
@@ -69,7 +124,7 @@ S_IFIFO    0010000   FIFO
 ```
 
 There are also more concise MACROS: 
-```sh
+```rb
 S_ISREG(m)  is it a regular file?
 S_ISDIR(m)  directory?
 S_ISCHR(m)  character device?
@@ -80,7 +135,7 @@ S_ISSOCK(m) socket?  (Not in POSIX.1-1996.)
 ```
 
 To find out the mode you should use the following masks:
-```sh
+```rb
 S_ISUID     04000   set-user-ID bit (see execve(2))
 S_ISGID     02000   set-group-ID bit (see below)
 S_ISVTX     01000   sticky bit (see below)
