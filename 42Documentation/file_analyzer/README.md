@@ -42,7 +42,7 @@ The fields are as follows:
 """
 ```
 
-There are some helpful functions you can use which will return some scopes of the /etc/group file
+There are some helpful functions you can use which will return some scopes of the /etc/group and /etc/passwd file
 
 ```c
 // Owner (user)
@@ -96,8 +96,10 @@ ls -s --block-size=1 <file>
 
 (1) devise: In the Linux Kernel a device is: A Special File which helps interact with an actual driver (Hardware piece on your Computer) usually through an interface. There are also virtual drivers which are an abstraction to create a drive with the computer software capabilities, for example the /dev/random and /dev/urandom character devises.
 Devise id's consist in two parts, major and minor, identifying the class of the device and the specific instance of the device respectively.
+
 [man 3 minor, man 3 major, man 7 attributes, man 2 mknod]
-Classification of the devises helps programmers identify the typeo of the devise file. The three classes are:
+
+> Classification of the devises helps programmers identify the typeo of the devise file. The three classes are:
 
 	- Character device
 	- Block device
