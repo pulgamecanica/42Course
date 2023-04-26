@@ -20,7 +20,7 @@ static int	handle_format(const char *str, int *i, va_list a)
 	f = getfl(str, i);
 	if (f)
 	{
-		t = ((int (*)())ft_f(str[*(i)++]))(va_arg(a, void *), f);
+		t = ((int (*)(void *, void *))ft_f(str[*(i)++]))(va_arg(a, void *), f);
 		free(f);
 	}
 	return (t);
