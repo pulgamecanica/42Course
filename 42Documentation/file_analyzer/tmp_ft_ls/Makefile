@@ -1,20 +1,20 @@
-NAME			= ft_ls
-DNAME			= debug_ft_ls
-SRC				= $(wildcard srcs/*.c)
-BIN 			= bin
-DEBUGBIN	= dbin
-INCS			= includes
-LIBFT			= Libft
-LIBFT_INCS	= $(LIBFT)/includes
-CFLAGS		= -Wall -Werror -Wextra -g
-DEBUG			=	-D DEBUG
-LFLAGS		= -L$(LIBFT) -lft
-IFLAGS		= -I$(INCS) -I$(LIBFT_INCS)
-UNAME			:= $(shell uname)
-RM				= rm -rf
-OBJS			= $(SRC:srcs/%c=$(BIN)/%o)
-DOBJS			= $(SRC:srcs/%c=$(DEBUGBIN)/%o)
-MSG_EXEC	= msg_ft_ls
+SRC	= srcs/main.c srcs/utils.c srcs/file.c srcs/flags.c srcs/list_files.c srcs/comparators.c srcs/print_files.c srcs/format.c
+BIN 	= bin
+DEBUGBIN = dbin
+INCS	= includes/
+LIBFT	= Libft
+LIBFT_INCS = $(LIBFT)/includes
+CFLAGS	= -Wall -Werror -Wextra -g
+DEBUG	=	-D DEBUG
+LFLAGS	= -L$(LIBFT) -lft
+IFLAGS	= -I$(INCS) -I$(LIBFT_INCS)
+UNAME	:= $(shell uname)
+NAME	= ft_ls
+DNAME = debug_ft_ls
+RM	= rm -rf
+OBJS	= $(SRC:srcs/%c=$(BIN)/%o)
+DOBJS = $(SRC:srcs/%c=$(DEBUGBIN)/%o)
+MSG_EXEC = msg_ft_ls
 
 ifeq ($(UNAME), Darwin)
 	CC = gcc
@@ -31,10 +31,10 @@ all: $(NAME)
 $(NAME): ${BIN} ${OBJS} | ${LIBFT}
 	${CC} ${OBJS} ${LFLAGS} -o ${NAME}
 
-$(BIN)/%o: srcs/%c ${INCS}/ft_ls.h
+$(BIN)/%o: srcs/%c
 	${CC} -c $< ${CFLAGS} ${IFLAGS} -o $@
 
-$(DEBUGBIN)/%o: srcs/%c ${INCS}/ft_ls.h
+$(DEBUGBIN)/%o: srcs/%c
 	${CC} -c $< ${CFLAGS} ${IFLAGS} $(DEBUG) -o $@
 
 $(BIN):

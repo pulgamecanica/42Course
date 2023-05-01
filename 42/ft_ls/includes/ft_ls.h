@@ -3,147 +3,135 @@
 
 # ifndef DEBUG
 #  define DEBUG 0
-# endif
+#endif
+
+# ifndef LINUX
+#  define LINUX 0
+#endif
+
+# define BLACK  "\033[0;30m"
+# define RED  "\033[0;31m"
+# define GREEN  "\033[0;32m"
+# define YELLOW "\033[0;33m"
+# define BLUE "\033[0;34m"
+# define WHITE  "\033[0;37m"
+# define ENDC "\033[0m"
 
 # include "libft.h"
 # include "ft_printf.h"
-# include <time.h>
-# include <stdlib.h>
-# include <dirent.h>
+# include <stdint.h>
 # include <stdbool.h>
 # include <sys/stat.h>
-# include <sys/types.h>
 # include <sys/ioctl.h>
+//# include <time.h>
+//# include <dirent.h>
+//# include <sys/types.h>
+//# include <pwd.h>
+//# include <grp.h>
 
-typedef struct ls_flags {
-	bool flagl; // -l [show long]
-	bool flagR; // -R --recursive [show recursive]
-	bool flaga; // -a --all [show all]
-	bool flagr; // -r --reverse [sort reverse]
-	bool flagt; // -t [sort time]
-	bool flagL; // -L [show when link, show the file not the link]
-	bool flagD; // -D [show Dired] (only when -l)
-	bool flagu; // -u [show time creation timestamp] (only when -l)
-	bool flagf; // -f [show unsorted directory listing --allocated --sort=none, -1 & order matters]
-	bool flagg; // -g [show long format no owner info]
-	bool flagd; // -d [show directory name only, no listing]
-	bool flag1; // -1 [show one file per line & order matters]
-	bool flagp; // -p [show '/' when file is directory]
-	bool flagm; // -m [show coma separator columnated, disable -l & order matters]
-	bool flagx; // -x [show files in columns & order matters]
-	bool flagi; // -i [show innode number]
-	bool flagC; // -i [list by columns]
-	bool delimit; // -- delimit the options list
-}	ls_flags;
-
-enum	format {
-	long_format = 0,	/* -l */
-	multiple_column,	/* default */
-	one_per_line,		/* -1 */
-	horizontal,			/* -x */
-};
-
-enum	sorting_strategy {
-	name_sort = 0,
-	extension_sort,
-	size_sort,
-	time_sort,
-	none_sort,
-	numtypes_sort
-};
-
-enum time_style {
-	full_iso = 0,
-	long_iso,
-	locale,
-	iso
-};
-
-typedef struct ls_config {
-	ls_flags	flags;
-	t_list *	files;
-	struct winsize	sz;
-}	ls_config;
-
-enum	fileErrors {
-	NoError,
-	NotFounded,
-	PermissionDenied
-};
-
-enum	fileType {
-	Regular_File = 45,			// '-'
-	Directory = 100,			// 'd'
-	Character_Device_File = 99,	// 'c'
-	Block_Device_File = 98,		// 'b'
-	Local_Socket_File = 115,	// 's'
-	Named_Pipe = 112,			// 'p'
-	Symbolic_Link = 108,		// 'l'
-	Unknown = -1
-};
-
-typedef struct s_file {
-	struct s_file * f_link_file;
-	enum fileErrors	f_errors;
-	enum fileType	f_type;
-	ino_t		d_ino;
-	struct stat	f_stat;
-	char *		f_name;
-	char *		f_path;
-	int			total;
-	t_list *	children;
-}	t_file;
-
-
-//struct stat {
-//   dev_t     st_dev;         /* ID of device containing file */
-//   ino_t     st_ino;         /* Inode number */
-//   mode_t    st_mode;        /* File type and mode */
-//   nlink_t   st_nlink;       /* Number of hard links */
-//   uid_t     st_uid;         /* User ID of owner */
-//   gid_t     st_gid;         /* Group ID of owner */
-//   dev_t     st_rdev;        /* Device ID (if special file) */
-//   off_t     st_size;        /* Total size, in bytes */
-//   blksize_t st_blksize;     /* Block size for filesystem I/O */
-//   blkcnt_t  st_blocks;      /* Number of 512B blocks allocated */
-//
-//   /* Since Linux 2.6, the kernel supports nanosecond
-//      precision for the following timestamp fields.
-//      For the details before Linux 2.6, see NOTES. */
-//
-//   struct timespec st_atim;  /* Time of last access */
-//   struct timespec st_mtim;  /* Time of last modification */
-//   struct timespec st_ctim;  /* Time of last status change */
-//
-//#define st_atime st_atim.tv_sec      /* Backward compatibility */
-//#define st_mtime st_mtim.tv_sec
-//#define st_ctime st_ctim.tv_sec
-//};
+# define PROGRAM_NAME "ft_ls"
 
 # define ft_max(x,y) ((x) > (y) ? (x) : (y))
 
-/* utils */
-void			ft_exit(int status, char * msg, bool msg_allocated);
-/* files */
-void		free_file(void * ptr);
-void		ft_print_files(t_list * head, int depth, bool various);
-void		ft_print_directory_files(void * ptr1, void * ptr2);
-void		ft_print_regular_files(ls_config * conf);
-void		setup_file(void * ptr, void * ptr2);
-t_file *	init_file(char * str, char * path);
-/* flags */
-int		assign_flags(ls_flags * flags, char * str);
-void	print_flags(ls_flags * flags);
-/* comparators */
-int cmp_not_exist_first(void * ptr1, void * ptr2);
-int cmp_rev_not_exist_first(void * ptr1, void * ptr2);
-int	cmp_ascii_order(void * ptr1, void * ptr2);
-int cmp_rev_ascii_order(void * ptr1, void * ptr2);
-/* formats */
-char	* horizontal_format(t_file * parent, ls_config * config);
-char	* multiple_column_format(t_file * parent, ls_config * config);
-char	* long_format_format(t_file * parent, ls_config * config);
-char	* one_per_line_format(t_file * parent, ls_config * config);
+# define TIME_FORMAT "%b %e %Y"
 
+# define MIN_COL_WIDTH 3
+
+# define BOOL_TO_S(b) (b ? "true" : "false")
+
+enum fileType {
+  RegularFile = 45,       // '-'
+  Directory = 100,        // 'd'
+  CharDeviceFile = 99,    // 'c'
+  BlockDeviceFile = 98,   // 'b'
+  LocalSocketFile = 115,  // 's'
+  NamedPipe = 112,        // 'p'
+  SymbolicLink = 108,     // 'l'
+  Unkown = -1
+};
+
+
+typedef struct s_file {
+  /* The file name */
+  char  * name;
+  /* The path to the file */
+  char  * path;
+  /* When the file is sym link, the name of the file which is pointed else NULL */
+  char  * link_name;
+  /* The type of the file */
+  enum  fileType fileType;
+  /* File information which contains the group, password, permissions time; etc */
+  struct stat stat;
+  /* The lt_mode of the file linked */
+  mode_t  link_mode;
+  /* children of the directory */
+  t_list  * children;
+} t_file;
+
+
+/* For each entry output, set the proper column width */
+typedef struct s_padding {
+  int inode_width;
+  int block_size_width;
+  int scontext_width;
+  int owner_width;
+  int group_width;
+  int author_width;
+  int major_device_width;
+  int minor_device_width;
+  int file_width;
+} t_padding;
+
+/* Output format printing */
+enum format {
+  LongFormat,     /* [-l] one entry per line long format */
+  MultipleColumn, /* [default -C] multiple entry per column, order vertical */
+  Horizontal,     /* [-x] multiple entry per column, order horizontal */
+  OnePerLine,     /* [-1] one entry per line force */
+  ComaSeparated   /* [-m] comma separated instead of columns, no padding*/
+};
+
+/* Sorting types */
+enum sorting {
+  SortNone, /* [-U] no sorting */
+  SortName, /* [default] by file name */
+  SortSize, /* [-S] by file size*/
+  SortExt,  /* [-X] by file extension */
+  SortTime  /* [-t] by time */
+};
+
+/* Indicator at the end of the file name */
+enum file_indicator_type {
+  FileIndicatorNone,      /* [default] */
+  FileIndicatorSlash,     /* [-p] '/' */
+  FileIndicatorClassify   /* [-F] by file class */
+};
+
+typedef struct s_conf {
+  bool print_scontext;    /* Print scontext */
+  enum sorting sorting;   /* Which sorting function to use */
+  enum format format;     /* Which format to use */
+  enum file_indicator_type fit; /* If we need to indicate file type at the end of name */
+  t_padding current_padding;  /* Padding info for multiple columns or horizontal format */
+  bool sort_rev;            /* [-r] reverse */
+  bool print_owner;         /* [-g turn OFF] default true*/
+  bool print_author;        /* */
+  bool print_group;         /* [-G] [-o turn OFF]*/
+  bool print_block_size;    /* [-s] */
+  bool print_inode;         /* [-i] */
+  bool print_with_color;
+  bool recursive;           /* [-R] */
+  bool noExplore;           /* [-d] */
+  bool dir_before_file;     /* [-d] */
+  bool no_ignore;           /* [-a] default False*/
+  bool print_dir;           /* print the directory before listing */
+  bool need_stat;           /* indicates if it's needed to call stat */
+  bool delimit;             /* delimit the options list */
+  int line_len;             /* get the line lenght of the calling program */
+  int max_cols;             /* maximum number of columns */
+  uintmax_t block_size;
+} t_conf;
+
+int init_conf(t_conf * conf);
 
 #endif

@@ -43,6 +43,21 @@ static size_t get_max_arg_file_name(ls_config * conf) {
 }
 
 void	ft_print_regular_files(ls_config * conf) {
+
+	t_list	* tmp;
+	t_file	* tmp_file;
+	
+	tmp = conf->files;
+	while (tmp) {
+		tmp_file = (t_file *)tmp->content;
+		ft_printf("%s\n", tmp_file->f_name);
+		tmp = tmp->next;
+	}
+
+}
+
+
+void	__ft_print_regular_files(ls_config * conf) {
 	char * file_padding;
 	char *	file_time;
 	char *	format;
