@@ -115,13 +115,13 @@ typedef struct s_conf {
   t_padding current_padding;  /* Padding info for multiple columns or horizontal format */
   bool sort_rev;            /* [-r] reverse */
   bool print_owner;         /* [-g turn OFF] default true*/
-  bool print_author;        /* */
+  bool print_author;        /* Printing author? */
   bool print_group;         /* [-G] [-o turn OFF]*/
   bool print_block_size;    /* [-s] */
   bool print_inode;         /* [-i] */
   bool print_with_color;
   bool recursive;           /* [-R] */
-  bool noExplore;           /* [-d] */
+  bool no_explore;           /* [-d] */
   bool dir_before_file;     /* [-d] */
   bool no_ignore;           /* [-a] default False*/
   bool print_dir;           /* print the directory before listing */
@@ -132,6 +132,12 @@ typedef struct s_conf {
   uintmax_t block_size;
 } t_conf;
 
+
+// Conf
 int init_conf(t_conf * conf);
+void print_conf(t_conf * conf);
+
+// Flags
+bool add_flags(t_conf * conf, char * str);
 
 #endif

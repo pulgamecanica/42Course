@@ -12,7 +12,7 @@ static const char *indicator_names[] = {
 	"None", "Slash", "Classify", NULL
 };
 
-static void print_conf(t_conf * conf) {
+void print_conf(t_conf * conf) {
 	if (!conf)
 		return ;
 	ft_printf(""
@@ -25,15 +25,15 @@ static void print_conf(t_conf * conf) {
 		"| ------- | ----- | ----- | --------- | ---------- | ---------- | -------- | --------- | ---------- | ------------- |\n"
 		"|\033[0;34m Values: | %-5 .5s | %-5 .5s | %-9 .9s | %-10 .10s | %-10 .10s | %08d | %09d | %-10 .10s | %013d \033[0m|\n"
 		"|-------------------------------------------------------------------------------------------------------------------|\n"
-		"| Configs | No ignore | Print Dirs | Delimited |                                                                    |\n"
-		"| ------- | --------- | ---------- | --------- | ------------------------------------------------------------------ |\n"
-		"|\033[0;34m Values: | %-9 .9s | %-10 .10s | %-9 .9s |                                                                    \033[0m|\n"
+		"| Configs | No ignore | Print Dirs | Delimited |\033[0;33m  |---     T         |      -----      -+-        /  '   -'''|      \033[0m|\n"
+		"| ------- | --------- | ---------- | --------- |\033[0;33m -|---   --|--  ===  |      |___.     -+o+-      /___'    ___|      \033[0m|\n"
+		"|\033[0;34m Values: | %-9 .9s | %-10 .10s | %-9 .9s |\033[0;33m  L_      _|_        L___   ____|      -+-          _'_  |____      \033[0m|\n"
 		"|-------------------------------------------------------------------------------------------------------------------|\n",
 		BOOL_TO_S(conf->print_scontext), sorting_names[conf->sorting], format_names[conf->format],
 		indicator_names[conf->fit], BOOL_TO_S(conf->sort_rev), BOOL_TO_S(conf->print_owner),
 		BOOL_TO_S(conf->print_author), BOOL_TO_S(conf->print_group), BOOL_TO_S(conf->print_block_size),
 		BOOL_TO_S(conf->print_inode), BOOL_TO_S(conf->print_with_color), BOOL_TO_S(conf->recursive),
-		BOOL_TO_S(conf->noExplore), BOOL_TO_S(conf->dir_before_file), conf->line_len,
+		BOOL_TO_S(conf->no_explore), BOOL_TO_S(conf->dir_before_file), conf->line_len,
 		conf->max_cols, BOOL_TO_S(conf->need_stat), conf->block_size,
 		BOOL_TO_S(conf->no_ignore), BOOL_TO_S(conf->print_dir), BOOL_TO_S(conf->delimit)
 	);
@@ -43,7 +43,7 @@ int	init_conf(t_conf * conf) {
 	struct winsize	sz;
 
 	if (!conf)
-		return EXIT_FAILURE;
+		return (EXIT_FAILURE);
 	ft_bzero(conf, sizeof(conf));
 	conf->sorting = SortName;
 	conf->format = MultipleColumn;
@@ -55,7 +55,5 @@ int	init_conf(t_conf * conf) {
 	conf->max_cols = 4;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &sz);
 	conf->line_len = sz.ws_col;
-	if (DEBUG)
-		print_conf(conf);
-	return EXIT_SUCCESS;
+	return (EXIT_SUCCESS);
 }
