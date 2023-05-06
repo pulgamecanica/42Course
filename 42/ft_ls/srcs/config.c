@@ -1,4 +1,5 @@
 #include "ft_ls.h"
+#include "libft.h"
 
 static const char *format_names[] = {
 	"Long", "Multiple Column", "Horizontal", "One Per Line", "Coma Separated", NULL
@@ -39,12 +40,13 @@ void print_conf(t_conf * conf) {
 	);
 }
 
-int	init_conf(t_conf * conf) {
+t_conf *	init_conf(void) {
 	struct winsize	sz;
+	t_conf * conf;
 
+	conf = (t_conf *)ft_calloc(sizeof(t_conf), 1);
 	if (!conf)
-		return (EXIT_FAILURE);
-	ft_bzero(conf, sizeof(conf));
+		return (NULL);
 	conf->sorting = SortName;
 	conf->format = MultipleColumn;
 	conf->fit = FileIndicatorNone;
@@ -55,5 +57,5 @@ int	init_conf(t_conf * conf) {
 	conf->max_cols = 4;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &sz);
 	conf->line_len = sz.ws_col;
-	return (EXIT_SUCCESS);
+	return (conf);
 }

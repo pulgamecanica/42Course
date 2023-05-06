@@ -60,7 +60,7 @@ debug: $(DNAME)
 $(DNAME): $(DEBUGBIN) $(DOBJS) | $(LIBFT)
 	${CC} ${DOBJS} ${LFLAGS} $(DEBUG) -o ${DNAME}
 
-test:
+test: debug
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(DNAME) $(FT_LS_ARGS)
 	@echo "[MAKEFILE] You can setup test arguments by setting up the env FT_LS_ARGS"
 	@echo "[MAKEFILE] Ex: export FT_LS_ARGS=\"-a --recursive ..\""

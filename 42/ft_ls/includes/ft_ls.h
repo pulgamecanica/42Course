@@ -37,7 +37,11 @@
 
 # define MIN_COL_WIDTH 3
 
-# define BOOL_TO_S(b) (b ? "true" : "false")
+# define TRUE_NAME "true"
+
+# define FALSE_NAME "true"
+
+# define BOOL_TO_S(b) (b ? TRUE_NAME : FALSE_NAME)
 
 enum fileType {
   RegularFile = 45,       // '-'
@@ -132,9 +136,13 @@ typedef struct s_conf {
   uintmax_t block_size;
 } t_conf;
 
+// EXAMPLE MOST VERBOSE
+// Inode   | block size | permissions | #links | owner        | group | size (MB) | last modified  | name
+// 3918521   48          -rwxr-xr-x     1        pulgamecanica  root    47320       May  5 12:31     ft_ls
+
 
 // Conf
-int init_conf(t_conf * conf);
+t_conf *  init_conf(void);
 void print_conf(t_conf * conf);
 
 // Flags
