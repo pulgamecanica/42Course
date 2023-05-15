@@ -7,7 +7,6 @@ void	print_list(void * ptr) {
 	ft_printf("\t%s[%c] %s%s%s\n", YELLOW, file->fileType, file->path, file->name, ENDC);
 }
 
-
 int	init_program(t_list ** list, t_conf * conf, int ac, char *av[]) {
 	int i;
 
@@ -46,6 +45,10 @@ int	main(int ac, char *av[]) {
 	// POPULATE STUFF
 	exit_status = init_program(param_files, conf, ac, av);
 	
+
+	conf->format = LongFormat;
+	
+
 	// IF Falg -d is not active
 	// Exclude all directories to a list
 	// List all other params
@@ -55,14 +58,15 @@ int	main(int ac, char *av[]) {
 
 	// HANDLE & PRINT STUFF
 	if (!exit_status) {
-		if (DEBUG)
+		if (DEBUG) {
 			print_conf(conf);
-		ft_printf("Parameters\n");
-		ft_lstiter(*param_files, print_list);
-		ft_printf("Directories\n");
-		ft_lstiter(*pending_directories, print_list);
+			ft_printf("Parameters\n");
+			ft_lstiter(*param_files, print_list);
+			ft_printf("Directories\n");
+			ft_lstiter(*pending_directories, print_list);
+		}
 	}
-
+	ft_lstiter_param(*param_files, print_files, conf);
 
 	// FREE STUFF
 	ft_lstclear(param_files, free_file);

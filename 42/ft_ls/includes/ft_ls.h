@@ -23,6 +23,10 @@
 # include <stdbool.h>
 # include <sys/stat.h>
 # include <sys/ioctl.h>
+#include <sys/types.h>
+#include <time.h>
+#include <grp.h>
+#include <pwd.h>
 //# include <time.h>
 //# include <dirent.h>
 //# include <sys/types.h>
@@ -152,5 +156,6 @@ t_list ** extract_directories(t_list * list);
 // Files
 t_file *  setup_file(char * name, char * path);
 void  free_file(void * ptr);
+void print_files(void * ptr1, void * ptr2);
 
 #endif

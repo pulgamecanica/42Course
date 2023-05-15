@@ -17,6 +17,49 @@ static enum fileType getFileType(struct stat * st) {
 	}
 }
 
+void print_files(void * ptr1, void * ptr2) {
+	t_file * file;
+	t_conf * conf;
+
+	file = (t_file *)ptr1;
+	conf = (t_conf *)ptr2;
+	if (!file)
+		return ;
+	if (file->fileType == Directory) {
+		return ;
+	}
+	if (conf->format == LongFormat) {
+		if (file->fileType == Unkown) {
+			ft_printf("File not found");
+		}
+		char * time_str = ctime(&(file->stat.st_mtime));
+		time_str[ft_strlen(time_str) - 1] = 0;
+		// Inode   | block size | permissions | #links | owner        | group | size (MB) | last modified  | name | -> link?
+		ft_printf("%d %d %c%c%c%c%c%c%c%c%c%c %d %s %s %d %s %s %s %s\n",
+			file->stat.st_ino,
+			file->stat.st_blksize / 1000,
+			file->fileType,
+			file->stat.st_mode & S_IRUSR ? 'r' : '-',
+			file->stat.st_mode & S_IWUSR ? 'w' : '-',
+			file->stat.st_mode & S_IXUSR ? 'x' : '-',
+			file->stat.st_mode & S_IRGRP ? 'r' : '-',
+			file->stat.st_mode & S_IWGRP ? 'w' : '-',
+			file->stat.st_mode & S_IXGRP ? 'x' : '-',
+			file->stat.st_mode & S_IROTH ? 'r' : '-',
+			file->stat.st_mode & S_IWOTH ? 'w' : '-',
+			file->stat.st_mode & S_IXOTH ? 'x' : '-',
+			file->stat.st_nlink,
+			getgrgid(file->stat.st_gid)->gr_name,
+			getpwuid(file->stat.st_uid)->pw_name,
+			file->stat.st_size,
+			time_str,
+			file->name,
+			file->link_name ? "->" : "",
+			file->link_name ? file->link_name : ""
+			);
+	}
+}
+
 t_file	* setup_file(char * name, char * path) {
 	t_file	* file;
 	char	* full_name;
@@ -36,7 +79,7 @@ t_file	* setup_file(char * name, char * path) {
 		return NULL;
 	}
 
-	lstat(full_name, &file->stat);
+	stat(full_name, &file->stat);
   file->fileType = getFileType(&file->stat);
 
 	free(full_name);

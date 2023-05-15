@@ -1,10 +1,6 @@
 #include "libft.h"
 #include "ft_ls.h"
 
-bool	is_directory(char * name) {
-	return !name;
-}
-
 static void	prot_exclude_dirs(void * ptr1, void * ptr2) {
 	t_file * file;
 
