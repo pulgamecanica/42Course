@@ -68,8 +68,6 @@ typedef struct s_file {
   struct stat stat;
   /* The lt_mode of the file linked */
   mode_t  link_mode;
-  /* children of the directory */
-  t_list  * children;
 } t_file;
 
 
@@ -147,5 +145,12 @@ void print_conf(t_conf * conf);
 
 // Flags
 bool add_flags(t_conf * conf, char * str);
+
+// Directories
+t_list ** extract_directories(t_list * list);
+
+// Files
+t_file *  setup_file(char * name, char * path);
+void  free_file(void * ptr);
 
 #endif
