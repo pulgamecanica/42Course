@@ -178,8 +178,30 @@ drwxr-xr-x 1 pulgamecanica pulgamecanica   164 Feb 19 18:42 .
 		dir2/:
 		file9.txt
  
-	
 ***
+
+#### [stat vs lstat]
+
+It is true that **_lstat_** and **_stat_** will behave differently in certain cases, that is, when a file is a link.
+
+But it is also true that regardless the function that you use, the MACROS will not evaluate true only for symbolic link.
+
+For some reason the st_mode which is loaded also contains the information of the file it points to.
+
+For example, if we had a symbolic link which points to a Directory and we used lstat:
+
+```c
+lstat("path_to_link", &st);
+```
+
+The following two conditions are true:
+
+```c
+st->st_mode & S_IFMT == S_IFLNK
+st->st_mode & S_IFMT == S_IFDIR
+```
+
+That is why we should always check FIRST the symbolic link.
 
 #### [OPTION] -l
 
