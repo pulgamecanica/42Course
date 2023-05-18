@@ -34,9 +34,11 @@ void print_files(void * ptr1, void * ptr2) {
 		char * time_str = my_ctime(&(file->stat.st_mtime));
 		time_str[ft_strlen(time_str) - 1] = 0;
 		// Inode   | block size | permissions | #links | owner        | group | size (MB) | last modified  | name | -> link?
-		ft_printf("%d %d %c%c%c%c%c%c%c%c%c%c %d %s %s% 4d %s %s %s %s\n",
-			file->stat.st_ino,
-			file->stat.st_blksize / 1000,
+		if (conf->print_inode)
+			ft_printf("%d ", file->stat.st_ino);
+		if (conf->print_block_size)
+			ft_printf("%d ", file->stat.st_blksize / 1000);
+		ft_printf("%c%c%c%c%c%c%c%c%c%c %d ",
 			file->fileType,
 			file->stat.st_mode & S_IRUSR ? 'r' : '-',
 			file->stat.st_mode & S_IWUSR ? 'w' : '-',
@@ -47,9 +49,18 @@ void print_files(void * ptr1, void * ptr2) {
 			file->stat.st_mode & S_IROTH ? 'r' : '-',
 			file->stat.st_mode & S_IWOTH ? 'w' : '-',
 			file->stat.st_mode & S_IXOTH ? 'x' : '-',
-			file->stat.st_nlink,
-			getgrgid(file->stat.st_gid)->gr_name,
-			getpwuid(file->stat.st_uid)->pw_name,
+			file->stat.st_nlink);
+		if (conf->print_owner)
+			ft_putstr_fd(getpwuid(file->stat.st_uid)->pw_name, 1);
+		if (conf->print_group) {
+			ft_putstr_fd(" ", 1);
+			ft_putstr_fd(getgrgid(file->stat.st_gid)->gr_name, 1);
+		}
+		if (conf->print_author) {
+			ft_putstr_fd(" ", 1);
+			ft_putstr_fd(getpwuid(file->stat.st_uid)->pw_name, 1);
+		}
+		ft_printf("%4 d %s %s %s %s\n",
 			file->stat.st_size,
 			time_str,
 			file->name,

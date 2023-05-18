@@ -44,7 +44,8 @@ int	main(int ac, char *av[]) {
 
 	// POPULATE STUFF
 	exit_status = init_program(param_files, conf, ac, av);
-	
+	if (exit_status != EXIT_SUCCESS)
+		return (0);
 
 	conf->format = LongFormat;
 	
