@@ -21,7 +21,7 @@ int	init_program(t_list ** list, t_conf * conf, int ac, char *av[]) {
 			ft_lstadd_back(list, ft_lstnew(setup_file(av[i], "")));
 		}
 	}
-	if (!*list)
+	if (!ft_lstsize(*list))
 		ft_lstadd_back(list, ft_lstnew(setup_file(".", "")));
 	return (EXIT_SUCCESS);
 }

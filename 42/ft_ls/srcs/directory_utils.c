@@ -4,7 +4,7 @@
 static void	prot_exclude_dirs(void * ptr1, void * ptr2) {
 	t_file * file;
 
-	file = (t_file *)ptr1;
+	   file = (t_file *)ptr1;
 	if (file->fileType == Directory)
 		ft_lstadd_back(ptr2, ft_lstnew(setup_file(file->name, "")));
 }

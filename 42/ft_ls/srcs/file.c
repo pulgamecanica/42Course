@@ -6,13 +6,13 @@ static enum fileType getFileType(struct stat * st) {
 	if (!st)
 		return Unkown;
 	switch (st->st_mode & S_IFMT) {
-		case S_IFLNK:  return (SymbolicLink);
 		case S_IFREG:  return (RegularFile);
 		case S_IFDIR:  return (Directory);
 		case S_IFIFO:  return (NamedPipe);
 		case S_IFCHR:  return (CharDeviceFile);
 		case S_IFBLK:  return (BlockDeviceFile);
 		case S_IFSOCK: return (LocalSocketFile);
+		case S_IFLNK:  return (SymbolicLink);
 		default:       return (Unkown);
 	}
 }
@@ -23,19 +23,18 @@ void print_files(void * ptr1, void * ptr2) {
 
 	file = (t_file *)ptr1;
 	conf = (t_conf *)ptr2;
-	if (!file)
-		return ;
-	if (file->fileType == Directory) {
+	if (!file || file->fileType == Directory) {
 		return ;
 	}
+	if (file->fileType == Unkown) {
+		ft_printf("File not found\n");
+		return;
+	}
 	if (conf->format == LongFormat) {
-		if (file->fileType == Unkown) {
-			ft_printf("File not found");
-		}
-		char * time_str = ctime(&(file->stat.st_mtime));
+		char * time_str = my_ctime(&(file->stat.st_mtime));
 		time_str[ft_strlen(time_str) - 1] = 0;
 		// Inode   | block size | permissions | #links | owner        | group | size (MB) | last modified  | name | -> link?
-		ft_printf("%d %d %c%c%c%c%c%c%c%c%c%c %d %s %s %d %s %s %s %s\n",
+		ft_printf("%d %d %c%c%c%c%c%c%c%c%c%c %d %s %s% 4d %s %s %s %s\n",
 			file->stat.st_ino,
 			file->stat.st_blksize / 1000,
 			file->fileType,
@@ -79,21 +78,28 @@ t_file	* setup_file(char * name, char * path) {
 		return NULL;
 	}
 
-	stat(full_name, &file->stat);
-  file->fileType = getFileType(&file->stat);
+	if (lstat(full_name, &file->stat) == -1)
+		file->fileType = Unkown;
+	else
+  	file->fileType = getFileType(&file->stat);
 
-	free(full_name);
 
 
 
   /* When the file is sym link, the name of the file which is pointed else NULL */
 	//char  * link_name;
-  file->link_name = NULL;
-  
-  /* The type of the file */
-  
-  /* The lt_mode of the file linked */
-  //mode_t  link_mode;
+	if (((file->stat.st_mode) & S_IFMT) == S_IFLNK) {
+		file->link_name = ft_calloc(sizeof(char), 1028);
+		if (readlink(full_name, file->link_name,1028) == -1)
+			perror("Couldn't open Link");
+		ft_printf("LINK DETECTED %s -> %s\n", file->name, file->link_name);
+		file->linkFileType = file->fileType;
+		file->fileType = SymbolicLink;
+	} else {
+	  file->link_name = NULL;
+  }
+
+	free(full_name);
   return (file);
 }
 

@@ -23,10 +23,10 @@
 # include <stdbool.h>
 # include <sys/stat.h>
 # include <sys/ioctl.h>
-#include <sys/types.h>
-#include <time.h>
-#include <grp.h>
-#include <pwd.h>
+# include <sys/types.h>
+# include <time.h>
+# include <grp.h>
+# include <pwd.h>
 //# include <time.h>
 //# include <dirent.h>
 //# include <sys/types.h>
@@ -68,6 +68,10 @@ typedef struct s_file {
   char  * link_name;
   /* The type of the file */
   enum  fileType fileType;
+
+  /* The type of the link file if it exists */
+  enum  fileType linkFileType;
+
   /* File information which contains the group, password, permissions time; etc */
   struct stat stat;
   /* The lt_mode of the file linked */
@@ -157,5 +161,8 @@ t_list ** extract_directories(t_list * list);
 t_file *  setup_file(char * name, char * path);
 void  free_file(void * ptr);
 void print_files(void * ptr1, void * ptr2);
+
+// Time
+char * my_ctime(time_t * time);
 
 #endif
