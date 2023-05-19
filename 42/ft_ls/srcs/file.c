@@ -47,10 +47,20 @@ void print_files(void * ptr1, void * ptr2) {
 	}
 	if (conf->format == LongFormat) {
 		// Inode   | block size | permissions | #links | owner        | group | size (MB) | last modified  | name | -> link?
-		
+		char * format_inode;
+		char * format_owner;
+		char * format_group;
+		char * format_author;
+		char * format_size;
+
+		format_owner = format_padding('s', conf->padding.owner_width, false, true);
+		format_group = format_padding('s', conf->padding.group_width, false, true);
+		format_author = format_padding('s', conf->padding.author_width, false, true);
+		format_size = format_padding('d', conf->padding.file_size_width, true, false);
+		format_inode = format_padding('d', conf->padding.inode_width, false, false);
 		// INODE
 		if (conf->print_inode) {
-			ft_printf(format_padding('d', conf->padding.inode_width, false, false), file->stat.st_ino);
+			ft_printf(format_inode, file->stat.st_ino);
 			ft_putstr_fd(" ", 1);
 		}
 		// BLOCK SIZE
@@ -71,27 +81,23 @@ void print_files(void * ptr1, void * ptr2) {
 			file->stat.st_nlink);
 		// OWNER
 		if (conf->print_owner)
-			ft_printf(format_padding('s', conf->padding.owner_width, false, true),
+			ft_printf(format_owner,
 				getpwuid(file->stat.st_uid)->pw_name);
 		// GROUP
 		if (conf->print_group) {
 			ft_putstr_fd(" ", 1);
-			ft_printf(format_padding('s', conf->padding.group_width, false, true),
-				getgrgid(file->stat.st_gid)->gr_name);
+			ft_printf(format_group, getgrgid(file->stat.st_gid)->gr_name);
 		}
 		// AUTOR
 		if (conf->print_author) {
 			ft_putstr_fd(" ", 1);
-			ft_printf(format_padding('s', conf->padding.author_width, false, true),
-				getpwuid(file->stat.st_uid)->pw_name);
+			ft_printf(format_author, getpwuid(file->stat.st_uid)->pw_name);
 		}
 		// FILE SIZE
-		ft_printf(format_padding('d', conf->padding.file_size_width, true, false),
-			file->stat.st_size);
+		ft_printf(format_size, file->stat.st_size);
 		ft_putstr_fd(" ", 1);
 		// FILE TIME LAST MODIFICATION
-		ft_printf("%s ",
-			my_ctime(&(file->stat.st_mtime)));
+		ft_printf("%s ", my_ctime(&(file->stat.st_mtime)));
 		// FILE NAME & FILE LINK NAME?
 		ft_printf("%s%s%s%s%s%s\n",
 			getFileTypeColor(file->fileType, conf),
@@ -100,6 +106,11 @@ void print_files(void * ptr1, void * ptr2) {
 			getFileTypeColor(file->linkFileType, conf),
 			file->link_name ? file->link_name : "",
 			conf->print_with_color ? ENDC : "");
+		free(format_owner);
+		free(format_group);
+		free(format_author);
+		free(format_size);
+		free(format_inode);
 	}
 }
 
@@ -129,6 +140,8 @@ t_file	* setup_file(char * name, char * path) {
   	file->fileType = getFileType(&file->stat);
 
   /* When the file is sym link, the name of the file which is pointed else NULL */
+	file->link_name = NULL;
+	file->linkFileType = Unkown;
 	if (((file->stat.st_mode) & S_IFMT) == S_IFLNK) {
 		file->fileType = SymbolicLink;
 		file->link_name = ft_calloc(sizeof(char), 1028);
@@ -136,9 +149,7 @@ t_file	* setup_file(char * name, char * path) {
 			perror("Couldn't open Link");
 		stat(file->link_name, &tmp_stat);
   	file->linkFileType = getFileType(&tmp_stat);
-	} else {
-	  file->link_name = NULL;
-  }
+	}
 	free(full_name);
   return (file);
 }
