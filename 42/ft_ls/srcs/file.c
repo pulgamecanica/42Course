@@ -17,6 +17,19 @@ static enum fileType getFileType(struct stat * st) {
 	}
 }
 
+static char * getFileTypeColor(enum fileType fileType) {
+	switch (fileType) {
+		case Directory:  return (BLUE);
+		case RegularFile:  return (WHITE);
+		case NamedPipe:  return (YELLOW);
+		case CharDeviceFile:  return (YELLOW);
+		case LocalSocketFile:  return (PURPLE);
+		case BlockDeviceFile: return (YELLOW);
+		case SymbolicLink:  return (CYAN);
+		default:       return (WHITE);
+	}
+}
+
 void print_files(void * ptr1, void * ptr2) {
 	t_file * file;
 	t_conf * conf;
@@ -31,13 +44,15 @@ void print_files(void * ptr1, void * ptr2) {
 		return;
 	}
 	if (conf->format == LongFormat) {
-		char * time_str = my_ctime(&(file->stat.st_mtime));
-		time_str[ft_strlen(time_str) - 1] = 0;
 		// Inode   | block size | permissions | #links | owner        | group | size (MB) | last modified  | name | -> link?
+		
+		// INODE
 		if (conf->print_inode)
 			ft_printf("%d ", file->stat.st_ino);
+		// BLOCK SIZE
 		if (conf->print_block_size)
 			ft_printf("%d ", file->stat.st_blksize / 1000);
+		// PERMISSIONS & #links
 		ft_printf("%c%c%c%c%c%c%c%c%c%c %d ",
 			file->fileType,
 			file->stat.st_mode & S_IRUSR ? 'r' : '-',
@@ -50,27 +65,38 @@ void print_files(void * ptr1, void * ptr2) {
 			file->stat.st_mode & S_IWOTH ? 'w' : '-',
 			file->stat.st_mode & S_IXOTH ? 'x' : '-',
 			file->stat.st_nlink);
+		// OWNER
 		if (conf->print_owner)
 			ft_putstr_fd(getpwuid(file->stat.st_uid)->pw_name, 1);
+		// GROUP
 		if (conf->print_group) {
 			ft_putstr_fd(" ", 1);
 			ft_putstr_fd(getgrgid(file->stat.st_gid)->gr_name, 1);
 		}
+		// AUTOR
 		if (conf->print_author) {
 			ft_putstr_fd(" ", 1);
 			ft_putstr_fd(getpwuid(file->stat.st_uid)->pw_name, 1);
 		}
-		ft_printf("%4 d %s %s %s %s\n",
+		// FILE SIZE % TIME
+		ft_printf("%4 d %s ",
 			file->stat.st_size,
-			time_str,
+			my_ctime(&(file->stat.st_mtime)));
+		// FILE NAME & FILE LINK NAME?
+		ft_printf("%s%s%s %s%s %s%s%s\n",
+			getFileTypeColor(file->fileType),
+			BOLD,
 			file->name,
+			WHITE,
 			file->link_name ? "->" : "",
-			file->link_name ? file->link_name : ""
-			);
+			getFileTypeColor(file->linkFileType),
+			file->link_name ? file->link_name : "",
+			ENDC);
 	}
 }
 
 t_file	* setup_file(char * name, char * path) {
+	struct stat tmp_stat;
 	t_file	* file;
 	char	* full_name;
 	
@@ -94,18 +120,14 @@ t_file	* setup_file(char * name, char * path) {
 	else
   	file->fileType = getFileType(&file->stat);
 
-
-
-
   /* When the file is sym link, the name of the file which is pointed else NULL */
-	//char  * link_name;
 	if (((file->stat.st_mode) & S_IFMT) == S_IFLNK) {
+		file->fileType = SymbolicLink;
 		file->link_name = ft_calloc(sizeof(char), 1028);
 		if (readlink(full_name, file->link_name,1028) == -1)
 			perror("Couldn't open Link");
-		ft_printf("LINK DETECTED %s -> %s\n", file->name, file->link_name);
-		file->linkFileType = file->fileType;
-		file->fileType = SymbolicLink;
+		stat(file->link_name, &tmp_stat);
+  	file->linkFileType = getFileType(&tmp_stat);
 	} else {
 	  file->link_name = NULL;
   }

@@ -14,7 +14,10 @@
 # define GREEN  "\033[0;32m"
 # define YELLOW "\033[0;33m"
 # define BLUE "\033[0;34m"
+# define PURPLE "\033[0;35m"
+# define CYAN "\033[0;36m"
 # define WHITE  "\033[0;37m"
+# define BOLD "\033[1m"
 # define ENDC "\033[0m"
 
 # include "libft.h"
@@ -43,7 +46,7 @@
 
 # define TRUE_NAME "true"
 
-# define FALSE_NAME "true"
+# define FALSE_NAME "false"
 
 # define BOOL_TO_S(b) (b ? TRUE_NAME : FALSE_NAME)
 
@@ -125,7 +128,7 @@ typedef struct s_conf {
   t_padding current_padding;  /* Padding info for multiple columns or horizontal format */
   bool sort_rev;            /* [-r] reverse */
   bool print_owner;         /* [-g turn OFF] default true*/
-  bool print_author;        /* Printing author? */
+  bool print_author;        /* [--author] */
   bool print_group;         /* [-G] [-o turn OFF]*/
   bool print_block_size;    /* [-s] */
   bool print_inode;         /* [-i] */
