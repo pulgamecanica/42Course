@@ -32,11 +32,19 @@ static bool add_flag(t_conf * conf, char flag) {
 		conf->print_owner = false;
 	} else if (flag == 'G') {
 		conf->print_group = false;
+	} else if (flag == '1') {
+		conf->format = OnePerLine;
+	} else if (flag == 'm') {
+		conf->format = ComaSeparated;
+	} else if (flag == 'x') {
+		conf->format = MultipleColumn;
 	} else if (flag == 'l') {
 		conf->format = LongFormat;
 	} else if (flag == 'o') {
-		conf->format = LongFormat;
-		conf->print_group = false;
+		add_flag(conf, 'l');
+		add_flag(conf, 'G');
+	} else if (flag == 'd') {
+		conf->no_explore = true;
 	} else {
 		ft_printf(""
 			"ls: invalid option -- '%c'\n"

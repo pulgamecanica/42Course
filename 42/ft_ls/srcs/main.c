@@ -13,11 +13,13 @@ int	init_program(t_list ** list, t_conf * conf, int ac, char *av[]) {
 	i = 0;
 	while (++i < ac) {
 		if (av[i][0] == '-' && !conf->delimit) {
-			printf("\tAdding flag:\033[0;34m %s \033[0m\n", av[i]);
+			if (DEBUG)
+				printf("\tAdding flag:\033[0;34m %s \033[0m\n", av[i]);
 			if (!add_flags(conf, av[i]))
 				return (EXIT_FAILURE);
 		} else {
-			printf("\tAdding path:\033[0;32m %s \033[0m\n", av[i]);
+			if (DEBUG)
+				printf("\tAdding path:\033[0;32m %s \033[0m\n", av[i]);
 			ft_lstadd_back(list, ft_lstnew(setup_file(av[i], "")));
 		}
 	}
@@ -38,36 +40,39 @@ int	main(int ac, char *av[]) {
 	if (!param_files)
 		return (EXIT_FAILURE);
 
+	// INITIALIZE CONFIGURATION WITH DEFAULT VALUES
 	conf = init_conf();
 	if (!conf)
 		return (EXIT_FAILURE);
 
-	// POPULATE STUFF
+	// ADDING PARAMETER FILES AND FLAGSS	
 	exit_status = init_program(param_files, conf, ac, av);
 	if (exit_status != EXIT_SUCCESS)
 		return (0);
 
+	//TESTING
 	conf->format = LongFormat;
 	
-
-	// IF Falg -d is not active
-	// Exclude all directories to a list
-	// List all other params
+	// If Falg -d is not active
+	// Add all directories to the pending list of directories
 	if (!conf->no_explore) {
 		pending_directories = extract_directories(*param_files);
 	}
 
 	// HANDLE & PRINT STUFF
-	if (!exit_status) {
+	if (exit_status == EXIT_SUCCESS) {
 		if (DEBUG) {
 			print_conf(conf);
 			ft_printf("Parameters\n");
 			ft_lstiter(*param_files, print_list);
-			ft_printf("Directories\n");
-			ft_lstiter(*pending_directories, print_list);
+			if (pending_directories && ft_lstsize(*pending_directories)) {
+				ft_printf("Pending Directories\n");
+				ft_lstiter(*pending_directories, print_list);
+			}
 		}
+		set_padding(*param_files, conf);
+		ft_lstiter_param(*param_files, print_files, conf);
 	}
-	ft_lstiter_param(*param_files, print_files, conf);
 
 	// FREE STUFF
 	ft_lstclear(param_files, free_file);

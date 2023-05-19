@@ -17,16 +17,18 @@ static enum fileType getFileType(struct stat * st) {
 	}
 }
 
-static char * getFileTypeColor(enum fileType fileType) {
+static char * getFileTypeColor(enum fileType fileType, t_conf * conf) {
+	if (!conf->print_with_color)
+		return ("");
 	switch (fileType) {
-		case Directory:  return (BLUE);
-		case RegularFile:  return (WHITE);
-		case NamedPipe:  return (YELLOW);
-		case CharDeviceFile:  return (YELLOW);
-		case LocalSocketFile:  return (PURPLE);
-		case BlockDeviceFile: return (YELLOW);
-		case SymbolicLink:  return (CYAN);
-		default:       return (WHITE);
+		case Directory:				return (BLUEBOLD);
+		case RegularFile:			return ("");
+		case NamedPipe:				return (YELLOW);
+		case CharDeviceFile:	return (YELLOWBOLD);
+		case LocalSocketFile:	return (PURPLEBOLD);
+		case BlockDeviceFile:	return (YELLOWBOLD);
+		case SymbolicLink:		return (CYANBOLD);
+		default:							return (WHITE);
 	}
 }
 
@@ -36,7 +38,7 @@ void print_files(void * ptr1, void * ptr2) {
 
 	file = (t_file *)ptr1;
 	conf = (t_conf *)ptr2;
-	if (!file || file->fileType == Directory) {
+	if (!file || ((file->fileType == Directory) && !conf->no_explore)) {
 		return ;
 	}
 	if (file->fileType == Unkown) {
@@ -47,8 +49,10 @@ void print_files(void * ptr1, void * ptr2) {
 		// Inode   | block size | permissions | #links | owner        | group | size (MB) | last modified  | name | -> link?
 		
 		// INODE
-		if (conf->print_inode)
-			ft_printf("%d ", file->stat.st_ino);
+		if (conf->print_inode) {
+			ft_printf(format_padding('d', conf->padding.inode_width, false, false), file->stat.st_ino);
+			ft_putstr_fd(" ", 1);
+		}
 		// BLOCK SIZE
 		if (conf->print_block_size)
 			ft_printf("%d ", file->stat.st_blksize / 1000);
@@ -67,31 +71,35 @@ void print_files(void * ptr1, void * ptr2) {
 			file->stat.st_nlink);
 		// OWNER
 		if (conf->print_owner)
-			ft_putstr_fd(getpwuid(file->stat.st_uid)->pw_name, 1);
+			ft_printf(format_padding('s', conf->padding.owner_width, false, true),
+				getpwuid(file->stat.st_uid)->pw_name);
 		// GROUP
 		if (conf->print_group) {
 			ft_putstr_fd(" ", 1);
-			ft_putstr_fd(getgrgid(file->stat.st_gid)->gr_name, 1);
+			ft_printf(format_padding('s', conf->padding.group_width, false, true),
+				getgrgid(file->stat.st_gid)->gr_name);
 		}
 		// AUTOR
 		if (conf->print_author) {
 			ft_putstr_fd(" ", 1);
-			ft_putstr_fd(getpwuid(file->stat.st_uid)->pw_name, 1);
+			ft_printf(format_padding('s', conf->padding.author_width, false, true),
+				getpwuid(file->stat.st_uid)->pw_name);
 		}
-		// FILE SIZE % TIME
-		ft_printf("%4 d %s ",
-			file->stat.st_size,
+		// FILE SIZE
+		ft_printf(format_padding('d', conf->padding.file_size_width, true, false),
+			file->stat.st_size);
+		ft_putstr_fd(" ", 1);
+		// FILE TIME LAST MODIFICATION
+		ft_printf("%s ",
 			my_ctime(&(file->stat.st_mtime)));
 		// FILE NAME & FILE LINK NAME?
-		ft_printf("%s%s%s %s%s %s%s%s\n",
-			getFileTypeColor(file->fileType),
-			BOLD,
+		ft_printf("%s%s%s%s%s%s\n",
+			getFileTypeColor(file->fileType, conf),
 			file->name,
-			WHITE,
-			file->link_name ? "->" : "",
-			getFileTypeColor(file->linkFileType),
+			file->link_name ? " -> " : "",
+			getFileTypeColor(file->linkFileType, conf),
 			file->link_name ? file->link_name : "",
-			ENDC);
+			conf->print_with_color ? ENDC : "");
 	}
 }
 
@@ -131,7 +139,6 @@ t_file	* setup_file(char * name, char * path) {
 	} else {
 	  file->link_name = NULL;
   }
-
 	free(full_name);
   return (file);
 }

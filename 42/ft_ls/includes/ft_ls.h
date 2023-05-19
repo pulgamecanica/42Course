@@ -9,15 +9,23 @@
 #  define LINUX 0
 #endif
 
-# define BLACK  "\033[0;30m"
-# define RED  "\033[0;31m"
-# define GREEN  "\033[0;32m"
-# define YELLOW "\033[0;33m"
-# define BLUE "\033[0;34m"
-# define PURPLE "\033[0;35m"
-# define CYAN "\033[0;36m"
-# define WHITE  "\033[0;37m"
 # define BOLD "\033[1m"
+# define BLACK  "\033[0;30m"
+# define BLACKBOLD  "\033[0;30m\033[1m"
+# define RED  "\033[0;31m"
+# define REDBOLD  "\033[0;31m\033[1m"
+# define GREEN  "\033[0;32m"
+# define GREENBOLD  "\033[0;32m\033[1m"
+# define YELLOW "\033[0;33m"
+# define YELLOWBOLD "\033[0;33m\033[1m"
+# define BLUE "\033[0;34m"
+# define BLUEBOLD "\033[0;34m\033[1m"
+# define PURPLE "\033[0;35m"
+# define PURPLEBOLD "\033[0;35m\033[1m"
+# define CYAN "\033[0;36m"
+# define CYANBOLD "\033[0;36m\033[1m"
+# define WHITE  "\033[0;37m"
+# define WHITEBOLD  "\033[0;37m\033[1m"
 # define ENDC "\033[0m"
 
 # include "libft.h"
@@ -93,6 +101,7 @@ typedef struct s_padding {
   int major_device_width;
   int minor_device_width;
   int file_width;
+  int file_size_width;
 } t_padding;
 
 /* Output format printing */
@@ -125,7 +134,7 @@ typedef struct s_conf {
   enum sorting sorting;   /* Which sorting function to use */
   enum format format;     /* Which format to use */
   enum file_indicator_type fit; /* If we need to indicate file type at the end of name */
-  t_padding current_padding;  /* Padding info for multiple columns or horizontal format */
+  t_padding padding;  /* Padding info for multiple columns or horizontal format */
   bool sort_rev;            /* [-r] reverse */
   bool print_owner;         /* [-g turn OFF] default true*/
   bool print_author;        /* [--author] */
@@ -167,5 +176,9 @@ void print_files(void * ptr1, void * ptr2);
 
 // Time
 char * my_ctime(time_t * time);
+
+// Padding
+void set_padding(t_list * list, t_conf * conf);
+char * format_padding(char conversion, int padding, bool space, bool minus);
 
 #endif
