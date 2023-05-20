@@ -203,6 +203,10 @@ st->st_mode & S_IFMT == S_IFDIR
 
 That is why we should always check FIRST the symbolic link.
 
+#### Linkfiles
+
+We can use C function to find out the name of the link file for a symbolic link.
+
 #### [OPTION] -l
 
 ```bash
