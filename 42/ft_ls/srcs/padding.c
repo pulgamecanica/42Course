@@ -73,6 +73,7 @@ static void set_padding_file_size(void * ptr1, void * ptr2) {
 void set_padding(t_list * list, t_conf * conf) {
 	if (conf->format != LongFormat)
 		return ;
+	ft_bzero(&conf->padding, sizeof(t_padding));
 	if (conf->print_inode)
 		ft_lstiter_param(list, set_padding_inode_width, conf);
 	if (conf->print_block_size)
@@ -90,6 +91,18 @@ void set_padding(t_list * list, t_conf * conf) {
 //	  conf->padding.scontext_width = 0;
   ft_lstiter_param(list, set_padding_file_size, conf);
   ft_lstiter_param(list, set_padding_file_width, conf);
+  if (DEBUG)
+	  ft_printf("PADDING ==> Inode[%d] Block[%d] Contxt[%d] Owner[%d] Grp[%d] Auth[%d] MJD[%d] mnd[%d] name[%d] size[%d]\n",
+	  	conf->padding.inode_width,
+			conf->padding.block_size_width,
+			conf->padding.scontext_width,
+			conf->padding.owner_width,
+			conf->padding.group_width,
+			conf->padding.author_width,
+			conf->padding.major_device_width,
+			conf->padding.minor_device_width,
+			conf->padding.file_width,
+			conf->padding.file_size_width);
 }
 
 char * format_padding(char conversion, int padding, bool space, bool minus) {

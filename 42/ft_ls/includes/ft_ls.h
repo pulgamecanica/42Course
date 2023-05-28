@@ -38,6 +38,7 @@
 # include <time.h>
 # include <grp.h>
 # include <pwd.h>
+#include <dirent.h>
 //# include <time.h>
 //# include <dirent.h>
 //# include <sys/types.h>
@@ -168,6 +169,8 @@ bool add_flags(t_conf * conf, char * str);
 
 // Directories
 t_list ** extract_directories(t_list * list);
+void  read_directories(t_file * file, t_conf * conf);
+//void  read_directories(void * ptr1, void * ptr2);
 
 // Files
 t_file *  setup_file(char * name, char * path);

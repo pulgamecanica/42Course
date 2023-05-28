@@ -25,6 +25,7 @@ int	init_program(t_list ** list, t_conf * conf, int ac, char *av[]) {
 	}
 	if (!ft_lstsize(*list))
 		ft_lstadd_back(list, ft_lstnew(setup_file(".", "")));
+	conf->print_dir = ft_lstsize(*list) > 1; 
 	return (EXIT_SUCCESS);
 }
 
@@ -49,7 +50,6 @@ int	main(int ac, char *av[]) {
 	exit_status = init_program(param_files, conf, ac, av);
 	if (exit_status != EXIT_SUCCESS)
 		return (0);
-
 	//TESTING
 	conf->format = LongFormat;
 	
@@ -72,13 +72,25 @@ int	main(int ac, char *av[]) {
 		}
 		set_padding(*param_files, conf);
 		ft_lstiter_param(*param_files, print_files, conf);
+		if (pending_directories && ft_lstsize(*pending_directories)) {
+			t_list * tmp = *pending_directories;
+			while (tmp) {
+				if (conf->print_dir)
+					ft_printf("%s:\n", ((t_file *)(tmp->content))->name);
+				read_directories(tmp->content, conf);
+				if (tmp->next)
+					ft_putchar_fd('\n', 1);
+				//ft_lstiter_param(*pending_directories, read_directories, conf);
+				tmp = tmp->next;
+			}
+		}
 	}
 
 	// FREE STUFF
 	ft_lstclear(param_files, free_file);
 	free(conf);
 	free(param_files);
-	if (pending_directories) {
+	if (pending_directories && ft_lstsize(*pending_directories)) {
 		ft_lstclear(pending_directories, free_file);
 		free(pending_directories);
 	}

@@ -38,6 +38,7 @@ void print_files(void * ptr1, void * ptr2) {
 
 	file = (t_file *)ptr1;
 	conf = (t_conf *)ptr2;
+	// HERE IS MISSING, If it's a param file, dont print dirs, else print dirs.
 	if (!file || ((file->fileType == Directory) && !conf->no_explore)) {
 		return ;
 	}
@@ -124,9 +125,12 @@ t_file	* setup_file(char * name, char * path) {
 		return (NULL);
 	file->name = ft_strdup(name);
 	file->path = ft_strdup(path);
-
+	if (ft_strlen(file->path) && path[ft_strlen(file->path)] != '/') {
+		file->path = ft_strjoin(file->path, "/");
+	}
   /* File information which contains the group, password, permissions time; etc */
-	full_name = ft_strjoin(ft_strdup(path), name);
+	full_name = ft_strjoin(ft_strdup(file->path), name);
+	ft_bzero(&file->stat, sizeof(struct stat));
 
 	if (!full_name) {
 		free(file->name);
