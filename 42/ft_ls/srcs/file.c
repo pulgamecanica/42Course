@@ -39,7 +39,7 @@ void print_files(void * ptr1, void * ptr2) {
 	file = (t_file *)ptr1;
 	conf = (t_conf *)ptr2;
 	// HERE IS MISSING, If it's a param file, dont print dirs, else print dirs.
-	if (!file || ((file->fileType == Directory) && !conf->no_explore)) {
+	if (!file || ((file->fileType == Directory) && !conf->no_explore && conf->params_on)) {
 		return ;
 	}
 	if (file->fileType == Unkown) {
@@ -48,6 +48,7 @@ void print_files(void * ptr1, void * ptr2) {
 	}
 	if (conf->format == LongFormat) {
 		// Inode   | block size | permissions | #links | owner        | group | size (MB) | last modified  | name | -> link?
+		char * format_bl_size;
 		char * format_inode;
 		char * format_owner;
 		char * format_group;
@@ -65,8 +66,13 @@ void print_files(void * ptr1, void * ptr2) {
 			ft_putstr_fd(" ", 1);
 		}
 		// BLOCK SIZE
-		if (conf->print_block_size)
-			ft_printf("%d ", file->stat.st_blksize / 1000);
+		//st_blksisze comes in 512 byte units
+		// by default it should be printed by 1024 blocks
+		if (conf->print_block_size) {
+			format_bl_size = format_padding('d', conf->padding.block_size_width, false, false);
+			ft_printf(format_bl_size, file->stat.st_blocks / 2);
+			ft_putstr_fd(" ", 1);
+		}
 		// PERMISSIONS & #links
 		ft_printf("%c%c%c%c%c%c%c%c%c%c %d ",
 			file->fileType,
@@ -125,7 +131,7 @@ t_file	* setup_file(char * name, char * path) {
 		return (NULL);
 	file->name = ft_strdup(name);
 	file->path = ft_strdup(path);
-	if (ft_strlen(file->path) && path[ft_strlen(file->path)] != '/') {
+	if (ft_strlen(file->path) && path[ft_strlen(file->path) - 1] != '/') {
 		file->path = ft_strjoin(file->path, "/");
 	}
   /* File information which contains the group, password, permissions time; etc */

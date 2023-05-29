@@ -25,7 +25,7 @@ int	init_program(t_list ** list, t_conf * conf, int ac, char *av[]) {
 	}
 	if (!ft_lstsize(*list))
 		ft_lstadd_back(list, ft_lstnew(setup_file(".", "")));
-	conf->print_dir = ft_lstsize(*list) > 1; 
+	conf->print_dir = ft_lstsize(*list) > 1 || conf->recursive; 
 	return (EXIT_SUCCESS);
 }
 
@@ -57,6 +57,9 @@ int	main(int ac, char *av[]) {
 	// Add all directories to the pending list of directories
 	if (!conf->no_explore) {
 		pending_directories = extract_directories(*param_files);
+		if (pending_directories && *pending_directories && ft_lstsize(*pending_directories)) {
+			ft_lstsort(pending_directories, cmp_ascii_order);
+		}
 	}
 
 	// HANDLE & PRINT STUFF
@@ -72,7 +75,10 @@ int	main(int ac, char *av[]) {
 		}
 		set_padding(*param_files, conf);
 		ft_lstiter_param(*param_files, print_files, conf);
+		conf->params_on = false;
 		if (pending_directories && ft_lstsize(*pending_directories)) {
+			if (ft_lstsize(*param_files) != ft_lstsize(*pending_directories))
+					ft_putchar_fd('\n', 1);
 			t_list * tmp = *pending_directories;
 			while (tmp) {
 				if (conf->print_dir)

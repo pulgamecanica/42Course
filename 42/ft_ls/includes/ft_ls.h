@@ -131,6 +131,7 @@ enum file_indicator_type {
 };
 
 typedef struct s_conf {
+  bool params_on;
   bool print_scontext;    /* Print scontext */
   enum sorting sorting;   /* Which sorting function to use */
   enum format format;     /* Which format to use */
@@ -183,5 +184,11 @@ char * my_ctime(time_t * time);
 // Padding
 void set_padding(t_list * list, t_conf * conf);
 char * format_padding(char conversion, int padding, bool space, bool minus);
+
+// Comparators
+int cmp_ascii_order(void * ptr1, void * ptr2);
+
+// Utils
+int get_total_block_size(t_list * list);
 
 #endif

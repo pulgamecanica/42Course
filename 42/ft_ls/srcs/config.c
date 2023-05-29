@@ -50,6 +50,7 @@ t_conf *	init_conf(void) {
 	conf->sorting = SortName;
 	conf->format = MultipleColumn;
 	conf->fit = FileIndicatorNone;
+	conf->params_on = true;
 	conf->print_owner = true;
 	conf->print_group = true;
 	conf->print_with_color = true;

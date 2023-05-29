@@ -54,7 +54,7 @@ static void set_padding_block_size(void * ptr1, void * ptr2) {
 	conf = (t_conf *)ptr2;
 	if (!file || !conf)
 		return ;
-	conf->padding.block_size_width = ft_max(conf->padding.block_size_width, ft_numlen_base(file->stat.st_blksize / 1000, 10));
+	conf->padding.block_size_width = ft_max(conf->padding.block_size_width, ft_numlen_base(file->stat.st_blocks / 2, 10));
 }
 
 static void set_padding_file_size(void * ptr1, void * ptr2) {

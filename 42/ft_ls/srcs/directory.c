@@ -6,7 +6,7 @@ static void	prot_exclude_dirs(void * ptr1, void * ptr2) {
 
 	file = (t_file *)ptr1;
 	if (file->fileType == Directory)
-		ft_lstadd_back(ptr2, ft_lstnew(setup_file(file->name, "")));
+		ft_lstadd_back(ptr2, ft_lstnew(setup_file(file->name, file->path)));
 }
 
 t_list **	extract_directories(t_list * list) {
@@ -42,14 +42,32 @@ void	read_directories(t_file * file, t_conf * conf) {
 	}
 	closedir(dir);
 	free(full_path);
+	ft_lstsort(files, cmp_ascii_order);
 	if (files) {
 		set_padding(*files, conf);
+		printf("total %d\n", get_total_block_size(*files));
 		ft_lstiter_param(*files, print_files, conf);
 	}
-	pending_directories = extract_directories(*files);
+
+	if (conf->recursive) {
+		pending_directories = extract_directories(*files);
+		if (pending_directories && ft_lstsize(*pending_directories)) {
+				t_list * tmp = *pending_directories;
+				while (tmp) {
+					if (ft_strcmp(((t_file *)(tmp->content))->name, ".") == 0 || ft_strcmp(((t_file *)(tmp->content))->name, "..") == 0) {
+						tmp = tmp->next;
+						continue ;
+					}
+					ft_putchar_fd('\n', 1);
+					ft_printf("%s%s:\n", ((t_file *)(tmp->content))->path, ((t_file *)(tmp->content))->name);
+					read_directories(tmp->content, conf);
+					tmp = tmp->next;
+				}
+			}
+		if (pending_directories && ft_lstsize(*pending_directories))
+			ft_lstclear(pending_directories, free_file);
+		free(pending_directories);
+	}
 	ft_lstclear(files, free_file);
 	free(files);
-	if (pending_directories && ft_lstsize(*pending_directories))
-		ft_lstclear(pending_directories, free_file);
-	free(pending_directories);
 }

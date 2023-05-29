@@ -43,6 +43,8 @@ static bool add_flag(t_conf * conf, char flag) {
 	} else if (flag == 'o') {
 		add_flag(conf, 'l');
 		add_flag(conf, 'G');
+	} else if (flag == 'R') {
+		conf->recursive = true;
 	} else if (flag == 'd') {
 		conf->no_explore = true;
 	} else {
