@@ -13,23 +13,11 @@
 
 int	ft_strcmp_insensitive(const char *s1, const char *s2)
 {
-	char	c1;
-	char	c2;
+	size_t	i;
 
-	while (*s1 && *s2)
-	{
-		while (*s1 && !ft_isalnum(*s1))
-			s1++;
-		c1 = ft_tolower(*s1);
-		while (*s2 && !ft_isalnum(*s2))
-			s2++;
-		c2 = ft_tolower(*s2);
-		if (c1 != c2)
-			return ((unsigned char)c1 - (unsigned char)c2);
-		if (!c1 || !c2)
-			break ;
-		s1++;
-		s2++;
+	i = 0;
+	while (s1[i] && s2[i] && ft_tolower(s1[i]) == ft_tolower(s2[i])) {
+		++i;
 	}
-	return (0);
+	return (ft_tolower(s1[i]) - ft_tolower(s2[i]));
 }
