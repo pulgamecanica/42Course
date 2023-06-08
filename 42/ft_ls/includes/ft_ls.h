@@ -143,7 +143,7 @@ typedef struct s_conf {
   bool print_group;         /* [-G] [-o turn OFF]*/
   bool print_block_size;    /* [-s] */
   bool print_inode;         /* [-i] */
-  bool print_with_color;
+  bool print_with_color;    /* --color=yes | no | tty */
   bool recursive;           /* [-R] */
   bool no_explore;           /* [-d] */
   bool dir_before_file;     /* [-d] */

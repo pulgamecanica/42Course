@@ -29,66 +29,73 @@ int	init_program(t_list ** list, t_conf * conf, int ac, char *av[]) {
 	return (EXIT_SUCCESS);
 }
 
+int	ft_exit(t_conf * conf, t_list ** files1, t_list ** files2) {
+	if (conf) {
+		free(conf);
+	}
+	if (files1) {
+		ft_lstclear(files1, free_file);
+		free(files1);
+	}
+	if (files2) {
+		ft_lstclear(files2, free_file);
+		free(files2);
+	}
+	return (EXIT_FAILURE);
+}
+
 int	main(int ac, char *av[]) {
-	int exit_status;
 	t_conf *	conf;
 	t_list ** param_files;
 	t_list ** pending_directories;
 
-	// ALLOCATE STUFF
 	pending_directories = NULL;
-	param_files = (t_list **)ft_calloc(sizeof(t_list *), 1);
+	param_files = (t_list **)ft_calloc(sizeof(t_list *), 1); // ALLOCATE PARAMS LIST
 	if (!param_files)
 		return (EXIT_FAILURE);
 
-	// INITIALIZE CONFIGURATION WITH DEFAULT VALUES
-	conf = init_conf();
+	conf = init_conf(); // INITIALIZE CONFIGURATION WITH DEFAULT VALUES
 	if (!conf)
-		return (EXIT_FAILURE);
+		return (ft_exit(conf, param_files, pending_directories));
+	if (init_program(param_files, conf, ac, av) != EXIT_SUCCESS) // ADDING PARAMETER FILES AND FLAGS
+		return (ft_exit(conf, param_files, pending_directories));
 
-	// ADDING PARAMETER FILES AND FLAGSS	
-	exit_status = init_program(param_files, conf, ac, av);
-	if (exit_status != EXIT_SUCCESS)
-		return (0);
-	//TESTING
-	conf->format = LongFormat;
+	conf->format = LongFormat; //TESTING
 	
-	// If Falg -d is not active
-	// Add all directories to the pending list of directories
-	if (!conf->no_explore) {
+	if (!conf->no_explore) { // If Falg -d is not active, add all directories to the pending list of directories
 		pending_directories = extract_directories(*param_files);
-		if (pending_directories && *pending_directories && ft_lstsize(*pending_directories)) {
+		if (!pending_directories)
+			return (ft_exit(conf, param_files, pending_directories));
+		if (ft_lstsize(*pending_directories)) {
 			ft_lstsort(pending_directories, cmp_ascii_order);
 		}
 	}
 
-	// HANDLE & PRINT STUFF
-	if (exit_status == EXIT_SUCCESS) {
-		if (DEBUG) {
-			print_conf(conf);
-			ft_printf("Parameters\n");
-			ft_lstiter(*param_files, print_list);
-			if (pending_directories && ft_lstsize(*pending_directories)) {
-				ft_printf("Pending Directories\n");
-				ft_lstiter(*pending_directories, print_list);
-			}
-		}
-		set_padding(*param_files, conf);
-		ft_lstiter_param(*param_files, print_files, conf);
-		conf->params_on = false;
+	if (DEBUG) { // HANDLE & PRINT DEBUG SUFF
+		print_conf(conf);
+		ft_printf("Parameters\n");
+		ft_lstiter(*param_files, print_list);
 		if (pending_directories && ft_lstsize(*pending_directories)) {
-			if (ft_lstsize(*param_files) != ft_lstsize(*pending_directories))
-					ft_putchar_fd('\n', 1);
-			t_list * tmp = *pending_directories;
-			while (tmp) {
-				if (conf->print_dir)
-					ft_printf("%s:\n", ((t_file *)(tmp->content))->name);
-				read_directories(tmp->content, conf);
-				if (tmp->next)
-					ft_putchar_fd('\n', 1);
-				//ft_lstiter_param(*pending_directories, read_directories, conf);
-				tmp = tmp->next;
-			}
+			ft_printf("Pending Directories\n");
+			ft_lstiter(*pending_directories, print_list);
+		}
+	}
+
+	set_padding(*param_files, conf);
+	ft_lstiter_param(*param_files, print_files, conf);
+	conf->params_on = false;
+	if (pending_directories && ft_lstsize(*pending_directories)) {
+		if (ft_lstsize(*param_files) != ft_lstsize(*pending_directories))
+				ft_putchar_fd('\n', 1);
+		t_list * tmp = *pending_directories;
+		while (tmp) {
+			if (conf->print_dir)
+				ft_printf("%s:\n", ((t_file *)(tmp->content))->name);
+			read_directories(tmp->content, conf);
+			if (tmp->next)
+				ft_putchar_fd('\n', 1);
+			//ft_lstiter_param(*pending_directories, read_directories, conf);
+			tmp = tmp->next;
 		}
 	}
 
@@ -96,7 +103,7 @@ int	main(int ac, char *av[]) {
 	ft_lstclear(param_files, free_file);
 	free(conf);
 	free(param_files);
-	if (pending_directories && ft_lstsize(*pending_directories)) {
+	if (pending_directories) {
 		ft_lstclear(pending_directories, free_file);
 		free(pending_directories);
 	}

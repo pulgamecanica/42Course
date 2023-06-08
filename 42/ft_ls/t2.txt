@@ -1,0 +1,14 @@
+drwxr-xr-x 1 pulgamecanica pulgamecanica   146 Jun  8 11:19 [0;34m[1mbin[0;37m[0m
+drwxr-xr-x 1 pulgamecanica pulgamecanica   146 Jun  7 13:54 [0;34m[1mdbin[0;37m[0m
+-rwxr-xr-x 1 pulgamecanica pulgamecanica 77176 Jun  7 13:54 debug_ft_ls[0;37m[0m
+-rwxr-xr-x 1 pulgamecanica pulgamecanica 76896 Jun  8 11:19 ft_ls[0;37m[0m
+drwxr-xr-x 1 pulgamecanica pulgamecanica    14 Apr 30 13:45 [0;34m[1mincludes[0;37m[0m
+lrwxrwxrwx 1 pulgamecanica pulgamecanica    19 Apr 30 13:46 [0;36m[1mLibft -> [0;34m[1m../../42Core/Libft/[0m
+-rw-r--r-- 1 pulgamecanica pulgamecanica  1717 May 18 17:05 Makefile[0;37m[0m
+-rwxr-xr-x 1 pulgamecanica pulgamecanica   282 Apr 30 13:46 msg_ft_ls[0;37m[0m
+-rw-r--r-- 1 pulgamecanica pulgamecanica 13874 May 27 20:20 README.md[0;37m[0m
+drwxr-xr-x 1 pulgamecanica pulgamecanica   146 May 29 11:15 [0;34m[1msrcs[0;37m[0m
+-rw-r--r-- 1 pulgamecanica pulgamecanica   965 Jun  8 11:21 t1.txt[0;37m[0m
+-rw-r--r-- 1 pulgamecanica pulgamecanica     0 Jun  8 11:22 t2.txt[0;37m[0m
+-rw-r--r-- 1 pulgamecanica docker        10366 Jun  7 13:55 valgrind-out.txt[0;37m[0m
+total 196

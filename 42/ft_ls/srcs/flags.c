@@ -10,6 +10,8 @@ static bool add_long_option_flag(t_conf * conf, char * str) {
 		conf->no_ignore = true;
 	}if (ft_strcmp(str, "--author") == 0) {
 		conf->print_author = true;
+	}  else if (ft_strcmp(str, "--recursive") == 0) {
+		conf->recursive = true;
 	} /* else if () {
 	} */
 	 else {
