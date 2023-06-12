@@ -48,7 +48,7 @@ t_conf *	init_conf(void) {
 	if (!conf)
 		return (NULL);
 	conf->sorting = SortName;
-	conf->format = MultipleColumn;
+	conf->format = LongFormat;//MultipleColumn;
 	conf->fit = FileIndicatorNone;
 	conf->params_on = true;
 	conf->print_owner = true;
