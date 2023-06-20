@@ -43,9 +43,9 @@ void	read_directories(t_file * file, t_conf * conf) {
 	closedir(dir);
 	free(full_path);
 	ft_lstsort(files, cmp_ascii_order);
-	if (files) {
+	if (ft_lstsize(*files)) {
 		set_padding(*files, conf);
-		printf("total %d\n", get_total_block_size(*files));
+		ft_printf("total %d\n", get_total_block_size(*files));
 		ft_lstiter_param(*files, print_files, conf);
 	}
 

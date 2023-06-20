@@ -1,5 +1,20 @@
 #include "ft_ls.h"
 
+void	ft_exit(t_conf * conf, t_list ** files1, t_list ** files2, int exit_code) {
+	if (conf) {
+		free(conf);
+	}
+	if (files1) {
+		ft_lstclear(files1, free_file);
+		free(files1);
+	}
+	if (files2) {
+		ft_lstclear(files2, free_file);
+		free(files2);
+	}
+	exit(exit_code);
+}
+
 void	print_list(void * ptr) {
 	t_file * file;
 
@@ -14,7 +29,7 @@ int	init_program(t_list ** list, t_conf * conf, int ac, char *av[]) {
 		return (EXIT_FAILURE);
 	i = 0;
 	while (++i < ac) {
-		if (av[i][0] == '-' && !conf->delimit) {
+		if (av[i][0] == '-' && ft_strlen(av[i]) > 1 && !conf->delimit) {
 			if (!add_flags(conf, av[i]))
 				return (EXIT_FAILURE);
 		} else {
@@ -27,28 +42,42 @@ int	init_program(t_list ** list, t_conf * conf, int ac, char *av[]) {
 	return (EXIT_SUCCESS);
 }
 
-void	ft_exit(t_conf * conf, t_list ** files1, t_list ** files2) {
-	if (conf) {
-		free(conf);
-	}
-	if (files1) {
-		ft_lstclear(files1, free_file);
-		free(files1);
-	}
-	if (files2) {
-		ft_lstclear(files2, free_file);
-		free(files2);
-	}
-	exit(EXIT_FAILURE);
-}
-
-void	init_pending_directories(t_conf * conf, t_list ** param_files, t_list *** pending_directories) {
+int	init_pending_directories(t_conf * conf, t_list ** param_files, t_list *** pending_directories) {
 	if (!conf->no_explore) { // If Falg -d is not active, add all directories to the pending list of directories
 		*pending_directories = extract_directories(*param_files);
 		if (!*pending_directories)
-			ft_exit(conf, param_files, *pending_directories);
+			return (EXIT_FAILURE);
 		if (ft_lstsize(**pending_directories))
 			ft_lstsort(*pending_directories, cmp_ascii_order);
+	}
+	if (DEBUG) { // HANDLE & PRINT DEBUG SUFF
+		print_conf(conf);
+		ft_printf("Parameters\n");
+		ft_lstiter(*param_files, print_list);
+		if (*pending_directories && ft_lstsize(**pending_directories)) {
+			ft_printf("Pending Directories\n");
+			ft_lstiter(**pending_directories, print_list);
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+
+void f(t_conf * conf, t_list ** param_files, t_list ** pending_directories) {
+	set_padding(*param_files, conf);
+	ft_lstiter_param(*param_files, print_files, conf);
+	conf->params_on = false; // AFTER PRINGINT PARAMETER FILES WE SHOULD TURN THIS OFF
+	if (pending_directories && ft_lstsize(*pending_directories)) {
+		if (ft_lstsize(*param_files) != ft_lstsize(*pending_directories))
+				ft_putchar_fd('\n', 1);
+		t_list * tmp = *pending_directories;
+		while (tmp) {
+			if (conf->print_dir)
+				ft_printf("%s:\n", ((t_file *)(tmp->content))->name);
+			read_directories(tmp->content, conf);
+			if (tmp->next)
+				ft_putchar_fd('\n', 1);
+			tmp = tmp->next;
+		}
 	}
 }
 
@@ -73,44 +102,11 @@ int	main(int ac, char *av[]) {
 	conf = init_conf(); // INITIALIZE CONFIGURATION WITH DEFAULT VALUES
 	param_files = (t_list **)ft_calloc(sizeof(t_list *), 1); // ALLOCATE PARAMS LIST
 	if (init_program(param_files, conf, ac, av) != EXIT_SUCCESS) // ADDING PARAMETER FILES AND FLAGS
-		ft_exit(conf, param_files, pending_directories);
-	init_pending_directories(conf, param_files, &pending_directories);
-	
-	if (DEBUG) { // HANDLE & PRINT DEBUG SUFF
-		print_conf(conf);
-		ft_printf("Parameters\n");
-		ft_lstiter(*param_files, print_list);
-		if (pending_directories && ft_lstsize(*pending_directories)) {
-			ft_printf("Pending Directories\n");
-			ft_lstiter(*pending_directories, print_list);
-		}
-	}
+		ft_exit(conf, param_files, NULL, 2);
+	if (init_pending_directories(conf, param_files, &pending_directories) != EXIT_SUCCESS) // INITIALIZE DIRECTORIES
+		ft_exit(conf, param_files, pending_directories, 2);
 
-	set_padding(*param_files, conf);
-	ft_lstiter_param(*param_files, print_files, conf);
-	conf->params_on = false; // AFTER PRINGINT PARAMETER FILES WE SHOULD TURN THIS OFF
-	if (pending_directories && ft_lstsize(*pending_directories)) {
-		if (ft_lstsize(*param_files) != ft_lstsize(*pending_directories))
-				ft_putchar_fd('\n', 1);
-		t_list * tmp = *pending_directories;
-		while (tmp) {
-			if (conf->print_dir)
-				ft_printf("%s:\n", ((t_file *)(tmp->content))->name);
-			read_directories(tmp->content, conf);
-			if (tmp->next)
-				ft_putchar_fd('\n', 1);
-			//ft_lstiter_param(*pending_directories, read_directories, conf);
-			tmp = tmp->next;
-		}
-	}
+	f(conf, param_files, pending_directories);
 
-	// FREE STUFF
-	ft_lstclear(param_files, free_file);
-	free(conf);
-	free(param_files);
-	if (pending_directories) {
-		ft_lstclear(pending_directories, free_file);
-		free(pending_directories);
-	}
-	return (EXIT_SUCCESS);
+	ft_exit(conf, param_files, pending_directories, 0);
 }

@@ -103,6 +103,7 @@ typedef struct s_padding {
   int minor_device_width;
   int file_width;
   int file_size_width;
+  int file_links_width;
 } t_padding;
 
 /* Output format printing */

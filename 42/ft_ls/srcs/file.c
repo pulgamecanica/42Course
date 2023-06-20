@@ -54,12 +54,14 @@ void print_files(void * ptr1, void * ptr2) {
 		char * format_group;
 		char * format_author;
 		char * format_size;
+		char * format_file_links;
 
 		format_owner = format_padding('s', conf->padding.owner_width, false, true);
 		format_group = format_padding('s', conf->padding.group_width, false, true);
 		format_author = format_padding('s', conf->padding.author_width, false, true);
 		format_size = format_padding('d', conf->padding.file_size_width, true, false);
 		format_inode = format_padding('d', conf->padding.inode_width, false, false);
+		format_file_links = format_padding('d', conf->padding.file_links_width, false, false);
 		// INODE
 		if (conf->print_inode) {
 			ft_printf(format_inode, file->stat.st_ino);
@@ -74,7 +76,7 @@ void print_files(void * ptr1, void * ptr2) {
 			ft_putstr_fd(" ", 1);
 		}
 		// PERMISSIONS & #links
-		ft_printf("%c%c%c%c%c%c%c%c%c%c %d ",
+		ft_printf("%c%c%c%c%c%c%c%c%c%c",
 			file->fileType,
 			file->stat.st_mode & S_IRUSR ? 'r' : '-',
 			file->stat.st_mode & S_IWUSR ? 'w' : '-',
@@ -84,8 +86,10 @@ void print_files(void * ptr1, void * ptr2) {
 			file->stat.st_mode & S_IXGRP ? 'x' : '-',
 			file->stat.st_mode & S_IROTH ? 'r' : '-',
 			file->stat.st_mode & S_IWOTH ? 'w' : '-',
-			file->stat.st_mode & S_IXOTH ? 'x' : '-',
-			file->stat.st_nlink);
+			file->stat.st_mode & S_IXOTH ? 'x' : '-');
+		ft_putstr_fd(" ", 1); // SEPARATOR
+		ft_printf(format_file_links, file->stat.st_nlink);
+		ft_putstr_fd(" ", 1); // SEPARATOR
 		// OWNER
 		if (conf->print_owner)
 			ft_printf(format_owner,

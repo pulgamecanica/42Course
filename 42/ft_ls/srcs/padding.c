@@ -11,6 +11,17 @@ static void set_padding_file_width(void * ptr1, void * ptr2) {
 	conf->padding.file_width = ft_max(conf->padding.file_width, (int)ft_strlen(file->name));
 }
 
+static void set_padding_file_links(void * ptr1, void * ptr2) {
+	t_conf * conf;
+	t_file * file;
+
+	file = (t_file *)ptr1;
+	conf = (t_conf *)ptr2;
+	if (!file || !conf)
+		return ;
+	conf->padding.file_links_width = ft_max(conf->padding.file_links_width, ft_numlen_base(file->stat.st_nlink, 10));
+}
+
 static void set_padding_owner_author_width(void * ptr1, void * ptr2) {
 	t_conf * conf;
 	t_file * file;
@@ -68,8 +79,6 @@ static void set_padding_file_size(void * ptr1, void * ptr2) {
 	conf->padding.file_size_width = ft_max(conf->padding.file_size_width, ft_numlen_base(file->stat.st_size, 10));
 }
 
-
-
 void set_padding(t_list * list, t_conf * conf) {
 	if (conf->format != LongFormat)
 		return ;
@@ -89,6 +98,7 @@ void set_padding(t_list * list, t_conf * conf) {
 //	??
 //  if (conf->print_scontext)
 //	  conf->padding.scontext_width = 0;
+	ft_lstiter_param(list, set_padding_file_links, conf);
   ft_lstiter_param(list, set_padding_file_size, conf);
   ft_lstiter_param(list, set_padding_file_width, conf);
   if (DEBUG)

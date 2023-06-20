@@ -58,5 +58,7 @@ t_conf *	init_conf(void) {
 	conf->max_cols = 4;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &sz);
 	conf->line_len = sz.ws_col;
+	if (!conf->line_len)
+		conf->print_with_color = false;
 	return (conf);
 }
