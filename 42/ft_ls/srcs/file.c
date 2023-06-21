@@ -38,7 +38,6 @@ void print_files(void * ptr1, void * ptr2) {
 
 	file = (t_file *)ptr1;
 	conf = (t_conf *)ptr2;
-	// HERE IS MISSING, If it's a param file, dont print dirs, else print dirs.
 	if (!file || ((file->fileType == Directory) && !conf->no_explore && conf->params_on)) {
 		return ;
 	}
@@ -75,7 +74,7 @@ void print_files(void * ptr1, void * ptr2) {
 			ft_printf(format_bl_size, file->stat.st_blocks / 2);
 			ft_putstr_fd(" ", 1);
 		}
-		// PERMISSIONS & #links
+		// PERMISSIONS
 		ft_printf("%c%c%c%c%c%c%c%c%c%c",
 			file->fileType,
 			file->stat.st_mode & S_IRUSR ? 'r' : '-',
@@ -87,6 +86,7 @@ void print_files(void * ptr1, void * ptr2) {
 			file->stat.st_mode & S_IROTH ? 'r' : '-',
 			file->stat.st_mode & S_IWOTH ? 'w' : '-',
 			file->stat.st_mode & S_IXOTH ? 'x' : '-');
+		// FILE LINKS
 		ft_putstr_fd(" ", 1); // SEPARATOR
 		ft_printf(format_file_links, file->stat.st_nlink);
 		ft_putstr_fd(" ", 1); // SEPARATOR
@@ -119,6 +119,7 @@ void print_files(void * ptr1, void * ptr2) {
 			conf->print_with_color ? ENDC : "");
 		free(format_owner);
 		free(format_group);
+		free(format_file_links);
 		free(format_author);
 		free(format_size);
 		free(format_inode);
