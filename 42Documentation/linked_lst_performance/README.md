@@ -2,7 +2,7 @@
 
 ### An abstract linked list consist on using a ``` void * ``` to representate the content, making it versatile.
 
-### A concrete linked list is when you use the ``` struct * ``` durectly to representate the content of the abstract list.
+### A concrete linked list is when you use the ``` struct * ``` directly to representate the content of the abstract list.
 
 ***
 
@@ -12,15 +12,18 @@
 >	I believe that an abstract linked list should be faster to iterate than a concrete abstract list.
 >	True or False?
 >
->	I had this feeling because I think that c works faster with void * rather than with your own data structure *;
+>	I had this feeling because I think that c works faster with void * rather than with your own data structure *
+>
 >	I had nothing to back up my hipothesis, it is just an ich I have...
 
 ***
 
+### Testing
+
 So I built a simple program to test it.
 
 To test the abstract list I used my Libft, where we developed an abstract linked list.
-In orther to run you must comment the function:
+In order to run you must make sure to comment the function:
 
 > ```void handle_abstraction(simple_struct * ptr);```
 
@@ -29,19 +32,27 @@ In orther to run you must comment the function:
 
 Then you can compile and run your tests:
 
+```bash
+make 
 ./execute <number of iterations>
+```
 
 To test the abstract list I modified my Libft and implemented a concrete struct as content for the linked list.
-In orther to run you must replace the Libft with _Libft and comment the function and the struct:
+In orther to run you must replace the Libft with _Libft:
 
->	```mv Libft _originalLibft```
->	```mb _Libft Libft```
+```bash
+mv Libft _originalLibft
+mb _Libft Libft
+```
+
+And comment the function and the struct:
 
 > ```void handle_abstraction(void * ptr);```
 
 > ```simple struct // from my main.c```
 
 > Notice that the argument that it takes is a *void* pointer
+> 
 > You must comment the simple struct from my main, because I already declared on the Libft headers.
 
 ***
