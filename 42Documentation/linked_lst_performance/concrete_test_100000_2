@@ -1,0 +1,2 @@
+Test with [100000] - Concrete Usage
+./ft_lst_performance 100000  6.12s user 0.00s system 99% cpu 6.126 total

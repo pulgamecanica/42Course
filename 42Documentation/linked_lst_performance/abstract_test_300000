@@ -1,0 +1,2 @@
+Test with [300000] - Abstract Usage
+./ft_lst_performance 300000  64.82s user 0.00s system 99% cpu 1:04.83 total
