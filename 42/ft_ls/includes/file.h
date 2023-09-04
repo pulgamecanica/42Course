@@ -6,13 +6,13 @@
 # include <stdlib.h>
 # include "conf.h"
 
-# define REGULAR_FILE 45
-# define DIRECTORY 100
-# define SYMBOLIC_LINK 108
-# define CHAR_DEVISE_FILE 99
-# define BLOCK_DEVISE_FILE 98
-# define SOCKET_FILE 115
-# define NAMED_PIPE 112
+# define REGULAR_FILE 45 // -
+# define DIRECTORY 100 // d
+# define SYMBOLIC_LINK 108 // l
+# define CHAR_DEVISE_FILE 99 // c
+# define BLOCK_DEVISE_FILE 98 // b
+# define SOCKET_FILE 115 // s
+# define NAMED_PIPE 112 // p
 # define MISSING_FILE -1
 
 enum file_indicator_type

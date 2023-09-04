@@ -2,6 +2,8 @@
 #include "libft.h"
 #include "ft_printf.h"
 
+static bool add_short_options(char * str, t_conf * conf);
+
 static void print_help(void) {
 	ft_printf(""
 "List information about the FILEs (the current directory by default).\n"
@@ -96,6 +98,7 @@ static bool add_long_option(char * str, t_conf * conf) {
 	// } else if (ft_strcmp(str, "--kibibytes") == 0) { 
 	// 	conf->l_opts.bytes_per_block = 1024;
 	} else if (ft_strcmp(str, "--numeric-uid-gid") == 0) { 
+		add_short_options("-l", conf);
 		conf->l_opts.numeric_uid_gid = true;
 	} else if (ft_strcmp(str, "--indicator-style=slash") == 0) { 
 		conf->print_indicator = true;

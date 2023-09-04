@@ -34,10 +34,24 @@ typedef struct s_long_options {
 }	t_long_options;
 
 
+typedef struct s_padding {
+	short int inode;
+	short int block_size;
+	// short int scontext;
+	short int owner;
+	short int group;
+	short int author;
+	short int major_device;
+	short int minor_device;
+	short int links;
+	// short int file_width;
+}	t_padding;
+
 typedef struct s_conf {
 	void *	format_f;
 	void *	sorting_f;
 
+	t_padding padding;
 	/**
 	 * -l long listing
 	 * -1 one per line (default)

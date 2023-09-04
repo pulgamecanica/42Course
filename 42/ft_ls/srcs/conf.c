@@ -52,5 +52,7 @@ t_conf * new_default_conf_ls() {
 	c->print_dir = false;
 	/* If any parameters are printed before file listing, there must be a separation */
 	c->initial_separation = false;
+
+	c->padding = (t_padding){0, 0, 0, 0, 0, 0, 0, 0};
 	return (c);
 }

@@ -93,8 +93,11 @@ int main(int ac, char *av[])
 			free(conf);
 			return (2);
 		}
-		ft_lstiter(*param_files_to_print, conf->format_f);
 		
+		// Setup the padding for the file listing
+		ft_lstiter_param(*param_files_to_print, setup_padding, conf);
+		// Print the files entries
+		ft_lstiter_param(*param_files_to_print, conf->format_f, conf);
 		/**
 		 * Very important, when there is any other entry
 		 * besides a directory, print the directory name

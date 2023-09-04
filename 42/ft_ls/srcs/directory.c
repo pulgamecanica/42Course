@@ -1,8 +1,8 @@
+#include <sys/types.h>
+#include <dirent.h>
 #include "file.h"
 #include "conf.h"
 #include "libft.h"
-#include <sys/types.h>
-#include <dirent.h>
 #include "ft_ls.h"
 #include "ft_printf.h"
 
@@ -59,11 +59,26 @@ void	list_directory(void * ptr1, void * ptr2) {
 	else
 		write(1, "\n", 1);
 	if (c->print_dir) {
-		ft_printf("%s%s:\n", f->path ? f->path : "", f->name);
+		ft_putstr_fd(f->path, 1);
+		ft_putstr_fd(f->name, 1);
+		ft_putstr_fd(":\n", 1);
 	}
-	ft_lstiter(*files, c->format_f);
-	// When recursive, for directories, use the same function
-	// Recursively with ft_lstiteri_param
+
+
+	if (c->size || c->format == long_format) {
+		int total;
+		total = 0;
+		ft_lstiter_param(*files, setup_total, &total);
+	 	ft_printf("total %d\n", total);
+	}
+	
+	// Setup the padding for the file listing
+	// Reset padding first
+	ft_bzero(&c->padding, sizeof(t_padding));
+	ft_lstiter_param(*files, setup_padding, c);
+
+	ft_lstiter_param(*files, c->format_f, c);
+	
 	if (c->recursive)
 		ft_lstiter_param(*files, recursive_directory_listing, c);
 	
