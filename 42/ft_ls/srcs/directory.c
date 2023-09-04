@@ -1,73 +1,72 @@
+#include "file.h"
+#include "conf.h"
 #include "libft.h"
+#include <sys/types.h>
+#include <dirent.h>
 #include "ft_ls.h"
+#include "ft_printf.h"
 
-static void	prot_exclude_dirs(void * ptr1, void * ptr2) {
-	t_file * file;
+void	recursive_directory_listing(void * ptr1, void * ptr2) {
+	t_file * f;
+	t_conf * c;
 
-	file = (t_file *)ptr1;
-	if (file->fileType == Directory)
-		ft_lstadd_back(ptr2, ft_lstnew(setup_file(file->name, file->path)));
+	f = (t_file *)ptr1;
+	c = (t_conf *)ptr2;
+	if (!f || !c)
+		return ;
+	if (f->fit == DIRECTORY && ft_strcmp(f->name, "..") != 0 && ft_strcmp(f->name, ".") != 0)
+		list_directory(f, c);
 }
 
-t_list **	extract_directories(t_list * list) {
-	t_list ** pending_directories;
-
-	if (!list)
-		return (NULL);
-	pending_directories = (t_list **)ft_calloc(sizeof(t_list *), 1);
-	if (!pending_directories)
-		return (NULL);
-	ft_lstiter_param(list, prot_exclude_dirs, pending_directories);
-	return (pending_directories);
-}
-
-void	read_directories(t_file * file, t_conf * conf) {
+void	list_directory(void * ptr1, void * ptr2) {
 	t_list ** files;
-	t_list ** pending_directories;
-	DIR * dir;
+	t_file * f;
+	t_file * tmp;
+	t_conf * c;
+	DIR	* dir;
 	char * full_path;
 	struct dirent * ent;
 
-	files = (t_list **)ft_calloc(sizeof(t_list *), 1);
-	if (!files)
+	f = (t_file *)ptr1;
+	c = (t_conf *)ptr2;
+	if (!f || !c)
 		return ;
-	full_path = ft_strjoin(ft_strdup((file->path != NULL) ? file->path : ""), file->name);
+	if (!(files = (t_list **)ft_calloc(sizeof(t_file *), 1)))
+		return ;
+	// Read directory
+	// Save entries in another list
+	full_path = ft_strjoin(ft_strdup(f->path ? f->path : ""), f->name);
 	dir = opendir(full_path);
 	while ((ent = readdir(dir))) {
-		if (*ent->d_name == '.' && !conf->no_ignore)
-			continue ;
-		if (DEBUG)
-			printf("[%s] %s\n\td_ino [%lu]\n\td_off [%lu]\n\td_reclen [%u]\n\td_type [%d]\n", full_path, ent->d_name, ent->d_ino, ent->d_off, ent->d_reclen, ent->d_type);
-		ft_lstadd_back(files, ft_lstnew(setup_file(ent->d_name, full_path)));
+		if (*(ent->d_name) == '.') {
+				if (!c->no_ignore && !c->almost_no_ignore)
+					continue ;
+				else if (c->almost_no_ignore && (*(ent->d_name + 1) == 0 || *(ent->d_name + 1) == '.'))
+					continue ;
+		}
+		tmp = new_file(ent->d_name, full_path);
+		if (tmp) {
+			ft_lstadd_back(files, ft_lstnew(tmp));
+		}
 	}
-	closedir(dir);
 	free(full_path);
-	ft_lstsort(files, cmp_ascii_order);
-	if (ft_lstsize(*files)) {
-		set_padding(*files, conf);
-		ft_printf("total %d\n", get_total_block_size(*files));
-		ft_lstiter_param(*files, print_files, conf);
+	closedir(dir);
+	// Sort entries
+	ft_lstsort(files, c->sorting_f);
+	// Print entries
+	if (!c->initial_separation)
+		c->initial_separation = true;
+	else
+		write(1, "\n", 1);
+	if (c->print_dir) {
+		ft_printf("%s%s:\n", f->path ? f->path : "", f->name);
 	}
-
-	if (conf->recursive) {
-		pending_directories = extract_directories(*files);
-		if (pending_directories && ft_lstsize(*pending_directories)) {
-				t_list * tmp = *pending_directories;
-				while (tmp) {
-					if (ft_strcmp(((t_file *)(tmp->content))->name, ".") == 0 || ft_strcmp(((t_file *)(tmp->content))->name, "..") == 0) {
-						tmp = tmp->next;
-						continue ;
-					}
-					ft_putchar_fd('\n', 1);
-					ft_printf("%s%s:\n", ((t_file *)(tmp->content))->path, ((t_file *)(tmp->content))->name);
-					read_directories(tmp->content, conf);
-					tmp = tmp->next;
-				}
-			}
-		if (pending_directories && ft_lstsize(*pending_directories))
-			ft_lstclear(pending_directories, free_file);
-		free(pending_directories);
-	}
+	ft_lstiter(*files, c->format_f);
+	// When recursive, for directories, use the same function
+	// Recursively with ft_lstiteri_param
+	if (c->recursive)
+		ft_lstiter_param(*files, recursive_directory_listing, c);
+	
 	ft_lstclear(files, free_file);
 	free(files);
 }

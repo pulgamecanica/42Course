@@ -1,0 +1,50 @@
+#ifndef __FT_FILE__
+#define __FT_FILE__
+
+# include <stdbool.h>
+# include <sys/stat.h>
+# include <stdlib.h>
+# include "conf.h"
+
+# define REGULAR_FILE 45
+# define DIRECTORY 100
+# define SYMBOLIC_LINK 108
+# define CHAR_DEVISE_FILE 99
+# define BLOCK_DEVISE_FILE 98
+# define SOCKET_FILE 115
+# define NAMED_PIPE 112
+# define MISSING_FILE -1
+
+enum file_indicator_type
+{
+	regular_file = REGULAR_FILE,
+	directory = DIRECTORY,
+	symbolic_link = SYMBOLIC_LINK,
+	char_device_file = CHAR_DEVISE_FILE,
+	block_device_fille= BLOCK_DEVISE_FILE,
+	socket_file = SOCKET_FILE,
+	named_pipe = NAMED_PIPE,
+	missing_file = MISSING_FILE
+};
+
+
+typedef struct s_file {
+	char	* name;
+	char	* path;
+	
+	enum file_indicator_type fit;
+	
+	/* Only present when file is a symbolic link */
+
+	struct stat stat;
+
+
+	/* The lt_mode and link_name of the file linked */
+	char	* link_name;
+	mode_t	link_mode;
+}	t_file;
+
+t_file * new_file(char * name, char * path);
+void	free_file(void * ptr);
+
+#endif

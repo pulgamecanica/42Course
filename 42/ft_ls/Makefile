@@ -4,6 +4,7 @@ SRC				= $(wildcard srcs/*.c)
 BIN 			= bin
 DEBUGBIN	= dbin
 INCS			= includes
+DEPENDENT_INCLUDES = includes/*.h
 LIBFT			= Libft
 LIBFT_INCS	= $(LIBFT)/includes
 CFLAGS		= -Wall -Werror -Wextra -g
@@ -26,15 +27,14 @@ else
 endif
 
 all: $(NAME)
-	@./$(MSG_EXEC)
 
 $(NAME): ${BIN} ${OBJS} | ${LIBFT}
 	${CC} ${OBJS} ${LFLAGS} -o ${NAME}
 
-$(BIN)/%o: srcs/%c ${INCS}/ft_ls.h
+$(BIN)/%o: srcs/%c ${DEPENDENT_INCLUDES}
 	${CC} -c $< ${CFLAGS} ${IFLAGS} -o $@
 
-$(DEBUGBIN)/%o: srcs/%c ${INCS}/ft_ls.h
+$(DEBUGBIN)/%o: srcs/%c ${DEPENDENT_INCLUDES}
 	${CC} -c $< ${CFLAGS} ${IFLAGS} $(DEBUG) -o $@
 
 $(BIN):
@@ -75,4 +75,4 @@ show:
 	@printf "OBJS		: $(OBJS)\n"
 
 
-.PHONY: $(LIBFT) re all clean fclean debug test
+.PHONY: $(LIBFT) re all clean fclean debug test $(DEPENDENT_INCLUDES)
