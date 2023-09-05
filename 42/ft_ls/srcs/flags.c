@@ -70,56 +70,55 @@ static void print_help(void) {
 }
 
 static void print_version(void) {
-ft_printf(""
-"ft_ls (FT coreutils) 1.0\n"
-"Copyright (C) 2023 Pulgamecanica.\n"
-"\n"
-"Written by Pulgamecanica.\n"
-);
+	ft_printf(""
+	"ft_ls (FT coreutils) 1.0\n"
+	"Copyright (C) 2023 Pulgamecanica.\n"
+	"\n"
+	"Written by Pulgamecanica.\n"
+	);
 }
 
 static bool add_long_option(char * str, t_conf * conf) {
-	if (ft_strcmp(str, "--all") == 0) { 
+	if (ft_strcmp(str, "all") == 0) { 
 		conf->almost_no_ignore = false;
 		conf->no_ignore = true;
-	} else if (ft_strcmp(str, "--almost-all") == 0) { 
+	} else if (ft_strcmp(str, "almost-all") == 0) { 
 		conf->no_ignore = false;
 		conf->almost_no_ignore = true;
-	} else if (ft_strcmp(str, "--color=always") == 0) { 
+	} else if (ft_strcmp(str, "author") == 0) {
+		conf->l_opts.author = true; 
+	} else if (ft_strcmp(str, "color=always") == 0) { 
 		conf->color = true;
-	} else if (ft_strcmp(str, "--color=never") == 0) { 
+	} else if (ft_strcmp(str, "color=never") == 0) { 
 		conf->color = false;
-	} else if (ft_strcmp(str, "--directory") == 0) { 
+	} else if (ft_strcmp(str, "directory") == 0) { 
 		conf->no_explore = true;
-	} else if (ft_strcmp(str, "--no-group") == 0) { 
+	} else if (ft_strcmp(str, "no-group") == 0) { 
 		conf->l_opts.group = false;
-	} else if (ft_strcmp(str, "--inode") == 0) { 
+	} else if (ft_strcmp(str, "inode") == 0) { 
 		conf->inode = true;
-	// } else if (ft_strcmp(str, "--kibibytes") == 0) { 
-	// 	conf->l_opts.bytes_per_block = 1024;
-	} else if (ft_strcmp(str, "--numeric-uid-gid") == 0) { 
+	} else if (ft_strcmp(str, "numeric-uid-gid") == 0) { 
 		add_short_options("-l", conf);
 		conf->l_opts.numeric_uid_gid = true;
-	} else if (ft_strcmp(str, "--indicator-style=slash") == 0) { 
+	} else if (ft_strcmp(str, "indicator-style=slash") == 0) { 
 		conf->print_indicator = true;
-	} else if (ft_strcmp(str, "--reverse") == 0) { 
+	} else if (ft_strcmp(str, "reverse") == 0) { 
 		conf->sort_rev = true;
-	} else if (ft_strcmp(str, "--recursive") == 0) {
+	} else if (ft_strcmp(str, "recursive") == 0) {
 		conf->recursive = true; 
-	} else if (ft_strcmp(str, "--size") == 0) { 
-		conf->size = true; 
-	// } else if (ft_strcmp(str, "--sort=WORD") == 0) { 
-	// } else if (ft_strcmp(str, "--context") == 0) { 
-	} else if (ft_strcmp(str, "--version") == 0) { 
+	} else if (ft_strcmp(str, "size") == 0) { 
+		conf->block_size = true; 
+	// } else if (ft_strcmp(str, "context") == 0) { 
+	} else if (ft_strcmp(str, "version") == 0) { 
 		print_version();
 		return (false);
-	} else if (ft_strcmp(str, "--help") == 0) { 
+	} else if (ft_strcmp(str, "help") == 0) { 
 		print_help();
 		return (false);
 	} else	{
 		ft_printf(""
-			"ls: unrecognized option '%s'\n"
-			"Try 'ls --help' for more information.\n",
+			"ls: unrecognized option '--%s'\n"
+			"Try './ft_ls --help' for more information.\n",
 			str);
 		return (false);
 	}
@@ -130,8 +129,7 @@ static bool add_short_options(char * str, t_conf * conf) {
 	int len;
 
 	len = ft_strlen(str);
-	for (int i = 1; i < len; i++)
-	{
+	for (int i = 1; i < len; i++) {
 		if (str[i] == 'a') {
 			conf->almost_no_ignore = false;
 			conf->no_ignore = true;
@@ -144,7 +142,8 @@ static bool add_short_options(char * str, t_conf * conf) {
 			conf->no_explore = true;
 		} else if (str[i] == 'f') {
 			add_short_options("-a", conf);
-			conf->sorting = by_directory;
+			conf->sorting = no_sorting;
+			conf->color = false;
 		} else if (str[i] == 'g') {
 			add_short_options("-l", conf);
 			conf->l_opts.owner = false;
@@ -152,7 +151,6 @@ static bool add_short_options(char * str, t_conf * conf) {
 			conf->l_opts.group = false;
 		} else if (str[i] == 'i') {
 			conf->inode = true;
-		// } else if (str[i] == 'k') {
 		} else if (str[i] == 'l') {
 			conf->format = long_format;
 		} else if (str[i] == 'm') {
@@ -169,7 +167,7 @@ static bool add_short_options(char * str, t_conf * conf) {
 		} else if (str[i] == 'R') {
 			conf->recursive = true;
 		} else if (str[i] == 's') {
-			conf->size = true;
+			conf->block_size = true;
 		} else if (str[i] == 'S') {
 			conf->sorting = by_size;
 		} else if (str[i] == 't') {
@@ -181,7 +179,7 @@ static bool add_short_options(char * str, t_conf * conf) {
 		} else if (str[i] == 'X') {
 			conf->sorting = by_ext;
 		// } else if (str[i] == 'Z') {
-		// 	conf->recursive = true;
+		// 	conf->context = true;
 		} else if (str[i] == '1') {
 			if (!(conf->format == long_format))
 				conf->format = one_per_line;
@@ -190,7 +188,7 @@ static bool add_short_options(char * str, t_conf * conf) {
 		} else {
 			ft_printf(""
 				"ls: invalid option -- '%c'\n"
-				"Try 'ls --help' for more information.\n",
+				"Try './ft_ls --help' for more information.\n",
 				str[i]);
 			return (false);
 		}
@@ -198,25 +196,29 @@ static bool add_short_options(char * str, t_conf * conf) {
 	return (true);
 }
 
+/**
+ * This function will only be called after is_flag.
+ * So we know it has more than one character.
+ **/
 bool add_flag(char * str, t_conf * conf) {
-	// This function will only be called after is_flag
 	if (!conf || !str)
 		return (false);
 
-	if (*(str + 1) == '-')
-	{
+	if (*(str + 1) == '-') {
 		if (*(str + 2) == 0) {
-			// when str is equal to '--' 
 			conf->delimit = true;
 			return (true);
 		} else {
-			return (add_long_option(str, conf));
+			return (add_long_option(str + 2, conf));
 		}
 	}
 	return (add_short_options(str, conf));
 }
 
+/**
+ * str is not null and str beggins with '-'
+ * and str has more than one character
+ **/
 bool is_flag(char * str) {
-	// str is not null and str beggins with '-' and str has more than one character
 	return (str && *str == '-' && *(str + 1) != 0);
 }

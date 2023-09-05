@@ -18,7 +18,6 @@ enum sorting
 {
 	no_sorting,
 	by_time,
-	by_directory,
 	by_name,
 	by_size,
 	by_ext
@@ -28,8 +27,7 @@ typedef struct s_long_options {
 	bool owner;
 	bool author;
 	bool group;
-	bool block_size;
-	short int bytes_per_block;
+	// short int bytes_per_block;
 	bool numeric_uid_gid;
 }	t_long_options;
 
@@ -37,6 +35,7 @@ typedef struct s_long_options {
 typedef struct s_padding {
 	short int inode;
 	short int block_size;
+	short int size;
 	// short int scontext;
 	short int owner;
 	short int group;
@@ -76,7 +75,7 @@ typedef struct s_conf {
 	bool color;
 	
 	/* -s --size */
-	bool size;
+	bool block_size;
 	/* -i --inode */
 	bool inode;
 	/* -r --recursive */

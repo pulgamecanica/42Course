@@ -13,7 +13,7 @@
 # define BLOCK_DEVISE_FILE 98 // b
 # define SOCKET_FILE 115 // s
 # define NAMED_PIPE 112 // p
-# define MISSING_FILE -1
+# define MISSING_FILE 63 // ?
 
 enum file_indicator_type
 {
@@ -41,7 +41,9 @@ typedef struct s_file {
 
 	/* The lt_mode and link_name of the file linked */
 	char	* link_name;
-	mode_t	link_mode;
+	struct stat lstat;
+	// mode_t	link_mode;
+	enum file_indicator_type lit;
 }	t_file;
 
 t_file * new_file(char * name, char * path);

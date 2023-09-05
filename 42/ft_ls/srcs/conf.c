@@ -7,8 +7,6 @@ static t_long_options new_default_long_options() {
 	l_opt.owner = true;
 	l_opt.author = false;
 	l_opt.group = true;
-	l_opt.block_size = false;
-	l_opt.bytes_per_block = 1024;
 	l_opt.numeric_uid_gid = false;
 	return (l_opt);
 }
@@ -21,16 +19,14 @@ t_conf * new_default_conf_ls() {
 
 	c->format = one_per_line;
 	c->sorting = by_name;
-
 	/* Will hold the long options when long format is on*/
 	c->l_opts = new_default_long_options();
-	
 	/* Don't show inode by default */
 	c->inode = false;
 	/* Don't show size by default */
-	c->size = false;
+	c->block_size = false;
 	/* No color by default */
-	c->color = false;
+	c->color = true;
 	/* Sort normal by default */
 	c->sort_rev = false;
 	/* Ignore by default */
@@ -47,12 +43,10 @@ t_conf * new_default_conf_ls() {
 	c->print_indicator = false;
 	/* Stat only needed when long options is on */
 	c->need_stat = false;
-
-	/* Only print directory if there is more than one entry */
+	/* Only print directory if there is more than one entry or if it's recursive */
 	c->print_dir = false;
 	/* If any parameters are printed before file listing, there must be a separation */
 	c->initial_separation = false;
-
-	c->padding = (t_padding){0, 0, 0, 0, 0, 0, 0, 0};
+	c->padding = (t_padding){0, 0, 0, 0, 0, 0, 0, 0, 0};
 	return (c);
 }

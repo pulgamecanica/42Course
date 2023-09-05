@@ -27,6 +27,22 @@ static enum file_indicator_type indicator_type(mode_t mode) {
 	}
 }
 
+static void	setup_link(char * path, t_file * file) {
+	int bufsiz = 1024;
+	char * buf;
+
+	if (!(buf = ft_calloc(sizeof(char), bufsiz)))
+		return ;
+	if (readlink(path, buf, bufsiz) == -1) {
+		perror("Couldn't open link\n");
+	} else {
+		file->link_name = ft_strdup(buf);
+		stat(file->link_name, &file->lstat);
+		file->lit = indicator_type(file->lstat.st_mode);
+	}
+	free(buf);
+}
+
 t_file	*	new_file(char * name, char * path) {
 	t_file * file;
 	char * full_path;
@@ -34,28 +50,24 @@ t_file	*	new_file(char * name, char * path) {
 	file = (t_file *)ft_calloc(sizeof(t_file), 1);
 	if (!file)
 		return (NULL);
-
 	file->name = ft_strdup(name);
+	file->link_name = NULL;
 	if (!path)
 		file->path = NULL;
 	else if (*(path + ft_strlen(path) - 1) == '/')
 		file->path = ft_strdup(path);
 	else
 		file->path = ft_strjoin(ft_strdup(path), "/");
-	file->link_name = NULL;
-
 	full_path = ft_strjoin(ft_strdup(file->path ? file->path : ""), name);
 	if ((lstat(full_path, &file->stat)) == -1) {
 		ft_printf("ls: cannot access '%s': No such file or directory\n", full_path);
 		free(full_path);
-		free(file->name);
-		free(file->path);
-		free(file);
+		free_file(file);
 		return (NULL);
 	}
-	free(full_path);
-
 	file->fit = indicator_type(file->stat.st_mode);
-
+	if (file->fit == SYMBOLIC_LINK)
+		setup_link(full_path, file);
+	free(full_path);
 	return (file);
 }
