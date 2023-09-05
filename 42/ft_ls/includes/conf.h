@@ -5,17 +5,15 @@
 
 # define ft_max(x,y) ((x) > (y) ? (x) : (y))
 
-enum format
-{
+enum format {
 	one_per_line,
-	multiple_in_column,
-	multiple_in_row,
 	long_format,
-	coma_separated
+	// multiple_in_column,
+	// multiple_in_row,
+	// coma_separated
 };
 
-enum sorting
-{
+enum sorting {
 	no_sorting,
 	by_time,
 	by_name,
@@ -27,7 +25,6 @@ typedef struct s_long_options {
 	bool owner;
 	bool author;
 	bool group;
-	// short int bytes_per_block;
 	bool numeric_uid_gid;
 }	t_long_options;
 
@@ -51,6 +48,7 @@ typedef struct s_conf {
 	void *	sorting_f;
 
 	t_padding padding;
+
 	/**
 	 * -l long listing
 	 * -1 one per line (default)

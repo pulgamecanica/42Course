@@ -29,7 +29,7 @@ static void print_help(void) {
 "\n"
 "  -l                         use a long listing format\n"
 "\n"
-"  -m                         fill width with a comma separated list of entries\n"
+// "  -m                         fill width with a comma separated list of entries\n"
 "  -n, --numeric-uid-gid      like -l, but list numeric user and group IDs\n"
 "  -o                         like -l, but do not list group information\n"
 "  -p, --indicator-style=slash\n"
@@ -136,8 +136,8 @@ static bool add_short_options(char * str, t_conf * conf) {
 		} else if (str[i] == 'A') {
 			conf->no_ignore = false;
 			conf->almost_no_ignore = true;
-		} else if (str[i] == 'C') {
-			conf->format = multiple_in_column;
+		// } else if (str[i] == 'C') {
+			// conf->format = multiple_in_column;
 		} else if (str[i] == 'd') {
 			conf->no_explore = true;
 		} else if (str[i] == 'f') {
@@ -153,8 +153,8 @@ static bool add_short_options(char * str, t_conf * conf) {
 			conf->inode = true;
 		} else if (str[i] == 'l') {
 			conf->format = long_format;
-		} else if (str[i] == 'm') {
-			conf->format = coma_separated;
+		// } else if (str[i] == 'm') {
+		// 	conf->format = coma_separated;
 		} else if (str[i] == 'n') {
 			conf->l_opts.numeric_uid_gid = true;
 		} else if (str[i] == 'o') {
@@ -174,8 +174,8 @@ static bool add_short_options(char * str, t_conf * conf) {
 			conf->sorting = by_time;
 		} else if (str[i] == 'U') {
 			conf->sorting = no_sorting;
-		} else if (str[i] == 'x') {
-			conf->format = multiple_in_row;
+		// } else if (str[i] == 'x') {
+		// 	conf->format = multiple_in_row;
 		} else if (str[i] == 'X') {
 			conf->sorting = by_ext;
 		// } else if (str[i] == 'Z') {

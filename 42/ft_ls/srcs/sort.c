@@ -4,6 +4,9 @@
 // I believe that ls only sorts by ALPHA NUMERIC 
 // ALL other symbols are ignored
 // Must create a strcmp_alpha_only function!
+
+// ONLY THING MISSING :D 
+// Tomorrow I will be testing ALL the options to deliver the project!? :D
 static int sort_by_name(void * ptr1, void * ptr2) {
 	t_file * f1, * f2;
 

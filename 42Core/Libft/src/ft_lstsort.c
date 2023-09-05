@@ -58,7 +58,7 @@ void	ft_lstsort(t_list **lst, int (*cmp)(void *, void *))
 	t_list * head = *lst;
 	t_list * a;
 	t_list * b;
-	if ((head == NULL) || (head->next == NULL))
+	if ((head == NULL) || (head->next == NULL) || !cmp)
 		return;
 	m_split(head, &a, &b);
 	ft_lstsort(&a, cmp);

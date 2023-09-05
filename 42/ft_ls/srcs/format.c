@@ -304,13 +304,14 @@ static void long_format_f(void * ptr1, void *ptr2) {
 	write(1, "\n",1);
 }
 
+// For the future pulgamecanica to deal...
+// case multiple_in_column: return one_per_line_format_f;
+// case multiple_in_row: return one_per_line_format_f;
+// case coma_separated: return one_per_line_format_f;
 void * format_func(enum format f) {
 	switch (f) {
 		case one_per_line: return one_per_line_format_f;
-		case multiple_in_column: return one_per_line_format_f;
-		case multiple_in_row: return one_per_line_format_f;
 		case long_format: return long_format_f;
-		case coma_separated: return one_per_line_format_f;
 		default: return one_per_line_format_f;
 	}
 }
