@@ -93,8 +93,8 @@ int	main(int ac, char **av)
 
 	if (ac < 2)
 		ft_printf("At least one argument please...\n");
-	win = new_window(1000, 1000, "fract-ol");
-	img = new_image(win, 1000, 1000);
+	win = new_window(600, 600, "fract-ol");
+	img = new_image(win, 600, 600);
 	p = new_cplane(img, ac, av);
 	p->fractal_function = set_function(ac, av);
 	p->fractal_function(p);

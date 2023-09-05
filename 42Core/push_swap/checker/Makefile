@@ -9,10 +9,10 @@ INCS	= ../libft/includes
 LIBFT	= -L ../libft -lft
 
 ${NAME}: runlibft
-	${CC} ${FLAGS} -I ${INCS} ${SRCS} ${LIBFT} ${PSSRCS} -o ${NAME}
+	${CC} ${FLAGS} -I ${INCS} ${SRCS} ${PSSRCS} ${LIBFT} -o ${NAME}
 
 show: runlibft
-	${CC} -Wall -Werror -Wextra -D SHOW=1 -I ${INCS} ${LIBFT} ${SRCS} ${PSSRCS} -o ${NAME}
+	${CC} -D SHOW=1 -I ${INCS} ${SRCS} ${LIBFT} ${PSSRCS} -o ${NAME}
 
 all: ${NAME}
 

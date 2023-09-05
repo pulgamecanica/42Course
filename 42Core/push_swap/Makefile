@@ -7,7 +7,7 @@ RM	= rm -f
 INCS	= libft/includes
 LIBFT	= -Llibft -lft
 GEN	= `ruby -e "puts (-500..500).to_a.shuffle.first(500).join(' ')"`
-CHECK	= ./tests/checker_OS
+CHECK	= ./checker/checker
 
 ${NAME}: runlibft
 	${CC} ${SRCS} ${FLAGS} -I ${INCS} ${LIBFT} -o ${NAME}
