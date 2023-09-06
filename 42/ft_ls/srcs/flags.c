@@ -14,7 +14,7 @@ static void print_help(void) {
 "  -A, --almost-all           do not list implied . and ..\n"
 "      --author               with -l, print the author of each file\n"
 "\n"
-"  -C                         list entries by columns\n"
+// "  -C                         list entries by columns\n"
 "      --color[=WHEN]         color the output WHEN; more info below\n"
 "  -d, --directory            list directories themselves, not their contents\n"
 "  -f                         list all entries in directory order\n"
@@ -24,8 +24,6 @@ static void print_help(void) {
 "  -G, --no-group             in a long listing, don't print group names\n"
 "\n"
 "  -i, --inode                print the index number of each file\n"
-"  -k, --kibibytes            default to 1024-byte blocks for file system usage;\n"
-"                             used only with -s and per directory totals\n"
 "\n"
 "  -l                         use a long listing format\n"
 "\n"
@@ -37,16 +35,17 @@ static void print_help(void) {
 "\n"
 "  -r, --reverse              reverse order while sorting\n"
 "  -R, --recursive            list subdirectories recursively\n"
+"\n"
 "  -s, --size                 print the allocated size of each file, in blocks\n"
 "  -S                         sort by file size, largest first\n"
 // "      --sort=WORD            sort by WORD instead of name: none (-U), size (-S),\n"
 // "                             time (-t), version (-v), extension (-X), width\n"
 "  -t                         sort by time, newest first; see --time\n"
-"\n"
 "  -U                         do not sort; list entries in directory order\n"
-"  -x                         list entries by lines instead of by columns\n"
+// "  -x                         list entries by lines instead of by columns\n"
 "  -X                         sort alphabetically by entry extension\n"
-"  -Z,                        print any security context of each file\n"
+// "  -Z,                        print any security context of each file\n"
+"\n"
 "  -1                         list one file per line\n"
 "      --help        display this help and exit\n"
 "      --version     output version information and exit\n"
@@ -156,6 +155,7 @@ static bool add_short_options(char * str, t_conf * conf) {
 		// } else if (str[i] == 'm') {
 		// 	conf->format = coma_separated;
 		} else if (str[i] == 'n') {
+			add_short_options("-l", conf);
 			conf->l_opts.numeric_uid_gid = true;
 		} else if (str[i] == 'o') {
 			add_short_options("-l", conf);

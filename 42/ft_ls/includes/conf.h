@@ -2,6 +2,7 @@
 #define __CONF__H__
 
 # include <stdbool.h>
+# include <time.h>
 
 # define ft_max(x,y) ((x) > (y) ? (x) : (y))
 
@@ -96,6 +97,8 @@ typedef struct s_conf {
 	bool print_dir;
 	/* If if the directory listing needs a preceding separation (new line)*/
 	bool initial_separation;
+	/* For the long format we need to know if the file is recent (6 months old max) */
+	time_t six_months_from_now;
 }	t_conf;
 
 

@@ -1,12 +1,7 @@
 #include "file.h"
+#include "conf.h"
 #include "libft.h"
 
-// I believe that ls only sorts by ALPHA NUMERIC 
-// ALL other symbols are ignored
-// Must create a strcmp_alpha_only function!
-
-// ONLY THING MISSING :D 
-// Tomorrow I will be testing ALL the options to deliver the project!? :D
 static int sort_by_name(void * ptr1, void * ptr2) {
 	t_file * f1, * f2;
 
@@ -18,7 +13,7 @@ static int sort_by_name(void * ptr1, void * ptr2) {
 		return (1);
 	if (!f1)
 		return (-1);
-	return (ft_strcmp_insensitive(f2->name, f1->name));
+	return (ft_strcmp_alnum(f2->name, f1->name));
 }
 
 static int sort_by_name_rev(void * ptr1, void * ptr2) {
@@ -33,30 +28,19 @@ static int sort_by_ext(void * ptr1, void * ptr2) {
 	f2 = (t_file *)ptr2;
 	if (!f1 && !f2)
 		return (0);
-	ext1 = ft_strchr(f1->name, '.');
-	ext2 = ft_strchr(f2->name, '.');
+	ext1 = ft_strrchr(f1->name, '.');
+	ext2 = ft_strrchr(f2->name, '.');
 	if (ext1 && ext2)
 		return (ft_strcmp_insensitive(ext2, ext1));
-	if (ext2)
+	if (ext2 && !ext1)
 		return (1);
+	if (!ext2 && ext1)
+		return (-1);
 	return sort_by_name(ptr1, ptr2);
 }
 
 static int sort_by_ext_rev(void * ptr1, void * ptr2) {
-	t_file * f1, * f2;
-	char * ext1, * ext2;
-
-	f1 = (t_file *)ptr1;
-	f2 = (t_file *)ptr2;
-	if (!f1 && !f2)
-		return (0);
-	ext1 = ft_strchr(f1->name, '.');
-	ext2 = ft_strchr(f2->name, '.');
-	if (ext1 && ext2)
-		return (ft_strcmp_insensitive(ext1, ext2));
-	if (ext2)
-		return (-1);
-	return sort_by_name(ptr2, ptr1);
+	return (sort_by_ext(ptr2, ptr1));
 }
 
 static int sort_by_time_last_mod(void * ptr1, void * ptr2) {

@@ -4,19 +4,17 @@
 # include <stdbool.h>
 # include <sys/stat.h>
 # include <stdlib.h>
-# include "conf.h"
 
-# define REGULAR_FILE 45 // -
-# define DIRECTORY 100 // d
-# define SYMBOLIC_LINK 108 // l
-# define CHAR_DEVISE_FILE 99 // c
+# define REGULAR_FILE 45      // -
+# define DIRECTORY 100        // d
+# define SYMBOLIC_LINK 108    // l
+# define CHAR_DEVISE_FILE 99  // c
 # define BLOCK_DEVISE_FILE 98 // b
-# define SOCKET_FILE 115 // s
-# define NAMED_PIPE 112 // p
-# define MISSING_FILE 63 // ?
+# define SOCKET_FILE 115      // s
+# define NAMED_PIPE 112       // p
+# define MISSING_FILE 63      // ?
 
-enum file_indicator_type
-{
+enum file_indicator_type {
 	regular_file = REGULAR_FILE,
 	directory = DIRECTORY,
 	symbolic_link = SYMBOLIC_LINK,
@@ -31,18 +29,12 @@ enum file_indicator_type
 typedef struct s_file {
 	char	* name;
 	char	* path;
-	
 	enum file_indicator_type fit;
-	
-	/* Only present when file is a symbolic link */
-
 	struct stat stat;
-
-
+	/* Fields above only used when file is a symbolic link */
 	/* The lt_mode and link_name of the file linked */
 	char	* link_name;
 	struct stat lstat;
-	// mode_t	link_mode;
 	enum file_indicator_type lit;
 }	t_file;
 

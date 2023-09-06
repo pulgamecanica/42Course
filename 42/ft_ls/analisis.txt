@@ -1,0 +1,158 @@
+[Colors]
+
+/etc/extlinux.conf -> ../boot/extlinux/extlinux.conf
+
+/etc/favicon.png -> /usr/share/icons/hicolor/16x16/apps/fedora-logo-icon.png
+
+/etc/grub2.cfg -> ../boot/grub2/grub.cfg
+
+/etc/cups-browsed.conf.rpmnew
+
+
+
+Files with security context have a '.' after the bit modes
+The color of files with security context is red  with black background
+
+
+[Options One Per Line Format]
+
+[DONE] -a, --all                  do not ignore entries starting with .
+> Works simply 
+
+[DONE] -A, --almost-all           do not list implied . and ..
+> Works simply
+
+[N/A] --author               with -l, print the author of each file
+> Not available with this format, no effect
+
+[DONE] --color[=WHEN]         color the output WHEN; more info below
+> Works simply
+
+[DONE] -d, --directory            list directories themselves, not their contents
+> Tested on: Regular Files, Links, Directories & checked colors
+
+[DONE] -f                         list all entries in directory order
+> Activates the all flag and sorting correct
+
+[N/A] -g                         like -l, but do not list owner
+> Not available with this format, will activate the long format
+
+[N/A] -G, --no-group             in a long listing, don't print group names
+> Not available with this format, no effect
+
+[DONE] -i, --inode                print the index number of each file
+> Works as expected, padding correct
+
+[N/A] -n, --numeric-uid-gid      like -l, but list numeric user and group IDs
+> Not available with this format, will activate the long format
+
+[N/A] -o                         like -l, but do not list group information
+> Not available with this format, will activate the long format
+
+[DONE] -p, --indicator-style=slash append / indicator to directories
+> Works as expected, appends a slash after the directories
+
+[DONE] -r, --reverse              reverse order while sorting
+> with default
+>  Works as expected, the reverse is correct and the listing too compared vs original
+
+> with time sorting
+>  Works as expected, the reverse is correct and the listing too, compared vs original
+
+> with no sorting 
+>  Works as expected, the option reverse makes no difference, there is no sorting, compared vs original
+
+> with extension sorting
+>  Works as expected, the reverse is correct and the listing too compared vs the original
+
+> with size sorting
+>  Works as expected, the reverse is correct and the listing too compared vs the original
+
+[DONE] -R, --recursive            list subdirectories recursively
+> Works as expected, separations are correct, total is correct, no infinite loops found
+
+[DONE] -s, --size                 print the allocated size of each file, in blocks
+> see (-r) above
+
+[DONE] -S                         sort by file size, largest first
+> see (-r) above
+ 
+[DONE] -t                         sort by time, newest first; see --time
+> see (-r) above
+ 
+[DONE] -U                         do not sort; list entries in directory order
+> see (-r) above
+  
+[DONE] -X                         sort alphabetically by entry extension
+> see (-r) above
+  
+[DONE] -1                         list one file per line
+ 
+[DONE] --help        display this help and exit
+
+[DONE] --version     output version information and exit
+
+***
+
+[Options Long Format]
+
+[DONE] -a, --all                  do not ignore  starting with .
+> Works simply
+
+[DONE] -A, --almost-all           do not list implied . and ..
+> Works simply
+
+[DONE] --author               with -l, print the author of each file
+> Works, compared vs the original, padding is correct
+
+[DONE] --color[=WHEN]         color the output WHEN; info below
+> Works simply
+
+[DONE] -d, --directory            list themselves, not their contents
+> Works, with multiple entrie, no entries, and wrong entries, regular files, directories etc
+
+[DONE] -f                         list all entries in directory order
+> Works simply, activates the flag all and long format
+
+[DONE] -g                         like -l, but do not list owner
+> Works simply, removes the owner
+
+[DONE] -G, --no-group             in a long listing, don't print group names
+> Works simply, removes the group
+
+[DONE] -i, --inode                print the index number of each file
+> Works simply shows the inode with proper padding
+
+[DONE] -n, --numeric-uid-gid      like -l, but list user and group IDs
+> Works and shows the id instead of the name
+
+[DONE] -o                         like -l, but do not group information
+> Works like g but it also activates the long format
+
+[DONE] -p, --indicator-style=slash append / indicator to directories
+> Works simply
+
+[DONE] -r, --reverse              reverse order while sorting
+> This was checked before with the one per line format
+
+[DONE] -R, --recursive            list subdirectories recursively
+> Works properly
+
+[DONE] -s, --size                 print the allocated size each file, in blocks
+> Works and prints the allocated size which add up to the total of blocks
+
+[DONE] -S                         sort by file size, first
+> see (-r) above (in one per line analisis)
+
+[DONE] -t                         sort by time, newest first see --time
+> see (-r) above (in one per line analisis)
+
+[DONE] -U                         do not sort; list in directory order
+> see (-r) above (in one per line analisis)
+
+[DONE] -X                         sort alphabetically by entry extension
+> see (-r) above (in one per line analisis)
+
+[DONE] --help        display this help and exit
+
+[DONE] --version     output version information and exit

@@ -3,6 +3,26 @@
 #include "libft.h"
 #include <pwd.h>
 #include <grp.h>
+#include <time.h>
+
+/**
+ * How to calculate 6 months from now? How much is 6 months?
+ * One year has:
+ * Days: 365.2422
+ * Hours: Days * 24
+ * Minutes: Hours * 60
+ * Seconds: Minutes * 60
+ * (==) Seconds: 365.2422 * 24 * 60 * 60 = 31556926.08
+ * Therefore 6 months has half of that:
+ * 31556926.08 / 2 = 15778463.04 ~> 15778463 
+ **/
+void	setup_six_months_from_now(t_conf * conf) {
+	// time_t should be integer, and point the number of seconds since EPOCH
+	time_t current_time;
+	time(&current_time);
+	conf->six_months_from_now = current_time - 15778463;
+}
+
 
 void	setup_padding(void * ptr1, void * ptr2) {
 	t_file * f;

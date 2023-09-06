@@ -107,7 +107,10 @@ int main(int ac, char *av[])
 	parse_parameters(ac, av, conf, param_directories);
 	// Evaluate outcome, asign the sorting function, assign the format function
 	conf->sorting_f = sorting_func(conf->sorting, conf->sort_rev);
-	conf->format_f = format_func(conf->format); 
+	conf->format_f = format_func(conf->format);
+	// When the long format is enables we need to setup the date from 6 months
+	if (conf->format == long_format)
+		setup_six_months_from_now(conf);
 	if (ft_lstsize(*param_directories) == 0)
 		ft_lstadd_back(param_directories, ft_lstnew(new_file(".", NULL)));
 	// Sort and print file entries that are not going to be listed, list all directorie

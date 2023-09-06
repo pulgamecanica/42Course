@@ -1,4 +1,5 @@
 #include "file.h"
+#include "conf.h"
 #include "ft_printf.h"
 #include "libft.h"
 #include "color.h"
@@ -256,7 +257,7 @@ static void long_format_f(void * ptr1, void *ptr2) {
 			ft_printf(str_format, f->stat.st_uid);
 		} else {
 			sprintf(str_format, "%%-%ds ", c->padding.owner);
-			ft_printf("%s ", getpwuid(f->stat.st_uid)->pw_name);
+			ft_printf(str_format, getpwuid(f->stat.st_uid)->pw_name);
 		}
 		free(str_format);
 	}
@@ -291,7 +292,12 @@ static void long_format_f(void * ptr1, void *ptr2) {
 	ft_printf(str_format, f->stat.st_size);
 	free(str_format);
 	// last modified
-	str_format = ft_substr(ctime(&f->stat.st_mtime), 4, 12);
+	// Recent Dates:          "%b %e  %Y"
+	// Dates > 6 months old:  "%b %e %H:%M"
+	if (f->stat.st_mtime > c->six_months_from_now) 
+		str_format = ft_substr(ctime(&f->stat.st_mtime), 4, 12);
+	else 
+		str_format = ft_strjoin(ft_substr(ctime(&f->stat.st_mtime), 4, 7), " 2023");
 	ft_printf("%s ", str_format);
 	free(str_format);
 	// file name

@@ -1,9 +1,9 @@
-#include <dirent.h>
 #include "file.h"
 #include "conf.h"
 #include "libft.h"
 #include "ft_ls.h"
 #include "ft_printf.h"
+#include <dirent.h>
 
 static void	recursive_directory_listing(void * ptr1, void * ptr2) {
 	t_file * f;
@@ -29,6 +29,11 @@ static t_list ** directory_entries(t_conf * conf, t_file * file) {
 		return (NULL);
 	full_path = ft_strjoin(ft_strdup(file->path ? file->path : ""), file->name);
 	dir = opendir(full_path);
+	if (!dir) {
+		ft_printf("ls: cannot open directory '%s': Permission denied\n", full_path);
+		free(full_path);
+		return (NULL);
+	}
 	while ((ent = readdir(dir))) {
 		if (*(ent->d_name) == '.') {
 				if (!conf->no_ignore && !conf->almost_no_ignore)
