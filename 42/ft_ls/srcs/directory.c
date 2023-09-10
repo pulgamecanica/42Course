@@ -3,6 +3,7 @@
 #include "libft.h"
 #include "ft_ls.h"
 #include "ft_printf.h"
+#include <stdint.h>
 #include <dirent.h>
 
 static void	recursive_directory_listing(void * ptr1, void * ptr2) {
@@ -59,7 +60,7 @@ static t_list ** directory_entries(t_conf * conf, t_file * file) {
  * Print total, when it's long format, or when the block size is visible
  **/
 static void print_pre_listing(t_conf * c, t_file * f, t_list ** files) {
-	int total;
+	uintmax_t total;
 
 	if (!c->initial_separation)
 		c->initial_separation = true;
@@ -73,7 +74,7 @@ static void print_pre_listing(t_conf * c, t_file * f, t_list ** files) {
 	if (c->block_size || c->format == long_format) {
 		total = 0;
 		ft_lstiter_param(*files, setup_total, &total);
-	 	ft_printf("total %d\n", total);
+	 	ft_printf("total %d\n", ft_ceil(total / 2.0));
 	}
 }
 

@@ -3,6 +3,7 @@
 #include "ft_printf.h"
 #include "libft.h"
 #include "color.h"
+#include "ft_ls.h"
 #include <sys/types.h>
 #include <pwd.h>
 #include <grp.h>
@@ -77,6 +78,123 @@ static char * get_file_color(enum file_indicator_type fit, mode_t mode) {
 	}
 }
 
+#include <sys/xattr.h>
+
+// man chattr(1)
+// man setfacl(1)
+// man getfattr(1)
+
+// man chcon(1)
+
+// man getxattr(2)
+// man listxattr(2)
+static void	print_scontext(t_file * f, t_conf * c) {
+	// char * str;
+	(void)c;
+	ssize_t buflen, keylen, vallen;
+	char *buf, *key, *val;
+
+   /*
+    * Determine the length of the buffer needed.
+    */
+   buflen = listxattr(f->name, NULL, 0);
+   if (buflen == -1) {
+       perror("listxattr");
+       exit(EXIT_FAILURE);
+   }
+   if (buflen == 0) {
+       ft_printf("? ");
+       return ;
+   }
+
+   /*
+    * Allocate the buffer.
+    */
+   buf = malloc(buflen);
+   if (buf == NULL) {
+       perror("malloc");
+       exit(EXIT_FAILURE);
+   }
+
+   /*
+    * Copy the list of attribute keys to the buffer.
+    */
+   buflen = listxattr(f->name, buf, buflen);
+   if (buflen == -1) {
+       perror("listxattr");
+       exit(EXIT_FAILURE);
+   }
+
+
+	/*
+	* Loop over the list of zero terminated strings with the
+	* attribute keys. Use the remaining buffer length to determine
+	* the end of the list.
+	*/
+	key = buf;
+	while (buflen > 0) {
+
+		/*
+		* Output attribute key.
+		*/
+		ft_printf("%s: ", key);
+
+		/*
+		* Determine length of the value.
+		*/
+		vallen = getxattr(f->name, key, NULL, 0);
+		if (vallen == -1)
+		   perror("getxattr");
+
+		if (vallen > 0) {
+
+		   /*
+		    * Allocate value buffer.
+		    * One extra byte is needed to append 0x00.
+		    */
+		   val = malloc(vallen + 1);
+		   if (val == NULL) {
+		       perror("malloc");
+		       exit(EXIT_FAILURE);
+		   }
+
+		   /*
+		    * Copy value to buffer.
+		    */
+		   vallen = getxattr(f->name, key, val, vallen);
+		   if (vallen == -1)
+		       perror("getxattr");
+		   else {
+		       /*
+		        * Output attribute value.
+		        */
+		       val[vallen] = 0;
+		       ft_printf("%s", val);
+		   }
+
+		   free(val);
+		} else if (vallen == 0)
+		   ft_printf("<no value>");
+
+		ft_printf("\n");
+
+		/*
+		* Forward to next attribute key.
+		*/
+		keylen = ft_strlen(key) + 1;
+		buflen -= keylen;
+		key += keylen;
+	}
+
+	free(buf);
+
+	// if (!(str = ft_calloc(sizeof(char), 10))) // I doubt we can reach paddings for numbers higher than 5 digits
+	// 	return ;
+	// sprintf(str, "%%%ds ", c->padding.inode);
+	// ft_printf(str, "?");
+	// free(str);
+}
+
 // Print functions shared by all formats :)
 static void print_file_name(char * name, enum file_indicator_type fit, mode_t mode, t_conf * c) {
 	char * str;
@@ -104,7 +222,7 @@ static void print_block_size(t_file * f, t_conf * c) {
 	if (!(str = ft_calloc(sizeof(char), 10))) // I doubt we can reach paddings for numbers higher than 5 digits
 		return ;
 	sprintf(str, "%%%dd ", c->padding.block_size);
-	ft_printf(str, f->stat.st_blocks / 2);
+	ft_printf(str, ft_ceil(f->stat.st_blocks / 2.0));
 	free(str);
 }
 
@@ -147,27 +265,58 @@ static void one_per_line_format_f(void * ptr1, void * ptr2) {
 		print_inode(f, c);
 	if (c->block_size)
 		print_block_size(f, c);
-	// if (context)
-		// ft_printf("%s ", 42);
+	if (c->scontext)
+		print_scontext(f, c);
 	print_file_name(f->name, f->fit, f->stat.st_mode, c);
 	write(1, "\n", 1);
 }
 
+/**
+ * man inode(7) -> about the mode bits
+ * man execve(2) -> about the s and t (set-user-ID, set-group-ID, sticky-bit)
+ **/
 static char x_usr_mode_bits(mode_t mode) {
-	if (mode & S_IXUSR)
-		return ('x');
 	if (mode & S_ISUID)
 		return ('s');
+	if (mode & S_IXUSR)
+		return ('x');
 	return ('-');
 }
 
 static char x_grp_mode_bits(mode_t mode) {
-	if (mode & S_IXGRP)
-		return ('x');
 	if (mode & S_ISGID)
 		return ('s');
+	if (mode & S_IXGRP)
+		return ('x');
 	return ('-');
 }
+
+static char x_oth_mode_bits(mode_t mode) {
+	if (mode & S_ISVTX)
+		return ('t');
+	if (mode & S_IXOTH)
+		return ('x');
+	return ('-');
+}
+
+static void print_date_last_modified(t_conf * c, t_file *f) {
+	char * str, * tmp;
+
+	str = tmp = NULL;
+	if (f->stat.st_mtime > c->six_months_from_now) {
+		// Print format ["%b %e %H:%M"]
+		str = ft_substr(ctime(&f->stat.st_mtime), 4, 12);
+	} else {
+		// Print format ["%b %e %Y"]
+		tmp = ft_substr(ctime(&f->stat.st_mtime), 20, 4);
+		str = ft_strjoin(ft_substr(ctime(&f->stat.st_mtime), 4, 7), " ");
+		str = ft_strjoin(str, tmp);
+		free(tmp);
+	}
+	ft_printf("%s ", str);
+	free(str);
+}
+
 
 /**
  * Long Format analisis 
@@ -242,7 +391,7 @@ static void long_format_f(void * ptr1, void *ptr2) {
 		x_grp_mode_bits(f->stat.st_mode),
 		f->stat.st_mode & S_IROTH ? 'r' : '-',
 		f->stat.st_mode & S_IWOTH ? 'w' : '-',
-		f->stat.st_mode & S_IXOTH ? 'x' : '-'
+		x_oth_mode_bits(f->stat.st_mode)
 	);
 	// Number of links
 	str_format = ft_calloc(sizeof(char), 10);
@@ -294,12 +443,7 @@ static void long_format_f(void * ptr1, void *ptr2) {
 	// last modified
 	// Recent Dates:          "%b %e  %Y"
 	// Dates > 6 months old:  "%b %e %H:%M"
-	if (f->stat.st_mtime > c->six_months_from_now) 
-		str_format = ft_substr(ctime(&f->stat.st_mtime), 4, 12);
-	else 
-		str_format = ft_strjoin(ft_substr(ctime(&f->stat.st_mtime), 4, 7), " 2023");
-	ft_printf("%s ", str_format);
-	free(str_format);
+	print_date_last_modified(c, f);
 	// file name
 	print_file_name(f->name, f->fit, f->stat.st_mode, c);
 	// link name

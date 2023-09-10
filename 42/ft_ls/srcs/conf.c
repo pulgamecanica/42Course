@@ -43,10 +43,12 @@ t_conf * new_default_conf_ls() {
 	c->print_indicator = false;
 	/* Stat only needed when long options is on */
 	c->need_stat = false;
+	/* Don't print security context (ACL exnended attributes) */
+	c->scontext = false;
 	/* Only print directory if there is more than one entry or if it's recursive */
 	c->print_dir = false;
 	/* If any parameters are printed before file listing, there must be a separation */
 	c->initial_separation = false;
-	c->padding = (t_padding){0, 0, 0, 0, 0, 0, 0, 0, 0};
+	c->padding = (t_padding){0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	return (c);
 }

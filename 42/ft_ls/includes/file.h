@@ -31,7 +31,7 @@ typedef struct s_file {
 	char	* path;
 	enum file_indicator_type fit;
 	struct stat stat;
-	/* Fields above only used when file is a symbolic link */
+	/* Fields bellow only used when file is a symbolic link */
 	/* The lt_mode and link_name of the file linked */
 	char	* link_name;
 	struct stat lstat;

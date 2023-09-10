@@ -23,6 +23,7 @@ static int sort_by_name_rev(void * ptr1, void * ptr2) {
 static int sort_by_ext(void * ptr1, void * ptr2) {
 	t_file * f1, * f2;
 	char * ext1, * ext2;
+	size_t diff;
 
 	f1 = (t_file *)ptr1;
 	f2 = (t_file *)ptr2;
@@ -30,8 +31,12 @@ static int sort_by_ext(void * ptr1, void * ptr2) {
 		return (0);
 	ext1 = ft_strrchr(f1->name, '.');
 	ext2 = ft_strrchr(f2->name, '.');
-	if (ext1 && ext2)
-		return (ft_strcmp_insensitive(ext2, ext1));
+	if (ext1 && ext2) {
+		diff = ft_strcmp_alnum(ext2, ext1);
+		if (!diff)
+			return (sort_by_name(ptr1, ptr2));
+		return (diff);
+	}
 	if (ext2 && !ext1)
 		return (1);
 	if (!ext2 && ext1)
@@ -45,12 +50,16 @@ static int sort_by_ext_rev(void * ptr1, void * ptr2) {
 
 static int sort_by_time_last_mod(void * ptr1, void * ptr2) {
 	t_file * f1, * f2;
+	size_t time_dif;
 
 	f1 = (t_file *)ptr1;
 	f2 = (t_file *)ptr2;
 	if (!f1 && !f2)
 		return (0);
-	return (f1->stat.st_mtime - f2->stat.st_mtime);
+	time_dif = (size_t)(f1->stat.st_mtime - f2->stat.st_mtime);
+	if (!time_dif)
+		return (sort_by_name(f1, f2));
+	return (time_dif);
 }
 
 static int sort_by_time_last_mod_rev(void * ptr1, void * ptr2) {
@@ -59,6 +68,7 @@ static int sort_by_time_last_mod_rev(void * ptr1, void * ptr2) {
 
 static int sort_by_size(void * ptr1, void * ptr2) {
 	t_file * f1, * f2;
+	size_t diff;
 
 	f1 = (t_file *)ptr1;
 	f2 = (t_file *)ptr2;
@@ -68,7 +78,10 @@ static int sort_by_size(void * ptr1, void * ptr2) {
 		return (1);
 	if (!f1)
 		return (-1);
-	return (f1->stat.st_size - f2->stat.st_size);
+	diff = f1->stat.st_size - f2->stat.st_size;
+	if (!diff)
+		return (sort_by_name(ptr1, ptr2));
+	return (diff);
 }
 
 static int sort_by_size_rev(void * ptr1, void * ptr2) {

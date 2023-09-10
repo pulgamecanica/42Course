@@ -44,7 +44,7 @@ static void print_help(void) {
 "  -U                         do not sort; list entries in directory order\n"
 // "  -x                         list entries by lines instead of by columns\n"
 "  -X                         sort alphabetically by entry extension\n"
-// "  -Z,                        print any security context of each file\n"
+"  -Z, --context              print any security context of each file\n"
 "\n"
 "  -1                         list one file per line\n"
 "      --help        display this help and exit\n"
@@ -107,7 +107,8 @@ static bool add_long_option(char * str, t_conf * conf) {
 		conf->recursive = true; 
 	} else if (ft_strcmp(str, "size") == 0) { 
 		conf->block_size = true; 
-	// } else if (ft_strcmp(str, "context") == 0) { 
+	} else if (ft_strcmp(str, "context") == 0) { 
+		conf->scontext = true; 
 	} else if (ft_strcmp(str, "version") == 0) { 
 		print_version();
 		return (false);
@@ -178,8 +179,8 @@ static bool add_short_options(char * str, t_conf * conf) {
 		// 	conf->format = multiple_in_row;
 		} else if (str[i] == 'X') {
 			conf->sorting = by_ext;
-		// } else if (str[i] == 'Z') {
-		// 	conf->context = true;
+		} else if (str[i] == 'Z') {
+			conf->scontext = true; 
 		} else if (str[i] == '1') {
 			if (!(conf->format == long_format))
 				conf->format = one_per_line;

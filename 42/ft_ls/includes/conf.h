@@ -34,13 +34,13 @@ typedef struct s_padding {
 	short int inode;
 	short int block_size;
 	short int size;
-	// short int scontext;
 	short int owner;
 	short int group;
 	short int author;
 	short int major_device;
 	short int minor_device;
 	short int links;
+	short int scontext;
 	// short int file_width;
 }	t_padding;
 
@@ -72,7 +72,9 @@ typedef struct s_conf {
 	
 	/* --color=[always, auto, never] */
 	bool color;
-	
+
+	/* -Z --context */
+	bool scontext;
 	/* -s --size */
 	bool block_size;
 	/* -i --inode */

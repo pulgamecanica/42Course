@@ -4,6 +4,17 @@
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
+#include <stdint.h>
+
+
+int ft_ceil(float num) {
+    int inum;
+
+    inum = (int)num;
+    if (num == (float)inum)
+        return inum;
+    return (inum + 1);
+}
 
 /**
  * How to calculate 6 months from now? How much is 6 months?
@@ -53,11 +64,11 @@ void	setup_padding(void * ptr1, void * ptr2) {
 
 void	setup_total(void * ptr1, void * ptr2) {
 	t_file * f;
-	int * n;
+	uintmax_t * n;
 
 	f = (t_file *)ptr1;
-	n = (int *)ptr2;
+	n = (uintmax_t *)ptr2;
 	if (!n || !f)
 		return ;
-	*n += f->stat.st_blocks / 2;
+	*n += f->stat.st_blocks;
 }
