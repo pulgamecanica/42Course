@@ -43,6 +43,8 @@ void	setup_padding(void * ptr1, void * ptr2) {
 	c = (t_conf *)ptr2;
 	if (!f || !c)
 		return ;
+	if (c->scontext || c->format == long_format)
+		c->padding.scontext = ft_max(c->padding.scontext, f->scontext ? (int)ft_strlen(f->scontext) : 0);
 	if (c->inode)
 		c->padding.inode = ft_max(c->padding.inode, ft_numlen_base(f->stat.st_ino, 10));
 	if (c->block_size)

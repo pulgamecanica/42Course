@@ -78,121 +78,14 @@ static char * get_file_color(enum file_indicator_type fit, mode_t mode) {
 	}
 }
 
-#include <sys/xattr.h>
-
-// man chattr(1)
-// man setfacl(1)
-// man getfattr(1)
-
-// man chcon(1)
-
-// man getxattr(2)
-// man listxattr(2)
 static void	print_scontext(t_file * f, t_conf * c) {
-	// char * str;
-	(void)c;
-	ssize_t buflen, keylen, vallen;
-	char *buf, *key, *val;
+	char * str;
 
-   /*
-    * Determine the length of the buffer needed.
-    */
-   buflen = listxattr(f->name, NULL, 0);
-   if (buflen == -1) {
-       perror("listxattr");
-       exit(EXIT_FAILURE);
-   }
-   if (buflen == 0) {
-       ft_printf("? ");
-       return ;
-   }
-
-   /*
-    * Allocate the buffer.
-    */
-   buf = malloc(buflen);
-   if (buf == NULL) {
-       perror("malloc");
-       exit(EXIT_FAILURE);
-   }
-
-   /*
-    * Copy the list of attribute keys to the buffer.
-    */
-   buflen = listxattr(f->name, buf, buflen);
-   if (buflen == -1) {
-       perror("listxattr");
-       exit(EXIT_FAILURE);
-   }
-
-
-	/*
-	* Loop over the list of zero terminated strings with the
-	* attribute keys. Use the remaining buffer length to determine
-	* the end of the list.
-	*/
-	key = buf;
-	while (buflen > 0) {
-
-		/*
-		* Output attribute key.
-		*/
-		ft_printf("%s: ", key);
-
-		/*
-		* Determine length of the value.
-		*/
-		vallen = getxattr(f->name, key, NULL, 0);
-		if (vallen == -1)
-		   perror("getxattr");
-
-		if (vallen > 0) {
-
-		   /*
-		    * Allocate value buffer.
-		    * One extra byte is needed to append 0x00.
-		    */
-		   val = malloc(vallen + 1);
-		   if (val == NULL) {
-		       perror("malloc");
-		       exit(EXIT_FAILURE);
-		   }
-
-		   /*
-		    * Copy value to buffer.
-		    */
-		   vallen = getxattr(f->name, key, val, vallen);
-		   if (vallen == -1)
-		       perror("getxattr");
-		   else {
-		       /*
-		        * Output attribute value.
-		        */
-		       val[vallen] = 0;
-		       ft_printf("%s", val);
-		   }
-
-		   free(val);
-		} else if (vallen == 0)
-		   ft_printf("<no value>");
-
-		ft_printf("\n");
-
-		/*
-		* Forward to next attribute key.
-		*/
-		keylen = ft_strlen(key) + 1;
-		buflen -= keylen;
-		key += keylen;
-	}
-
-	free(buf);
-
-	// if (!(str = ft_calloc(sizeof(char), 10))) // I doubt we can reach paddings for numbers higher than 5 digits
-	// 	return ;
-	// sprintf(str, "%%%ds ", c->padding.inode);
-	// ft_printf(str, "?");
-	// free(str);
+	if (!(str = ft_calloc(sizeof(char), 10))) // I doubt we can reach paddings for numbers higher than 5 digits
+		return ;
+	sprintf(str, "%%%ds ", c->padding.scontext);
+	ft_printf(str, f->scontext ? f->scontext : "?");
+	free(str);
 }
 
 // Print functions shared by all formats :)
@@ -355,7 +248,7 @@ static void print_date_last_modified(t_conf * c, t_file *f) {
  * [DONE] owner
  * [DONE] group
  * [DONE] autor
- * [] scontext (security context)
+ * [DONE] scontext (security context)
  * [DONE] size (MB 1024)
  * [DONE] last modified
  * [DONE] name
@@ -381,7 +274,7 @@ static void long_format_f(void * ptr1, void *ptr2) {
 	if (c->block_size)
 		print_block_size(f, c);
 	// File Type and Mode bits, USR, GRP, OTH
-	ft_printf("%c%c%c%c%c%c%c%c%c%c ", 
+	ft_printf("%c%c%c%c%c%c%c%c%c%c", 
 		f->fit,
 		f->stat.st_mode & S_IRUSR ? 'r' : '-',
 		f->stat.st_mode & S_IWUSR ? 'w' : '-',
@@ -393,6 +286,9 @@ static void long_format_f(void * ptr1, void *ptr2) {
 		f->stat.st_mode & S_IWOTH ? 'w' : '-',
 		x_oth_mode_bits(f->stat.st_mode)
 	);
+	if (c->padding.scontext != 0)
+		ft_printf("%c", f->scontext ? '.' : ' ');
+	ft_putchar_fd(' ', 1);
 	// Number of links
 	str_format = ft_calloc(sizeof(char), 10);
 	sprintf(str_format, "%%%dd ", c->padding.links);
@@ -435,6 +331,8 @@ static void long_format_f(void * ptr1, void *ptr2) {
 		free(str_format);
 	}
 	// scontext
+	if (c->scontext)
+		print_scontext(f, c);
 	// size MB (1024 chunks each block) block size will always be equal or higher than size / 1024
 	str_format = ft_calloc(sizeof(char), 10);
 	sprintf(str_format, "%%%dd ", c->padding.size);

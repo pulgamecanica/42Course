@@ -63,6 +63,9 @@ static void list_argument_files(t_conf * conf, t_list ** param_directories){
 
 		if (!(param_files = extract_param_files_to_print(param_directories, conf)))
 			ft_exit(2, conf, param_directories);
+		// Setup Scontext if needed
+		if (conf->scontext || conf->format == long_format)
+			ft_lstiter(*param_files, setup_scontext);
 		ft_lstiter_param(*param_files, setup_padding, conf);
 		ft_lstiter_param(*param_files, conf->format_f, conf);
 		conf->print_dir = conf->recursive || ft_lstsize(*param_files) > 0 || ft_lstsize(*param_directories) > 1;

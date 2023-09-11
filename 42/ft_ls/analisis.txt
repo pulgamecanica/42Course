@@ -8,11 +8,8 @@
 
 /etc/cups-browsed.conf.rpmnew
 
-
-
 Files with security context have a '.' after the bit modes
 The color of files with security context is red  with black background
-
 
 [Options One Per Line Format]
 

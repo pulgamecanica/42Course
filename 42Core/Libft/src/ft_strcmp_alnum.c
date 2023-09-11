@@ -23,17 +23,10 @@ int	ft_strcmp_alnum(const char *s1, const char *s2)
 	j = 0;
 	while (s1[i] && s2[j])
 	{
-		if (!ft_isalnum(s1[i]))
-			i++;
-		else if (!ft_isalnum(s2[j]))
-			j++;
-		else if (ft_tolower(s1[i]) == ft_tolower(s2[j]))
-		{
-			i++;
-			j++;
-		}
-		else
-			break ;
+		if (ft_tolower(s1[i]) != ft_tolower(s2[j]))
+			break;	
+		i++;
+		j++;
 	}
 	return (ft_tolower(s1[i]) - ft_tolower(s2[j]));
 }

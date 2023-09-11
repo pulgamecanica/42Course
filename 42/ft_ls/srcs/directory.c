@@ -18,7 +18,6 @@ static void	recursive_directory_listing(void * ptr1, void * ptr2) {
 		list_directory(f, c);
 }
 
-
 static t_list ** directory_entries(t_conf * conf, t_file * file) {
 	t_list ** entries;
 	char * full_path;
@@ -97,6 +96,9 @@ void	list_directory(void * ptr1, void * ptr2) {
 		return ;
 	// Print separation, directory path and total size when needed
 	print_pre_listing(c, f, files);
+	// Setup Scontext if needed
+	if (c->scontext)
+			ft_lstiter(*files, setup_scontext);
 	// Setup the padding for the file listing, reset padding first
 	ft_bzero(&c->padding, sizeof(t_padding));
 	ft_lstiter_param(*files, setup_padding, c);

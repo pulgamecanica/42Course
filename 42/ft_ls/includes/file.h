@@ -36,9 +36,11 @@ typedef struct s_file {
 	char	* link_name;
 	struct stat lstat;
 	enum file_indicator_type lit;
+	/* String with the scontext*/
+	char * scontext;
 }	t_file;
 
 t_file * new_file(char * name, char * path);
 void	free_file(void * ptr);
-
+void	setup_scontext(void * ptr);
 #endif
