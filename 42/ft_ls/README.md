@@ -143,18 +143,6 @@ drwxr-xr-x 1 pulgamecanica pulgamecanica   164 Feb 19 18:42 .
 
 ***
 
-#### General output formatting
-
-***
-
-#### Formatting file timestamps
-
-***
-
-#### Formatting the file names
-
-***
-
 ### Behaviour analysis
 
 ```bash
