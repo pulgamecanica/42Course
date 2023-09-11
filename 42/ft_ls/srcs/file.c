@@ -83,23 +83,33 @@ t_file	*	new_file(char * name, char * path) {
 // man listxattr(2)
 void setup_scontext(void * ptr) {
 	t_file * f;
+
 	ssize_t buflen, keylen, vallen;
-	char *buf, *key, *val;
+	char *buf, *key, *val, *full_path;
 
 	key = NULL;
 	if (!(f = (t_file *)ptr))
 		return ;
+	full_path = ft_strjoin(ft_strdup(f->path ? f->path : ""), f->name);
+	if (!full_path)
+		return ;
    // Determine the length of the buffer needed.
-	buflen = listxattr(f->name, NULL, 0);
-	if (buflen == 0 || buflen == -1)
+	buflen = listxattr(full_path, NULL, 0);
+	if (buflen == 0 || buflen == -1) {
+		free(full_path);
 		return ;
+	}
 	buf = (char *)malloc(buflen);
-	if (!buf)
+	if (!buf) {
+		free(full_path);
 		return ;
+	}
    // Copy the list of attribute keys to the buffer.
-   buflen = listxattr(f->name, buf, buflen);
-   if (buflen == -1)
+   buflen = listxattr(full_path, buf, buflen);
+   if (buflen == -1) {
+		free(full_path);
 		return ;
+   }
 	/*
 	* Loop over the list of zero terminated strings with the
 	* attribute keys. Use the remaining buffer length to determine
@@ -108,13 +118,15 @@ void setup_scontext(void * ptr) {
 	key = buf;
 	while (buflen > 0) {
 		/* Determine length of the value. */
-		vallen = getxattr(f->name, key, NULL, 0);
+		vallen = getxattr(full_path, key, NULL, 0);
 		if (vallen == -1 || vallen <= 0)
 		   perror("getxattr");
 		if (vallen > 0) {
-			if (!(val = (char *)malloc(vallen + 1)))
+			if (!(val = (char *)malloc(vallen + 1))) {
+				free(full_path);
 				return ;
-			vallen = getxattr(f->name, key, val, vallen);
+			}
+			vallen = getxattr(full_path, key, val, vallen);
 			if (vallen != -1) {
 				val[vallen] = 0;
 				f->scontext = ft_strjoin(f->scontext, val);
@@ -127,4 +139,5 @@ void setup_scontext(void * ptr) {
 		key += keylen;
 	}
 	free(buf);
+	free(full_path);
 }

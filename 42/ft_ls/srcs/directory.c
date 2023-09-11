@@ -97,8 +97,8 @@ void	list_directory(void * ptr1, void * ptr2) {
 	// Print separation, directory path and total size when needed
 	print_pre_listing(c, f, files);
 	// Setup Scontext if needed
-	if (c->scontext)
-			ft_lstiter(*files, setup_scontext);
+	if (c->scontext || c->format == long_format)
+		ft_lstiter(*files, setup_scontext);
 	// Setup the padding for the file listing, reset padding first
 	ft_bzero(&c->padding, sizeof(t_padding));
 	ft_lstiter_param(*files, setup_padding, c);

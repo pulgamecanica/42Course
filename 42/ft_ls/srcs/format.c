@@ -83,7 +83,7 @@ static void	print_scontext(t_file * f, t_conf * c) {
 
 	if (!(str = ft_calloc(sizeof(char), 10))) // I doubt we can reach paddings for numbers higher than 5 digits
 		return ;
-	sprintf(str, "%%%ds ", c->padding.scontext);
+	sprintf(str, "%%-%ds ", c->padding.scontext);
 	ft_printf(str, f->scontext ? f->scontext : "?");
 	free(str);
 }
