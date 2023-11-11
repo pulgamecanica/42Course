@@ -33,7 +33,7 @@ else ifeq ($(UNAME), FreeBSD)
 	CC = clang
 	LFLAGS += -lbsd -lXext -lX11 -lm
 else
-	CC	= gcc
+	CC	= cc
 	CFLAGS += -D LINUX
 	LFLAGS += -lbsd -lXext -lX11 -lm
 endif

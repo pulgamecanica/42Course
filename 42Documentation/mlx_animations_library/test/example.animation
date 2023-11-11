@@ -1,0 +1,10 @@
+assets/red_hood.xpm red_hood 32,38
+run 0,0,112,133 8 24
+run2 0,133,112,133, 7 60
+jump 784,133,112,133, 5 60
+shoot 112,266,112,133, 9, 32
+
+run mirrored
+run2
+jump
+shoot

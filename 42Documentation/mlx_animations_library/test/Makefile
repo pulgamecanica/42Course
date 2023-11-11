@@ -27,7 +27,7 @@ else ifeq ($(UNAME), FreeBSD)
 	CC = clang
 	LFLAGS += -lbsd -lXext -lX11 -lm
 else
-	CC	= gcc
+	CC	= cc
 	CFLAGS += -D LINUX
 	LFLAGS += -lbsd -lXext -lX11 -lm
 endif
@@ -35,7 +35,7 @@ endif
 all: $(NAME)
 
 $(NAME): ${BIN} ${OBJS} | ${LIB_MLX_ANIMATIONS}
-	${CC} ${OBJS} ${IFLAGS} ${LFLAGS} -o ${NAME}
+	${CC} ${OBJS} ${IFLAGS} -g ${LFLAGS} -o ${NAME}
 
 $(BIN)/%o: src/%c
 	${CC} -c $< ${CFLAGS} ${IFLAGS} -o $@

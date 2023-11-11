@@ -1,0 +1,12 @@
+assets/Cacodemon.xpm cacodemon 4
+idle 0,0,64,64 6 1
+atack1 0,64,64,64 6 2
+atack2 0,128,64,64 4s 4
+sleep 0,196,64,64 8 5
+
+sleep
+atack1
+atack1 mirrored
+sleep mirrored
+atack2
+atack2 mirrored

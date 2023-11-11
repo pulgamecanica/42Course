@@ -4,7 +4,7 @@ INS	= includes
 NAME	= libft.a
 LIB	= ar rc
 RL	= ranlib
-CC		= gcc
+CC		= cc
 RM		= rm -f
 CFLAGS	= -Wall -Wextra -Werror
 

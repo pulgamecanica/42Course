@@ -13,12 +13,7 @@ void	update_animation(t_animation * a) {
 }
 
 static void	_helper_destroy_img(void * ptr) {
-	t_img * img;
-
-	img = (t_img *)ptr;
-	if (!img)
-		return ;
-	destroy_image(*img);
+	destroy_image(ptr);
 }
 
 void	destroy_animation(void * ptr) {
@@ -27,8 +22,7 @@ void	destroy_animation(void * ptr) {
 	a = (t_animation *)ptr;
 	if (!a)
 		return ;
-	ft_lstiter(a->frames, _helper_destroy_img);
-	ft_lstclear(&a->frames, free);
+	ft_lstclear(&a->frames, _helper_destroy_img);
 	free(a->name);
 	free(a);
 }

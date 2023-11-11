@@ -10,7 +10,7 @@ typedef struct s_sprite {
 	t_list * animations;
 	char   * name;
 	char   * file_path;
-	t_img    sprite_img;
+	t_img  * sprite_img;
 	int      width;
 	int      height;
 	int      z_index;
@@ -21,6 +21,8 @@ typedef	struct sprite_slice {
 	int y;
 	int width;
 	int height;
+	int padding_x;
+	int padding_y;
 }	sprite_slice;
 
 typedef struct parsed_slice {

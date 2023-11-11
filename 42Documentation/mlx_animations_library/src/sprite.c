@@ -8,11 +8,13 @@
  **/
 
 t_sprite	new_sprite(char * name, char * file_path, t_win * win) {
-	t_img	img;
+	t_img	* img;
 
-	img = new_file_img(file_path, *win);
+	img = new_file_img(file_path, win);
+	if (!img)
+		exit (2);
 	return (t_sprite){NULL, ft_strdup(name),
-		ft_strdup(file_path), img, img.w, img.h, 0};
+		ft_strdup(file_path), img, img->w, img->h, 0};
 }
 
 static void	add_frame(t_animation * a, t_sprite s, sprite_slice slice, int mirrored) {
@@ -20,18 +22,17 @@ static void	add_frame(t_animation * a, t_sprite s, sprite_slice slice, int mirro
 	int			i;
 	int			j;
 
-	frame = (t_img *)calloc(sizeof(t_img), 1);
+	frame = new_img(slice.width - (slice.padding_x * 2), slice.height - (slice.padding_y * 2), s.sprite_img->win);
 	if (!frame)
 		exit (2);
-	*frame = new_img(slice.width, slice.height, s.sprite_img.win);
 	i = 0;
-	while(i < slice.width) {
+	while(i < slice.height - (slice.padding_y * 2)) {
 		j = 0;
-		while(j < slice.height) {
+		while(j < slice.width - (slice.padding_x * 2)) {
 			if (mirrored)
-				put_pixel_img(frame, slice.height - j - 1, i, get_pixel_img(&s.sprite_img, slice.x + j, slice.y + i));
+				put_pixel_img(frame, (slice.height - (slice.padding_y * 2)) - j - 1, i, get_pixel_img(s.sprite_img, slice.x + j + slice.padding_x, slice.y + i + slice.padding_y));
 			else
-				put_pixel_img(frame, j, i, get_pixel_img(&s.sprite_img, slice.x + j, slice.y + i));
+				put_pixel_img(frame, j, i, get_pixel_img(s.sprite_img, slice.x + j + slice.padding_x, slice.y + i + slice.padding_y));
 			j++;
 		}
 		i++;

@@ -13,13 +13,39 @@
  * 2 -> Memory allocation Error
  * 3 -> mlx return error, discrepancy
  **/
+static  void  parse_header_optional_padding(char ** list, int * padding_x, int * padding_y) {
+  char ** padding_list;
+
+  if (!list)
+    return ;
+  if (ft_list_size(list) != 3) {
+    free_list(list);
+    return ;
+  }
+  padding_list = ft_split(list[2], ',');
+  if (ft_list_size(padding_list) == 1) {
+    *padding_x = ft_atoi(padding_list[0]);
+    *padding_y = *padding_x;
+  } else if (ft_list_size(padding_list) == 2) {
+    *padding_x = ft_atoi(padding_list[0]);
+    *padding_y = ft_atoi(padding_list[1]); 
+  } else {
+    ft_printf(""
+      "%sload_file_sprite(win, path)\n\tparse_header_optional_padding(list, padding_x, padding_y)%s"
+      "\n\t\t[Line: 1] %sError parsing padding, must follow the correct formats:\n\t\t"
+      "%sOption 1%s path name padding\n\t\t%sOption 2%s path name padding_x,padding_y%s\n",
+      BLUE, GREEN, RED, GREEN, RED, GREEN, RED, ENDC);
+  }
+  free_list(padding_list);
+  free_list(list);
+}
 
 static  t_sprite  * parse_header(char ** list, t_win * win) {
   t_sprite  * s;
 
   if (!list)
     return NULL;
-  if (ft_list_size(list) != 2) {
+  if (ft_list_size(list) != 2 && ft_list_size(list) != 3) {
     free_list(list);
     return NULL;
   }
@@ -28,7 +54,7 @@ static  t_sprite  * parse_header(char ** list, t_win * win) {
     exit(2);
   ft_printf("%sNew Sprite%s %s %s\n", GREEN, ENDC, list[0], list[1]);
   *s = new_sprite(list[1], list[0], win);
-  if (!s->sprite_img.img_ptr) {
+  if (!s->sprite_img->img_ptr) {
     free(s);
     return NULL;
   }
@@ -36,7 +62,7 @@ static  t_sprite  * parse_header(char ** list, t_win * win) {
   return s;
 }
 
-static  parsed_slice  * new_parsed_slice(char ** list, int line_num) {
+static  parsed_slice  * new_parsed_slice(char ** list, int padding_x, int padding_y, int line_num) {
   parsed_slice  *   p_slice;
   char          **  slice_list;
 
@@ -68,7 +94,7 @@ static  parsed_slice  * new_parsed_slice(char ** list, int line_num) {
     free_list(slice_list);
     exit(2);
   }
-  p_slice->slice = (sprite_slice){ft_atoi(slice_list[0]), ft_atoi(slice_list[1]), ft_atoi(slice_list[2]), ft_atoi(slice_list[3])};
+  p_slice->slice = (sprite_slice){ft_atoi(slice_list[0]), ft_atoi(slice_list[1]), ft_atoi(slice_list[2]), ft_atoi(slice_list[3]), padding_x, padding_y};
   p_slice->name = ft_strdup(list[0]);
   p_slice->frames = ft_atoi(list[2]);
   p_slice->delay = ft_atoi(list[3]);
@@ -103,7 +129,7 @@ static void parse_animation(t_sprite * s, t_list * slices, char ** list, int lin
     exit(2);
   if (ft_list_size(list) != 1 && ft_list_size(list) != 2) {
     ft_printf(""
-      "%sload_file_sprite(win, path)\n\tparse_animation(sprite, slices, params, line_num)%s",
+      "%sload_file_sprite(win, path)\n\tparse_animation(sprite, slices, params, line_num)%s"
       "\n\t\t[Line: %d] %sError parsing animation, must follow the correct format:\n\t\t"
       "animation_name mirrored(optional)\n",
       BLUE, GREEN, line_num, RED, ENDC);
@@ -168,7 +194,11 @@ t_sprite * load_file_sprite(t_win * win, char * path) {
   char      * line;
   int         fd;
   int         line_num;
+  int         padding_x;
+  int         padding_y;
 
+  padding_x = 0;
+  padding_y = 0;
   if (((fd = open(path, O_RDONLY)) == -1)) {
     ft_printf("%sload_file_sprite(win, path)\n\topen(path, flags) %s\n\t\tError opening the file '%s'%s\n", BLUE, RED, path, ENDC);
     return NULL;
@@ -178,6 +208,7 @@ t_sprite * load_file_sprite(t_win * win, char * path) {
     return NULL;
   }
   s = parse_header(ft_split(line, ' '), win);
+  parse_header_optional_padding(ft_split(line, ' '), &padding_x, &padding_y);
   free(line);
   if (!s) {
     ft_printf("%sload_file_sprite(win, path)\n\tparse_header(list, win) %s\n\t\t[Line: 1] Wrong Header expected 'path name'%s\n", BLUE, RED, ENDC);
@@ -192,7 +223,7 @@ t_sprite * load_file_sprite(t_win * win, char * path) {
     if (!ft_strlen(line)) {
       break ;
     }
-    ft_lstadd_back(&slices, ft_lstnew(new_parsed_slice(ft_split(line, ' '), line_num)));
+    ft_lstadd_back(&slices, ft_lstnew(new_parsed_slice(ft_split(line, ' '), padding_x, padding_y, line_num)));
     free(line);
   }
   free(line);
