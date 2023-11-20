@@ -48,17 +48,13 @@ const char* Window::WindowIconNotLoadedException::what() const throw() {
 	return (lodepng_error_text(Window::iconpng_error));
 }
 
-// Window::Window(const Window& param) {
-// 	// TODO (copy constructor)
-// 	(void)param;
-// }
-
-// Window& Window::operator= (const Window& param) {
-// 	// TODO (Assignment operatior)
-// 	// std::swap()
-// 	(void)param;
-// 	return (*this);
-// }
+void Window::resizeWindow(int width, int height) {
+	std::cout << "new size: " << width << "x" << height << std::endl;
+	if (width > 0)
+		this->width = width;
+	if (height > 0)
+		this->height = height;
+}
 
 int Window::getWidth() const { return (width); }
 

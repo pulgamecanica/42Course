@@ -14,10 +14,9 @@ namespace scop {
 	    static unsigned int iconpng_error;
 			Window(int width, int height);
 			~Window();
-			// Window(const Window&);
 			int getWidth() const;
 			int getHeight() const;
-			// Window&	operator= (const Window&); // const for safety... not super nesessary
+			void resizeWindow(int width, int height);
 	    GLFWwindow* glfw_window;
 
 	    class GLFWFailedException : public std::exception {
@@ -29,8 +28,6 @@ namespace scop {
 					virtual const char* what() const throw();
 			};
 		private:
-	    void resizeGLFWindow();
-
 	    int width;
 	    int height;
 	    /**

@@ -34,13 +34,15 @@ namespace scop {
 			ScopStatus getStatus() const;
 			bool checkStatus(ScopStatus status) const;
 			void runScop();
-			// Scop(const Scop&);
-			// Scop&	operator= (const Scop&); // const for safety... not super nesessary
+			void keyEvent(int key, int action, int mods);
+			void mouseButtonEvent(int key, int action, int mods);
+			void mouseMoveEvent(double xpos, double ypos);
+			void resize(int width, int height);
 		private:
-			ScopStatus		status;
-			scop::Window	win;
-			uint64_t			created_at;
-			uint64_t			updated_at;
+			ScopStatus			status;
+			scop::Window	*	win;
+			uint64_t				created_at;
+			uint64_t				updated_at;
 	};
 	std::ostream&	operator<<(std::ostream&, const Scop&);
 }
