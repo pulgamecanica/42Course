@@ -13,6 +13,7 @@ namespace scop {
 			Triangle(point & a, point & b, point & c);
 			~Triangle();
 	    virtual bool	isHovered (point & p) const;
+			virtual void	draw() const;
  			const point getA() const;
  			const point getB() const;
  			const point getC() const;

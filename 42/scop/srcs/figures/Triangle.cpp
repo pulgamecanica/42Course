@@ -42,6 +42,23 @@ bool	Triangle::isHovered (point & p) const {
 	return (s >= 0 && t >= 0 && 1 - s - t >= 0);
 }
 
+void	Triangle::draw() const {
+	int max_x;
+	int max_y;
+
+	max_x = (a.x > b.x) ? ((a.x > c.x) ? a.x : c.x) : (b.x > c.x) ? b.x : c.x; 
+	max_y = (a.y > b.y) ? ((a.y > c.y) ? a.y : c.y) : (b.y > c.y) ? b.y : c.y; 
+
+	for (int i = max_y - 1; i >= 0; --i) {
+      for (int j = 0; j < max_x; ++j) {
+          scop::point p{(float)j, (float)i};
+          std::cout << (isHovered(p) ? "." : " " ); 
+      }
+      std::cout << std::endl;
+  }
+}
+
+
 std::ostream& scop::operator<<(std::ostream& s, const Triangle& param) {
 	s << "Triangle" << " A[" << param.getA().x << "," << param.getA().y << "]" << " B[" << param.getB().x << "," << param.getB().y << "]" << " C[" << param.getC().x << "," << param.getC().y << "]";
 	return (s);

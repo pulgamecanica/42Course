@@ -25,21 +25,17 @@ int main(void) {
     } catch (const scop::Window::WindowIconNotLoadedException& e) {
         std::cout << "Window Icon Exception: " << RED << e.what() << ENDC << std::endl;
         return -1;
+    } catch (const std::exception& e) {
+        std::cout << "Error: " << RED << e.what() << ENDC << std::endl;
     }
     {
         scop::point a{0.0f, 0};
-        scop::point b{3.0f, 9.0f};
-        scop::point c{16.0f, 4.0f};
+        scop::point b{30.0f, 4.0f};
+        scop::point c{42.0f, 22.0f};
         scop::Triangle t(a, b, c);
 
         std::cout << BLUE << t << ENDC << std::endl;
-        for (int i = 10; i >= 0; --i) {
-            for (int j = 0; j < 20; ++j) {
-                scop::point p{(float)j, (float)i};
-                std::cout << (t.isHovered(p) ? "." : " " ); 
-            }
-            std::cout << std::endl;
-        }
+        t.draw();
     }
 
     /* Run the program until it's no longer required */

@@ -3,13 +3,13 @@
 #MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
 NAME	=	scop
 
-SRC	=	$(wildcard srcs/*.cpp)
+SRC	=	$(wildcard srcs/*.cpp srcs/figures/*.cpp)
 
 CFLAGS	=	-Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address
 
 LDFLAGS = -lGL -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
-INC	=	-I includes
+INC	=	-I includes -I includes/figures
 
 OBJS_D	=	objs
 
@@ -39,6 +39,7 @@ $(VULKAN_HPP):
 
 $(OBJS_D)/%.o:srcs/%.cpp
 	@mkdir -p $(OBJS_D)
+	@mkdir -p $(OBJS_D)/figures
 	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
 $(NAME):	$(OBJ)

@@ -37,6 +37,7 @@ Window::Window(int width, int height) {
 }
 
 Window::~Window() {
+  glfwDestroyWindow(glfw_window);
 	glfwTerminate();
 	std::cout << *this << " destroyed" << std::endl;
 }

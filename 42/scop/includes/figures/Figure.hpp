@@ -13,20 +13,22 @@ namespace scop {
 	} point;
 	class Figure {
 		public:
-			Figure(point pos); // Make constructor provate in order to make this object abstract
 			~Figure();
-			// virtual void	draw() const;
+			virtual void	draw() const;
 			// virtual float area() const;
 			// virtual float perimeter() const;
-			virtual bool	isHovered(point & pos) const;
 			float 				getX() const;
 			float 				getY() const;
 		protected:
 			const point pos;
+			Figure(point pos); // Make constructor protected = abstract object
 			//BorderColor border_color;
 			//BackgroundColor bg_color;
 			//BackgroundImage bg_image;
 			//BackgroundText bg_text;
+		private:
+			// In order to disable this function from being called
+			virtual bool	isHovered(point & pos) const;
 
 	};
 	std::ostream&	operator<<(std::ostream&, const Figure&);

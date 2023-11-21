@@ -6,7 +6,6 @@
 using namespace scop;
 
 Figure::Figure(point position): pos(position) {
-	// TODO (default constructor)
 }
 
 Figure::~Figure() {
@@ -17,6 +16,8 @@ bool	Figure::isHovered(point & pos) const {
 	(void)pos;
 	return false;
 };
+
+void	Figure::draw() const {};
 
 float	Figure::getX() const { return (pos.x); };
 
