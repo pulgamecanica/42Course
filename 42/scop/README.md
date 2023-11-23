@@ -86,9 +86,11 @@ Now it will work, and the window mouse move even will call our object function!!
 
 [Compilation Guide](https://www.glfw.org/docs/latest/build_guide.html)
 
-
+***
 
 ### Using Vulkan (to compute and render the project graphics)
+
+I followed this tutorial to setup Vulkan: [Tutorial](https://vulkan-tutorial.com/en)
 
 Vulkan is a platform agnostic API, meaning that it's free of any ties with a specific platform. This is in part, why it cannot interact with the windowing system. Because it is different in all platforms.
 In order to start using Vulkan and render to a window, you need to integrate Vulkan with a Windowing System (which in this cas is GLFW)
@@ -109,3 +111,12 @@ Dependencies:
 - GLFW, for Window and events handling
 - Vulkan, rendering API
 - lodepng, to load the Window png icon
+
+***
+
+### LEAKS
+
+After calling `vkEnumeratePhysicalDevices` there is a leak
+This is a known leak from mesa RADV drivers.
+pixelcluster - Valve from Vulkan's Discord, who also works at RADV will look into it and fix it
+For now, suppress this leak until it's fixed

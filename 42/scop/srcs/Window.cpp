@@ -12,14 +12,14 @@ unsigned int Window::iconpng_error = 0;
 Window::Window(int width, int height) {
 	this->width = width;
 	this->height = height;
+	// Very important to set up Client API or else glfwCreateWindowSurface will just return error
+	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 	this->glfw_window = glfwCreateWindow(width, height, "42 Pulga Scop", NULL, NULL);
   if (!this->glfw_window) {
       glfwTerminate();
       throw GLFWFailedException();
   } else {
   	glfwSetWindowAttrib(this->glfw_window, GLFW_RESIZABLE, GLFW_TRUE);
-  	glfwMakeContextCurrent(this->glfw_window);
-    glClearColor(0.42, 0.42, 0.42, 0);
   }
   /**
    * Decode pixels for GLFWimage using external library:

@@ -44,9 +44,7 @@
 class GUIContainer {
 	public:
 		GUIContainer();
-		GUIContainer(const GUIContainer&);
 		~GUIContainer();
-		GUIContainer&	operator= (const GUIContainer&); // const for safety... not super nesessary
 		// virtual void drawContainer() const;
 	private:
 		int width;

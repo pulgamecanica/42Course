@@ -35,7 +35,7 @@ int main(void) {
         scop::Triangle t(a, b, c);
 
         std::cout << BLUE << t << ENDC << std::endl;
-        t.draw();
+        // t.draw();
     }
 
     /* Run the program until it's no longer required */

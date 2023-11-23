@@ -5,7 +5,7 @@ NAME	=	scop
 
 SRC	=	$(wildcard srcs/*.cpp srcs/figures/*.cpp)
 
-CFLAGS	=	-Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address
+CFLAGS	=	-Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address -fno-omit-frame-pointer
 
 LDFLAGS = -lGL -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
@@ -76,11 +76,11 @@ build_fedora: $(VULKAN_HPP)
 test:	re
 	@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 	@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-	-@./$(NAME)
+	-LSAN_OPTIONS=suppressions=suppressions.supp ./$(NAME)
 	@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 	@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 	@$(MAKE) show --no-print-directory
-	@$(MAKE) fclean --no-print-directory
+# 	@$(MAKE) fclean --no-print-directory
 
 clean:
 	$(RM) $(OBJS_D)
