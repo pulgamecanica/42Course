@@ -18,6 +18,8 @@
 #include <vector>
 #include <set>
 #include <optional>
+#include <limits>
+#include <algorithm>
 
 
 namespace scop {
@@ -32,30 +34,46 @@ namespace scop {
       return graphicsFamily.has_value() && presentFamily.has_value();
     }
   };
+  struct SwapChainSupportDetails {
+    VkSurfaceCapabilitiesKHR capabilities;
+    std::vector<VkSurfaceFormatKHR> formats;
+    std::vector<VkPresentModeKHR> presentModes;
+	};
 	class Vulkan42 {
 		public:
 			Vulkan42(const Window & win);
 			~Vulkan42();
 		private:
-			void 							createVkInstance(const char * application_name);
-			bool							isPhysicalDeviceSuitable(VkPhysicalDevice device);
-			void							pickFirstSuitablePhysicalDevice();
-			QueueFamInd				findQueueFamilies(VkPhysicalDevice device);
-			void							createLogicalDevice();
-			void							createSurface();
-			bool				 			checkDeviceExtensionSupport(VkPhysicalDevice device);
-		
-			VkInstance	  		instance;
-      VkSurfaceKHR      surface;
+			void 										createVkInstance(const char * application_name);
+			void										createSwapChain();
+			void										createSurface();
+			void										createLogicalDevice();
+			void										createImageViews();
+			void										pickFirstSuitablePhysicalDevice();
+			bool										isPhysicalDeviceSuitable(VkPhysicalDevice device);
+			bool				 						checkDeviceExtensionSupport(VkPhysicalDevice device);
+			QueueFamInd							findQueueFamilies(VkPhysicalDevice device);
+			SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device, bool debug);
+			VkSurfaceFormatKHR 			chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+			VkPresentModeKHR 				chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+			VkExtent2D							chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+
+			VkInstance	  						instance;
+      VkSurfaceKHR      				surface;
+      VkSwapchainKHR						swapChain;
+			VkExtent2D								swapChainExtent;
+			VkFormat									swapChainImageFormat;
+			std::vector<VkImage> 			swapChainImages;
+			std::vector<VkImageView>	swapChainImageViews;
 			/* 
        * A physical device in this case could be a Graphics Card for example
        * In my case, the device selected is: AMD Radeon Vega 3 Graphics (RADV RAVEN2)
        */
-			VkPhysicalDevice	physicalDevice;
-      VkDevice          device;
-			VkQueue           graphicsQueue;
-      VkQueue           presentQueue;
-			const Window	&		win;
+			VkPhysicalDevice					physicalDevice;
+      VkDevice          				device;
+			VkQueue           				graphicsQueue;
+      VkQueue           				presentQueue;
+			const Window	&						win;
 	};
 	std::ostream&	operator<<(std::ostream&, const Vulkan42&);
 }
