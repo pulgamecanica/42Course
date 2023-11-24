@@ -27,13 +27,14 @@ namespace scop {
       Scop();
       ~Scop();
       ScopStatus  getStatus() const;
-      bool        checkStatus(ScopStatus status) const;
       void        runScop();
       void        keyEvent(int key, int action, int mods);
       void        mouseButtonEvent(int key, int action, int mods);
       void        mouseMoveEvent(double xpos, double ypos);
       void        resize(int width, int height);
     private:
+      bool        checkStatus(ScopStatus status) const;
+      
       ScopStatus  status;
       Vulkan42  *       vulkan;
       Window  *         win;

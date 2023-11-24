@@ -23,7 +23,7 @@
 
 
 namespace scop {
-	struct QueueFamInd {
+  struct QueueFamInd {
     // C++17 feature
     // std::optional is a wrapper that contains no value until you assign something to it.
     // At any point you can query if it contains a value or not by calling its has_value()
@@ -38,44 +38,64 @@ namespace scop {
     VkSurfaceCapabilitiesKHR capabilities;
     std::vector<VkSurfaceFormatKHR> formats;
     std::vector<VkPresentModeKHR> presentModes;
-	};
-	class Vulkan42 {
-		public:
-			Vulkan42(const Window & win);
-			~Vulkan42();
-		private:
-			void 										createVkInstance(const char * application_name);
-			void										createSwapChain();
-			void										createSurface();
-			void										createLogicalDevice();
-			void										createImageViews();
-			void										pickFirstSuitablePhysicalDevice();
-			bool										isPhysicalDeviceSuitable(VkPhysicalDevice device);
-			bool				 						checkDeviceExtensionSupport(VkPhysicalDevice device);
-			QueueFamInd							findQueueFamilies(VkPhysicalDevice device);
-			SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device, bool debug);
-			VkSurfaceFormatKHR 			chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
-			VkPresentModeKHR 				chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
-			VkExtent2D							chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+  };
+  class Vulkan42 {
+    public:
+      Vulkan42(const Window & win);
+      ~Vulkan42();
+      void                    drawFrame();
+    private:
+      void                    createVkInstance(const char * application_name);
+      void                    createSwapChain();
+      void                    createSurface();
+      void                    createLogicalDevice();
+      void                    createImageViews();
+      void                    createGraphicsPipeline();
+      void                    createRenderPass();
+      void                    createFramebuffers();
+      void                    createCommandPool();
+      void                    createCommandBuffer();
+      void                    createSyncObjects();
+      void                    pickFirstSuitablePhysicalDevice();
+      bool                    isPhysicalDeviceSuitable(VkPhysicalDevice device);
+      bool                    checkDeviceExtensionSupport(VkPhysicalDevice device);
+      VkShaderModule          createShaderModule(const std::vector<char>& code);
+      QueueFamInd             findQueueFamilies(VkPhysicalDevice device);
+      SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device, bool debug);
+      VkSurfaceFormatKHR      chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+      VkPresentModeKHR        chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+      VkExtent2D              chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+      void                    recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 
-			VkInstance	  						instance;
-      VkSurfaceKHR      				surface;
-      VkSwapchainKHR						swapChain;
-			VkExtent2D								swapChainExtent;
-			VkFormat									swapChainImageFormat;
-			std::vector<VkImage> 			swapChainImages;
-			std::vector<VkImageView>	swapChainImageViews;
-			/* 
+
+
+      VkSemaphore                 imageAvailableSemaphore;
+      VkSemaphore                 renderFinishedSemaphore;
+      VkFence                     inFlightFence;
+      VkInstance                  instance;
+      VkSurfaceKHR                surface;
+      VkSwapchainKHR              swapChain;
+      VkExtent2D                  swapChainExtent;
+      VkFormat                    swapChainImageFormat;
+      VkRenderPass                renderPass;
+      VkPipelineLayout            pipelineLayout;
+      VkPipeline                  graphicsPipeline;
+      VkCommandBuffer             commandBuffer;
+      VkCommandPool               commandPool;
+      std::vector<VkImage>        swapChainImages;
+      std::vector<VkImageView>    swapChainImageViews;
+      std::vector<VkFramebuffer>  swapChainFramebuffers;
+      /* 
        * A physical device in this case could be a Graphics Card for example
        * In my case, the device selected is: AMD Radeon Vega 3 Graphics (RADV RAVEN2)
        */
-			VkPhysicalDevice					physicalDevice;
-      VkDevice          				device;
-			VkQueue           				graphicsQueue;
-      VkQueue           				presentQueue;
-			const Window	&						win;
-	};
-	std::ostream&	operator<<(std::ostream&, const Vulkan42&);
+      VkPhysicalDevice             physicalDevice;
+      VkDevice                     device;
+      VkQueue                      graphicsQueue;
+      VkQueue                      presentQueue;
+      const Window  &              win;
+  };
+  std::ostream& operator<<(std::ostream&, const Vulkan42&);
 }
 #endif
 

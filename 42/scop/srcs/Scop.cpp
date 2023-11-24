@@ -78,15 +78,18 @@ void Scop::runScop() {
       // glClear(GL_COLOR_BUFFER_BIT);
 
       /* Swap front and back buffers */
-      glfwSwapBuffers(win->glfw_window);
+      // glfwSwapBuffers(win->glfw_window);
 
       /* Poll for and process events */
       glfwPollEvents();
       
+      vulkan->drawFrame();
       if (timestamp_in_ms(updated_at) < 1000) {
           fps++;
           continue;
       }
+      // WAIT FOR FPS HERE:
+
       updated_at = gettimeofday_ms();
       std::cout << "[" << GREEN << updated_at - created_at << ENDC << "] " << fps << " fps " << YELLOW << (status == ScopStatus::Menu ? "Menu" : status == ScopStatus::Settings ? "Settings" : "Rendering") << ENDC << std::endl;
       fps = 0;
