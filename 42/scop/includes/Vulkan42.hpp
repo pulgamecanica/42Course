@@ -40,6 +40,7 @@ namespace scop {
     std::vector<VkPresentModeKHR> presentModes;
   };
   class Vulkan42 {
+    static const int MAX_FRAMES_IN_FLIGHT;
     public:
       Vulkan42(const Window & win);
       ~Vulkan42();
@@ -54,8 +55,10 @@ namespace scop {
       void                    createRenderPass();
       void                    createFramebuffers();
       void                    createCommandPool();
-      void                    createCommandBuffer();
+      void                    createCommandBuffers();
       void                    createSyncObjects();
+      void                    recreateSwapChain();
+      void                    cleanupSwapChain();
       void                    pickFirstSuitablePhysicalDevice();
       bool                    isPhysicalDeviceSuitable(VkPhysicalDevice device);
       bool                    checkDeviceExtensionSupport(VkPhysicalDevice device);
@@ -68,32 +71,33 @@ namespace scop {
       void                    recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
 
 
-
-      VkSemaphore                 imageAvailableSemaphore;
-      VkSemaphore                 renderFinishedSemaphore;
-      VkFence                     inFlightFence;
-      VkInstance                  instance;
-      VkSurfaceKHR                surface;
-      VkSwapchainKHR              swapChain;
-      VkExtent2D                  swapChainExtent;
-      VkFormat                    swapChainImageFormat;
-      VkRenderPass                renderPass;
-      VkPipelineLayout            pipelineLayout;
-      VkPipeline                  graphicsPipeline;
-      VkCommandBuffer             commandBuffer;
-      VkCommandPool               commandPool;
-      std::vector<VkImage>        swapChainImages;
-      std::vector<VkImageView>    swapChainImageViews;
-      std::vector<VkFramebuffer>  swapChainFramebuffers;
+      uint32_t                      currentFrame;
+      VkInstance                    instance;
+      VkSurfaceKHR                  surface;
+      VkSwapchainKHR                swapChain;
+      VkExtent2D                    swapChainExtent;
+      VkFormat                      swapChainImageFormat;
+      VkRenderPass                  renderPass;
+      VkPipelineLayout              pipelineLayout;
+      VkPipeline                    graphicsPipeline;
+      VkCommandBuffer               commandBuffer;
+      VkCommandPool                 commandPool;
+      std::vector<VkImage>          swapChainImages;
+      std::vector<VkImageView>      swapChainImageViews;
+      std::vector<VkFramebuffer>    swapChainFramebuffers;
+      std::vector<VkCommandBuffer>  commandBuffers;
+      std::vector<VkSemaphore>      imageAvailableSemaphores;
+      std::vector<VkSemaphore>      renderFinishedSemaphores;
+      std::vector<VkFence>          inFlightFences;
       /* 
        * A physical device in this case could be a Graphics Card for example
        * In my case, the device selected is: AMD Radeon Vega 3 Graphics (RADV RAVEN2)
        */
-      VkPhysicalDevice             physicalDevice;
-      VkDevice                     device;
-      VkQueue                      graphicsQueue;
-      VkQueue                      presentQueue;
-      const Window  &              win;
+      VkPhysicalDevice               physicalDevice;
+      VkDevice                       device;
+      VkQueue                        graphicsQueue;
+      VkQueue                        presentQueue;
+      const Window  &                win;
   };
   std::ostream& operator<<(std::ostream&, const Vulkan42&);
 }
