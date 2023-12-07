@@ -1,3 +1,6 @@
 [submodule "42/scop/42/scop/imgui"]
 	path = 42/scop/42/scop/imgui
 	url = https://github.com/ocornut/imgui
+[submodule "42/scop/imgui"]
+	path = 42/scop/imgui
+	url = https://github.com/ocornut/imgui
