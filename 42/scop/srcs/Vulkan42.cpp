@@ -8,13 +8,21 @@ using namespace scop;
 
 const int Vulkan42::MAX_FRAMES_IN_FLIGHT = 2;
 
+const std::vector<Vertex> vertices = {
+    {{0.0f, -0.5f}, {1.0f, 0.0f, 0.0f}},
+    {{0.5f, 0.5f}, {0.0f, 1.0f, 0.0f}},
+    {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
+};
+
 static const std::vector<const char*> deviceExtensions = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
-Vulkan42::Vulkan42(const Window & win): win(win) {
+Vulkan42::Vulkan42(Window * & win): win(win) {
   physicalDevice = VK_NULL_HANDLE;
   device         = VK_NULL_HANDLE;
+  pipelineCache = VK_NULL_HANDLE;
+  descriptorPool = VK_NULL_HANDLE;
   currentFrame   = 0;
 
   createVkInstance("Scop");
@@ -24,11 +32,84 @@ Vulkan42::Vulkan42(const Window & win): win(win) {
   createSwapChain();
   createImageViews();
   createRenderPass();
+  createBindingDescriptionAndAttributeDescriptions();
   createGraphicsPipeline();
   createFramebuffers();
   createCommandPool();
+  createVertexBuffer();
   createCommandBuffers();
   createSyncObjects();
+  // createDescriptorPool();
+
+  VkDescriptorPoolSize pool_sizes[] =
+  {
+      { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1 },
+  };
+
+  VkDescriptorPoolCreateInfo pool_info = {};
+  pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+  pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+  pool_info.maxSets = 1;
+  pool_info.poolSizeCount = (uint32_t)IM_ARRAYSIZE(pool_sizes);
+  pool_info.pPoolSizes = pool_sizes;
+
+  if (vkCreateDescriptorPool(device, &pool_info, nullptr, &descriptorPool) != VK_SUCCESS)
+      throw std::runtime_error("failed to initialize descriptor pool");
+}
+
+VkInstance &  Vulkan42::getInstance() {
+  return instance;
+}
+
+VkDevice & Vulkan42::getDevice() {
+  return device;
+}
+
+ImGui_ImplVulkanH_Window * Vulkan42::getImGui_ImplVulkanH_Window() const { 
+    int width, height;
+    
+    glfwGetFramebufferSize(win->glfw_window, &width, &height);
+    ImGui_ImplVulkanH_Window * wd = (ImGui_ImplVulkanH_Window *)calloc(sizeof(ImGui_ImplVulkanH_Window), 1);
+    if (!wd)
+      return (NULL);
+    wd->Surface = surface;
+    SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice, false);
+    wd->SurfaceFormat = chooseSwapSurfaceFormat(swapChainSupport.formats);
+    wd->PresentMode = chooseSwapPresentMode(swapChainSupport.presentModes);
+
+    uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;
+    if (swapChainSupport.capabilities.maxImageCount > 0 && imageCount > swapChainSupport.capabilities.maxImageCount) {
+      imageCount = swapChainSupport.capabilities.maxImageCount;
+    }
+    
+    QueueFamInd indices = findQueueFamilies(physicalDevice);
+    ImGui_ImplVulkanH_CreateOrResizeWindow(instance, physicalDevice, device, wd, indices.graphicsFamily.value(), nullptr, width, height, imageCount);
+    return (wd);
+}
+
+ImGui_ImplVulkan_InitInfo Vulkan42::getImGui_ImplVulkan_InitInfo() const {
+  QueueFamInd indices = findQueueFamilies(physicalDevice);
+  SwapChainSupportDetails swapChainSupport = querySwapChainSupport(physicalDevice, false);
+  
+  uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;
+  if (swapChainSupport.capabilities.maxImageCount > 0 && imageCount > swapChainSupport.capabilities.maxImageCount) {
+    imageCount = swapChainSupport.capabilities.maxImageCount;
+  }
+  ImGui_ImplVulkan_InitInfo init_info = {};
+  init_info.Instance = instance;
+  init_info.PhysicalDevice = physicalDevice;
+  init_info.Device = device;
+  init_info.QueueFamily = indices.graphicsFamily.value();
+  init_info.Queue = graphicsQueue;
+  init_info.PipelineCache = pipelineCache;
+  init_info.DescriptorPool = descriptorPool;
+  init_info.Subpass = 0;
+  init_info.MinImageCount = swapChainSupport.capabilities.minImageCount;
+  init_info.ImageCount = imageCount;
+  init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
+  init_info.Allocator = nullptr;
+  // init_info.CheckVkResultFn = check_vk_result;
+  return (init_info);
 }
 
 void  Vulkan42::createVkInstance(const char * application_name) {
@@ -76,7 +157,7 @@ void  Vulkan42::createVkInstance(const char * application_name) {
 }
 
 void Vulkan42::createSurface() {
-  if (glfwCreateWindowSurface(instance, win.glfw_window, nullptr, &surface) != VK_SUCCESS) {
+  if (glfwCreateWindowSurface(instance, win->glfw_window, nullptr, &surface) != VK_SUCCESS) {
       throw std::runtime_error("failed to create window surface!");
   }
 }
@@ -153,7 +234,20 @@ void  Vulkan42::pickFirstSuitablePhysicalDevice() {
   }
 }
 
-QueueFamInd Vulkan42::findQueueFamilies(VkPhysicalDevice device) {
+uint32_t Vulkan42::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
+  VkPhysicalDeviceMemoryProperties memProperties;
+  
+  vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
+  for (uint32_t i = 0; i < memProperties.memoryTypeCount; i++) {
+    // Note: 1 << i will result on 2^i => 0001, 0010, 0100, 1000 = 1, 2, 4, 8
+    if ((typeFilter & (1 << i)) && (memProperties.memoryTypes[i].propertyFlags & properties) == properties) {
+        return i;
+    }
+  }
+  throw std::runtime_error("failed to find suitable memory type!");
+}
+
+QueueFamInd Vulkan42::findQueueFamilies(VkPhysicalDevice device) const {
   QueueFamInd indices;
 
   uint32_t queueFamilyCount = 0;
@@ -321,6 +415,22 @@ void Vulkan42::createRenderPass() {
   }
 }
 
+void  Vulkan42::createBindingDescriptionAndAttributeDescriptions() {
+  bindingDescription.binding = 0;
+  bindingDescription.stride = sizeof(Vertex);
+  bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+
+  bindingAttributeDescriptions.resize(2);
+  bindingAttributeDescriptions[0].binding = 0;
+  bindingAttributeDescriptions[0].location = 0;
+  bindingAttributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
+  bindingAttributeDescriptions[0].offset = offsetof(Vertex, pos);
+  bindingAttributeDescriptions[1].binding = 0;
+  bindingAttributeDescriptions[1].location = 1;
+  bindingAttributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
+  bindingAttributeDescriptions[1].offset = offsetof(Vertex, color);
+}
+
 void  Vulkan42::createGraphicsPipeline() {
   std::vector<char> vertShaderCode = readFile("shaders/bin/vert.spv");
   std::vector<char> fragShaderCode = readFile("shaders/bin/frag.spv");
@@ -344,8 +454,10 @@ void  Vulkan42::createGraphicsPipeline() {
 
   VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
   vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-  vertexInputInfo.vertexBindingDescriptionCount = 0;
-  vertexInputInfo.vertexAttributeDescriptionCount = 0;
+  vertexInputInfo.vertexBindingDescriptionCount = 1;
+  vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(bindingAttributeDescriptions.size());
+  vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
+  vertexInputInfo.pVertexAttributeDescriptions = bindingAttributeDescriptions.data();
 
   VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
   inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -478,15 +590,26 @@ void Vulkan42::createCommandPool() {
   }
 }
 
-void Vulkan42::createCommandBuffers() {
-  commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
+void Vulkan42::createVertexBuffer() {
+  VkBufferCreateInfo bufferInfo{};
+  bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+  bufferInfo.size = sizeof(Vertex) * vertices.size();
+  bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+  bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
+  if (vkCreateBuffer(device, &bufferInfo, nullptr, &vertexBuffer) != VK_SUCCESS) {
+    throw std::runtime_error("failed to create vertex buffer!");
+  }
+}
+
+void Vulkan42::createCommandBuffers() {
   VkCommandBufferAllocateInfo allocInfo{};
   allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
   allocInfo.commandPool = commandPool;
   allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
   allocInfo.commandBufferCount = (uint32_t) MAX_FRAMES_IN_FLIGHT;
 
+  commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
   if (vkAllocateCommandBuffers(device, &allocInfo, commandBuffers.data()) != VK_SUCCESS) {
       throw std::runtime_error("failed to allocate command buffers!");
   }
@@ -562,7 +685,7 @@ void Vulkan42::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t image
     }
 }
 
-SwapChainSupportDetails Vulkan42::querySwapChainSupport(VkPhysicalDevice device, bool debug) {
+SwapChainSupportDetails Vulkan42::querySwapChainSupport(VkPhysicalDevice device, bool debug) const {
     SwapChainSupportDetails details;
     vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface, &details.capabilities);
 
@@ -602,7 +725,7 @@ SwapChainSupportDetails Vulkan42::querySwapChainSupport(VkPhysicalDevice device,
     return details;
 }
 
-VkSurfaceFormatKHR Vulkan42::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) {
+VkSurfaceFormatKHR Vulkan42::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) const {
   for (const VkSurfaceFormatKHR& availableFormat : availableFormats) {
     if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
         return availableFormat;
@@ -611,7 +734,7 @@ VkSurfaceFormatKHR Vulkan42::chooseSwapSurfaceFormat(const std::vector<VkSurface
   return availableFormats[0];
 }
 
-VkPresentModeKHR Vulkan42::chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes) {
+VkPresentModeKHR Vulkan42::chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes) const {
   for (const VkPresentModeKHR& availablePresentMode : availablePresentModes) {
    if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
       return availablePresentMode;
@@ -625,7 +748,7 @@ VkExtent2D Vulkan42::chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabiliti
     return capabilities.currentExtent;
   } else {
     int width, height;
-    glfwGetFramebufferSize(win.glfw_window, &width, &height);
+    glfwGetFramebufferSize(win->glfw_window, &width, &height);
 
     VkExtent2D actualExtent = {
         static_cast<uint32_t>(width),
@@ -723,6 +846,8 @@ void Vulkan42::cleanupSwapChain() {
 
 Vulkan42::~Vulkan42() {
   cleanupSwapChain();
+  vkDestroyDescriptorPool(device, descriptorPool, nullptr);
+  vkDestroyBuffer(device, vertexBuffer, nullptr);
   vkDestroyCommandPool(device, commandPool, nullptr);
   vkDestroyPipeline(device, graphicsPipeline, nullptr);
   vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
@@ -732,7 +857,8 @@ Vulkan42::~Vulkan42() {
     vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
     vkDestroyFence(device, inFlightFences[i], nullptr);
   }
-  vkDestroySurfaceKHR(instance, surface, nullptr);
+  // Surface destroyed by the GUI window for some strange reason ... like WTF ...
+  // vkDestroySurfaceKHR(instance, surface, nullptr);
   vkDestroyDevice(device, nullptr);
   // vkDestroyInstance(instance, nullptr);
   std::cout << "Vulkan42" << " destroyed" << std::endl;

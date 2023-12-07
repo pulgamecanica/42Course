@@ -11,6 +11,8 @@
 # ifndef GLFW_INCLUDE_VULKAN
 # define GLFW_INCLUDE_VULKAN
 # endif
+// #include "imgui_impl_glfw.h"
+#include "imgui_impl_vulkan.h"
 #include <GLFW/glfw3.h>
 #include "colors.hpp"
 #include "Window.hpp"
@@ -20,9 +22,14 @@
 #include <optional>
 #include <limits>
 #include <algorithm>
+#include <glm/glm.hpp>
 
 
 namespace scop {
+  struct Vertex {
+    glm::vec2 pos;
+    glm::vec3 color;
+  };
   struct QueueFamInd {
     // C++17 feature
     // std::optional is a wrapper that contains no value until you assign something to it.
@@ -42,9 +49,13 @@ namespace scop {
   class Vulkan42 {
     static const int MAX_FRAMES_IN_FLIGHT;
     public:
-      Vulkan42(const Window & win);
+      Vulkan42(Window * & win);
       ~Vulkan42();
-      void                    drawFrame();
+      void                        drawFrame();
+      VkInstance &                getInstance();
+      VkDevice &                  getDevice();
+      ImGui_ImplVulkan_InitInfo   getImGui_ImplVulkan_InitInfo() const;
+      ImGui_ImplVulkanH_Window *  getImGui_ImplVulkanH_Window() const;
     private:
       void                    createVkInstance(const char * application_name);
       void                    createSwapChain();
@@ -55,21 +66,23 @@ namespace scop {
       void                    createRenderPass();
       void                    createFramebuffers();
       void                    createCommandPool();
+      void                    createVertexBuffer();
       void                    createCommandBuffers();
       void                    createSyncObjects();
+      void                    createBindingDescriptionAndAttributeDescriptions();
       void                    recreateSwapChain();
       void                    cleanupSwapChain();
       void                    pickFirstSuitablePhysicalDevice();
       bool                    isPhysicalDeviceSuitable(VkPhysicalDevice device);
       bool                    checkDeviceExtensionSupport(VkPhysicalDevice device);
       VkShaderModule          createShaderModule(const std::vector<char>& code);
-      QueueFamInd             findQueueFamilies(VkPhysicalDevice device);
-      SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device, bool debug);
-      VkSurfaceFormatKHR      chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
-      VkPresentModeKHR        chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+      QueueFamInd             findQueueFamilies(VkPhysicalDevice device) const;
+      SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device, bool debug) const;
+      VkSurfaceFormatKHR      chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats) const;
+      VkPresentModeKHR        chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes) const;
       VkExtent2D              chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
       void                    recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
-
+      uint32_t                findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
 
       uint32_t                      currentFrame;
       VkInstance                    instance;
@@ -82,6 +95,14 @@ namespace scop {
       VkPipeline                    graphicsPipeline;
       VkCommandBuffer               commandBuffer;
       VkCommandPool                 commandPool;
+      VkBuffer                      vertexBuffer;
+
+      VkPipelineCache               pipelineCache;
+      VkDescriptorPool              descriptorPool;
+
+      VkVertexInputBindingDescription bindingDescription;
+      std::vector<VkVertexInputAttributeDescription> bindingAttributeDescriptions;
+
       std::vector<VkImage>          swapChainImages;
       std::vector<VkImageView>      swapChainImageViews;
       std::vector<VkFramebuffer>    swapChainFramebuffers;
@@ -97,7 +118,7 @@ namespace scop {
       VkDevice                       device;
       VkQueue                        graphicsQueue;
       VkQueue                        presentQueue;
-      const Window  &                win;
+      Window * &               win;
   };
   std::ostream& operator<<(std::ostream&, const Vulkan42&);
 }

@@ -27,9 +27,10 @@ static void window_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 Scop::Scop() {
-  win = new Window(1000, 650);
-  vulkan = new Vulkan42(*win);
   status = ScopStatus::Menu;
+  win = new Window(1000, 650);
+  vulkan = new Vulkan42(win);
+  gui = new GUIContainer(vulkan, win);
 
   // NOTICE:  Change the conventional pointer to my custom pointer
   //          Requires a static_cast<Scop> in order to retreive it!
@@ -43,6 +44,7 @@ Scop::Scop() {
 }
 
 Scop::~Scop() {
+  delete gui;
   delete vulkan;
   delete win;
   std::cout << "Scop" << " destroyed" << std::endl;
@@ -83,6 +85,8 @@ void Scop::runScop() {
       /* Poll for and process events */
       glfwPollEvents();
       
+      gui->update();
+
       vulkan->drawFrame();
       if (timestamp_in_ms(updated_at) < 1000) {
           fps++;

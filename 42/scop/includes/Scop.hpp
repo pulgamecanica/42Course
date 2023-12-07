@@ -13,6 +13,7 @@
 #include "colors.hpp"
 #include "Window.hpp"
 #include "Vulkan42.hpp"
+#include "GUIContainer.hpp"
 #include <iostream>
 #include <sys/time.h>
 
@@ -38,6 +39,7 @@ namespace scop {
       ScopStatus  status;
       Vulkan42  *       vulkan;
       Window  *         win;
+      GUIContainer  *   gui;
       uint64_t          created_at;
       uint64_t          updated_at;
   };

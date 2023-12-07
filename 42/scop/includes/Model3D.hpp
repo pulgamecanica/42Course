@@ -8,7 +8,7 @@
 #include <iostream>
 #include "GUIContainer.hpp"
 
-class Model3D: public virtual GUIContainer {
+class Model3D {
 	public:
 		Model3D();
 		Model3D(const Model3D&);
