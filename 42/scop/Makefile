@@ -3,6 +3,8 @@
 #MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
 NAME	=	scop
 
+DEBUG = 1
+
 IMGUI_GIT = https://github.com/ocornut/imgui.git
 
 IMGUI = imgui
@@ -25,7 +27,7 @@ IMGUI_OBJ = $(IMGUI_SRC:%.cpp=$(IMGUI_DUMP)/%.o)
 
 SRC	=	$(wildcard srcs/*.cpp srcs/figures/*.cpp)
 
-CFLAGS	=	-Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address -fno-omit-frame-pointer
+CFLAGS	=	-g -Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address -fno-omit-frame-pointer
 
 LDFLAGS = -lGL -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
@@ -42,6 +44,8 @@ RM		= rm -rf
 VULKAN_HPP = Vulkan-Hpp
 
 VULKAN_HPP_GIT = https://github.com/KhronosGroup/Vulkan-Hpp
+
+CFLAGS += -D SCOP_DEBUG=$(DEBUG)
 
 ifeq ($(UNAME), Darwin)
 	CC = c++
@@ -70,7 +74,7 @@ $(OBJS_DUMP)/%.o:srcs/%.cpp
 	@mkdir -p $(OBJS_DUMP)/figures
 	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
-$(NAME):	$(OBJ) $(IMGUI_OBJ)
+$(NAME):	$(OBJ) $(IMGUI_OBJ) includes/Vulkan42.hpp includes/Scop.hpp includes/GUIContainer.hpp
 	@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
 	$(CC) $(CFLAGS) -o $(NAME) $(IMGUI_OBJ) $(OBJ) $(LDFLAGS)
 	@printf "$(C_GREEN)DONE$(C_END)\n"

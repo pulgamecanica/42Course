@@ -5,7 +5,7 @@
 # define __VULKAN42_HPP__
 
 #ifndef SCOP_DEBUG
-# define SCOP_DEBUG 1
+# define SCOP_DEBUG 0
 #endif
 
 # ifndef GLFW_INCLUDE_VULKAN
@@ -54,6 +54,7 @@ namespace scop {
       void                        drawFrame();
       VkInstance &                getInstance();
       VkDevice &                  getDevice();
+      VkQueue &                   getGraphicsQueue();
       ImGui_ImplVulkan_InitInfo   getImGui_ImplVulkan_InitInfo() const;
       ImGui_ImplVulkanH_Window *  getImGui_ImplVulkanH_Window() const;
     private:
@@ -69,12 +70,14 @@ namespace scop {
       void                    createVertexBuffer();
       void                    createCommandBuffers();
       void                    createSyncObjects();
+      void                    createDescriptorPool();
       void                    createBindingDescriptionAndAttributeDescriptions();
       void                    recreateSwapChain();
       void                    cleanupSwapChain();
       void                    pickFirstSuitablePhysicalDevice();
       bool                    isPhysicalDeviceSuitable(VkPhysicalDevice device);
       bool                    checkDeviceExtensionSupport(VkPhysicalDevice device);
+      bool                    checkValidationLayerSupport();
       VkShaderModule          createShaderModule(const std::vector<char>& code);
       QueueFamInd             findQueueFamilies(VkPhysicalDevice device) const;
       SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device, bool debug) const;
@@ -96,7 +99,6 @@ namespace scop {
       VkCommandBuffer               commandBuffer;
       VkCommandPool                 commandPool;
       VkBuffer                      vertexBuffer;
-
       VkPipelineCache               pipelineCache;
       VkDescriptorPool              descriptorPool;
 
@@ -119,6 +121,11 @@ namespace scop {
       VkQueue                        graphicsQueue;
       VkQueue                        presentQueue;
       Window * &               win;
+
+      bool                      enableValidationLayers;
+
+      static const std::vector<const char*> validationLayers;
+      static const std::vector<const char*> deviceExtensions;
   };
   std::ostream& operator<<(std::ostream&, const Vulkan42&);
 }

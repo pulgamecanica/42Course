@@ -5,7 +5,7 @@
 # define __SCOP_HPP__
 
 #ifndef SCOP_DEBUG
-# define SCOP_DEBUG 1
+# define SCOP_DEBUG 0
 #endif
 
 # define GLFW_INCLUDE_VULKAN
