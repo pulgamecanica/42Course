@@ -14,44 +14,56 @@ const std::vector<Vertex> vertices = {
     {{-0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}}
 };
 
-const std::vector<const char*> Vulkan42::validationLayers = {
-    "VK_LAYER_KHRONOS_validation"
-};
-
 const std::vector<const char*> Vulkan42::deviceExtensions = {
     VK_KHR_SWAPCHAIN_EXTENSION_NAME
 };
 
 Vulkan42::Vulkan42(Window * & win): win(win) {
-  // physicalDevice = VK_NULL_HANDLE;
-  // device         = VK_NULL_HANDLE;
-  // pipelineCache = VK_NULL_HANDLE;
-  // descriptorPool = VK_NULL_HANDLE;
-  // currentFrame   = 0;
-  // enableValidationLayers = SCOP_DEBUG == 1;
+  physicalDevice = VK_NULL_HANDLE;
+  device         = VK_NULL_HANDLE;
+  pipelineCache = VK_NULL_HANDLE;
+  descriptorPool = VK_NULL_HANDLE;
+  currentFrame   = 0;
 
-  // createVkInstance("Scop");
-  // createSurface();
-  // pickFirstSuitablePhysicalDevice();
-  // createLogicalDevice();
-  // createSwapChain();
-  // createImageViews();
-  // createRenderPass();
-  // createBindingDescriptionAndAttributeDescriptions();
-  // createGraphicsPipeline();
-  // createFramebuffers();
-  // createCommandPool();
-  // createVertexBuffer();
-  // createCommandBuffers();
-  // createSyncObjects();
+  createVkInstance("Scop");
+  createSurface();
+  pickFirstSuitablePhysicalDevice();
+  createLogicalDevice();
+  createSwapChain();
+  createImageViews();
+  createRenderPass();
+  createBindingDescriptionAndAttributeDescriptions();
+  createGraphicsPipeline();
+  createFramebuffers();
+  createCommandPool();
+  createVertexBuffer();
+  createCommandBuffers();
+  createSyncObjects();
   // createDescriptorPool();
+
+  VkDescriptorPoolSize pool_sizes[] =
+  {
+      { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1 },
+  };
+
+  VkDescriptorPoolCreateInfo pool_info = {};
+  pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+  pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+  pool_info.maxSets = 1;
+  pool_info.poolSizeCount = (uint32_t)IM_ARRAYSIZE(pool_sizes);
+  pool_info.pPoolSizes = pool_sizes;
+
+  if (vkCreateDescriptorPool(device, &pool_info, nullptr, &descriptorPool) != VK_SUCCESS)
+      throw std::runtime_error("failed to initialize descriptor pool");
 }
 
-VkInstance &  Vulkan42::getInstance() {return instance;}
+VkInstance &  Vulkan42::getInstance() {
+  return instance;
+}
 
-VkDevice & Vulkan42::getDevice() {return device;}
-
-VkQueue & Vulkan42::getGraphicsQueue() {return graphicsQueue;}
+VkDevice & Vulkan42::getDevice() {
+  return device;
+}
 
 ImGui_ImplVulkanH_Window * Vulkan42::getImGui_ImplVulkanH_Window() const { 
     int width, height;
@@ -92,45 +104,16 @@ ImGui_ImplVulkan_InitInfo Vulkan42::getImGui_ImplVulkan_InitInfo() const {
   init_info.PipelineCache = pipelineCache;
   init_info.DescriptorPool = descriptorPool;
   init_info.Subpass = 0;
-  init_info.MinImageCount = imageCount + 1;
-  init_info.ImageCount = imageCount + 1;
+  init_info.MinImageCount = swapChainSupport.capabilities.minImageCount;
+  init_info.ImageCount = imageCount;
   init_info.MSAASamples = VK_SAMPLE_COUNT_1_BIT;
   init_info.Allocator = nullptr;
   // init_info.CheckVkResultFn = check_vk_result;
   return (init_info);
 }
 
-bool Vulkan42::checkValidationLayerSupport() {
-    uint32_t layerCount;
-    vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
-
-    std::vector<VkLayerProperties> availableLayers(layerCount);
-    vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
-
-    for (const char* layerName : validationLayers) {
-      bool layerFound = false;
-
-      for (const auto& layerProperties : availableLayers) {
-          if (strcmp(layerName, layerProperties.layerName) == 0) {
-              layerFound = true;
-              break;
-          }
-      }
-
-      if (!layerFound) {
-          return false;
-      }
-    }
-
-    return true;
-}
-
-
 void  Vulkan42::createVkInstance(const char * application_name) {
   /* VkApplicationInfo */
-  if (enableValidationLayers && !checkValidationLayerSupport()) {
-    throw std::runtime_error("validation layers requested, but not available!");
-  }
   VkApplicationInfo appInfo{};
 
   appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO; // ? -> What is sType?
@@ -152,12 +135,8 @@ void  Vulkan42::createVkInstance(const char * application_name) {
   createInfo.pApplicationInfo = &appInfo;
   createInfo.enabledExtensionCount = glfwExtensionCount; // ? -> What is Extensions? What is an extension?
   createInfo.ppEnabledExtensionNames = glfwExtensions;
-  if (enableValidationLayers) {
-    createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
-    createInfo.ppEnabledLayerNames = validationLayers.data();
-  } else {
-      createInfo.enabledLayerCount = 0;  // What is this line doing?
-  }
+  createInfo.enabledLayerCount = 0; // What is this line doing?
+
   /* Finally VkInstance! */
   if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
     throw std::runtime_error("failed to create instance!");
@@ -658,23 +637,6 @@ void Vulkan42::createSyncObjects() {
   }
 }
 
-void Vulkan42::createDescriptorPool() {
-  VkDescriptorPoolSize pool_sizes[] =
-  {
-      { VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1 },
-  };
-
-  VkDescriptorPoolCreateInfo pool_info = {};
-  pool_info.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
-  pool_info.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
-  pool_info.maxSets = 1;
-  pool_info.poolSizeCount = (uint32_t)IM_ARRAYSIZE(pool_sizes);
-  pool_info.pPoolSizes = pool_sizes;
-
-  if (vkCreateDescriptorPool(device, &pool_info, nullptr, &descriptorPool) != VK_SUCCESS)
-      throw std::runtime_error("failed to initialize descriptor pool");
-}
-
 void Vulkan42::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex) {
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -714,7 +676,7 @@ void Vulkan42::recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t image
 
     // Draw 3 vertices
     // commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance
-    vkCmdDraw(commandBuffer, 4, 0, 0, 0);
+    vkCmdDraw(commandBuffer, 4, 1, 0, 0);
 
     vkCmdEndRenderPass(commandBuffer);
 
@@ -883,23 +845,23 @@ void Vulkan42::cleanupSwapChain() {
 }
 
 Vulkan42::~Vulkan42() {
-  // cleanupSwapChain();
-  // vkDestroyDescriptorPool(device, descriptorPool, nullptr);
-  // vkDestroyBuffer(device, vertexBuffer, nullptr);
-  // vkDestroyCommandPool(device, commandPool, nullptr);
-  // vkDestroyPipeline(device, graphicsPipeline, nullptr);
-  // vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
-  // vkDestroyRenderPass(device, renderPass, nullptr);
-  // for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
-  //   vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
-  //   vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
-  //   vkDestroyFence(device, inFlightFences[i], nullptr);
-  // }
-  // // Surface destroyed by the GUI window for some strange reason ... like WTF ...
-  // // vkDestroySurfaceKHR(instance, surface, nullptr);
-  // vkDestroyDevice(device, nullptr);
-  // // vkDestroyInstance(instance, nullptr);
-  // std::cout << "Vulkan42" << " destroyed" << std::endl;
+  cleanupSwapChain();
+  vkDestroyDescriptorPool(device, descriptorPool, nullptr);
+  vkDestroyBuffer(device, vertexBuffer, nullptr);
+  vkDestroyCommandPool(device, commandPool, nullptr);
+  vkDestroyPipeline(device, graphicsPipeline, nullptr);
+  vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+  vkDestroyRenderPass(device, renderPass, nullptr);
+  for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+    vkDestroySemaphore(device, renderFinishedSemaphores[i], nullptr);
+    vkDestroySemaphore(device, imageAvailableSemaphores[i], nullptr);
+    vkDestroyFence(device, inFlightFences[i], nullptr);
+  }
+  // Surface destroyed by the GUI window for some strange reason ... like WTF ...
+  vkDestroySurfaceKHR(instance, surface, nullptr);
+  vkDestroyDevice(device, nullptr);
+  // vkDestroyInstance(instance, nullptr);
+  std::cout << "Vulkan42" << " destroyed" << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& s, const Vulkan42& param) {
@@ -907,4 +869,3 @@ std::ostream& operator<<(std::ostream& s, const Vulkan42& param) {
   (void)param;
   return (s);
 }
-

@@ -3,7 +3,7 @@
 #MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
 NAME	=	scop
 
-DEBUG = 1
+DEBUG = 0
 
 IMGUI_GIT = https://github.com/ocornut/imgui.git
 
