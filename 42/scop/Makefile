@@ -3,39 +3,17 @@
 #MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
 NAME	=	scop
 
-DEBUG = 0
-
-IMGUI_GIT = https://github.com/ocornut/imgui.git
-
-IMGUI = imgui
-
-IMGUI_INC = $(IMGUI)
-
-IMGUI_BACKENDS_INC = $(IMGUI)/backends
-
-IMGUI_SRC = backends/imgui_impl_glfw.cpp \
-						backends/imgui_impl_vulkan.cpp \
-						imgui.cpp \
-						imgui_demo.cpp \
-						imgui_tables.cpp \
-						imgui_draw.cpp \
-						imgui_widgets.cpp \
-
-IMGUI_DUMP = imgui_objs
-
-IMGUI_OBJ = $(IMGUI_SRC:%.cpp=$(IMGUI_DUMP)/%.o)
-
 SRC	=	$(wildcard srcs/*.cpp srcs/figures/*.cpp)
 
-CFLAGS	=	-g -Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address -fno-omit-frame-pointer
+CFLAGS	=	-Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address -fno-omit-frame-pointer
 
 LDFLAGS = -lGL -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
-INC	=	-Iincludes -Iincludes/figures -I$(IMGUI_INC) -I$(IMGUI_BACKENDS_INC)
+INC	=	-I includes -I includes/figures
 
-OBJS_DUMP	=	objs
+OBJS_D	=	objs
 
-OBJ	=	$(SRC:srcs/%.cpp=$(OBJS_DUMP)/%.o)
+OBJ	=	$(SRC:srcs/%.cpp=$(OBJS_D)/%.o)
 
 UNAME	:=	$(shell uname)
 
@@ -44,8 +22,6 @@ RM		= rm -rf
 VULKAN_HPP = Vulkan-Hpp
 
 VULKAN_HPP_GIT = https://github.com/KhronosGroup/Vulkan-Hpp
-
-CFLAGS += -D SCOP_DEBUG=$(DEBUG)
 
 ifeq ($(UNAME), Darwin)
 	CC = c++
@@ -61,22 +37,14 @@ all: $(NAME)
 $(VULKAN_HPP):
 	git clone --recurse-submodules https://github.com/KhronosGroup/Vulkan-Hpp $(VULKAN_HPP)
 
-$(IMGUI):
-	git clone $(IMGUI_GIT)
-
-$(IMGUI_DUMP)/%.o:$(IMGUI)/%.cpp
-	@mkdir -p $(IMGUI_DUMP)
-	@mkdir -p $(IMGUI_DUMP)/backends
+$(OBJS_D)/%.o:srcs/%.cpp
+	@mkdir -p $(OBJS_D)
+	@mkdir -p $(OBJS_D)/figures
 	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
-$(OBJS_DUMP)/%.o:srcs/%.cpp
-	@mkdir -p $(OBJS_DUMP)
-	@mkdir -p $(OBJS_DUMP)/figures
-	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
-
-$(NAME):	$(OBJ) $(IMGUI_OBJ) includes/Vulkan42.hpp includes/Scop.hpp includes/GUIContainer.hpp
+$(NAME):	$(OBJ)
 	@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
-	$(CC) $(CFLAGS) -o $(NAME) $(IMGUI_OBJ) $(OBJ) $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
 	@printf "$(C_GREEN)DONE$(C_END)\n"
 
 build_ubuntu: $(VULKAN_HPP)
@@ -87,10 +55,9 @@ build_ubuntu: $(VULKAN_HPP)
 										libvulkan-dev \
 										vulkan-validationlayers-dev\
 										spirv-tools
-	rm -rf imgui
-	git clone $(IMGUI_GIT)
 	cd $(VULKAN_HPP)
 	cmake  -DVULKAN_HPP_SAMPLES_BUILD=ON -DVULKAN_HPP_SAMPLES_BUILD_WITH_LOCAL_VULKAN_HPP=ON -DVULKAN_HPP_TESTS_BUILD=ON -DVULKAN_HPP_TESTS_BUILD_WITH_LOCAL_VULKAN_HPP=ON -B build
+
 
 build_fedora: $(VULKAN_HPP)
 	sudo dnf install glfw-devel \
@@ -99,10 +66,12 @@ build_fedora: $(VULKAN_HPP)
 	sudo dnf install vulkan-loader-devel
 	-sudo dnf install mesa-vulkan-devel
 	-sudo dnf install vulkan-validation-layers-devel
-	rm -rf imgui
-	git clone $(IMGUI_GIT)
 	cd $(VULKAN_HPP)
 	cmake  -DVULKAN_HPP_SAMPLES_BUILD=ON -DVULKAN_HPP_SAMPLES_BUILD_WITH_LOCAL_VULKAN_HPP=ON -DVULKAN_HPP_TESTS_BUILD=ON -DVULKAN_HPP_TESTS_BUILD_WITH_LOCAL_VULKAN_HPP=ON -B build
+
+# build_mac:
+# 	brew install glfw
+# 	brew install glm
 
 test:	re
 	@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
@@ -111,9 +80,10 @@ test:	re
 	@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 	@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 	@$(MAKE) show --no-print-directory
+# 	@$(MAKE) fclean --no-print-directory
 
 clean:
-	$(RM) $(OBJS_DUMP) #$(IMGUI_DUMP)
+	$(RM) $(OBJS_D)
 	@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean:	clean
@@ -131,7 +101,7 @@ show:
 	@printf "LDFLAGS		: $(LDFLAGS)\n"
 	@printf "INCLUDES	: $(INC)\n"
 	@printf "SRC		: $(C_YELLOW)$(SRC)$(C_GREEN)\n"
-	@printf "OBJ		: $(C_YELLOW)[$(OBJS_DUMP)] --> $(OBJ)$(C_END)\n"
+	@printf "OBJ		: $(C_YELLOW)[$(OBJS_D)] --> $(OBJ)$(C_END)\n"
 
 .PHONY: all test re
 
