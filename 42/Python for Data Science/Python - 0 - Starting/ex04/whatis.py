@@ -1,6 +1,6 @@
 import sys
 
-def is_num(n):
+def is_num(n: int) -> bool:
     try:
         int(n)
         return True
