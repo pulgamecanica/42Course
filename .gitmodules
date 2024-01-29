@@ -7,3 +7,6 @@
 [submodule "42/scop/glfw"]
 	path = 42/scop/glfw
 	url = https://github.com/glfw/glfw
+[submodule "42Documentation/mlx42_menu_tutorial/mlx"]
+	path = 42Documentation/mlx42_menu_tutorial/mlx
+	url = https://github.com/codam-coding-college/MLX42
