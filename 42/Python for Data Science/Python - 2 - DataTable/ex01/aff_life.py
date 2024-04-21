@@ -29,7 +29,7 @@ def get_country_data(country: str) -> np.ndarray:
     Details:
     Plot the graph of the country life expectancy along the time
     """
-    ds = load("./life_expectancy_year.csv")
+    ds = load("./life_expectancy_years.csv")
     if ds.empty:
         return np.array([])
     return ds[ds["country"] == country].values.flatten()[1:]
@@ -42,7 +42,7 @@ def main():
     Plot the graph of the country life expectancy along the time
     """
     ani = None
-    animate = False
+    animate = True
     france_life_expectancy = get_country_data("France")
     if len(france_life_expectancy) == 0:
         return
