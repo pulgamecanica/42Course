@@ -25,13 +25,16 @@ unset_on_exit() {
     unset CLASS
     unset NAMESPACE
     unset IFS
-    unset PARAMS_KEYS
     unset SRC_PATH
     unset INC_PATH
     unset CLASS_HPP
     unset CLASS_CPP
     unset LINE
     unset line_number
+    unset MAIN_PATH
+    unset HEADER
+    unset PARAMS_KEYS
+    unset PARAMS_VALUES
 }
 
 usage() {
@@ -136,7 +139,6 @@ cpp_new() {
                 fi
                 if [ -z "$PROJECT" ]; then
                     PROJECT=$1
-                    echo "Project assigned: $PROJECT"
                     shift
                 else
                     echo "Project has been already assigned: $PROJECT"
@@ -146,15 +148,17 @@ cpp_new() {
                 ;;
         esac
     done
+    
+    if [ -z "$MAIN_PATH" ]; then
+        MAIN_PATH=$SOURCES_PATH
+    fi
+    
     # Normalize data, clients might do ./path/ or path or path/; etc
     SOURCES_PATH=$(remove_trailing_slash "$SOURCES_PATH")
     INCLUDES_PATH=$(remove_trailing_slash "$INCLUDES_PATH")
     MAIN_PATH=$(remove_trailing_slash "$MAIN_PATH")
 
-
-    if [ -z "$MAIN_PATH" ]; then
-        MAIN_PATH=$SOURCES_PATH
-    fi
+    
     # If there are remaining arguments, assume the first one is the project name
     if [ -z "$PROJECT" ]; then
         echo "Enter Project Name..."
@@ -227,7 +231,7 @@ all:        \${NAME}
 
 \${NAME}:   \${OBJ}
 			@printf "Compiling \$(C_YELLOW)\$(NAME)\$(C_END) ... \n"
-			\$(CC) \$(CFLAGS) \$(OBJ) -o \$(NAME)
+			\$(CC) \$(CFLAGS) \${INC} \$(OBJ) -o \$(NAME)
 			@printf "\$(C_GREEN)DONE\$(C_END)\n"
 
 \${OBJ_D_DEBUG}/%.o:\${SRC_PATH}/%.cpp
@@ -236,7 +240,7 @@ all:        \${NAME}
 
 \${NAME_DEBUG}: \$(OBJ_DEBUG)
 			@printf "Compiling DEBUG \$(C_YELLOW)\$(NAME_DEBUG)\$(C_END) ...\n"
-			\$(CC) \$(CFLAGS) \$(OBJ_DEBUG) -o \$(NAME_DEBUG)
+			\$(CC) \$(CFLAGS) \${INC} \$(OBJ_DEBUG) -o \$(NAME_DEBUG)
 			@printf "\$(C_GREEN)DONE\$(C_END)\n"
 
 debug:      \${NAME_DEBUG}
@@ -247,8 +251,8 @@ test:       re
 			@./\$(NAME)
 			@printf "\n\$(C_BLUE)********************************************\$(C_END)\n"
 			@printf "\n\$(C_BLUE)Finished Test...\$(C_END)\n"
-			@\$(MAKE) show
-			@\$(MAKE) fclean
+			@\$(MAKE) show --no-print-directory
+			@\$(MAKE) fclean --no-print-directory
 
 valgrind:   re
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./\$(NAME) \$(NAME)_ARGS
@@ -304,7 +308,7 @@ int main(void)
     return (0);
 }
 EOF
-    printf "${C_GREEN}    create    ${C_END}${PROJECT}/srcs/main.cpp\n"
+    printf "${C_GREEN}    create    ${C_END}${PROJECT}/${MAIN_PATH}/main.cpp\n"
 
     #header .inc
     HEADER=$(echo ${PROJECT} | tr '[:lower:]' '[:upper:]')
