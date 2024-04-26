@@ -1,0 +1,234 @@
+//***************************//
+//*Template by pulgamecanica*//
+//***************************//
+
+#include "ex00.inc"
+
+#include "Position.hpp"
+#include "Worker.hpp"
+#include "Tool.hpp"
+#include "Shovel.hpp"
+#include "Hammer.hpp"
+#include "WorkShop.hpp"
+
+int main(void)
+{
+    if (DEBUG)
+        std::cout << "Debug ON!" << std::endl;
+    {// Abstract Proof
+        // relationship::Tool t("some_tool", 42);
+        // t.get_type();
+        // std::cout << t << std::endl;
+    }
+
+    // Worker setup
+    std::cout << YELLOW << "- - - - - - - - - - - INIT - - - - - - - - - - - -" << ENDC << std::endl;
+    relationship::Worker w("Digger1");
+    relationship::Worker w2("Digger2", relationship::Position(6, 6, 6));
+    relationship::Tool * tool;
+    relationship::Shovel s;
+    tool = &s;
+
+    std::cout << YELLOW << "OBJ: " << *tool << std::endl;
+    std::cout << YELLOW << "OBJ: " << BLUE << w << ENDC << std::endl;
+    std::cout << YELLOW << "OBJ: " << BLUE << w2 << ENDC << std::endl;
+
+    std::cout << YELLOW << "- - - - - - - - - - - ADD ACTIONS (Shovel) - - - - - - - - - - - -" << ENDC << std::endl;
+    w.addTool(tool);
+    std::cout << *tool << std::endl;
+    w.printTools();
+    w.addTool(tool); // Add Same Tool 2 times Error check
+    w2.addTool(tool);// Add Tool to another worker
+    std::cout << *tool << std::endl;
+    w.printTools();
+    w2.printTools();
+    std::cout << YELLOW << "- - - - - - - - - - - - REMOVE ACTIONS (Shovel) - - - - - - - - - - -" << ENDC << std::endl;
+    w2.removeTool(tool); // Remove tool from worker 2
+    w2.removeTool(tool); // Remove tool again Error check
+    w2.printTools();
+    std::cout << YELLOW << "- - - - - - - - - - - RE INIT - - - - - - - - - - - -" << ENDC << std::endl;
+
+    relationship::Worker w3("WoodPicker1", relationship::Position(9, 6, 3));
+    relationship::Worker w4("RoofPlacer2", relationship::Position(0, 0, 0));
+    relationship::Tool * tool1;
+    relationship::Tool * tool2;
+    relationship::Hammer h1;
+    relationship::Hammer h2;
+    tool1 = &h1;
+    tool2 = &h2;
+
+    std::cout << YELLOW << "OBJ: " << *tool1 << std::endl;
+    std::cout << YELLOW << "OBJ: " << *tool2 << std::endl;
+    std::cout << YELLOW << "OBJ: " << BLUE << w3 << ENDC << std::endl;
+    std::cout << YELLOW << "OBJ: " << BLUE << w4 << ENDC << std::endl;
+
+    std::cout << YELLOW << "- - - - - - - - - - - ADD ACTIONS (Hammer) - - - - - - - - - - - -" << ENDC << std::endl;
+    w3.addTool(tool1);
+    w3.addTool(tool2);
+    w3.addTool(tool2); // Testing error
+    w3.printTools();
+    std::cout << *tool1 << std::endl;
+    std::cout << *tool2 << std::endl;
+    w4.addTool(tool1);
+    w4.addTool(tool1); // Testing error
+    w3.printTools();
+    w4.printTools();
+    std::cout << *tool1 << std::endl;
+    std::cout << *tool2 << std::endl;
+
+    std::cout << YELLOW << "- - - - - - - - - - - - REMOVE ACTIONS (Hammer) - - - - - - - - - - -" << ENDC << std::endl;
+    w3.removeTool(tool1); // Error, he no longer has tool 1, because w4 took it
+    w3.removeTool(tool2);
+    w4.removeTool(tool1);
+    std::cout << *tool1 << std::endl;
+    std::cout << *tool2 << std::endl;
+
+    std::cout << YELLOW << "- - - - - - - - - - - ADD TOOLS (Shovel & Hammer) - - - - - - - - - - - -" << ENDC << std::endl;
+    w3.addTool(tool1);
+    w3.addTool(tool);
+    w3.addTool(tool2);
+    w3.printTools();
+
+    std::cout << YELLOW << "- - - - - - - - - - - GET TOOLS (Hammer) - - - - - - - - - - - -" << ENDC << std::endl;
+    // try hammer now
+    relationship::Hammer * first_hammer = NULL;
+    first_hammer = w3.getTool<relationship::Hammer>();
+    if (first_hammer != NULL)
+        std::cout << "GetTool<Hammer>: " << *first_hammer << std::endl;
+    else
+        std::cout << "GetTool<Hammer> Returned NULL, no tool :(" << std::endl;
+    // w doenst have a hammer, should return null
+    first_hammer = w.getTool<relationship::Hammer>();
+    if (first_hammer != NULL)
+        std::cout << "GetTool<Hammer>: " << *first_hammer << std::endl;
+    else
+        std::cout << "GetTool<Hammer> " << w << RED << " has no Hammer :(" << ENDC << std::endl;
+    // try shovel now
+    relationship::Shovel * first_shovel = NULL;
+    first_shovel = w3.getTool<relationship::Shovel>();
+    if (first_shovel != NULL)
+        std::cout << "GetTool<Hammer>: " << *first_shovel << std::endl;
+    else
+        std::cout << "GetTool<Hammer> " << w << RED << " has no Shovel :(" << ENDC << std::endl;
+    
+    std::cout << YELLOW << "- - - - - - - - - - - - - WORKSHOPS INIT - - - - - - - - - - - - - -" << ENDC << std::endl;
+    // WorkShops
+    relationship::WorkShop<relationship::Hammer> hammering_ws("Hammering 101");
+    relationship::WorkShop<relationship::Shovel> shoveling_ws("Shoveling 101");
+    relationship::WorkShop<relationship::Tool> common_ws("Common Core 101");
+
+    // Tools    
+    relationship::Tool * hammer1;
+    relationship::Tool * hammer2;
+    relationship::Tool * shovel1;
+    relationship::Tool * shovel2;
+    relationship::Hammer hm1;
+    relationship::Hammer hm2;
+    relationship::Shovel sv1;
+    relationship::Shovel sv2;
+    hammer1 = &hm1;
+    hammer2 = &hm2;
+    shovel1 = &sv1;
+    shovel2 = &sv2;
+
+    // Workers
+    relationship::Worker ws_w1("Billy", relationship::Position(19, 536, -123));
+    relationship::Worker ws_w2("Magie", relationship::Position(96, -63, 32));
+    relationship::Worker ws_w3("Ada", relationship::Position(-469, 876, 53));
+    relationship::Worker ws_w4("Karla", relationship::Position(-42, -6, -24));
+    relationship::Worker *billy = &ws_w1;
+    relationship::Worker *magie = &ws_w2;
+    relationship::Worker *ada = &ws_w3;
+    relationship::Worker *karla = &ws_w4;
+
+    (void)billy; // Poor billy, he has no tools :(
+    magie->addTool(hammer1);
+    magie->addTool(shovel1); // Magie is a crack, she is rich and bought all tools
+    ada->addTool(hammer2);   // Ada has a hammer 
+    karla->addTool(shovel2); // Karla has a shovel
+
+    std::cout << YELLOW << "- - - - - - - - - - - - - - REGISTER WORKERS - - - - - - - - - - - - -" << ENDC << std::endl;
+    common_ws.registerWorker(billy); // Nope
+    common_ws.registerWorker(magie); // Yes
+    common_ws.registerWorker(magie); // Nope, can't register twice
+    common_ws.registerWorker(karla); // Yes
+    common_ws.registerWorker(ada); // Yes
+
+    hammering_ws.registerWorker(ada); // Yes
+    hammering_ws.registerWorker(magie); // Yes
+    hammering_ws.registerWorker(karla); // No
+
+    shoveling_ws.registerWorker(magie); // Yes
+    shoveling_ws.registerWorker(ada); // No
+    shoveling_ws.registerWorker(karla); // Yes
+
+    std::cout << hammering_ws << std::endl;
+    std::cout << shoveling_ws << std::endl;
+    std::cout << common_ws << std::endl;
+ 
+    billy->printWorkShops();
+    magie->printWorkShops();
+    ada->printWorkShops();
+    karla->printWorkShops();
+
+    std::cout << YELLOW << "- - - - - - - - - - - - - - RELEASE WORKERS - - - - - - - - - - - - -" << ENDC << std::endl;
+
+    common_ws.releaseWorker(billy); // No, Billy was never accepted :(
+    common_ws.releaseWorker(magie); // No, Billy was never accepted :(
+    common_ws.releaseWorker(ada); // No, Billy was never accepted :(
+    common_ws.releaseWorker(karla); // No, Billy was never accepted :(
+
+    hammering_ws.releaseWorker(ada); // Yes
+    hammering_ws.releaseWorker(magie); // Yes
+    hammering_ws.releaseWorker(karla); // No, was never accepted :(
+
+    shoveling_ws.releaseWorker(magie); // Yes
+    shoveling_ws.releaseWorker(ada); // No, was never accepted :(
+    shoveling_ws.releaseWorker(karla); // Yes
+
+    std::cout << hammering_ws << std::endl;
+    std::cout << shoveling_ws << std::endl;
+    std::cout << common_ws << std::endl;
+
+    std::cout << YELLOW << "- - - - - - - - - - - - - REGISTER AGAIN WORKERS - - - - - - - - - - -" << ENDC << std::endl;
+    
+    common_ws.registerWorker(magie); // Yes
+    common_ws.registerWorker(karla); // Yes
+    common_ws.registerWorker(ada); // Yes
+    hammering_ws.registerWorker(ada); // Yes
+    hammering_ws.registerWorker(magie); // Yes
+    shoveling_ws.registerWorker(magie); // Yes
+    shoveling_ws.registerWorker(karla); // Yes
+
+    std::cout << hammering_ws << std::endl;
+    std::cout << shoveling_ws << std::endl;
+    std::cout << common_ws << std::endl;
+
+    std::cout << YELLOW << "- - - - - - - - - - - - - - REMOVE TOOL, RELEASE WORKERS (Tool) - - - - - - - - - - - - -" << ENDC << std::endl;
+
+    // Indirect Unregister (someone takes your tool)
+    billy->addTool(hammer2); // Billy get's Ada's Hammer (ADA SHOULD BE UNREGISTERED)
+    common_ws.registerWorker(billy); // Yes, now Billy can Hammer
+    
+    // Direct Unregister (after loosing the tool)
+    billy->removeTool(hammer2);; // Billy should be unregistered
+
+    std::cout << hammering_ws << std::endl;
+    std::cout << shoveling_ws << std::endl;
+    std::cout << common_ws << std::endl;
+
+    std::cout << YELLOW << "- - - - - - - - - - - - - - REMOVE TOOL, RELEASE WORKERS (Hammer, Shovel & Tool) - - - - - - - - - - - - -" << ENDC << std::endl;
+
+    // Also test with a concrete class instead of the "Tool" implementation
+
+    // Magie looses all her tools, she's Unregistered from everything! She missbehaved, this rich kid!
+    magie->removeTool(hammer1); // Magie should be unregistered
+    magie->removeTool(shovel1); // Magie should be unregistered from both shoveling and common
+
+    std::cout << hammering_ws << std::endl;
+    std::cout << shoveling_ws << std::endl;
+    std::cout << common_ws << std::endl;
+
+    std::cout << YELLOW << "- - - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << ENDC << std::endl;
+    return (0);
+}
