@@ -260,11 +260,11 @@ valgrind:   re
 			@echo "[MAKEFILE] Ex: export \$(NAME)_ARGS=\"-a --recursive ..\""
 
 clean:
-			\$(RM) \$(OBJ_D)
+			\$(RM) \$(OBJ_D) \$(OBJ_D_DEBUG)
 			@printf "\$(C_RED)Cleaning objs\$(C_END)\n"
 
 fclean:     clean
-			\$(RM) \$(NAME)
+			\$(RM) \$(NAME) \$(NAME_DEBUG)
 			@printf "\$(C_RED)Deleted Everything\$(C_END)\n"
 
 re: fclean all

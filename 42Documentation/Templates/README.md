@@ -82,7 +82,7 @@ cpp_new -s src -i include my_project
 To create a new C++ class, use the following command:
 
 ```bash
-script.sh class [options] [name]
+cpp_class [options] [name]
 ```
 
 #### Options
@@ -100,7 +100,7 @@ script.sh class [options] [name]
 To create a class named "MyClass" with copy constructor, assign operator, and custom parameters:
 
 ```bash
-./script.sh class -c -a -p param1:int param2:string MyClass
+cpp_class -c -a -p "param1:int param2:string" MyClass
 ```
 
 #####   Examples: 
@@ -141,7 +141,7 @@ MyProject/
 └── *.hpp
 ```
 
-`alias cpp_new="cpp_new -s . -i . -m . -q -v 11"`
+`alias cpp_new="cpp_new -s . -i . -m . -q -v 98"`
 
 Explanation of options used:
 `-s .`: Specifies the sources path as the current directory (.).
@@ -167,6 +167,27 @@ MyProject/
 `-i includes`: Specifies the includes path as includes.
 `-m srcs`: Specifies the main path as srcs.
 `-v 11`: Specifies the C++ version as 11."
+
+***
+
+#### Example 3
+##### (Isolated main with modularized structure C++98):
+```
+MyProject/
+├── Makefile
+├── main.cpp
+├── src/
+│   └── object.cpp
+└── include/
+    └── object.hpp
+    └── myProject.inc
+```
+`alias cpp_new="cpp_new -s src -i include -m . -v 98"`
+
+`-s src`: Specifies the sources path as src.
+`-i include`: Specifies the includes path as include.
+`-m .`: Specifies the main path as root `.`
+`-v 98`: Specifies the C++ version as 98."
 
 ***
 

@@ -23,13 +23,11 @@
 
 _Random Documentation is anything from games, exams, tutorials, guides, templates ;etc..._
 
-<details>
-<summary>Visual Map</summary>
+***
+
+## Cell  Map
 
 <img width="814" alt="Screenshot 2023-02-10 at 23 14 21" src="https://user-images.githubusercontent.com/28810331/218220004-7c3f5527-8728-4bfa-a7cf-25a928601584.png">
-
-
-</details>
 
 
 ##### For any further questions contact me at: **pulgamecanica11@gmail.com**
