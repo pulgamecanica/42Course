@@ -1,0 +1,99 @@
+point 6 1 #0000ff
+point 5 2 #0000ff
+point 7 2 #0000ff
+point 4 3 #0000ff
+point 8 3 #0000ff
+point 3 4 #0000ff
+point 9 4 #0000ff
+point 2 5 #0000ff
+point 10 5 #0000ff
+point 1 6 #0000ff
+point 11 6 #0000ff
+point 1 7 #0000ff
+point 11 7 #0000ff
+point 1 8 #0000ff
+point 11 8 #0000ff
+point 2 9 #0000ff
+point 10 9 #0000ff
+point 3 10 #0000ff
+point 9 10 #0000ff
+point 4 11 #0000ff
+point 8 11 #0000ff
+point 5 12 #0000ff
+point 7 12 #0000ff
+point 6 13 #0000ff
+point 6 14 #0000ff
+point 6 15 #0000ff
+point 6 16 #0000ff
+point 6 17 #0000ff
+point 6 18 #0000ff
+point 6 19 #0000ff
+point 6 20 #0000ff
+point 6 21 #0000ff
+point 6 22 #0000ff
+point 5 23 #0000ff
+point 7 23 #0000ff
+point 4 24 #0000ff
+point 8 24 #0000ff
+point 3 25 #0000ff
+point 9 25 #0000ff
+point 2 26 #0000ff
+point 10 26 #0000ff
+point 1 27 #0000ff
+point 11 27 #0000ff
+point 1 28 #0000ff
+point 11 28 #0000ff
+point 2 29 #0000ff
+point 10 29 #0000ff
+point 3 30 #0000ff
+point 9 30 #0000ff
+point 4 31 #0000ff
+point 8 31 #0000ff
+point 5 32 #0000ff
+point 7 32 #0000ff
+point 6 33 #0000ff
+line 6 1 5 2 #0000ff
+line 6 1 7 2 #0000ff
+line 5 2 4 3 #0000ff
+line 7 2 8 3 #0000ff
+line 4 3 3 4 #0000ff
+line 8 3 9 4 #0000ff
+line 3 4 2 5 #0000ff
+line 9 4 10 5 #0000ff
+line 2 5 1 6 #0000ff
+line 10 5 11 6 #0000ff
+line 1 6 1 7 #0000ff
+line 11 6 11 7 #0000ff
+line 1 7 1 8 #0000ff
+line 11 7 11 8 #0000ff
+line 1 8 2 9 #0000ff
+line 11 8 10 9 #0000ff
+line 2 9 3 10 #0000ff
+line 10 9 9 10 #0000ff
+line 3 10 4 11 #0000ff
+line 9 10 8 11 #0000ff
+line 4 11 5 12 #0000ff
+line 8 11 7 12 #0000ff
+line 5 12 6 13 #0000ff
+line 7 12 6 14 #0000ff
+line 6 13 6 14 #0000ff
+line 6 14 6 15 #0000ff
+line 6 15 6 16 #0000ff
+line 6 16 6 17 #0000ff
+line 6 17 6 18 #0000ff
+line 6 18 6 19 #0000ff
+line 6 19 6 20 #0000ff
+line 6 20 6 21 #0000ff
+line 6 21 5 23 #0000ff
+line 6 21 7 23 #0000ff
+line 5 23 4 24 #0000ff
+line 7 23 8 24 #0000ff
+line 4 24 3 25 #0000ff
+line 8 24 9 25 #0000ff
+line 3 25 2 26 #0000ff
+line 9 25 10 26 #0000ff
+line 2 26 1 27 #0000ff
+line 10 26 11 27 #0000ff
+line 1 27 1 28 #0000ff
+line 11 27 11 28 #0000ff
+line 1 28 2 29 #0000ff

@@ -1,0 +1,43 @@
+point 20 80 #8B4513ff
+point 80 80 #8B4513ff
+point 20 20 #8B4513ff
+point 80 20 #8B4513ff
+point 30 40 #0000ff
+point 70 40 #0000ff
+point 25 60 #0000ff
+point 75 60 #0000ff
+point 35 90 #0000ff
+point 65 90 #0000ff
+point 35 60 #0000ff
+point 65 60 #0000ff
+point 40 30 #000000ff
+point 60 30 #000000ff
+point 30 30 #000000ff
+point 70 30 #000000ff
+point 40 50 #000000ff
+point 60 50 #000000ff
+point 45 70 #000000ff
+point 55 70 #000000ff
+point 45 90 #000000ff
+point 55 90 #000000ff
+line 20 80 80 80 #8B4513ff
+line 20 80 20 20 #8B4513ff
+line 80 20 80 80 #8B4513ff
+line 20 20 80 20 #8B4513ff
+line 30 40 70 40 #0000ff
+line 25 60 75 60 #0000ff
+line 35 90 65 90 #0000ff
+line 25 60 35 90 #0000ff
+line 75 60 65 90 #0000ff
+line 35 60 65 60 #0000ff
+line 40 30 60 30 #000000ff
+line 40 30 30 40 #000000ff
+line 60 30 70 40 #000000ff
+line 30 30 20 20 #000000ff
+line 70 30 80 20 #000000ff
+line 40 50 60 50 #000000ff
+line 40 50 45 70 #000000ff
+line 60 50 55 70 #000000ff
+line 45 70 45 90 #000000ff
+line 55 70 55 90 #000000ff
+line 45 90 55 90 #000000ff
