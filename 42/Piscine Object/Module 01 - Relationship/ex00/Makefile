@@ -10,6 +10,8 @@ INC_PATH        =   .
 SRC_PATH        =   .
 
 SRC             =   ./main.cpp \
+		./Shoveling101.cpp \
+		./WoodWorking.cpp \
 		./WorkShop.cpp \
 		./Hammer.cpp \
 		./Tool.cpp \

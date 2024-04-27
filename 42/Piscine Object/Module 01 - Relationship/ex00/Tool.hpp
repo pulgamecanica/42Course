@@ -12,7 +12,7 @@ namespace relationship {
 
     class Tool {
         public:
-            ~Tool();
+            virtual ~Tool();
             const std::string getType() const;
             void updateWorker(Worker *worker);
             const Worker *getWorker() const;

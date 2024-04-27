@@ -15,6 +15,7 @@ namespace relationship {
 
     Worker::~Worker() {
         tools_.clear();
+        workshops_.clear();
     }
 
     const Position& Worker::getCoord() const {
@@ -30,24 +31,31 @@ namespace relationship {
     }
 
     void Worker::printTools() const {
-        std::cout << "Tools (" << tools_.size() << ")" << std::endl;
+        std::cout << BLUE << getName() << "'s" << ENDC << " Tools (" << tools_.size() << ")" << std::endl;
         for (std::vector<Tool *>::const_iterator i = tools_.begin(); i != tools_.end(); ++i) {
-            std::cout << " - " << **i << std::endl;
+            if (dynamic_cast<Tool *>(*i))
+                std::cout << " - " << **i << std::endl;
         }
     }
 
     void Worker::printWorkShops() const {
         std::cout << BLUE << getName() << "'s" << ENDC << " WorkShops (" << workshops_.size() << ")" << std::endl;
-        for (std::vector<WorkShop<Tool> *>::const_iterator i = workshops_.begin(); i != workshops_.end(); ++i) {
-            // std::cout << "- " << *(dynamic_cast<WorkShop<Tool> *>(*i)) << std::endl;
-            // std::cout << " - " << **i << std::endl;
-            std::cout << " - " << std::endl;
+        for (std::vector<WorkShop *>::const_iterator i = workshops_.begin(); i != workshops_.end(); ++i) {
+            std::cout << " - " << **i << std::endl;
         }
     }
 
     bool Worker::hasTool(Tool *tool) const {
         for (std::vector<Tool *>::const_iterator i = tools_.begin(); i != tools_.end(); ++i) {
             if (tool == *i)
+                return true;
+        }
+        return false;
+    }
+
+    bool Worker::hasWorkShop(WorkShop *ws) const {
+        for (std::vector<WorkShop *>::const_iterator i = workshops_.begin(); i != workshops_.end(); ++i) {
+            if (*i == ws)
                 return true;
         }
         return false;
@@ -83,39 +91,51 @@ namespace relationship {
         }
         tool->updateWorker(NULL);
         // Check Workshops
-        std::vector<std::vector<WorkShop<Tool> *>::iterator> invalid_tool_workshops;
-        for (std::vector<WorkShop<Tool> *>::iterator i = workshops_.begin(); i != workshops_.end(); ++i) {
+        std::vector<std::vector<WorkShop *>::iterator> invalid_tool_workshops;
+        for (std::vector<WorkShop *>::iterator i = workshops_.begin(); i != workshops_.end(); ++i) {
             if (!*i)
                 continue ;
             if (!(*i)->hasValidTool(this)) {
-                std::cout << *this << " Can no longer belong to " << *i << std::endl;
+                if (DEBUG)
+                    std::cout << *this << " Can no longer belong to " << **i << std::endl;
                 invalid_tool_workshops.push_back(i);
             }
         }
-    }
-
-    void Worker::addWorkshop(WorkShop<Tool> *ws) {
-        for (std::vector<WorkShop<Tool> *>::const_iterator i = workshops_.begin(); i != workshops_.end(); ++i) {
-            if (*i == ws)
-                return ;
+        // Need an extra iterator, because releaseWorker (through removeWorkshop) will loop through workshops_ (can't be erasing while looping!)
+        for (std::vector<std::vector<WorkShop *>::iterator>::iterator i = invalid_tool_workshops.begin(); i != invalid_tool_workshops.end(); ++i) {
+            (**i)->releaseWorker(this);
         }
-        if (DEBUG)
-            std::cout << "GREEN" << "WORKER JOIN WORKSHOP\t" << *ws << std::endl;
-        workshops_.push_back(ws);
     }
 
-    void Worker::removeWorkshop(WorkShop<Tool> *ws) {
-        std::vector<WorkShop<Tool> *>::iterator it = workshops_.end();
-        for (std::vector<WorkShop<Tool> *>::iterator i = workshops_.begin(); i != workshops_.end(); ++i) {
+    void Worker::addWorkshop(WorkShop *ws) {
+        if (!hasWorkShop(ws)) {
+            if (DEBUG)
+                std::cout << GREEN << "WORKER JOIN WORKSHOP\t" << ENDC << *ws << std::endl;
+            workshops_.push_back(ws);
+        }
+    }
+
+    void Worker::removeWorkshop(WorkShop *ws) {
+        std::vector<WorkShop *>::iterator it = workshops_.end();
+        for (std::vector<WorkShop *>::iterator i = workshops_.begin(); i != workshops_.end(); ++i) {
             if (*i == ws)
                 it = i;
         }
         if (it != workshops_.end()) {
             workshops_.erase(it);
             if (DEBUG)
-                std::cout << "GREEN" << "WORKER JOIN WORKSHOP\t" << *ws << std::endl;
+                std::cout << GREEN << "WORKER JOIN WORKSHOP\t" << ENDC << *ws << std::endl;
         }
     }
+
+    void Worker::work(WorkShop * ws) {
+        if (hasWorkShop(ws)) {
+            std::cout << BLUE << this->getName() << YELLOW << "\tWORKING ON\t" << *ws << std::endl;
+        } else if (DEBUG) {
+            std::cout << BLUE << this->getName() << RED << "\tCANT WORK, NOT REGISTERED\t" << ENDC << *ws << std::endl;
+        }
+    }
+
 
     std::ostream& operator<<(std::ostream& s, const Worker& w) {
         s << w.getName() << " (" << w.getCoord() << ") " << w.getStat();

@@ -5,13 +5,12 @@
 #include "Statistic.hpp"
 
 namespace relationship {
-    Statistic::Statistic() {
+    Statistic::Statistic(): level(0), exp(0) {
     	(void)level;
     	(void)exp;
     }
 
     Statistic::~Statistic() {
-        // std::cout << "Statistic" << " destroyed" << std::endl;
     }
 
     std::ostream& operator<<(std::ostream& s, const Statistic& stat) {

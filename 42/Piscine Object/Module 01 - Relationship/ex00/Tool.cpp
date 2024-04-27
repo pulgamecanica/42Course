@@ -3,7 +3,6 @@
 //***************************//
 
 #include "ex00.inc"
-
 #include "Tool.hpp"
 #include "Worker.hpp"
 
