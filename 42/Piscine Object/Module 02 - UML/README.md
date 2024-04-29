@@ -1,4 +1,4 @@
-# ** Car Composition Project with UML Diagrams**
+# **Car Composition Project with UML Diagrams**
 
 ---
 
@@ -22,18 +22,31 @@ The UML class diagram depicts the structure of the car system, including classes
     - Stands for private attributes
 
 ***
+## UML CLASS DIAGRAM
 
-<img src="./class-diagram.svg">
+<img src="./class diagram.svg">
 
+***
 
-<img src="./.Accelerating.svg">
+## Accelerating Sequence
 
+<img src="./Accelerating.svg">
 
-<img src="./Breaking.svg">
+***
 
+## Braking Sequence
+
+<img src="./Braking.svg">
+
+***
+
+## Steering Sequence
 
 <img src="./Steering.svg">
 
+***
+
+## Change Gear Sequence
 
 <img src="./ChangeGear.svg">
 
@@ -132,7 +145,7 @@ This project demonstrates the use of UML diagrams to model the composition of a 
 
 ---
 
-Resources: 
+### Resources: 
 
 https://docs.kde.org/stable5/en/umbrello/umbrello/introduction.html
 
