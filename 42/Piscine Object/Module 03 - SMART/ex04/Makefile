@@ -9,7 +9,11 @@ INC_PATH        =   .
 
 SRC_PATH        =   .
 
-SRC             =   ./main.cpp
+SRC             =   ./main.cpp \
+		./ConstHeader.cpp \
+		./DateHeader.cpp \
+		./StreamLogger.cpp \
+		./FileLogger.cpp \
 
 CFLAGS          =   -Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address #-O3 -g -fsanitize=leak
 

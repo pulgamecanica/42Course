@@ -9,7 +9,12 @@ INC_PATH        =   .
 
 SRC_PATH        =   .
 
-SRC             =   ./main.cpp
+SRC             =   ./main.cpp \
+		./apprentice.cpp \
+		./contractEmployee.cpp \
+		./tempWorker.cpp \
+		./employeeManagement.cpp \
+		./employee.cpp \
 
 CFLAGS          =   -Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address #-O3 -g -fsanitize=leak
 
