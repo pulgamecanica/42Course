@@ -10,4 +10,4 @@ Also in the Interface segregation The filenames do not correspond to the class n
 What do you mean the TempEmployee needs a way to mobilise it over a certain period of time, in hour. And shouldn't it be hourly_value, because its an attribute, please keep consistency, it's very concerning!
 Typo: "thought th list of string," should be "thought the list of strings," on the last [dependency inversion]
 More nullptr in the preamble of Design Pattern, not nice
-
+Check the redaction on [Module 04 - DESIGN PATTERN - Chapter VI Exercice 02: Factory and Command] it is one of the worst redactions I've seen in 42. 
