@@ -14,8 +14,8 @@ class Secretary: public Staff {
     public:
         Secretary(const std::string & name);
         ~Secretary();
-        Form* createForm(FormType p_formType, size_t course_index = 0, size_t student_index = 0);
-        void archiveForm(); // get headmaster's forms and archive them
+        Form* createForm(FormType p_formType);
+        void archiveForms(); // get headmaster's forms and archive them
     private:
 };
 std::ostream& operator<<(std::ostream&, const Secretary&);

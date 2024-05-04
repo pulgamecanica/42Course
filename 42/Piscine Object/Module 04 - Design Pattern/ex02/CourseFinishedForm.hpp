@@ -12,9 +12,10 @@
 
 class CourseFinishedForm: public Form {
     public:
-        CourseFinishedForm(Course * c);
+        CourseFinishedForm();
         ~CourseFinishedForm();
         void execute();
+        void fill(Course *c);
     private:
         Course *course_;
 };

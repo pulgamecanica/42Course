@@ -13,9 +13,10 @@
 
 class SubscriptionToCourseForm: public Form {
     public:
-        SubscriptionToCourseForm(Course * course, Student * student);
+        SubscriptionToCourseForm();
         ~SubscriptionToCourseForm();
         void execute();
+        void fill(Course * course, Student * student);
     private:
         Student * student_;
         Course * course_;

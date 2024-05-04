@@ -19,8 +19,7 @@ ClassRoom *NeedMoreClassRoomForm::getClassRoom() {
 
 void NeedMoreClassRoomForm::execute() {
     if (class_room_ != nullptr) {
-        if (DEBUG)
-            std::cout << YELLOW << "[NeedMoreClassRoomForm] " << RED << "[EXECUTE FAIL]\t" << ENDC << *this << " has already been executed!" << std::endl; 
+        std::cout << *this << RED << " can't be executed, can only be executed once." << ENDC << std::endl;
     } else if (isSigned()) {
         class_room_ = new ClassRoom();
         std::cout << *this << " has been executed! " << *class_room_ << GREEN << " [Created]" << ENDC  << std::endl;
