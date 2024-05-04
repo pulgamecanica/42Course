@@ -15,9 +15,10 @@ class Course {
         Course(const std::string & name, int number_of_class_to_graduate = 9, int course_capacity = 42);
         ~Course();
         std::ostream& loadCourseInfo(std::ostream& s) const;
-        bool hasStudent(Student * s);
+        bool hasStudent(Student * s) const;
         void assign(Professor* p_professor);
         void subscribe(Student* p_student);
+        void finish();
     private:
         const std::string name_;
         Professor* responsable_;

@@ -8,13 +8,16 @@
 #include <iostream>
 
 #include "Room.hpp"
+#include "Course.hpp"
 
 class Course;
 class ClassRoom: public Room {
     public:
         ClassRoom();
         ~ClassRoom();
+        void assignCourse(Course* p_course);
         bool canEnter(Person* p_person);
+        Course * getCourse();
     private:
         Course * current_course_;
 };

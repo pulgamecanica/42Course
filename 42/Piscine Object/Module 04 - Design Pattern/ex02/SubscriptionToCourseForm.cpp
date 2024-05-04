@@ -2,9 +2,11 @@
 //*Template by pulgamecanica*//
 //***************************//
 
+#include "School.inc"
 #include "SubscriptionToCourseForm.hpp"
 
-SubscriptionToCourseForm::SubscriptionToCourseForm(): Form(FormType::SubscriptionToCourse) {
+SubscriptionToCourseForm::SubscriptionToCourseForm(Course * course, Student * student):
+    Form(FormType::SubscriptionToCourse), student_(student), course_(course) {
     ;
 }
 
@@ -13,6 +15,15 @@ SubscriptionToCourseForm::~SubscriptionToCourseForm() {
 }
 
 void SubscriptionToCourseForm::execute() {
-    signed_by_staff_ = true;
-    std::cout << "Signed and executed by staff" << std::endl;    
+    if (course_ == nullptr || student_ == nullptr) {
+        if (DEBUG)
+            std::cout << "[CourseFinishedForm] " << RED << "EXECUTE FAIL\t" << ENDC << " form is corrupted" << std::endl;
+        return ;
+    }
+    if (isSigned()) {
+        course_->subscribe(student_);
+        std::cout << *this << " has been executed! " << *student_ << GREEN << " [Requested Subscription]" << ENDC << " to " << *course_ << std::endl;
+    } else {
+        std::cout << *this << RED << " can't be executed, missing signature." << ENDC << std::endl;
+    } 
 }

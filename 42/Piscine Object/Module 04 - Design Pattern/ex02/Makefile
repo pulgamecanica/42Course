@@ -1,7 +1,7 @@
 # Makefile created automatically from script
 # C++ School [Thu May  2 02:58:48 PM CEST 2024]
 #MAKEFLAGS += --silent  # Silence makefile [Commented by default]
-NAME            =   Singletons
+NAME            =   FactoryAndCommands
 
 NAME_DEBUG      =   ${NAME}_debug
 

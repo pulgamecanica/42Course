@@ -8,12 +8,14 @@
 #include <iostream>
 
 #include "Form.hpp"
+#include "Course.hpp"
 
 class CourseFinishedForm: public Form {
     public:
-        CourseFinishedForm();
+        CourseFinishedForm(Course * c);
         ~CourseFinishedForm();
         void execute();
     private:
+        Course *course_;
 };
 #endif

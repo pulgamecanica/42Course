@@ -5,6 +5,7 @@
 #include "School.inc"
 
 #include "Form.hpp"
+#include "Staff.hpp"
 
 const std::vector<std::string> Form::FOMR_TYPE_STR = {
     "CourseFinished",
@@ -25,6 +26,12 @@ Form::~Form() {
 
 const std::string & Form::getTypeName() const {
     return FOMR_TYPE_STR[(int)type_];
+}
+
+void Form::sign(Staff * staff) {
+    signed_by_staff_ = true;
+    if (DEBUG)
+        std::cout << YELLOW << "[Form] " << GREEN << "SIGNED\t" << ENDC << "by " << *staff << std::endl;
 }
 
 const enum FormType & Form::getType() const {

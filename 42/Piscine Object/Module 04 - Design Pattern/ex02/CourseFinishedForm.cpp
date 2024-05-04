@@ -2,9 +2,11 @@
 //*Template by pulgamecanica*//
 //***************************//
 
+#include "School.inc"
 #include "CourseFinishedForm.hpp"
 
-CourseFinishedForm::CourseFinishedForm(): Form(FormType::CourseFinished) {
+CourseFinishedForm::CourseFinishedForm(Course * c):
+    Form(FormType::CourseFinished), course_(c) {
     ;
 }
 
@@ -13,8 +15,17 @@ CourseFinishedForm::~CourseFinishedForm() {
 }
 
 void CourseFinishedForm::execute() {
-    signed_by_staff_ = true;
-    std::cout << "Signed and executed by staff" << std::endl;
+    if (course_ == nullptr) {
+        if (DEBUG)
+            std::cout << "[CourseFinishedForm] " << RED << "EXECUTE FAIL\t" << ENDC << " form is corrupted" << std::endl;
+        return ;
+    }
+    if (isSigned()) {
+        course_->finish();
+        std::cout << *this << " has been executed! " << *course_ << GREEN << " [Finished]" << ENDC  << std::endl;
+    } else {
+        std::cout << *this << RED << " can't be executed, missing signature." << ENDC << std::endl;
+    }
 }
 
 

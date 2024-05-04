@@ -15,12 +15,14 @@ enum class FormType {
     SubscriptionToCourse
 };
 
+class Staff;
 class Form {
     static const std::vector<std::string> FOMR_TYPE_STR;
     public:
         Form(FormType p_formType);
         virtual ~Form();
         virtual void execute() = 0;
+        void sign(Staff * staff);
         const std::string & getTypeName() const;
         const enum FormType & getType() const;
         bool isSigned() const;

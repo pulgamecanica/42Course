@@ -8,8 +8,8 @@
 #include <iostream>
 
 #include "Person.hpp"
-#include "Form.hpp"
 
+class Form;
 class Staff: public Person {
     public:
         Staff(const std::string & name);

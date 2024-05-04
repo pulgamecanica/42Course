@@ -8,7 +8,7 @@
 
 StaffList::StaffList() {
     if (DEBUG)
-        std::cout << YELLOW << "[CourseList] " << GREEN << "CREATE\t" << ENDC << std::endl;
+        std::cout << YELLOW << "[StaffList] " << GREEN << "CREATE\t" << ENDC << std::endl;
 }
 
 StaffList::~StaffList() {

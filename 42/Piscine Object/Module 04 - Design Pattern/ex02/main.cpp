@@ -30,127 +30,101 @@
 #include "Singleton.hpp"
 
 
-template<typename T>
-void ThreadFoo() {
-    T* singleton = T::GetInstance();
-    std::cout << singleton << std::endl;   
-}
-
-template<typename T>
-void ThreadBar() {
- T* singleton = T::GetInstance();
-    std::cout << singleton << std::endl;   
+void testFormByType(Secretary & mike, enum FormType type) {
+    HeadMaster * hm = dynamic_cast<HeadMaster *>(StaffList::GetInstance()->get<HeadMaster *>());
+    if (hm == nullptr) {
+        if (DEBUG)
+            std::cout << RED << "[ERROR] " << ENDC << " HeadMaster is missing" << std::endl;
+        return ;
+    }
+    Form * f = mike.createForm(type);
+    hm->receiveForm(f);
+    hm->sign(f);
+    if (f != nullptr)  {
+        f->execute();
+    } else {
+        std::cerr << RED << "[ERROR]" << ENDC << " form failed to be created" << std::endl;
+        return ;
+    }
+    // delete f; // No need to delete, forms are created by Secretary but belong to the Headmaster, headmaster will delete them on destruction
 }
 
 int main(void)
 {
     if (DEBUG)
         std::cout << "Debug ON!" << std::endl;
-    std::cout << YELLOW << "- - - - - - Thread Test CourseList - - - - - - -" << ENDC << std::endl;
-    {
-    std::thread t1(ThreadFoo<CourseList>);
-    std::thread t2(ThreadBar<CourseList>);
-    t1.join();
-    t2.join();
-    }
-    std::cout << YELLOW << "- - - - - - Thread Test RoomList - - - - - - -" << ENDC << std::endl;
-    {
-    std::thread t1(ThreadFoo<RoomList>);
-    std::thread t2(ThreadBar<RoomList>);
-    t1.join();
-    t2.join();
-    }
-    std::cout << YELLOW << "- - - - - - Thread Test StudentList - - - - - - -" << ENDC << std::endl;
-    {
-    std::thread t1(ThreadFoo<StudentList>);
-    std::thread t2(ThreadBar<StudentList>);
-    t1.join();
-    t2.join();
-    }
-    std::cout << YELLOW << "- - - - - - Thread Test StaffList - - - - - - -" << ENDC << std::endl;
-    {
-    std::thread t1(ThreadFoo<StaffList>);
-    std::thread t2(ThreadBar<StaffList>);
-    t1.join();
-    t2.join();
-    }
-    std::cout << YELLOW << "- - - - - - Test CourseList - - - - - - -" << ENDC << std::endl;
     CourseList * cl = CourseList::GetInstance();
-    Course c("Awesome Programming Course");
-    Course ruby("Ruby 101");
-    Course python("Python");
-    cl->add(&python); // try to add python manually... ?
-    cl->remove(&python); // remove manually... ?
-    cl->remove(&python); // again? ?
-    cl->add(&python); // try to add python manually... ?
-    try {
-        Course & c = (*cl)[9];
-        std::cout << "Item 9 |" << c << "|" << std::endl;
-    } catch (std::exception & e) {
-        std::cerr << RED << e.what() << ENDC << std::endl;
-    }
-    std::cout << "CourseList has " << cl->size() << " courses" << std::endl;
-    for (size_t i = 0; i < cl->size(); ++i)
-        std::cout << " - " << (*cl)[i] <<  std::endl;
-    std::cout << YELLOW << "- - - - - - Test StaffList - - - - - - -" << ENDC << std::endl;
     StaffList * stfl = StaffList::GetInstance();
-    Staff staff("Megan the handy gal");
-    HeadMaster dombuldore("Dombuldore IV");
-    Secretary lola("Lola Goth");
-    std::cout << "StaffList has " << stfl->size() << " members" << std::endl;
-    for (size_t i = 0; i < stfl->size(); ++i)
-        std::cout << " - " << (*stfl)[i] <<  std::endl;
-    std::cout << YELLOW << "\t - - - Polymorphic Test StaffList - - -" << ENDC << std::endl;
-    for (size_t i = 0; i < stfl->size(); ++i) {
-        HeadMaster * hm = dynamic_cast<HeadMaster *>(&((*stfl)[i]));
-        Professor * pr = dynamic_cast<Professor *>(&((*stfl)[i]));
-        Secretary * sc = dynamic_cast<Secretary *>(&((*stfl)[i]));
-        if (hm != nullptr)
-            std::cout << *hm << std::endl;
-        else if (pr != nullptr)
-            std::cout << *pr << std::endl;
-        else if  (sc != nullptr)
-            std::cout << *sc << std::endl;
-        else
-            std::cout << "Plymorphism Failed :( for he's just a staff member " << (*stfl)[i] << std::endl;
-    }
-    std::cout << YELLOW << "- - - - - - Test RoomList - - - - - - -" << ENDC << std::endl;
     RoomList * rl = RoomList::GetInstance();
-    Room r1;
-    Courtyard courtyard;
-    SecretarialOffice so1;
-    SecretarialOffice so2;
-    HeadmasterOffice hmo;
-    ClassRoom cr1;
-    ClassRoom cr2;
-    std::cout << "RoomList has " << rl->size() << " rooms" << std::endl;
-    for (size_t i = 0; i < rl->size(); ++i)
-        std::cout << " - " << (*rl)[i] <<  std::endl;
-    std::cout << YELLOW << "\t - - - Polymorphic Test RoomList - - -" << ENDC << std::endl;
-    for (size_t i = 0; i < rl->size(); ++i) {
-        Courtyard * cy = dynamic_cast<Courtyard *>(&((*rl)[i]));
-        SecretarialOffice * so = dynamic_cast<SecretarialOffice *>(&((*rl)[i]));
-        HeadmasterOffice * hmo2 = dynamic_cast<HeadmasterOffice *>(&((*rl)[i]));
-        ClassRoom * cr = dynamic_cast<ClassRoom *>(&((*rl)[i]));
-        if (cy != nullptr)
-            std::cout << *cy << std::endl;
-        else if (so != nullptr)
-            std::cout << *so << std::endl;
-        else if  (hmo2 != nullptr)
-            std::cout << *hmo2 << std::endl;
-        else if  (cr != nullptr)
-            std::cout << *cr << std::endl;
-        else
-            std::cout << "Plymorphism Failed :( for it's just a room " << (*rl)[i] << std::endl;
-    }
-    std::cout << YELLOW << "- - - - - - Test StudentList - - - - - - -" << ENDC << std::endl;
     StudentList * stul = StudentList::GetInstance();
+    (void)cl;
+    (void)stfl;
+    (void)rl;
+    (void)stul;
+    
+    std::cout << YELLOW << "- - - - - - Init - - - - - - -" << ENDC << std::endl;
+    Secretary mike("Mike the tyrant");
+    Course c("Awesome Programming Course");
+    Course ruby("Ruby 101", 1, 1);
+    Course python("Python");
     Student hp("Harry Potter");
     Student draco("Draco Malfoy");
     Student hermione("Hermione Granger");
-    std::cout << "StudentList has " << stul->size() << " students" << std::endl;
-    for (size_t i = 0; i < stul->size(); ++i)
-        std::cout << " - " << (*stul)[i] <<  std::endl;
+    Professor px("X");
+    Professor pulga("pulga");
+    c.assign(&px);
+    ruby.assign(&pulga);
+    python.assign(&px);
+    hp.printStudentProgram();
+    draco.printStudentProgram();
+    hermione.printStudentProgram();
+
+    std::cout << YELLOW << "- - - - - - Manually add courses - - - - - - -" << ENDC << std::endl;
+    hp.addCourse(&c);
+    hp.addCourse(&python);
+    draco.addCourse(&python);
+    hermione.addCourse(&ruby);
+
+    hp.printStudentProgram();
+    draco.printStudentProgram();
+    hermione.printStudentProgram();
+    std::cout << YELLOW << "- - - - - - Subscribed to courses - - - - - - -" << ENDC << std::endl;
+    c.subscribe(&draco);
+    c.subscribe(&hermione);
+    ruby.subscribe(&draco);
+    python.subscribe(&hp);
+    python.subscribe(&draco);
+
+    hp.printStudentProgram();
+    draco.printStudentProgram();
+    hermione.printStudentProgram();
+    std::cout << YELLOW << "- - - - - - Forms - - - - - - -" << ENDC << std::endl;
+    CourseFinishedForm cff(&python);
+    cff.execute();
+    NeedCourseCreationForm nccf("Rust for begginers", 9, 42);
+    nccf.execute();
+
+    // Thest without head master will fail of course
+    testFormByType(mike, FormType::CourseFinished);
+    // Try again with the headmaster present
+    HeadMaster hm("Conchita");
+    std::cout << YELLOW << "- - - - - - Secretary NeedMoreClassRoomForm Form Tests - - - - - - -" << ENDC << std::endl;
+    testFormByType(mike, FormType::NeedMoreClassRoom);
+    // hermione is responsible, she will attend 11 times her classes
+    ClassRoom * class_room1 = dynamic_cast<ClassRoom *>(rl->get<ClassRoom *>());
+    if (class_room1 != nullptr) {
+        // Assign hermione's course to the class room so it will work!
+        class_room1->assignCourse(&c);
+        std::cout << "Founded a class room" << std::endl;
+        for (int i = 0; i < 9; ++i)
+            hermione.attendClass(class_room1);
+    }
+    std::cout << YELLOW << "- - - - - - Secretary CourseFinished Form Tests - - - - - - -" << ENDC << std::endl;
+    testFormByType(mike, FormType::CourseFinished);
+    std::cout << YELLOW << "- - - - - - Secretary NeedCourseCreation Form Tests - - - - - - -" << ENDC << std::endl;
+    testFormByType(mike, FormType::NeedCourseCreation);
+    std::cout << YELLOW << "- - - - - - Secretary SubscriptionToCourse Form Tests - - - - - - -" << ENDC << std::endl;
+    testFormByType(mike, FormType::SubscriptionToCourse);
     std::cout << YELLOW << "- - - - - - - - - - - - - - - - - - - - -" << ENDC << std::endl;
     return (0);
 }

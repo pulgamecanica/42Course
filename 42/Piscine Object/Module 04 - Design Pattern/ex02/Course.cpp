@@ -25,7 +25,7 @@ Course::~Course() {
     	std::cout << "Course " << *this << " destroyed" << std::endl;
 }
 
-bool Course::hasStudent(Student * s) {
+bool Course::hasStudent(Student * s) const {
 	return std::find(students_.begin(), students_.end(), s) != students_.end();
 }
 
@@ -36,17 +36,29 @@ void Course::assign(Professor* p_professor) {
 }
 
 void Course::subscribe(Student* p_student) {
-	if(!hasStudent(p_student) && students_.size() < (long unsigned)course_capacity_) {
-		students_.push_back(p_student);
+	if (p_student->hasCourse(this) || hasStudent(p_student)) {
 		if (DEBUG)
-			std::cout << YELLOW << "[Course] " << GREEN << "SUBSCRIBE\t" << ENDC << *p_student << " to " << *this << std::endl;
+			std::cout << YELLOW << "[Course] " << RED << "SUBSCRIBE FAIL\t" << ENDC << *p_student << " is already subscribed to " << *this << std::endl;
 		return ;
 	}
-	if (DEBUG) {
-		if (hasStudent(p_student))
-			std::cout << YELLOW << "[Course] " << RED << "SUBSCRIBE FAIL\t" << ENDC << *p_student << " is already subscribed to " << *this << std::endl;
-		else if (students_.size() >= (long unsigned)course_capacity_)
+	if(students_.size() < (long unsigned)course_capacity_) {
+		students_.push_back(p_student);
+		p_student->addCourse(this);
+		if (DEBUG)
+			std::cout << YELLOW << "[Course] " << GREEN << "SUBSCRIBE\t" << ENDC << *p_student << " to " << *this << std::endl;
+	} else {
+		if (DEBUG)
 			std::cout << YELLOW << "[Course] " << RED << "SUBSCRIBE FAIL\t" << ENDC << *this << " is full" << std::endl;
+	}
+}
+
+void Course::finish() {
+	std::cout << BLUE << "Graduation ceremony!" << ENDC << std::endl;
+	for (std::vector<Student *>::const_iterator i = students_.begin(); i != students_.end(); ++i) {
+		if ((*i)->getCourseAttendance(this) >= number_of_class_to_graduate_)
+			std::cout << " > " << **i << GREEN << " will graduate upon this cursus ending season!" << ENDC << std::endl;
+		else
+			std::cout << " > " << **i << RED << " cannot graduate just yet! :(" << YELLOW << " total assistance: " << ENDC << (*i)->getCourseAttendance(this) << std::endl;
 	}
 }
 

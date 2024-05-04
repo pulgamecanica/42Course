@@ -71,6 +71,14 @@ class Singleton {
         size_t size() const {
             return items_.size();
         }
+        template<typename P>
+        T * get() {
+            for (typename std::vector<T *>::iterator i = items_.begin(); i != items_.end(); ++i) {
+                if (dynamic_cast<P>(*i))
+                    return *i;
+            }
+            return nullptr;
+        }
     protected:
         std::vector<T *> items_;
     private:

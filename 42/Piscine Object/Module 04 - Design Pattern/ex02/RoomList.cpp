@@ -8,7 +8,7 @@
 
 RoomList::RoomList() {
  if (DEBUG)
-        std::cout << YELLOW << "[CourseList] " << GREEN << "CREATE\t" << ENDC << std::endl;
+        std::cout << YELLOW << "[RoomList] " << GREEN << "CREATE\t" << ENDC << std::endl;
 }
 
 RoomList::~RoomList() {

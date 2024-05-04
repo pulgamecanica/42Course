@@ -6,6 +6,7 @@
 
 #include "Staff.hpp"
 #include "StaffList.hpp"
+#include "Form.hpp"
 
 Staff::Staff(const std::string & name):
     Person(name) {
@@ -19,8 +20,7 @@ Staff::~Staff() {
 }
 
 void Staff::sign(Form* p_form) {
-    std::cout << p_form << "signed" << std::endl;
-    p_form->execute();
+    p_form->sign(this);
 }
 
 std::ostream& operator<<(std::ostream& s, const Staff& p) {

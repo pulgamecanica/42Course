@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "Staff.hpp"
+#include "Form.hpp"
 
 class HeadMaster: public Staff {
     public:
@@ -16,6 +17,7 @@ class HeadMaster: public Staff {
         ~HeadMaster();
         bool hasForm(Form * p_form);
         void receiveForm(Form* p_form);
+        void archive();
     private:
         std::vector<Form *> forms_to_validate_;
 };

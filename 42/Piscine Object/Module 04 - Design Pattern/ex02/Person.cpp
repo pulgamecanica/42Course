@@ -7,7 +7,7 @@
 #include "Person.hpp"
 #include "Room.hpp"
 
-Person::Person(const std::string & name): name_(name), current_room_(nullptr) {
+Person::Person(const std::string & name): current_room_(nullptr), name_(name) {
     if (DEBUG)
         std::cout << YELLOW << "[Person] " << GREEN << "CREATE\t" << *this << std::endl;
 }

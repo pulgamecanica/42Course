@@ -15,9 +15,10 @@ class Person {
         const std::string & getName() const;
         void setRoom(Room *p_room);
         const Room * getRoom() const;
+    protected:
+        Room* current_room_;
     private:
         const std::string name_;
-        Room* current_room_;
 };
 std::ostream& operator<<(std::ostream&, const Person&);
 #endif
