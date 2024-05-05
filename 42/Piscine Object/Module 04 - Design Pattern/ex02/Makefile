@@ -33,7 +33,7 @@ SRC             =   ./main.cpp \
 		./Person.cpp \
 		./Course.cpp \
 
-CFLAGS          =   -Wall -Wextra -Werror -std=c++11 -pedantic -fsanitize=address #-O3 -g -fsanitize=leak
+CFLAGS          = -g  -Wall -Wextra -Werror -std=c++11 -pedantic -fsanitize=address #-O3 -g -fsanitize=leak
 
 INC             =   -I${INC_PATH}
 

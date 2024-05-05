@@ -15,7 +15,6 @@ class Professor: public Staff {
         Professor(const std::string & name);
         ~Professor();
     private:
-        Course* current_room_;
 };
 
 std::ostream& operator<<(std::ostream&, const Professor&);

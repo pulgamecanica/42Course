@@ -17,9 +17,12 @@ Course::Course(const std::string & name, int number_of_class_to_graduate, int co
 	if (DEBUG)
 		std::cout << YELLOW << "[Course] " << GREEN << "CREATE\t" << ENDC << "Course " << BLUE << name << ENDC << std::endl;
 	CourseList::GetInstance()->add(this);
+
 }
 
 Course::~Course() {
+	responsable_ = nullptr;
+	students_.clear();
 	CourseList::GetInstance()->remove(this);
 	if (DEBUG)
     	std::cout << "Course " << *this << " destroyed" << std::endl;
@@ -29,25 +32,31 @@ bool Course::hasStudent(Student * s) const {
 	return std::find(students_.begin(), students_.end(), s) != students_.end();
 }
 
+const Professor * Course::getResponsable() const {
+	return responsable_;
+}
+
 void Course::assign(Professor* p_professor) {
 	responsable_ = p_professor;
-	if (DEBUG)
-		std::cout << YELLOW << "[Course] " << GREEN << "ASSIGN\t" << ENDC << *p_professor << " to " << BLUE << name_ << ENDC << std::endl;
+	if (DEBUG) {
+		if (p_professor)
+			std::cout << YELLOW << "[Course] " << GREEN << "ASSIGN\t" << ENDC << *p_professor << " to " << BLUE << name_ << ENDC << std::endl;
+		else
+			std::cout << YELLOW << "[Course] " << GREEN << "UNASSIGN\t" << ENDC << " to " << BLUE << name_ << ENDC << std::endl;
+	}
 }
 
 void Course::subscribe(Student* p_student) {
-	if (p_student->hasCourse(this) || hasStudent(p_student)) {
-		if (DEBUG)
-			std::cout << YELLOW << "[Course] " << RED << "SUBSCRIBE FAIL\t" << ENDC << *p_student << " is already subscribed to " << *this << std::endl;
-		return ;
-	}
-	if(students_.size() < (long unsigned)course_capacity_) {
+	if(!hasStudent(p_student) && students_.size() < (long unsigned)course_capacity_) {
 		students_.push_back(p_student);
-		p_student->addCourse(this);
 		if (DEBUG)
 			std::cout << YELLOW << "[Course] " << GREEN << "SUBSCRIBE\t" << ENDC << *p_student << " to " << *this << std::endl;
-	} else {
-		if (DEBUG)
+		return ;
+	}
+	if (DEBUG) {
+		if (hasStudent(p_student))
+			std::cout << YELLOW << "[Course] " << RED << "SUBSCRIBE FAIL\t" << ENDC << *p_student << " is already subscribed to " << *this << std::endl;
+		else if (students_.size() >= (long unsigned)course_capacity_)
 			std::cout << YELLOW << "[Course] " << RED << "SUBSCRIBE FAIL\t" << ENDC << *this << " is full" << std::endl;
 	}
 }

@@ -20,6 +20,8 @@ Course::Course(const std::string & name, int number_of_class_to_graduate, int co
 }
 
 Course::~Course() {
+	responsable_ = nullptr;
+	students_.clear();
 	CourseList::GetInstance()->remove(this);
 	if (DEBUG)
     	std::cout << "Course " << *this << " destroyed" << std::endl;

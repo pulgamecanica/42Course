@@ -7,7 +7,8 @@
 
 
 Professor::Professor(const std::string & name):
-	Staff(name), current_room_(nullptr) {
+	Staff(name), current_course(nullptr) {
+		(void)current_course;
 	;
 }
 

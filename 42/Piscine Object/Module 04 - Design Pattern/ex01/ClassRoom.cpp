@@ -8,6 +8,7 @@
 #include "Student.hpp"
 
 ClassRoom::ClassRoom(): current_course_(nullptr) {
+	(void)current_course_;
 	;
 }
 

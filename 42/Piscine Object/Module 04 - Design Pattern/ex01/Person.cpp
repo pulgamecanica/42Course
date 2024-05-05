@@ -13,6 +13,7 @@ Person::Person(const std::string & name): name_(name), current_room_(nullptr) {
 }
 
 Person::~Person() {
+    current_room_ = nullptr;
     if (DEBUG)
         std::cout << "Person " << *this << " destroyed" << std::endl;
 }

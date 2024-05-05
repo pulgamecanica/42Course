@@ -150,6 +150,7 @@ int main(void)
     hm.sign(stcf2);
     stcf2->execute();
     stcf2->execute(); // Execute twice, attempt to create subscribe twice?
+    hm.archive();
     std::cout << YELLOW << "- - - - - - - - - - - - - - - - - - - - -" << ENDC << std::endl;
     return (0);
 }

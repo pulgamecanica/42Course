@@ -4,15 +4,15 @@
 
 #include "Professor.hpp"
 #include "Course.hpp"
-#include "StaffList.hpp"
 
 Professor::Professor(const std::string & name):
-	Staff(name), current_room_(nullptr) {
+	Staff(name), current_course(nullptr) {
     StaffList::GetInstance()->add(this); // Allow Polymorphism, This will add the Professor Pointer instead of Staff
+    (void)current_course;
 }
 
 Professor::~Professor() {
-    // std::cout << "Professor" << " destroyed" << std::endl;
+	current_course = nullptr;
 }
 
 std::ostream& operator<<(std::ostream& s, const Professor& p) {

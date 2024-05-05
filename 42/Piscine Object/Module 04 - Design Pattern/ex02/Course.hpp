@@ -16,6 +16,7 @@ class Course {
         ~Course();
         std::ostream& loadCourseInfo(std::ostream& s) const;
         bool hasStudent(Student * s) const;
+        const Professor * getResponsable() const;
         void assign(Professor* p_professor);
         void subscribe(Student* p_student);
         void finish();
