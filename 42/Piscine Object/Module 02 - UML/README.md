@@ -24,7 +24,7 @@ The UML class diagram depicts the structure of the car system, including classes
 ***
 ## UML CLASS DIAGRAM
 
-<img src="./class diagram.svg">
+<img src="./class-diagram.svg">
 
 ***
 
@@ -142,6 +142,12 @@ Sequence diagrams illustrate the interactions between objects during specific sc
 **Conclusion:**
 
 This project demonstrates the use of UML diagrams to model the composition of a car system. The UML class diagram provides a high-level overview of the system's structure, while sequence diagrams offer insights into the interactions between objects during different operations. Overall, the project showcases the power of UML as a modeling tool for complex systems.
+
+---
+
+#### Notes:
+
+On the subject the cockpit should have an array of pedals, cars have more than one pedal.
 
 ---
 

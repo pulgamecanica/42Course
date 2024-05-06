@@ -4,6 +4,7 @@
 
 #include "Professor.hpp"
 #include "Course.hpp"
+#include "StaffList.hpp"
 
 Professor::Professor(const std::string & name):
 	Staff(name), current_course(nullptr) {
