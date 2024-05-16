@@ -1,33 +1,22 @@
 # Makefile created automatically from script
-# C++ School [Thu May  2 02:58:48 PM CEST 2024]
+# C++ ex00 [Thu May 16 10:51:04 AM CEST 2024]
 #MAKEFLAGS += --silent  # Silence makefile [Commented by default]
-NAME            =   School
+NAME            =   ex00
 
 NAME_DEBUG      =   ${NAME}_debug
 
-INC_PATH        =   .
+INC_PATH        =   includes
 
-SRC_PATH        =   .
+SRC_PATH        =   srcs
 
 SRC             =   ./main.cpp \
-		./SubscriptionToCourseForm.cpp \
-		./NeedMoreClassRoomForm.cpp \
-		./NeedCourseCreationForm.cpp \
-		./CourseFinishedForm.cpp \
-		./Secretary.cpp \
-		./HeadMaster.cpp \
-		./Staff.cpp \
-		./Form.cpp \
-		./Courtyard.cpp \
-		./StaffRestRoom.cpp \
-		./HeadmasterOffice.cpp \
-		./SecretarialOffice.cpp \
-		./Professor.cpp \
-		./ClassRoom.cpp \
-		./Student.cpp \
-		./Room.cpp \
-		./Person.cpp \
-		./Course.cpp \
+		srcs/Student.cpp \
+		srcs/Professor.cpp \
+		srcs/Course.cpp \
+		srcs/Staff.cpp \
+		srcs/Person.cpp \
+		srcs/Classroom.cpp \
+		srcs/Room.cpp \
 
 CFLAGS          =   -Wall -Wextra -Werror -std=c++11 -pedantic -fsanitize=address #-O3 -g -fsanitize=leak
 
@@ -74,14 +63,14 @@ ${NAME_DEBUG}: $(OBJ_DEBUG)
 
 debug:      ${NAME_DEBUG}
 
-test:       all
+test:       re
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@./$(NAME)
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show --no-print-directory
-# 			@$(MAKE) fclean --no-print-directory
+			@$(MAKE) fclean --no-print-directory
 
 valgrind:   re
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) $(NAME)_ARGS
@@ -93,7 +82,7 @@ clean:
 			@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean:     clean
-			$(RM) $(NAME) $(NAME_DEBUG) 
+			$(RM) $(NAME) $(NAME_DEBUG)
 			@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 re: fclean all

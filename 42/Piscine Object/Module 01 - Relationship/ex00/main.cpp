@@ -117,26 +117,53 @@ int main(void)
     w3.printTools();
 
     std::cout << YELLOW << "- - - - - - - - - - - GET TOOLS (Hammer) - - - - - - - - - - - -" << ENDC << std::endl;
-    
-    // try hammer now
-    relationship::Hammer * first_hammer = NULL;
-    first_hammer = dynamic_cast<relationship::Hammer *>(w3.getTool<relationship::Hammer>());
-    if (first_hammer != NULL)
-        std::cout << "GetTool<Hammer>: " << *first_hammer << std::endl;
-    else
-        std::cout << "GetTool<Hammer> Returned NULL, no tool :(" << std::endl;
-    // w doenst have a hammer, should return null
-    first_hammer = dynamic_cast<relationship::Hammer *>(w.getTool<relationship::Hammer>());
-    if (first_hammer != NULL)
-        std::cout << "GetTool<Hammer>: " << *first_hammer << std::endl;
-    else
-        std::cout << "GetTool<Hammer> " << w << RED << " has no Hammer :(" << ENDC << std::endl;
-    // try shovel now
-    relationship::Shovel * first_shovel = dynamic_cast<relationship::Shovel *>(w3.getTool<relationship::Shovel>());
-    if (first_shovel != NULL)
-        std::cout << "GetTool<Shovel>: " << *first_shovel << std::endl;
-    else
-        std::cout << "GetTool<Shovel> " << w << RED << " has no Shovel :(" << ENDC << std::endl;
+    {
+        // Create one shovel and one hammer
+        relationship::Hammer the_hammer;
+        relationship::Shovel the_shovel;
+        // Create one Worker
+        relationship::Worker worker("Bob The Builder"); // The constructor migth change depending how you decided to initialize the worker
+        // give both tools to the Worker
+        worker.addTool(&the_hammer);
+        worker.addTool(&the_shovel);
+        // Get the two tools using the bonus function
+        relationship::Hammer * first_hammer = dynamic_cast<relationship::Hammer *>(worker.getTool<relationship::Hammer>());
+        relationship::Shovel * first_shovel = dynamic_cast<relationship::Shovel *>(worker.getTool<relationship::Shovel>());
+        if (first_hammer)
+            std::cout << "There is a hammer" << std::endl;
+        if (first_shovel)
+            std::cout << "There is a shovel" << std::endl;
+
+        worker.removeTool(&the_hammer);
+        first_hammer = dynamic_cast<relationship::Hammer *>(worker.getTool<relationship::Hammer>());
+        if (!first_hammer)
+            std::cout << "There is a No hammer :)" << std::endl;
+        else
+            std::cout << *first_hammer << std::endl;
+
+    }
+    // // try hammer now
+    // relationship::Hammer * first_hammer = NULL;
+    // first_hammer = dynamic_cast<relationship::Hammer *>(w3.getTool<relationship::Hammer>());
+    // if (first_hammer != NULL)
+    //     std::cout << "GetTool<Hammer>: " << *first_hammer << std::endl;
+    // else
+    //     std::cout << "GetTool<Hammer> Returned NULL, no tool :(" << std::endl;
+    // // w doenst have a hammer, should return null
+    // first_hammer = dynamic_cast<relationship::Hammer *>(w.getTool<relationship::Hammer>());
+    // if (first_hammer != NULL)
+    //     std::cout << "GetTool<Hammer>: " << *first_hammer << std::endl;
+    // else
+    //     std::cout << "GetTool<Hammer> " << w << RED << " has no Hammer :(" << ENDC << std::endl;
+    // // try shovel now
+    // relationship::Shovel * first_shovel = dynamic_cast<relationship::Shovel *>(w3.getTool<relationship::Shovel>());
+    // if (first_shovel)
+    //     w.addTool(first_shovel);
+    // first_shovel = dynamic_cast<relationship::Shovel *>(w3.getTool<relationship::Shovel>());
+    // if (first_shovel != NULL)
+    //     std::cout << "GetTool<Shovel>: " << *first_shovel << std::endl;
+    // else
+    //     std::cout << "GetTool<Shovel> " << w << RED << " has no Shovel :(" << ENDC << std::endl;
     
     std::cout << YELLOW << "- - - - - - - - - - - - - WORKSHOPS INIT - - - - - - - - - - - - - -" << ENDC << std::endl;
     

@@ -1,7 +1,7 @@
 # Makefile created automatically from script
-# C++ ex00 [Fri Apr 26 04:54:33 PM CEST 2024]
+# C++ School [Thu May  2 02:58:48 PM CEST 2024]
 #MAKEFLAGS += --silent  # Silence makefile [Commented by default]
-NAME            =   ex00
+NAME            =   School
 
 NAME_DEBUG      =   ${NAME}_debug
 
@@ -10,17 +10,26 @@ INC_PATH        =   .
 SRC_PATH        =   .
 
 SRC             =   ./main.cpp \
-		./Shoveling101.cpp \
-		./WoodWorking.cpp \
-		./WorkShop.cpp \
-		./Hammer.cpp \
-		./Tool.cpp \
-		./Shovel.cpp \
-		./Worker.cpp \
-		./Statistic.cpp \
-		./Position.cpp \
+		./SubscriptionToCourseForm.cpp \
+		./NeedMoreClassRoomForm.cpp \
+		./NeedCourseCreationForm.cpp \
+		./CourseFinishedForm.cpp \
+		./Secretary.cpp \
+		./HeadMaster.cpp \
+		./Staff.cpp \
+		./Form.cpp \
+		./Courtyard.cpp \
+		./StaffRestRoom.cpp \
+		./HeadmasterOffice.cpp \
+		./SecretarialOffice.cpp \
+		./Professor.cpp \
+		./ClassRoom.cpp \
+		./Student.cpp \
+		./Room.cpp \
+		./Person.cpp \
+		./Course.cpp \
 
-CFLAGS          =   -Wall -Wextra -Werror -std=c++98 -pedantic -fsanitize=address #-O3 -g -fsanitize=leak
+CFLAGS          =   -Wall -Wextra -Werror -std=c++11 -pedantic -fsanitize=address #-O3 -g -fsanitize=leak
 
 INC             =   -I${INC_PATH}
 
@@ -49,7 +58,7 @@ ${OBJ_D}/%.o:${SRC_PATH}/%.cpp
 			@mkdir -p ${OBJ_D}
 			$(CC) $(CFLAGS) ${INC} -o $@ -c $<
 
-${NAME}:   ${OBJ} WorkShop.hpp
+${NAME}:   ${OBJ}
 			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
 			$(CC) $(CFLAGS) ${INC} $(OBJ) -o $(NAME)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
@@ -65,14 +74,14 @@ ${NAME_DEBUG}: $(OBJ_DEBUG)
 
 debug:      ${NAME_DEBUG}
 
-test:       re
+test:       all
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@./$(NAME)
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show --no-print-directory
-			@$(MAKE) fclean --no-print-directory
+# 			@$(MAKE) fclean --no-print-directory
 
 valgrind:   re
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) $(NAME)_ARGS
@@ -84,7 +93,7 @@ clean:
 			@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean:     clean
-			$(RM) $(NAME) $(NAME_DEBUG)
+			$(RM) $(NAME) $(NAME_DEBUG) 
 			@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 re: fclean all
