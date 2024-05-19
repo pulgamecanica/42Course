@@ -8,13 +8,14 @@
 
 ---
 
-This first exercise is extreamely important so that the project's base is strong and flexible.
-Reliable and reusable. I tried to follow the SOLID principles in order to have a good design.
-I redid this exercise and all the classes at least 10 times. I tried using pointers, but I didn't like
-the dangling pointers issue. I tries implementing reference wrappers but the code was very sturdy and 
-not so easy to understand, mixing references with pointers and instances.
-I decided to imlpement smart pointers and converted everything to smart pointers. But then I realized that
-smart pointers DO represent ownership and I had to adapt and analyse when to use weak pointers & shared pointers.
+This first exercise is extreamely important so that the project's base is strong and flexible.<br>
+Reliable and reusable. I tried to follow the SOLID principles in order to have a good design.<br>
+I redid this exercise and all the classes at least 10 times. I tried using pointers, but I didn't like<br>
+the dangling pointers issue. I tried implementing reference wrappers but the code was very sturdy and<br>
+not so easy to understand, mixing references with pointers and instances.<br>
+I decided to imlpement smart pointers and converted everything to smart pointers. But then I realized that<br>
+smart pointers DO represent ownership and I had to adapt and analyse when to use weak pointers & shared pointers.<br>
+
 
 ---
 
