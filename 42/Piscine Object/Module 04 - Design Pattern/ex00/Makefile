@@ -10,6 +10,16 @@ INC_PATH        =   includes
 SRC_PATH        =   srcs
 
 SRC             =   ./main.cpp \
+		srcs/Courtyard.cpp \
+		srcs/StaffRestRoom.cpp \
+		srcs/HeadmasterOffice.cpp \
+		srcs/SubscriptionToCourseForm.cpp \
+		srcs/NeedCourseCreationForm.cpp \
+		srcs/NeedMoreClassRoomForm.cpp \
+		srcs/CourseFinishedForm.cpp \
+		srcs/SecretarialOffice.cpp \
+		srcs/Headmaster.cpp \
+		srcs/Secretary.cpp \
 		srcs/Student.cpp \
 		srcs/Professor.cpp \
 		srcs/Course.cpp \
@@ -63,14 +73,13 @@ ${NAME_DEBUG}: $(OBJ_DEBUG)
 
 debug:      ${NAME_DEBUG}
 
-test:       re
+test:       all
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@./$(NAME)
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show --no-print-directory
-			@$(MAKE) fclean --no-print-directory
 
 valgrind:   re
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) $(NAME)_ARGS

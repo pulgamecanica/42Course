@@ -8,6 +8,9 @@
 #include "Person.hpp"
 
 #include <iostream>
+#include <memory>
+
+class Form;
 
 class Staff: public Person {
   public:
@@ -15,7 +18,7 @@ class Staff: public Person {
   virtual ~Staff() = 0;
   Staff(const Staff&) = default;
   Staff& operator= (const Staff&) = default;
-  virtual void Sign() const;
+  void Sign(std::shared_ptr<Form> form);
 };
 std::ostream& operator<<(std::ostream&, const Staff&);
 

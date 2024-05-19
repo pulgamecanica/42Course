@@ -14,7 +14,7 @@ class Person;
 class Room: public std::enable_shared_from_this<Room> {
   public:
   Room();
-  ~Room();
+  virtual ~Room();
   Room(const Room&) = default;
   Room& operator= (const Room&) = default;
   void Enter(std::shared_ptr<Person> person);

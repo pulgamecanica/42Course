@@ -23,18 +23,28 @@ const std::string & Person::GetName() const {
 
 void Person::SetCurrentRoom(std::shared_ptr<Room> room) {
   if (current_room_.lock() == room) {
-    std::cout << RED << "[" << YELLOW << "Warning" << RED << " SET CURRENT ROOM]" << ENDC << *this << "Cannot enter the same room where you are." << std::endl;
-    return;
+    std::cout << RED << "[" << YELLOW << "Warning" << RED << " SET CURRENT ROOM]" << ENDC << *this << " Cannot enter the same room where you are." << std::endl;
+  } else {
+    current_room_ = room;
+    if (DEBUG) 
+      std::cout << *this << GREEN << " [SET CURRENT ROOM]\t" << ENDC << *room << std::endl;
   }
-  current_room_ = room;
 }
 
 void Person::ClearCurrentRoom() {
   if (current_room_.expired()) { // If you are not in a room
-    std::cout << RED << "[" << YELLOW << "Warning" << RED << " SET CURRENT ROOM]" << ENDC << *this << "Cannot exit a room where you are not." << std::endl;
-    return;
+    std::cout << RED << "[" << YELLOW << "Warning" << RED << " SET CURRENT ROOM]" << ENDC << *this << " Cannot exit a room where you are not." << std::endl;
+  } else {
+    current_room_.reset();
+    if (DEBUG)
+      std::cout << *this << GREEN << " [CLEAR CURRENT ROOM]\t" << ENDC << std::endl;
   }
-  current_room_.reset();
+}
+
+std::shared_ptr<Room> Person::GetCurrentRoom() {
+  if (!current_room_.expired())
+    return current_room_.lock();
+  return nullptr;
 }
 
 std::ostream& operator<<(std::ostream& s, const Person& p) {

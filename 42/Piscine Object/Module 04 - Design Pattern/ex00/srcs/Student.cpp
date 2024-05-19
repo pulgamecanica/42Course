@@ -26,7 +26,7 @@ void Student::AddCourse(std::shared_ptr<Course> course) {
     }
   }
   if (DEBUG)
-      std::cout << GREEN << "[ADD COURSE]" << *this << "\t" << ENDC << *course << std::endl;
+      std::cout << *this << GREEN << " [ADD COURSE]\t" << ENDC << *course << std::endl;
   courses_.push_back(course);
 }
 
@@ -39,6 +39,8 @@ void Student::Graduate(std::shared_ptr<Course> course) {
     std::cout << RED << "[" << YELLOW << "Warning" << RED << " ADD COURSE]" << ENDC << *this << "Removing an unexisting Course." << std::endl;
   } else {
     courses_.erase(it, courses_.end());
+    if (DEBUG)
+      std::cout << *this << GREEN << " [GRADUATE]\t" << ENDC << *course << std::endl;
   }
 }
 

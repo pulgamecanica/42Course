@@ -21,6 +21,7 @@ class Person {
   void ClearCurrentRoom();
   
   protected:
+  std::shared_ptr<Room> GetCurrentRoom();
   const std::string name_;
   std::weak_ptr<Room> current_room_;
 };

@@ -1,4 +1,4 @@
-# ex01 - In Praise of Design
+# ex00 - In Praise of Design
 
 This first exercise is extreamely important so that the project's base is strong and flexible.
 Reliable and reusable. I tried to follow the SOLID principles in order to have a good design.
@@ -71,7 +71,7 @@ The current_room is totally indipendent of the person and vice-versa.
 - \[Warning\] Cannot exit a room where you are not, will output an error
 - \[Prevention\] Pointer dangling is avaouded by using smart pointer for the current_room (weak_ptr)
 
-# Class Student
+### Class Student
 
 The Student class represents a person with a concrete type student
 It has an aggregation of Courses
@@ -110,4 +110,39 @@ You cannot assign a course if there is an already assigned one, you can remove t
 - \[Prevention\] Deal with dangling pointers by using a smart pointer (weak ptr)
 
 ---
+
+### Class Secretarial Office
+
+Is a class representing a Room with a concrete implementation of Secretarial Office
+
+The secretarial office is in charge of compiling all the forms that the secretaries create
+The secretaries will use this office to archive forms
+A form can be archived if it was already executed.
+The secretarial office has an aggregation of Forms. 
+
+---
+
+### Class Secretary
+
+The class Secretary is in charge of creating and archiving forms
+
+It has an association with the secretarial office 1..1 through current room
+Secreraries are in charge of managing forms
+A secretary cannot archiveForms without a valid secretarial office
+But the secretarial office can exist without knowing about secretaries
+
+---
+
+### Class Headmaster
+
+The class represents a staff member with the conrete implementation of a Headmaster
+
+Headmasters have an aggregation of forms to validate, which is a collections of forms that they have requested to the secretary. Headmasters only allow forms that are validated by them, you can't just give them any form!!!
+
+The headmaster is in charge of comunicating with the Secretary, later on we will find out he is the mediator of the school.
+He is the one that allows all the elements in the school to comunicate between each other.
+
+---
+
+UML Diagrams
 

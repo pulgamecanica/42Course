@@ -14,9 +14,9 @@ class Course;
 
 class Professor: public Staff {
   public:
-  explicit Professor(const std::string & name);
+  explicit Professor(const std::string& name);
   ~Professor();
-  Professor(const Professor&);
+  Professor(const Professor&) = default;
   Professor& operator= (const Professor&) = default;
   void SetCourse(std::shared_ptr<Course> course);
   void RemoveCourse();

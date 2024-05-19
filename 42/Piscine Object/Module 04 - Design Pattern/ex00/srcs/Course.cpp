@@ -10,8 +10,8 @@
 
 #include "ex00.inc"
 
-Course::Course(const std::string & name, int total_lessons, int capacity)
-  : name_(name), total_lessons_(total_lessons), capacity_(capacity) {
+Course::Course(const std::string & name, unsigned lessons_to_graduate, unsigned capacity)
+  : name_(name), lessons_to_graduate_(lessons_to_graduate), capacity_(capacity) {
   if (DEBUG)
     std::cout << GREEN << "[NEW]" << YELLOW << "[Course]\t" << ENDC << name_ << std::endl;
 }
@@ -27,7 +27,7 @@ std::ostream& Course::LoadCourseInfo(std::ostream& s) const {
       s << " by " << BLUE << responsible_.lock()->GetName() << ENDC << ", ";
   else
       s << YELLOW << " no responsible, " << ENDC;
-  s << students_.size() << "/" << capacity_ << " students, total lessons: " << total_lessons_;
+  s << students_.size() << "/" << capacity_ << " students, lessons left: " << lessons_to_graduate_;
   return s;
 }
 
@@ -35,13 +35,11 @@ std::ostream& Course::LoadCourseInfo(std::ostream& s) const {
 void Course::Subscribe(std::shared_ptr<Student> student) {
   if (HasStudent(student)) {
     std::cout << RED << "[" << YELLOW << "Warning" << RED << " SUBSCRIBE]" << ENDC << *this << " Cannot subscribe same student multiple times." << std::endl;
-    return ;
-  }
-  if ((int)students_.size() < capacity_) {
+  } else if ((unsigned)students_.size() < capacity_) {
     students_.push_back(student);
     student->AddCourse(shared_from_this());
     if (DEBUG)
-      std::cout << GREEN << "[SUBSCRIBE]" << *this << "\t" << ENDC << *student << std::endl;
+      std::cout << *this << GREEN << " [SUBSCRIBE]\t" << ENDC << *student << std::endl;
   } else {
     std::cout << RED << "[" << YELLOW << "Warning" << RED << " SUBSCRIBE]" << ENDC << *this << " Course capacity reached." << std::endl;
   }
@@ -54,15 +52,16 @@ bool Course::Graduate(std::shared_ptr<Student> student) {
              });
   if (it == students_.end()) {
     std::cout << RED << "[" << YELLOW << "Warning" << RED << " GRADUATE]" << ENDC << *this << " cannot graduate student which is not subscribed." << std::endl;
-    return false;
+  } else if (lessons_to_graduate_ > 0) {
+    std::cout << RED << "[" << YELLOW << "Warning" << RED << " GRADUATE]" << ENDC << *this << " course has not finished, cannot graduate, attend your classes!" << std::endl;
   } else {
-    // if student can graduate (has attended X lessons)
     students_.erase(it, students_.end());
     student->Graduate(shared_from_this());
     if (DEBUG)
-      std::cout << GREEN << "[GRADUATE]" << ENDC << *this << "\t" << *student << std::endl;
+      std::cout << *this << GREEN << " [GRADUATE]\t" << ENDC << *student << std::endl;
     return true;
   }
+  return false;
 }
 
 // Calling assign with nullptr is undefined
@@ -76,9 +75,14 @@ void Course::Assign(std::shared_ptr<Professor> professor) {
     current_professor->RemoveCourse();
   }
   responsible_ = professor;
+  professor->RemoveCourse();
   professor->SetCourse(shared_from_this());
   if (DEBUG)
-    std::cout << GREEN << "[ASSIGN]" << ENDC << *this << "\t" << *professor << std::endl;
+    std::cout << *this << GREEN << " [ASSIGN]\t" << ENDC << *professor << std::endl;
+}
+
+unsigned Course::LessonsLeft() const {
+  return lessons_to_graduate_;
 }
 
 bool Course::HasStudent(std::shared_ptr<Student> student) const {

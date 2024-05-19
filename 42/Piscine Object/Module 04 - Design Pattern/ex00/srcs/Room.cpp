@@ -31,7 +31,7 @@ void Room::Enter(std::shared_ptr<Person> person) {
   occupants_.push_back(person);
   person->SetCurrentRoom(shared_from_this());
   if (DEBUG)
-    std::cout << GREEN << "[ENTER]" << YELLOW << *this << "\t" << ENDC << *person << std::endl;
+    std::cout << *this << GREEN << " [ENTER]\t" << ENDC << *person << std::endl;
 }
 
 void Room::Exit(std::shared_ptr<Person> person) {
@@ -45,7 +45,7 @@ void Room::Exit(std::shared_ptr<Person> person) {
     occupants_.erase(it, occupants_.end());
     person->ClearCurrentRoom();
     if (DEBUG)
-      std::cout << GREEN << "[EXIT]" << *this << "\t" << ENDC << *person << std::endl;
+      std::cout << *this << GREEN << " [EXIT]\t" << ENDC << *person << std::endl;
   }
 }
 
