@@ -1,4 +1,12 @@
+***
+
 # ex00 - In Praise of Design
+
+---
+
+![Class Diagram](https://github.com/pulgamecanica/42Course/assets/28810331/d707212e-3a42-48bd-a3b8-c69ce67beb11)
+
+---
 
 This first exercise is extreamely important so that the project's base is strong and flexible.
 Reliable and reusable. I tried to follow the SOLID principles in order to have a good design.
@@ -142,7 +150,29 @@ Headmasters have an aggregation of forms to validate, which is a collections of 
 The headmaster is in charge of comunicating with the Secretary, later on we will find out he is the mediator of the school.
 He is the one that allows all the elements in the school to comunicate between each other.
 
+... etc
+
 ---
 
-UML Diagrams
+## UML Sequence Diagrams
 
+---
+
+### Cursus Assign Professor
+
+![Cursus Assign Professor](https://github.com/pulgamecanica/42Course/assets/28810331/01df76d6-b4a6-49f0-bef4-a2dea189ab5c)
+
+---
+
+### Student Add Cursus
+
+![Student Add Cursus](https://github.com/pulgamecanica/42Course/assets/28810331/1b787c9f-6024-4852-a61a-373eef9b39de)
+
+
+---
+
+### Student Graduate Cursus
+
+![Student Graduate Cursus](https://github.com/pulgamecanica/42Course/assets/28810331/3b372e4b-8fa5-4864-999d-88a8d1b92b5e)
+
+---

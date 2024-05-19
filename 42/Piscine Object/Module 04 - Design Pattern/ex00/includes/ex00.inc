@@ -20,5 +20,9 @@
 # define WHITE  "\033[0;37m"
 # define ENDC   "\033[0m"
 
+enum class Event
+{
+  RingBell
+};
 
 #endif
