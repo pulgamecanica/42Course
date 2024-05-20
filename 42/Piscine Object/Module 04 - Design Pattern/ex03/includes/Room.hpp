@@ -21,9 +21,8 @@ class Room: public std::enable_shared_from_this<Room> {
   void Exit(std::shared_ptr<Person> person);
   int GetID() const;
   // Implement after
-  // bool canEnter(Person*);
-  // void printOccupant();
-
+  virtual bool CanEnter(std::shared_ptr<Person> person) = 0;
+  void PrintOccupant() const;
 
   private:
   static int next_id_;
