@@ -55,7 +55,7 @@ class Singleton {
   }
 
   void remove(std::shared_ptr<T> c) {
-      typename std::vector<std::shared_ptr<T> *>::iterator it = std::find(items_.begin(), items_.end(), c);
+      typename std::vector<std::shared_ptr<T>>::iterator it = std::find(items_.begin(), items_.end(), c);
       if (it != items_.end()) {
         items_.erase(it);
         if (DEBUG)

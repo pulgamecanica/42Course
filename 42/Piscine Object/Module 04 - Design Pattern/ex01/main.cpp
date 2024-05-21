@@ -95,6 +95,15 @@ int main(void)
   printSingletons(sl);
   printSingletons(stl);
   printSingletons(rl);
+  std::cout << " * * * * * * Remove * * * * * * * *" << std::endl;
+  auto course1 = (*cl)[0];
+  auto course2 = (*cl)[1];
+  std::cout << *course1 << " & " << *course2 << std::endl;
+  cl->remove(course1);
+  cl->remove(course2);
+  course1 = (*cl)[0];
+  course2 = (*cl)[1];
+  std::cout << *course1 << " & " << *course2 << std::endl;
   std::cout << " * * * * * * * * * * * * * * * *" << std::endl;
   return (0);
 }

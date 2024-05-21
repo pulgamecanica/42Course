@@ -10,8 +10,9 @@
 #include <mutex>
 #include <algorithm>
 #include <memory>
+#include <functional>
 
-#include "ex02.inc"
+#include "ex04.inc"
 
 /**
 * The Singleton class defines the `GetInstance` method that serves as an
@@ -65,10 +66,23 @@ class Singleton {
       }
   }
 
+  template<typename A>
+  std::shared_ptr<T> getFirst(std::function<bool(std::shared_ptr<A>)> f = nullptr) {
+    for (auto& item : items_)
+      if (std::dynamic_pointer_cast<A>(item))
+        if (!f || (f && f(std::dynamic_pointer_cast<A>(item))))
+          return item;
+    return nullptr;
+  }
+
   size_t size() const {
     return items_.size();
   }
   
+  std::vector<std::shared_ptr<T>> getItems() {
+    return items_;
+  };
+
   protected:
   std::vector<std::shared_ptr<T>> items_;
   static std::mutex mutex_;
