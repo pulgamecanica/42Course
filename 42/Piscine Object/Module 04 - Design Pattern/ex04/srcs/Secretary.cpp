@@ -20,7 +20,7 @@ Secretary::Secretary(const std::string& name)
 
 Secretary::~Secretary() {
   if (DEBUG)
-    std::cout << RED << "[DESTROY]" << YELLOW << "[Professor]\t" << ENDC << name_ << std::endl;
+    std::cout << RED << "[DESTROY]" << YELLOW << "[Secretary]\t" << ENDC << name_ << std::endl;
 }
 
 void Secretary::EnterOffice() {

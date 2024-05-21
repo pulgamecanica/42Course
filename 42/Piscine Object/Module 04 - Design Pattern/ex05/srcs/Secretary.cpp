@@ -8,8 +8,9 @@
 #include "NeedMoreClassRoomForm.hpp"
 #include "NeedCourseCreationForm.hpp"
 #include "SubscriptionToCourseForm.hpp"
+#include "RoomList.hpp"
 
-#include "ex03.inc"
+#include "ex04.inc"
 
 Secretary::Secretary(const std::string& name)
   : Staff(name) {
@@ -20,6 +21,17 @@ Secretary::Secretary(const std::string& name)
 Secretary::~Secretary() {
   if (DEBUG)
     std::cout << RED << "[DESTROY]" << YELLOW << "[Secretary]\t" << ENDC << name_ << std::endl;
+}
+
+void Secretary::EnterOffice() {
+  auto office = std::dynamic_pointer_cast<SecretarialOffice>(RoomList::GetInstance()->getFirst<SecretarialOffice>());
+  if (office) {
+    SetCurrentRoom(office);
+    if (DEBUG)
+      std::cout << *this << GREEN << " [ENTER OFFICE]\t" << ENDC << std::endl;
+  } else {
+    std::cout << "Warning the school secretary couldn't find the SecretarialOffice" << std::endl;
+  }
 }
 
 std::shared_ptr<Form> Secretary::CreateForm(FormType type) {
@@ -57,7 +69,7 @@ void Secretary::ArchiveForm(std::shared_ptr<Form>& form) {
 std::shared_ptr<Course> Secretary::GetCourseNotFinished() {
   auto so = std::dynamic_pointer_cast<SecretarialOffice>(GetCurrentRoom());
   if (so)
-    return so->GetCourseNotFinishedFromForms();
+    return so->GetCourseNotFinishedAndAvailableFromForms();
   else
     return nullptr;
 }
