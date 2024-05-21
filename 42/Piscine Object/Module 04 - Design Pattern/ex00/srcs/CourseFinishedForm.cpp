@@ -29,7 +29,7 @@ void CourseFinishedForm::FillCourse(std::shared_ptr<Course> course) {
 
 void CourseFinishedForm::Execute() {
   ; // Set course as finished!
-};
+}
 
 unsigned CourseFinishedForm::Errors() {
   unsigned errors = 0;
@@ -52,7 +52,7 @@ const std::vector<std::string> CourseFinishedForm::ErrorsList() {
     errors.push_back(ss.str());
   }
   return errors;
-};
+}
 
 bool CourseFinishedForm::ValidCourse() const {
   return !course_.expired();
