@@ -32,7 +32,7 @@ void CourseFinishedForm::Execute() {
   } else {
     std::cout << RED << "[" << YELLOW << "Warning" << RED << " EXECUTE]" << ENDC << *this << " cannot be executed [ Valid: " << std::boolalpha << IsValid() << std::noboolalpha << ", Signed: " << std::boolalpha << false << std::noboolalpha << " ]" << std::endl;
   }
-};
+}
 
 unsigned CourseFinishedForm::Errors() {
   unsigned errors = 0;
@@ -55,7 +55,7 @@ const std::vector<std::string> CourseFinishedForm::ErrorsList() {
     errors.push_back(ss.str());
   }
   return errors;
-};
+}
 
 bool CourseFinishedForm::ValidCourse() const {
   return !course_.expired();
