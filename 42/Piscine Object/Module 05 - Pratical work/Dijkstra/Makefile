@@ -1,37 +1,32 @@
 # Makefile created automatically from script
-# C++ ex00 [Fri May 10 10:13:56 AM CEST 2024]
+# C++ Dijkstra [Tue May 28 11:19:13 AM CEST 2024]
 #MAKEFLAGS += --silent  # Silence makefile [Commented by default]
-NAME            =   ex00
+NAME            =   Dijkstra
 
 NAME_DEBUG      =   ${NAME}_debug
+
+MLX		= libmlx42.a
+
+MLX_PATH	= MLX42
+
+MLX_BUILD_PATH	= $(MLX_PATH)/build/
+
+MLX_LIB_PATH	= $(MLX_BUILD_PATH)/$(MLX)
 
 INC_PATH        =   .
 
 SRC_PATH        =   .
 
 SRC             =   ./main.cpp \
-		./Professor.cpp \
-		./Secretary.cpp \
-		./Headmaster.cpp \
-		./Student.cpp \
-		./SubscriptionToCourseForm.cpp \
-		./NeedCourseCreationForm.cpp \
-		./NeedMoreClassRoomForm.cpp \
-		./CourseFinishedForm.cpp \
-		./Form.cpp \
-		./Staff.cpp \
-		./Person.cpp \
-		./Courtyard.cpp \
-		./StaffRestRoom.cpp \
-		./HeadmasterOffice.cpp \
-		./SecretarialOffice.cpp \
-		./Classroom.cpp \
-		./Room.cpp \
-		./Course.cpp \
+		./GraphViz.cpp \
+		./Graph.cpp \
+		./utils.cpp \
 
-CFLAGS          =   -Wall -Wextra -Werror -std=c++11 -pedantic -fsanitize=address #-O3 -g -fsanitize=leak
+CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -pedantic -O3 # -fsanitize=address -O3 -g -fsanitize=leak
 
-INC             =   -I${INC_PATH}
+INC             =   -I${INC_PATH} -I$(MLX_PATH)/include
+
+LIBS			= 	-ldl -lglfw -pthread -lm -L$(MLX_BUILD_PATH) -lmlx42
 
 OBJ_D           =   objs
 OBJ_D_DEBUG     =   objs_debug
@@ -44,7 +39,7 @@ UNAME           :=  $(shell uname)
 RM              =   rm -rf
 
 ifeq ($(UNAME), Darwin)
-    CC = c++
+    CC = g++
 else ifeq ($(UNAME), FreeBSD)
     CC = clang++
 else
@@ -52,7 +47,11 @@ else
     CFLAGS += -D LINUX
 endif
 
-all:        ${NAME}
+all:        $(MLX_LIB_PATH) ${NAME}
+
+$(MLX_LIB_PATH):
+	cmake -S MLX42 -B MLX42/build
+	cmake --build MLX42/build
 
 ${OBJ_D}/%.o:${SRC_PATH}/%.cpp
 			@mkdir -p ${OBJ_D}
@@ -60,7 +59,7 @@ ${OBJ_D}/%.o:${SRC_PATH}/%.cpp
 
 ${NAME}:   ${OBJ}
 			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
-			$(CC) $(CFLAGS) ${INC} $(OBJ) -o $(NAME)
+			$(CC) $(CFLAGS) ${INC} $(OBJ) $(LIBS) -o $(NAME)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
 ${OBJ_D_DEBUG}/%.o:${SRC_PATH}/%.cpp
@@ -69,7 +68,7 @@ ${OBJ_D_DEBUG}/%.o:${SRC_PATH}/%.cpp
 
 ${NAME_DEBUG}: $(OBJ_DEBUG)
 			@printf "Compiling DEBUG $(C_YELLOW)$(NAME_DEBUG)$(C_END) ...\n"
-			$(CC) $(CFLAGS) ${INC} $(OBJ_DEBUG) -o $(NAME_DEBUG)
+			$(CC) $(CFLAGS) ${INC} $(OBJ_DEBUG) $(LIBS) -o $(NAME_DEBUG)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
 debug:      ${NAME_DEBUG}
@@ -88,11 +87,11 @@ valgrind:   re
 			@echo "[MAKEFILE] Ex: export $(NAME)_ARGS=\"-a --recursive ..\""
 
 clean:
-			$(RM) $(OBJ_D) $(OBJ_D_DEBUG)
+			$(RM) $(OBJ_D)
 			@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean:     clean
-			$(RM) $(NAME) $(NAME_DEBUG)
+			$(RM) $(NAME)
 			@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 re: fclean all

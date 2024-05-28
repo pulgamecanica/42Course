@@ -1,0 +1,136 @@
+==42498== Memcheck, a memory error detector
+==42498== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==42498== Using Valgrind-3.23.0-c54d316124-20240426 and LibVEX; rerun with -h for copyright info
+==42498== Command: ./Dijkstra
+==42498== Parent PID: 2033
+==42498== 
+--42498-- 
+--42498-- Valgrind options:
+--42498--    --leak-check=full
+--42498--    --show-leak-kinds=all
+--42498--    --track-origins=yes
+--42498--    --verbose
+--42498--    --log-file=valgrind-out.txt
+--42498-- Contents of /proc/version:
+--42498--   Linux version 6.8.9-arch1-2 (linux@archlinux) (gcc (GCC) 14.1.1 20240507, GNU ld (GNU Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Tue, 07 May 2024 21:35:54 +0000
+--42498-- 
+--42498-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed-fma
+--42498-- Page sizes: currently 4096, max supported 4096
+--42498-- Valgrind library directory: /usr/lib/valgrind
+--42498-- Reading syms from /home/pulgamecanica/42Course/42/Piscine Object/Module 05 - Pratical work/Dijkstra/Dijkstra
+--42498-- Reading syms from /usr/lib/ld-linux-x86-64.so.2
+==42498== Downloading debug info for /usr/lib/ld-linux-x86-64.so.2...
+--42498--   Considering /home/pulgamecanica/.cache/debuginfod_client/c560bca2bb17f5f25c6dafd8fc19cf1883f88558/debuginfo ..
+--42498--   .. CRC is valid
+==42498== Successfully downloaded debug file for /usr/lib/ld-linux-x86-64.so.2
+--42498-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--42498--    object doesn't have a dynamic symbol table
+--42498-- Scheduler: using generic scheduler lock implementation.
+--42498-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==42498== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-42498-by-pulgamecanica-on-???
+==42498== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-42498-by-pulgamecanica-on-???
+==42498== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-42498-by-pulgamecanica-on-???
+==42498== 
+==42498== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==42498== don't want to do, unless you know exactly what you're doing,
+==42498== or are doing some strange experiment):
+==42498==   /usr/lib/valgrind/../../bin/vgdb --pid=42498 ...command...
+==42498== 
+==42498== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==42498==   /path/to/gdb ./Dijkstra
+==42498== and then give GDB the following command
+==42498==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=42498
+==42498== --pid is optional if only one valgrind process is running
+==42498== 
+==42498== Downloading debug info for /usr/lib/valgrind/memcheck-amd64-linux...
+--42498--   Considering /home/pulgamecanica/.cache/debuginfod_client/f13332d13ef25a4ce3c3f2b83fb8b96f4d26b0d3/debuginfo ..
+--42498--   .. CRC is valid
+==42498== Successfully downloaded debug file for /usr/lib/valgrind/memcheck-amd64-linux
+--42498-- Warning: cross-CU LIMITATION: some inlined fn names
+--42498-- might be shown as UnknownInlinedFun
+--42498-- REDIR: 0x40258c0 (ld-linux-x86-64.so.2:strlen) redirected to 0x58218624 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--42498-- REDIR: 0x40242a0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x5821863e (vgPlain_amd64_linux_REDIR_FOR_strcmp)
+--42498-- REDIR: 0x4024070 (ld-linux-x86-64.so.2:index) redirected to 0x58218659 (vgPlain_amd64_linux_REDIR_FOR_index)
+--42498-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--42498-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+==42498== WARNING: new redirection conflicts with existing -- ignoring it
+--42498--     old: 0x040242a0 (strcmp              ) R-> (0000.0) 0x5821863e vgPlain_amd64_linux_REDIR_FOR_strcmp
+==42498== Downloading debug info for /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so...
+--42498--   Considering /home/pulgamecanica/.cache/debuginfod_client/cbed7ab1bd31d06320a6ab8ddfd90a9645ad304a/debuginfo ..
+--42498--   .. CRC is valid
+==42498== Successfully downloaded debug file for /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--42498--     new: 0x040242a0 (strcmp              ) R-> (2016.0) 0x0484cd00 strcmp
+==42498== WARNING: new redirection conflicts with existing -- ignoring it
+--42498--     old: 0x040258c0 (strlen              ) R-> (0000.0) 0x58218624 vgPlain_amd64_linux_REDIR_FOR_strlen
+--42498--     new: 0x040258c0 (strlen              ) R-> (2007.0) 0x0484bac0 strlen
+--42498-- REDIR: 0x40236d0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4850db0 (mempcpy)
+--42498-- Reading syms from /usr/lib/libasan.so.8.0.0
+--42498-- Reading syms from /usr/lib/libglfw.so.3.4
+--42498-- Reading syms from /usr/lib/libstdc++.so.6.0.33
+--42498-- Reading syms from /usr/lib/libm.so.6
+--42498-- Reading syms from /usr/lib/libgcc_s.so.1
+--42498-- Reading syms from /usr/lib/libc.so.6
+==42498== Downloading debug info for /usr/lib/libc.so.6...
+--42498--   Considering /home/pulgamecanica/.cache/debuginfod_client/32a656aa5562eece8c59a585f5eacd6cf5e2307b/debuginfo ..
+--42498--   .. CRC is valid
+==42498== Successfully downloaded debug file for /usr/lib/libc.so.6
+--42498-- REDIR: 0x4025a60 (ld-linux-x86-64.so.2:strncmp) redirected to 0x484c500 (strncmp)
+==42498== Downloading debug info for /usr/lib/valgrind/vgpreload_core-amd64-linux.so...
+--42498--   Considering /home/pulgamecanica/.cache/debuginfod_client/5ff105f54afe0f3d64d2ce83573fc4e997b98cea/debuginfo ..
+--42498--   .. CRC is valid
+==42498== Successfully downloaded debug file for /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--42498-- REDIR: 0x541ab20 (libc.so.6:strncasecmp) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5417e80 (libc.so.6:mempcpy) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x542e3c0 (libc.so.6:wcpncpy) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x54181e0 (libc.so.6:stpcpy) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5492b20 (libc.so.6:__memmove_chk) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x543c480 (libc.so.6:wmemcmp) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5418dd0 (libc.so.6:strcat) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x54175b0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x54301c0 (libc.so.6:wcsncpy) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5492a00 (libc.so.6:__memcpy_chk) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+==42498== WARNING: new redirection conflicts with existing -- ignoring it
+--42498--     old: 0x054d7450 (__memcpy_chk_avx_una) R-> (2024.0) 0x04850830 __memmove_chk
+--42498--     new: 0x054d7450 (__memcpy_chk_avx_una) R-> (2030.0) 0x04850eb0 __memcpy_chk
+--42498-- REDIR: 0x542f920 (libc.so.6:wcslen) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5418030 (libc.so.6:memset) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5430220 (libc.so.6:wcsnlen) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x541ae20 (libc.so.6:strnlen) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x541aeb0 (libc.so.6:strpbrk) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5418f50 (libc.so.6:strcmp) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5417fa0 (libc.so.6:memrchr) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x542e7b0 (libc.so.6:wcschr) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5418e40 (libc.so.6:index) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x541aee0 (libc.so.6:rindex) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x542e860 (libc.so.6:wcscmp) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5418250 (libc.so.6:stpncpy) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x543c400 (libc.so.6:wmemchr) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x541acc0 (libc.so.6:strncmp) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x54182b0 (libc.so.6:strcasecmp) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x541a0d0 (libc.so.6:strcspn) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x542f6f0 (libc.so.6:wcscpy) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x541abc0 (libc.so.6:strncasecmp_l) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5418ec0 (libc.so.6:strchrnul) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x54174c0 (libc.so.6:bcmp) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x541a060 (libc.so.6:strcpy) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5418350 (libc.so.6:strcasecmp_l) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x541aa90 (libc.so.6:strlen) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x541ad60 (libc.so.6:strncpy) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x5417d60 (libc.so.6:memmove) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+==42498== Preferring higher priority redirection:
+--42498--     old: 0x054d7480 (__memcpy_avx_unalign) R-> (2018.0) 0x0484e190 __memcpy_avx_unaligned_erms
+--42498--     new: 0x054d7480 (__memcpy_avx_unalign) R-> (2018.1) 0x0484fc40 memmove
+--42498-- REDIR: 0x5417440 (libc.so.6:memchr) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+--42498-- REDIR: 0x541b0b0 (libc.so.6:strspn) redirected to 0x48371a0 (_vgnU_ifunc_wrapper)
+==42498== WARNING: new redirection conflicts with existing -- ignoring it
+--42498--     old: 0x054d7450 (__memcpy_chk_avx_una) R-> (2024.0) 0x04850830 __memmove_chk
+--42498--     new: 0x054d7450 (__memcpy_chk_avx_una) R-> (2030.0) 0x04850eb0 __memcpy_chk
+--42498-- REDIR: 0x497f310 (libasan.so.8:free) redirected to 0x4845860 (free)
+==42498== 
+==42498== HEAP SUMMARY:
+==42498==     in use at exit: 0 bytes in 0 blocks
+==42498==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==42498== 
+==42498== All heap blocks were freed -- no leaks are possible
+==42498== 
+==42498== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

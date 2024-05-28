@@ -16,3 +16,6 @@
 [submodule "42Documentation/mlx42_intro/MLX42"]
 	path = 42Documentation/mlx42_intro/MLX42
 	url = https://github.com/codam-coding-college/MLX42
+[submodule "42/Piscine Object/Module 05 - Pratical work/Dijkstra/MLX42"]
+	path = 42/Piscine Object/Module 05 - Pratical work/Dijkstra/MLX42
+	url = https://github.com/codam-coding-college/MLX42
