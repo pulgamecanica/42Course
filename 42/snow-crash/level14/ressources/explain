@@ -1,0 +1,11 @@
+gdb getflag
+disas main              pour avoir laddresse du retour de ptrace() et getuid()
+b *(adresse ptrace)
+b *(adresse getuid)
+r
+i r
+set $eax=1
+c
+i r
+set $eax=3014
+c (flag pour su flag14)

