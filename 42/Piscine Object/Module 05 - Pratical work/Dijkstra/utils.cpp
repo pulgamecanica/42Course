@@ -2,17 +2,60 @@ extern "C" {
   #include <stdlib.h>
 }
 
+#include <string>
+#include <cstring>
+#include <utility>
+
 #include "MLX42/MLX42.h"
 
-int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
-{
-return (r << 24 | g << 16 | b << 8 | a);
+
+# define FONT_WIDTH 10
+# define FONT_HEIGHT 20
+
+#define BPP sizeof(int32_t)
+
+int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a) {
+  return (r << 24 | g << 16 | b << 8 | a);
+}
+
+std::pair<int, int> ft_midpoint(int x1, int y1, int x2, int y2) { 
+  return std::pair<int, int>({(float)(x1 + x2) / 2.0, (float)(y1 + y2) / 2.0});
+} 
+
+// x and y are the middle of the square, not the corner
+bool is_inside_rect(int x, int y, int width, int height, int x0, int y0) {
+  int left_edge_x = x - (width / 2.0);
+  int upper_edge_y = y - (height / 2.0);
+  return x0 > left_edge_x && x0 < left_edge_x + width && y0 > upper_edge_y && y0 < upper_edge_y + height;
 }
 
 static void ft_mlx_put_pixel(mlx_image_t * img, int x, int y, uint32_t color) {
   if (x < 0 || y < 0 || y >= (int)img->height || x >= (int)img->width)
     return;
   mlx_put_pixel(img, x, y, color);
+}
+
+static int32_t mlx_get_pixel(mlx_image_t* image, uint32_t x, uint32_t y) {
+  if (x > image->width || y > image->height)
+    return 0xFF000000;
+  uint8_t* pixelstart = image->pixels + (y * image->width + x) * BPP;
+  return ft_pixel(*(pixelstart), *(pixelstart + 1),
+    * (pixelstart + 2), *(pixelstart + 3));
+}
+
+void  put_img_to_img(mlx_image_t* dst, mlx_image_t* src, int x, int y) {
+  unsigned i;
+  unsigned j;
+
+  i = 0;
+  while(i < src->width) {
+    j = 0;
+    while (j < src->height) {
+      ft_mlx_put_pixel(dst, x + i, y + j, mlx_get_pixel(src, i, j));
+      j++;
+    }
+    i++;
+  }
 }
 
 void draw_line(mlx_image_t * img, int x0, int y0, int x1, int y1, uint32_t color) {

@@ -32,16 +32,10 @@ int main(void)
   g.AddEdge(5, 6, 3);
   g.AddEdge(6, 7, 2);
 
-  // int src = 0;
-  // std::vector<int> paths = g.ShortestPaths(src);
-  // // Print shortest distances stored in dist[]
-  // printf("Vertex Distance from Source (%d)\n", src);
-  // for (int i = 0; i < g.GetSize(); ++i)
-  //   printf("%d \t\t %d\n", i, paths[i]);
-  // paths.clear();
 
+  //  Visualizer
   GraphViz * graph_viz = GraphViz::GetInstance();
-
+  
   graph_viz->SetGraph(&g);
 
   // Opens vizualiser in another detached thread, should not block
