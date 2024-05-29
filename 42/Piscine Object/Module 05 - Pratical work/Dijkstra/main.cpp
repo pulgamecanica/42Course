@@ -7,10 +7,6 @@
 
 #include "Dijkstra.inc"
 
-void openViz() {
-  
-}
-
 int main(void)
 {
   if (DEBUG)
