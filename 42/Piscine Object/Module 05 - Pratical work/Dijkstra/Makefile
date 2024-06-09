@@ -5,28 +5,24 @@ NAME            =   Dijkstra
 
 NAME_DEBUG      =   ${NAME}_debug
 
-MLX		= libmlx42.a
+# MLX		= libmlx42.a
 
-MLX_PATH	= MLX42
+# MLX_PATH	= MLX42
 
-MLX_BUILD_PATH	= $(MLX_PATH)/build/
+# MLX_BUILD_PATH	= $(MLX_PATH)/build/
 
-MLX_LIB_PATH	= $(MLX_BUILD_PATH)/$(MLX)
+# MLX_LIB_PATH	= $(MLX_BUILD_PATH)/$(MLX)
 
 INC_PATH        =   .
 
 SRC_PATH        =   .
 
 SRC             =   ./main.cpp \
-		./GraphViz.cpp \
 		./Graph.cpp \
-		./utils.cpp \
 
 CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -pedantic -O3 # -fsanitize=address -O3 -g -fsanitize=leak
 
-INC             =   -I${INC_PATH} -I$(MLX_PATH)/include
-
-LIBS			= 	-ldl -lglfw -pthread -lm -L$(MLX_BUILD_PATH) -lmlx42
+INC             =   -I${INC_PATH}
 
 OBJ_D           =   objs
 OBJ_D_DEBUG     =   objs_debug
@@ -47,11 +43,11 @@ else
     CFLAGS += -D LINUX
 endif
 
-all:        $(MLX_LIB_PATH) ${NAME}
+all:	${NAME}
 
-$(MLX_LIB_PATH):
-	cmake -S MLX42 -B MLX42/build
-	cmake --build MLX42/build
+# $(MLX_LIB_PATH):
+# 	cmake -S MLX42 -B MLX42/build
+# 	cmake --build MLX42/build
 
 ${OBJ_D}/%.o:${SRC_PATH}/%.cpp
 			@mkdir -p ${OBJ_D}
@@ -59,7 +55,7 @@ ${OBJ_D}/%.o:${SRC_PATH}/%.cpp
 
 ${NAME}:   ${OBJ}
 			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
-			$(CC) $(CFLAGS) ${INC} $(OBJ) $(LIBS) -o $(NAME)
+			$(CC) $(CFLAGS) ${INC} $(OBJ) -o $(NAME)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
 ${OBJ_D_DEBUG}/%.o:${SRC_PATH}/%.cpp
@@ -68,7 +64,7 @@ ${OBJ_D_DEBUG}/%.o:${SRC_PATH}/%.cpp
 
 ${NAME_DEBUG}: $(OBJ_DEBUG)
 			@printf "Compiling DEBUG $(C_YELLOW)$(NAME_DEBUG)$(C_END) ...\n"
-			$(CC) $(CFLAGS) ${INC} $(OBJ_DEBUG) $(LIBS) -o $(NAME_DEBUG)
+			$(CC) $(CFLAGS) ${INC} $(OBJ_DEBUG) -o $(NAME_DEBUG)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
 debug:      ${NAME_DEBUG}

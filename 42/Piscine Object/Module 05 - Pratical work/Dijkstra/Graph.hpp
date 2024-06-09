@@ -5,35 +5,44 @@
 #ifndef __GRAPH_HPP__
 # define __GRAPH_HPP__
 
-#include <list>
-#include <vector>
 #include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <queue>
+#include <limits>
+#include <set>
+#include <list>
 
-class Connection {
-public:
-  Connection(int dest_node, int weight);
-  Connection(const Connection &) = default;
-  Connection& operator=(const Connection &) = default;
-  int Weight() const;
-  int Dest() const;
-private:
-  int dest_node_;  // Node to which it connects
-  int weight_;   // Distance to the vercice
+typedef uint uint_32;
+
+class Node {
+ public:
+  explicit Node(uint id) : id(id) {}
+
+  uint id;
+  std::unordered_map<uint, uint> neighbors;  // neighbor_id -> weight
 };
 
-bool operator>(const Connection& lhs, const Connection& rhs);
+class PathInfo {
+ public:
+  std::list<std::pair<uint, uint>> path;  // {node, distance from source}
 
+  int TotalDistance() const {
+    if (path.empty())
+      return -1;
+    return path.back().second;
+  }
+};
 
 class Graph {
 public:
-  Graph(int size);
   ~Graph();
-  int GetSize() const;
-  void AddEdge(int first, int second, int weight);
-  std::vector<int> ShortestPaths(int vertice);
-  std::list<Connection>& operator[](int node);
+  void AddNode(uint id);
+  void AddEdge(uint node_a, uint node_b, uint weight);
+  std::unordered_map<uint, Node*>& GetNodes();
+  PathInfo Dijkstra(uint src, uint dest);
 private:
-  int size_;
-  std::list<Connection> *vertices_;
+  std::unordered_map<uint, Node*> nodes_; // Only reason to have the map is for fast element acces, the uint corresponds to the Node id
 };
+
 #endif

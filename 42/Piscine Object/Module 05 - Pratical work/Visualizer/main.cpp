@@ -6,7 +6,7 @@
 
 #include "raylib.h"
 
-// #define RAYGUI_IMPLEMENTATION // Not needed because I use the shared library
+#define RAYGUI_IMPLEMENTATION // Not needed when using the shared library
 #include "raygui.h"
 
 #include <iostream>
@@ -71,22 +71,12 @@ void DrawAnimation(Animation& anim, int x, int y, Color tint) {
 }
 
 Color CalculateTint(int frame, int framesPerPhase) {
-  std::vector<Color> tints = {
-    Color(255, 255, 255, 255),
-    Color(255, 255, 255, 255),
-    Color(200, 242, 221, 255),
-    Color(200, 200, 221, 255),
-    Color(142, 142, 180, 255),
-    Color(120, 120, 142, 255),
-    Color(84, 84, 94, 255),
-    Color(42, 42, 72, 255),
-    Color(21, 21, 41, 255),
-    Color(42, 42, 72, 255),
-    Color(84, 84, 94, 255),
-    Color(120, 120, 142, 255),
-    Color(255, 255, 255, 200),
-    Color(242, 242, 242, 242),
-  };
+  // Going from Light to dark to light again
+  std::vector<Color> tints;
+  for (int i = 255; i > 42; --i)
+    tints.push_back(Color(i, i, i, 255));
+  for (int i = 42; i < 255; ++i)
+    tints.push_back(Color(i, i, i, 255));
 
   frame %= framesPerPhase;
   float ratio = frame / (float)framesPerPhase;

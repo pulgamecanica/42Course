@@ -3,15 +3,17 @@
 //***************************//
 
 #include "Graph.hpp"
-#include "GraphViz.hpp"
 
 #include "Dijkstra.inc"
 
-int main(void)
+int main(int ac, char *av[])
 {
   if (DEBUG)
       std::cout << "Debug ON!" << std::endl;
-  Graph g(8);
+  if (ac != 3)
+    return -1;
+  Graph g;
+  
   g.AddEdge(0, 1, 5);
   g.AddEdge(0, 2, 10);
   g.AddEdge(0, 3, 7);
@@ -28,16 +30,23 @@ int main(void)
   g.AddEdge(5, 6, 3);
   g.AddEdge(6, 7, 2);
 
+  for (auto& elem: g.GetNodes()) {
+    uint node_id = elem.first;
+    Node node = *elem.second;
+    std::cout << "Node: " << node_id << " & " << node.id << std::endl;
+  }
 
-  //  Visualizer
-  GraphViz * graph_viz = GraphViz::GetInstance();
-  
-  graph_viz->SetGraph(&g);
+  int src, dest;
+  src = atoi(av[1]);
+  dest = atoi(av[2]);
+  PathInfo result = g.Dijkstra(src, dest);
 
-  // Opens vizualiser in another detached thread, should not block
-  graph_viz->Open();
+  std::cout << "Dijkstra path from " << src << " to " << dest << " : ";
+  for (const auto& node : result.path) {
+    std::cout << node.first << " (Distance: " << node.second << ") ";
+  }
+  std::cout << std::endl;
+  std::cout << "Total distance: " << result.TotalDistance() << std::endl;
 
-  // Since thread did not block, must join before main process finishes to avoid orphans
-  graph_viz->JoinThread();
   return (0);
 }

@@ -8,107 +8,63 @@
 
 #include "Graph.hpp"
 
-#include <queue>
-
-Connection::Connection(int dest_node, int weight): dest_node_(dest_node), weight_(weight) {
-    if (DEBUG)
-        std::cout << "Initialize Connection to: " << dest_node << " weight: " << weight << std::endl;
-}
-
-int Connection::Weight() const {
-    return weight_;
-}
-
-int Connection::Dest() const {
-    return dest_node_;
-}
-
-bool operator>(const Connection& lhs, const Connection& rhs) {
-    if (lhs.Dest() != rhs.Dest())
-        return lhs.Dest() > rhs.Dest();
-    return lhs.Weight() > rhs.Weight();
-}
-
-Graph::Graph(int size): size_(size) {
-    if (DEBUG)
-        std::cout << "Initialize Graph of size " << size_ << std::endl;
-    vertices_ = new std::list<Connection> [size_];
-}
-
 Graph::~Graph() {
-    if (DEBUG)
-        std::cout << "Graph of size " << size_ << " destroyed" << std::endl;
-    vertices_->clear();
-    delete[] vertices_;
+  for (const auto& pair : nodes_)
+    delete pair.second;
 }
 
-int Graph::GetSize() const {
-    return size_;
+void Graph::AddNode(uint id) {
+  if (nodes_.find(id) == nodes_.end())
+    nodes_[id] = new Node(id);
 }
 
-void Graph::AddEdge(int first, int second, int weight) {
-    if (first < 0 || second < 0)
-        throw std::runtime_error("Cannot set a node with a negative value");
-    if (first >= size_ || second >= size_)
-        throw std::runtime_error("Cannot set a node above the limit");
-    vertices_[first].push_back(Connection(second, weight));
-    vertices_[second].push_back(Connection(first, weight));
+void Graph::AddEdge(uint from, uint to, uint weight) {
+  AddNode(from);
+  AddNode(to);
+  nodes_[from]->neighbors[to] = weight;
+  nodes_[to]->neighbors[from] = weight;  // bidirectional
 }
 
-# define INF 0x3f3f3f3f
+  std::unordered_map<uint, Node*>& Graph::GetNodes() {
+    return nodes_;
+  }
 
-std::vector<int> Graph::ShortestPaths(int src)
-{
-    // Create a priority queue to store vertices that
-    // are being preprocessed.
-    std::priority_queue< Connection, std::vector <Connection> , std::greater<Connection> > pq;
+PathInfo Graph::Dijkstra(uint src, uint dest) {
+  std::unordered_map<uint, uint> dist;    // Edges
+  std::unordered_map<uint, uint> parent;  // Node source, to next
+  std::set<std::pair<uint, uint>> pq;     // {distance, node_id}
 
-    // Create a vector for distances and initialize all
-    // distances as infinite (INF)
-    std::vector<int> dist(size_, INF);
+  // Set the distance to infinite at first for each eadge
+  for (const auto& pair : nodes_)
+    dist[pair.first] = std::numeric_limits<uint>::max();
 
-    // Insert source itself in priority queue and initialize
-    // its distance as 0.
-    pq.push(Connection(src, 0));
-    dist[src] = 0;
-    
-    std::vector<bool> f(size_, false); // Visited verices
+  dist[src] = 0;
+  pq.insert({0, src});
 
-    /* Looping till priority queue becomes empty (or all
-    distances are not finalized) */
-    while (!pq.empty())
-    {
-        // The first vertex in pair is the minimum distance
-        // vertex, extract it from priority queue.
-        // vertex label is stored in second of pair (it
-        // has to be done this way to keep the vertices
-        // sorted distance (distance must be first item
-        // in pair)
-        int u = pq.top().Dest();
-        pq.pop();
-        f[u] = true;
+  while (!pq.empty()) {
+    uint current = pq.begin()->second;
+    pq.erase(pq.begin());
 
-        // 'i' is used to get all adjacent vertices of a vertex
-        std::list< Connection >::iterator i;
-        for (i = vertices_[u].begin(); i != vertices_[u].end(); ++i)
-        {
-            // Get vertex label and weight of current adjacent
-            // of u.
-            int v = (*i).Dest();
-            int weight = (*i).Weight();
-
-            // If there is shorted path to v through u.
-            if (f[v] == false && dist[v] > dist[u] + weight)
-            {
-                // Updating distance of v
-                dist[v] = dist[u] + weight;
-                pq.push(Connection(v, dist[v]));
-            }
-        }
+    if (current == dest) {
+      PathInfo path_info;
+      for (uint at = dest; at != src; at = parent[at])
+        path_info.path.push_front({at, dist[at]});
+      path_info.path.push_front({src, dist[src]});
+      return path_info;
     }
-    return dist;
-}
 
-std::list<Connection>& Graph::operator[](int node) {
-    return vertices_[node];
+    for (const auto& neighbor : nodes_[current]->neighbors) {
+      uint neighbor_id = neighbor.first;
+      uint weight = neighbor.second;
+      uint new_dist = dist[current] + weight;
+
+      if (new_dist < dist[neighbor_id]) {
+        pq.erase({dist[neighbor_id], neighbor_id});
+        dist[neighbor_id] = new_dist;
+        parent[neighbor_id] = current;
+        pq.insert({new_dist, neighbor_id});
+      }
+    }
+  }
+  return PathInfo();  // return empty PathInfo if no path found
 }
