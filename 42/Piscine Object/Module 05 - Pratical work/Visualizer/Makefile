@@ -5,6 +5,10 @@ NAME            =   Visualizer
 
 NAME_DEBUG      =   ${NAME}_debug
 
+INC_PATH        =   .
+
+SRC_PATH        =   .
+
 RAYLIB			= raylib
 
 RAYLIB_PATH		= raylib/src	
@@ -21,17 +25,29 @@ RAYGUI_NAME		= raygui/src/lib$(RAYGUI).a
 
 RAYGUI_INC_PATH = $(RAYGUI_PATH)
 
-INC_PATH        =   .
+DIJKSTRA		= DijkstraGraph
 
-SRC_PATH        =   .
+DIJKSTRA_PATH	= ../Dijkstra
 
-SRC             =   ./main.cpp
+DIJKSTRA_NAME	= ../Dijkstra/lib$(DIJKSTRA).a
 
-CFLAGS          =   -std=c++20 -w #-pedantic -fsanitize=address #-O3 -g -fsanitize=leak
+DIJKSTRA_INC_PATH = ../Dijkstra
 
-INC             =   -I${INC_PATH} -I$(RAYLIB_INC_PATH) -I$(RAYGUI_INC_PATH)
+SRC             =   ./main.cpp \
+		./VisualNode.cpp \
+		./Animation.cpp \
+		./Game.cpp \
+		./NetworkState.cpp \
+		./SettingsState.cpp \
+		./SimulationState.cpp \
+		./MenuState.cpp \
 
-LIBS			=  -L${RAYGUI_PATH} -l${RAYGUI} -L${RAYLIB_PATH} -l${RAYLIB} -lGL -lm -lpthread -ldl -lrt -lX11
+# CFLAGS          =   -std=c++20 -w #-pedantic -fsanitize=address #-O3 -g -fsanitize=leak
+CFLAGS          =   -std=c++20 -w -pedantic -g #-fsanitize=address -O3
+
+INC             =	-I$(DIJKSTRA_INC_PATH) -I${INC_PATH} -I$(RAYLIB_INC_PATH) -I$(RAYGUI_INC_PATH)
+
+LIBS			=	-L$(DIJKSTRA_PATH) -l$(DIJKSTRA) -L${RAYGUI_PATH} -l${RAYGUI} -L${RAYLIB_PATH} -l${RAYLIB} -lGL -lm -lpthread -ldl -lrt -lX11
 
 OBJ_D           =   objs
 OBJ_D_DEBUG     =   objs_debug
@@ -52,7 +68,7 @@ else
     CFLAGS += -D LINUX
 endif
 
-all:      $(RAYLIB_NAME) $(RAYGUI_NAME) ${NAME}
+all:      $(DIJKSTRA_NAME) $(RAYLIB_NAME) $(RAYGUI_NAME) ${NAME}
 
 
 ${RAYLIB_NAME}:
@@ -62,6 +78,9 @@ ${RAYGUI_NAME}:
 			cp $(RAYGUI_PATH)/raygui.h $(RAYGUI_PATH)/raygui.c
 			gcc -c $(RAYGUI_PATH)/raygui.c -o $(RAYGUI_PATH)/raygui.o
 			ar rcs $(RAYGUI_NAME) $(RAYGUI_PATH)/raygui.o
+
+${DIJKSTRA_NAME}:
+			@make -C $(DIJKSTRA_PATH)
 
 ${OBJ_D}/%.o:${SRC_PATH}/%.cpp
 			@mkdir -p ${OBJ_D}

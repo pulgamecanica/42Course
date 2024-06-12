@@ -38,31 +38,33 @@ PathInfo Graph::Dijkstra(uint src, uint dest) {
   for (const auto& pair : nodes_)
     dist[pair.first] = std::numeric_limits<uint>::max();
 
-  dist[src] = 0;
-  pq.insert({0, src});
+  if (dist.contains(src)) {
+    dist[src] = 0;
+    pq.insert({0, src});
 
-  while (!pq.empty()) {
-    uint current = pq.begin()->second;
-    pq.erase(pq.begin());
+    while (!pq.empty()) {
+      uint current = pq.begin()->second;
+      pq.erase(pq.begin());
 
-    if (current == dest) {
-      PathInfo path_info;
-      for (uint at = dest; at != src; at = parent[at])
-        path_info.path.push_front({at, dist[at]});
-      path_info.path.push_front({src, dist[src]});
-      return path_info;
-    }
+      if (current == dest) {
+        PathInfo path_info;
+        for (uint at = dest; at != src; at = parent[at])
+          path_info.path.push_front({at, dist[at]});
+        path_info.path.push_front({src, dist[src]});
+        return path_info;
+      }
 
-    for (const auto& neighbor : nodes_[current]->neighbors) {
-      uint neighbor_id = neighbor.first;
-      uint weight = neighbor.second;
-      uint new_dist = dist[current] + weight;
+      for (const auto& neighbor : nodes_[current]->neighbors) {
+        uint neighbor_id = neighbor.first;
+        uint weight = neighbor.second;
+        uint new_dist = dist[current] + weight;
 
-      if (new_dist < dist[neighbor_id]) {
-        pq.erase({dist[neighbor_id], neighbor_id});
-        dist[neighbor_id] = new_dist;
-        parent[neighbor_id] = current;
-        pq.insert({new_dist, neighbor_id});
+        if (new_dist < dist[neighbor_id]) {
+          pq.erase({dist[neighbor_id], neighbor_id});
+          dist[neighbor_id] = new_dist;
+          parent[neighbor_id] = current;
+          pq.insert({new_dist, neighbor_id});
+        }
       }
     }
   }

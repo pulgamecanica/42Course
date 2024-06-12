@@ -2,14 +2,19 @@
 //*Template by pulgamecanica*//
 //***************************//
 
-#include "Graph.hpp"
+/**
+ * To test:
+ * make all
+ * g++ -Wall -Werror -Wextra -I. -o test main.cpp  -L. -lDijkstraGraph
+ * ./test <src node> <dest node>
+ * ./test 1 4
+ * ./test 4 6
+ **/
 
-#include "Dijkstra.inc"
+#include "Graph.hpp"
 
 int main(int ac, char *av[])
 {
-  if (DEBUG)
-      std::cout << "Debug ON!" << std::endl;
   if (ac != 3)
     return -1;
   Graph g;

@@ -1,34 +1,25 @@
 # Makefile created automatically from script
 # C++ Dijkstra [Tue May 28 11:19:13 AM CEST 2024]
 #MAKEFLAGS += --silent  # Silence makefile [Commented by default]
-NAME            =   Dijkstra
+NAME            =   libDijkstraGraph.a
 
-NAME_DEBUG      =   ${NAME}_debug
+LIB	= ar rc
 
-# MLX		= libmlx42.a
-
-# MLX_PATH	= MLX42
-
-# MLX_BUILD_PATH	= $(MLX_PATH)/build/
-
-# MLX_LIB_PATH	= $(MLX_BUILD_PATH)/$(MLX)
+RL	= ranlib
 
 INC_PATH        =   .
 
 SRC_PATH        =   .
 
-SRC             =   ./main.cpp \
-		./Graph.cpp \
+SRC             =   ./Graph.cpp \
 
 CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -pedantic -O3 # -fsanitize=address -O3 -g -fsanitize=leak
 
 INC             =   -I${INC_PATH}
 
 OBJ_D           =   objs
-OBJ_D_DEBUG     =   objs_debug
 
 OBJ             =   $(SRC:${SRC_PATH}/%.cpp=${OBJ_D}/%.o)
-OBJ_DEBUG       =   $(SRC:${SRC_PATH}/%.cpp=${OBJ_D_DEBUG}/%.o)
 
 UNAME           :=  $(shell uname)
 
@@ -45,42 +36,15 @@ endif
 
 all:	${NAME}
 
-# $(MLX_LIB_PATH):
-# 	cmake -S MLX42 -B MLX42/build
-# 	cmake --build MLX42/build
-
 ${OBJ_D}/%.o:${SRC_PATH}/%.cpp
 			@mkdir -p ${OBJ_D}
 			$(CC) $(CFLAGS) ${INC} -o $@ -c $<
 
 ${NAME}:   ${OBJ}
 			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
-			$(CC) $(CFLAGS) ${INC} $(OBJ) -o $(NAME)
+			$(LIB) $(NAME) $(OBJ)
+			$(RL) $(NAME)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
-
-${OBJ_D_DEBUG}/%.o:${SRC_PATH}/%.cpp
-			@mkdir -p ${OBJ_D_DEBUG}
-			${CC} ${CFLAGS} -D DEBUG=1 ${INC} -o $@ -c $<
-
-${NAME_DEBUG}: $(OBJ_DEBUG)
-			@printf "Compiling DEBUG $(C_YELLOW)$(NAME_DEBUG)$(C_END) ...\n"
-			$(CC) $(CFLAGS) ${INC} $(OBJ_DEBUG) -o $(NAME_DEBUG)
-			@printf "$(C_GREEN)DONE$(C_END)\n"
-
-debug:      ${NAME_DEBUG}
-
-test:       all
-			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
-			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-			@./$(NAME)
-			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
-			@$(MAKE) show --no-print-directory
-
-valgrind:   re
-			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) $(NAME)_ARGS
-			@echo "[MAKEFILE] You can setup test arguments by setting up the env $(NAME)_ARGS"
-			@echo "[MAKEFILE] Ex: export $(NAME)_ARGS=\"-a --recursive ..\""
 
 clean:
 			$(RM) $(OBJ_D)

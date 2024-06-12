@@ -9,9 +9,9 @@ INC_PATH        =   includes
 
 SRC_PATH        =   srcs
 
-SRC             =   ./main.cpp
+SRC             =   ./main.cpp \
 
-CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -pedantic -fsanitize=address #-O3 -g -fsanitize=leak
+CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -pedantic -g -fsanitize=address #-O3 -g -fsanitize=leak
 
 INC             =   -I${INC_PATH}
 
