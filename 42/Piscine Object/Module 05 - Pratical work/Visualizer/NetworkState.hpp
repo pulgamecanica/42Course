@@ -36,6 +36,7 @@ private:
 
   // Info pannel
   Rectangle info_panel_; // Info panel rectangle
+  Rectangle info_panel_content; // Info panel rectangle
   Vector2 info_panel_scroll_; // Scroll offset for the info panel
 
   void SyncWithGraph();

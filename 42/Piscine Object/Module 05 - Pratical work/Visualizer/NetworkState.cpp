@@ -2,11 +2,13 @@
 #include "Game.hpp"
 #include "raylib.h"
 #include "raygui.h"
+#include <cmath>
 
 NetworkState::NetworkState(Game* game)
   : game_(game), graph_(nullptr), selected_node_(nullptr), is_dragging_(false),
-    show_grid_(true), grid_offset_({0, 0}), node_size_(20.0f), grid_zoom_(1.0f),
-    info_panel_({GetScreenWidth() - 250, 30, 250, GetScreenHeight() - 30}),
+    show_grid_(false), grid_offset_({0, 0}), node_size_(20.0f), grid_zoom_(1.0f),
+    info_panel_({GetScreenWidth() - 251, 31, 250, GetScreenHeight() -31 }),
+    info_panel_content({0, 0, 0, 0}),
     info_panel_scroll_({0, 0}) {}
     
 void NetworkState::SetGraph(Graph* graph) {
@@ -17,7 +19,7 @@ void NetworkState::SetGraph(Graph* graph) {
 // To get the absolute position in the window (grid_pos + offset * zoom = window_pos)
 // To get the position in the grid (grid_pos = window_pos / zoom - offset)
 Vector2 NetworkState::GetRelativeGridPosition(Vector2 position) {
-  return (Vector2){position.x / grid_zoom_ - grid_offset_.x, position.y / grid_zoom_ - grid_offset_.y};
+  return (Vector2){(int)(position.x / grid_zoom_ - grid_offset_.x), (int)(position.y / grid_zoom_ - grid_offset_.y)};
 }
 
 void NetworkState::Update() {
@@ -50,8 +52,9 @@ void NetworkState::Update() {
     if (is_dragging_node_ && selected_node_) {
         Vector2 new_position = GetRelativeGridPosition(mousePosition);
         selected_node_->UpdatePosition(new_position);
-    } else if (CheckCollisionPointRec(mousePosition, (Rectangle){0, 0, GetScreenWidth(), 30})) {
-      return ; // If mouse is dragging in navbar, do not move grid
+    } else if (CheckCollisionPointRec(mousePosition, (Rectangle){0, 0, GetScreenWidth(), 30}) ||
+              (selected_node_ != nullptr && CheckCollisionPointRec(mousePosition, info_panel_))) {
+      return ; // If mouse is dragging in navbar, do not move grid or if pannel is on and dragging is inside panel
     } else if (is_dragging_) {
       Vector2 drag_offset = {GetMousePosition().x - drag_start_pos_.x, GetMousePosition().y - drag_start_pos_.y};
       grid_offset_ = {grid_offset_.x + drag_offset.x, grid_offset_.y + drag_offset.y};
@@ -151,7 +154,7 @@ void NetworkState::DrawGrid() {
   Color gridColor = LIGHTGRAY;
   for (int x = 0; x < GetScreenWidth(); ++x) {
     Vector2 grid_pos = GetRelativeGridPosition((Vector2){x, 0});
-    if (abs((int)grid_pos.x) % spacing == 0) {
+    if ((int)grid_pos.x % spacing == 0) {
       for (; x < GetScreenWidth(); x += spacing) {
         DrawLine(x, 30, x, GetScreenHeight(), gridColor);   
       }
@@ -160,7 +163,7 @@ void NetworkState::DrawGrid() {
   }
   for (int y = 0; y < GetScreenHeight(); ++y) {
     Vector2 grid_pos = GetRelativeGridPosition((Vector2){0, y});
-    if (abs((int)grid_pos.y) % spacing == 0) {
+    if ((int)grid_pos.y % spacing == 0) {
       for (; y < GetScreenHeight(); y += spacing) {
         DrawLine(0, y, GetScreenWidth(), y, gridColor);   
       }
@@ -170,27 +173,28 @@ void NetworkState::DrawGrid() {
 }
 
 void NetworkState::DrawNodeInfo() {
-  Rectangle infoPanel = {GetScreenWidth() - 250, 30, 250, GetScreenHeight() - 30};
-  GuiPanel(infoPanel, "Node Info");
-  if (GuiButton((Rectangle){infoPanel.x + infoPanel.width - 70, infoPanel.y + 10, 60, 20}, "Close")) {
+  // Calculate the info_panel size
+  GuiScrollPanel(info_panel_, "Settings", info_panel_content, &info_panel_scroll_, NULL);
+  if (GuiWindowBox(info_panel_, "Node Info")) {
     selected_node_ = nullptr;
     return;
   }
-
   Node* node = selected_node_->GetNode();
-  DrawText(TextFormat("Node ID: %u", node->id), infoPanel.x + 10, infoPanel.y + 40, 20, BLACK);
+  DrawText(TextFormat("Node ID: %u", node->id), info_panel_.x + 10, info_panel_.y + 40, 20, BLACK);
   DrawText(TextFormat("\
     Position: (%.2f, %.2f)\n\
     Abs Pos: (%.2f, %.2f)\n\
     Mouse Pos: (%.2f, %.2f)\n\
     ", selected_node_->GetPosition().x, selected_node_->GetPosition().y,
     selected_node_->GetAbsolutePosition(grid_offset_, grid_zoom_).x, selected_node_->GetAbsolutePosition(grid_offset_, grid_zoom_).y,
-    GetMousePosition().x, GetMousePosition().y), infoPanel.x + 10, infoPanel.y + 70, 10, BLACK);
+    GetMousePosition().x, GetMousePosition().y), info_panel_.x + 10, info_panel_.y + 70, 10, BLACK);
 
-  DrawText("Edges:", infoPanel.x + 10, infoPanel.y + 120, 20, BLACK);
+  DrawText("Edges:", info_panel_.x + 10, info_panel_.y + 120, 20, BLACK);
   int offsetY = 150;
   for (const auto& [neighbor_id, weight] : node->neighbors) {
-    DrawText(TextFormat("To %u (weight %u)", neighbor_id, weight), infoPanel.x + 10, infoPanel.y + offsetY, 20, BLACK);
+    DrawText(TextFormat("To %u (weight %u)", neighbor_id, weight), info_panel_.x + 10, info_panel_.y + offsetY, 20, BLACK);
     offsetY += 30;
   }
+  // Info
+  GuiLabel((Rectangle){info_panel_.x, info_panel_.y + 30, info_panel_.width, 10}, "Curve controls help");
 }
