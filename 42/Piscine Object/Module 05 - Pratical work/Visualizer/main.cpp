@@ -23,21 +23,24 @@ int main() {
 
   Graph g;
 
-  g.AddEdge(0, 1, 5);
-  g.AddEdge(0, 2, 10);
-  g.AddEdge(0, 3, 7);
-  g.AddEdge(1, 2, 5);
-  g.AddEdge(1, 3, 10);
-  g.AddEdge(1, 5, 3);
-  g.AddEdge(1, 5, 3);
-  g.AddEdge(1, 6, 4);
-  g.AddEdge(2, 5, 1);
-  g.AddEdge(2, 7, 6);
-  g.AddEdge(3, 4, 4);
-  g.AddEdge(3, 6, 6);
-  g.AddEdge(4, 6, 3);
-  g.AddEdge(5, 6, 3);
-  g.AddEdge(6, 7, 2);
+  std::vector<int> nodes;
+  while(nodes.size() < 50) {
+    uint id = rand() % 500;
+    nodes.push_back(id);
+  }
+  std::set<std::pair<uint, uint>> edgeSet;
+  while (edgeSet.size() < 75) {
+    uint from = nodes[rand() % 50];
+    uint to = nodes[rand() % 50];
+    if (from != to) {
+        edgeSet.emplace(std::min(from, to), std::max(from, to));
+    }
+  }
+
+  for (const auto& edge : edgeSet) {
+    uint weight = rand() % 100 + 1; // Random weight between 1 and 100
+    g.AddEdge(edge.first, edge.second, weight);
+  }
 
   InitWindow(screenWidth, screenHeight, "Cpp On Rails");
   // SetTargetFPS(60);

@@ -34,6 +34,8 @@ DIJKSTRA_NAME	= ../Dijkstra/lib$(DIJKSTRA).a
 DIJKSTRA_INC_PATH = ../Dijkstra
 
 SRC             =   ./main.cpp \
+		./Navbar.cpp \
+		./Grid.cpp \
 		./VisualNode.cpp \
 		./Animation.cpp \
 		./Game.cpp \

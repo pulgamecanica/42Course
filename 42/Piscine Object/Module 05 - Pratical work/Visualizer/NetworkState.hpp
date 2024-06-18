@@ -44,6 +44,7 @@ private:
   void DrawEdges();
   void DrawGrid();
   void DrawNodeInfo();
+  void DrawNavbar();
   Vector2 GetRelativeGridPosition(Vector2 position);
 };
 

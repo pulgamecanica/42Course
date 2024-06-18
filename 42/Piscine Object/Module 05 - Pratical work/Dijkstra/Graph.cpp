@@ -19,6 +19,8 @@ void Graph::AddNode(uint id) {
 }
 
 void Graph::AddEdge(uint from, uint to, uint weight) {
+  // if (from == to && weight != 0)
+  //   throw std::runtime_error("Cannot add an edge with the same node")
   AddNode(from);
   AddNode(to);
   nodes_[from]->neighbors[to] = weight;
