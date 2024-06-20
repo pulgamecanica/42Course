@@ -33,33 +33,33 @@ To build the project, follow these steps:
 
 1. Clone the repository:
 
-    ```sh
-    git clone https://github.com/yourusername/CppOnRails.git
-    cd CppOnRails
-    ```
+```sh
+git clone https://github.com/yourusername/CppOnRails.git
+cd CppOnRails
+```
 
 2. Create a build directory and run CMake:
 
-    ```sh
-    mkdir build
-    cd build
-    cmake ..
-    make
-    ```
+```sh
+mkdir build
+cd build
+cmake ..
+make
+```
 
 3. Run the program:
 
-    ```sh
-    ./CppOnRails [options]
-    ```
+```sh
+./CppOnRails [options]
+```
 
 ## Usage
 
 The program requires an elements file and a directory containing schedule files to run. The schedule files must have a `.schedule` extension. Use the following options to specify the files and directory:
 
-    ```sh
-    ./CppOnRails --elements <elements_file> --directory <schedule_directory>
-    ```
+```sh
+./CppOnRails --elements <elements_file> --directory <schedule_directory>
+```
 
 ### Options
 
@@ -69,9 +69,9 @@ The program requires an elements file and a directory containing schedule files 
 
 ### Example
 
-    ```sh
-    ./CppOnRails --elements elements.txt --directory schedules/
-    ```
+```sh
+./CppOnRails --elements elements.txt --directory schedules/
+```
 
 ## File Formats
 
@@ -81,29 +81,29 @@ The elements file defines the nodes, rails, and events in the railway system. It
 
 #### Nodes
 
-    ```plaintext
-    Node <NodeName>
-    ```
+```plaintext
+Node <NodeName>
+```
 
 #### Rails
 
-    ```plaintext
-    Rail <NodeName1> <NodeName2> <Distance>
-    ```
+```plaintext
+Rail <NodeName1> <NodeName2> <Distance>
+```
 
 #### Events
 
-    ```plaintext
-    Event <EventType> <Probability> <Duration> <Location>
-    ```
+```plaintext
+Event <EventType> <Probability> <Duration> <Location>
+```
 
 ### Schedule Files
 
 Each schedule file represents a different simulation. Schedule files must have a `.schedule` extension and follow the format below:
 
-    ```plaintext
-    <Name> <MaxAcceleration> <MaxBrakeForce> <Departure> <Arrival> <Hour>
-    ```
+```plaintext
+<Name> <MaxAcceleration> <MaxBrakeForce> <Departure> <Arrival> <Hour>
+```
 
 ## Error Handling
 
@@ -116,45 +116,45 @@ The program provides detailed error reporting, including:
 
 ### Error Example
 
-    ```sh
-    Error in file elements.txt at line 3, column 12: Distance cannot be negative
-    Rail CityA CityB -50
-                ^
-    ```
+```sh
+Error in file elements.txt at line 3, column 12: Distance cannot be negative
+Rail CityA CityB -50
+            ^
+```
 
 ## Examples
 
 ### Elements File (`elements.txt`)
 
-    ```plaintext
-    Node CityA
-    Node CityB
-    Node CityC
+```plaintext
+Node CityA
+Node CityB
+Node CityC
 
-    Rail CityA CityB 100.5
-    Rail CityB CityC 200.3
-    Rail CityA CityC 150.0
+Rail CityA CityB 100.5
+Rail CityB CityC 200.3
+Rail CityA CityC 150.0
 
-    Event Accident 0.05 2.0 CityA
-    Event Delay 0.10 1.5 CityB
-    Event Maintenance 0.03 3.0 CityC
-    ```
+Event Accident 0.05 2.0 CityA
+Event Delay 0.10 1.5 CityB
+Event Maintenance 0.03 3.0 CityC
+```
 
 ### Schedule File (`schedule1.schedule`)
 
-    ```plaintext
-    TrainAB1 1.87 1.4 CityA CityB 14h10
-    TrainBC1 2.10 1.6 CityB CityC 15h30
-    TrainCA1 1.75 1.2 CityC CityA 17h00
-    ```
+```plaintext
+TrainAB1 1.87 1.4 CityA CityB 14h10
+TrainBC1 2.10 1.6 CityB CityC 15h30
+TrainCA1 1.75 1.2 CityC CityA 17h00
+```
 
 ### Schedule File (`schedule2.schedule`)
 
-    ```plaintext
-    TrainAB2 1.95 1.5 CityA CityB 12h20
-    TrainBC2 2.20 1.7 CityB CityC 16h40
-    TrainCA2 1.85 1.3 CityC CityA 18h15
-    ```
+```plaintext
+TrainAB2 1.95 1.5 CityA CityB 12h20
+TrainBC2 2.20 1.7 CityB CityC 16h40
+TrainCA2 1.85 1.3 CityC CityA 18h15
+```
 
 ### Detailed Explanation
 
@@ -170,12 +170,12 @@ The program provides detailed error reporting, including:
 
 ### Example Directory Structure
 
-    ```
-    /path/to/schedule_files/
-    |-- elements.txt
-    |-- schedule1.schedule
-    |-- schedule2.schedule
-    ```
+```
+/path/to/schedule_files/
+|-- elements.txt
+|-- schedule1.schedule
+|-- schedule2.schedule
+```
 
 ### Parsing
 
@@ -187,9 +187,9 @@ The program reads and parses the elements and schedule files, storing the parsed
 2. **Build the project as described in the [Building](#building) section.**
 3. **Run the program with the appropriate options to specify the elements file and schedule directory:**
 
-    ```sh
-    ./CppOnRails --elements elements.txt --directory schedules/
-    ```
+```sh
+./CppOnRails --elements elements.txt --directory schedules/
+```
 
 ---
 
