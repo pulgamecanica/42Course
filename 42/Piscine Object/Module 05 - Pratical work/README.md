@@ -1,3 +1,198 @@
+# CppOnRails
+
+CppOnRails is a C++ application designed to simulate train schedules and railway systems. The program parses elements such as nodes, rails, and events from a single elements file and train schedules from multiple schedule files. Detailed error handling is provided to ensure that parsing errors are reported with precise information about the location and nature of the error.
+
+## Table of Contents
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Building](#building)
+- [Usage](#usage)
+- [File Formats](#file-formats)
+  - [Elements File](#elements-file)
+  - [Schedule Files](#schedule-files)
+- [Error Handling](#error-handling)
+- [Examples](#examples)
+- [Options](#options)
+
+## Features
+
+- Parse railway system elements (nodes, rails, events) from a file.
+- Parse multiple train schedule files.
+- Detailed error reporting with file, line, and column information.
+- Colored terminal output for errors.
+
+## Requirements
+
+- C++17 or later
+- CMake 3.10 or later
+
+## Building
+
+To build the project, follow these steps:
+
+1. Clone the repository:
+
+    ```sh
+    git clone https://github.com/yourusername/CppOnRails.git
+    cd CppOnRails
+    ```
+
+2. Create a build directory and run CMake:
+
+    ```sh
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ```
+
+3. Run the program:
+
+    ```sh
+    ./CppOnRails [options]
+    ```
+
+## Usage
+
+The program requires an elements file and a directory containing schedule files to run. The schedule files must have a `.schedule` extension. Use the following options to specify the files and directory:
+
+    ```sh
+    ./CppOnRails --elements <elements_file> --directory <schedule_directory>
+    ```
+
+### Options
+
+- `-h, --help`: Show help message.
+- `-e, --elements <elements_file>`: Specify the elements file.
+- `-d, --directory <schedule_directory>`: Specify the directory containing schedule files.
+
+### Example
+
+    ```sh
+    ./CppOnRails --elements elements.txt --directory schedules/
+    ```
+
+## File Formats
+
+### Elements File
+
+The elements file defines the nodes, rails, and events in the railway system. It must follow the format below:
+
+#### Nodes
+
+    ```plaintext
+    Node <NodeName>
+    ```
+
+#### Rails
+
+    ```plaintext
+    Rail <NodeName1> <NodeName2> <Distance>
+    ```
+
+#### Events
+
+    ```plaintext
+    Event <EventType> <Probability> <Duration> <Location>
+    ```
+
+### Schedule Files
+
+Each schedule file represents a different simulation. Schedule files must have a `.schedule` extension and follow the format below:
+
+    ```plaintext
+    <Name> <MaxAcceleration> <MaxBrakeForce> <Departure> <Arrival> <Hour>
+    ```
+
+## Error Handling
+
+The program provides detailed error reporting, including:
+
+- File name
+- Line number
+- Column number
+- Exact location of the error in the line, highlighted with a `^` symbol
+
+### Error Example
+
+    ```sh
+    Error in file elements.txt at line 3, column 12: Distance cannot be negative
+    Rail CityA CityB -50
+                ^
+    ```
+
+## Examples
+
+### Elements File (`elements.txt`)
+
+    ```plaintext
+    Node CityA
+    Node CityB
+    Node CityC
+
+    Rail CityA CityB 100.5
+    Rail CityB CityC 200.3
+    Rail CityA CityC 150.0
+
+    Event Accident 0.05 2.0 CityA
+    Event Delay 0.10 1.5 CityB
+    Event Maintenance 0.03 3.0 CityC
+    ```
+
+### Schedule File (`schedule1.schedule`)
+
+    ```plaintext
+    TrainAB1 1.87 1.4 CityA CityB 14h10
+    TrainBC1 2.10 1.6 CityB CityC 15h30
+    TrainCA1 1.75 1.2 CityC CityA 17h00
+    ```
+
+### Schedule File (`schedule2.schedule`)
+
+    ```plaintext
+    TrainAB2 1.95 1.5 CityA CityB 12h20
+    TrainBC2 2.20 1.7 CityB CityC 16h40
+    TrainCA2 1.85 1.3 CityC CityA 18h15
+    ```
+
+### Detailed Explanation
+
+1. **Nodes**: Define the nodes (stations) in the railway system.
+2. **Rails**: Define the rails (connections) between nodes, including the distance.
+3. **Events**: Define events that can occur in the railway system, with a probability and duration at a specific location.
+4. **Trains**: Define the train schedules, including the train's name, maximum acceleration, maximum brake force, departure station, arrival station, and departure time.
+
+### How to Build Files
+
+- **Elements File**: Create a text file (e.g., `elements.txt`) with the format specified above. Define all nodes, rails, and events.
+- **Schedule Files**: Create one or more text files with a `.schedule` extension (e.g., `schedule1.schedule`, `schedule2.schedule`) containing the train schedules.
+
+### Example Directory Structure
+
+    ```
+    /path/to/schedule_files/
+    |-- elements.txt
+    |-- schedule1.schedule
+    |-- schedule2.schedule
+    ```
+
+### Parsing
+
+The program reads and parses the elements and schedule files, storing the parsed data in a structured format. Detailed error handling ensures that any issues in the input files are reported with precise information about the location and nature of the error, making it easier to identify and fix issues.
+
+### Building and Running the Program
+
+1. **Prepare the elements file (`elements.txt`) and schedule files (`*.schedule`) as per the specified formats.**
+2. **Build the project as described in the [Building](#building) section.**
+3. **Run the program with the appropriate options to specify the elements file and schedule directory:**
+
+    ```sh
+    ./CppOnRails --elements elements.txt --directory schedules/
+    ```
+
+---
+
 ## Questions:
 
 | Question | Answer |

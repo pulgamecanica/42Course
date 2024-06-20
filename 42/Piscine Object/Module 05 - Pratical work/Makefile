@@ -10,6 +10,15 @@ INC_PATH        =   includes
 SRC_PATH        =   srcs
 
 SRC             =   ./main.cpp \
+		srcs/ErrorHandler.cpp \
+		srcs/ElementParser.cpp \
+		srcs/Rail.cpp \
+		srcs/Event.cpp \
+		srcs/Train.cpp \
+		srcs/Node.cpp \
+		srcs/ScheduleParser.cpp \
+		srcs/RailwaySystem.cpp \
+		srcs/Simulation.cpp \
 
 CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -pedantic -g -fsanitize=address #-O3 -g -fsanitize=leak
 

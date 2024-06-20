@@ -1,0 +1,12 @@
+Node CityA
+Node CityB
+Node CityC
+
+Rail CityI
+Rail CityA CityB 100.5
+Rail CityB CityC 200.3
+Rail CityA CityC 150.0
+
+Event Accident 0.05 2.0 CityA
+Event Delay 0.10 1.5 CityB
+Event Maintenance 0.03 3.0 CityC
