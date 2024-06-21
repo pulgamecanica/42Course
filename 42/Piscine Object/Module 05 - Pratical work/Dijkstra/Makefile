@@ -13,7 +13,7 @@ SRC_PATH        =   .
 
 SRC             =   ./Graph.cpp \
 
-CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -pedantic -O3 # -fsanitize=address -O3 -g -fsanitize=leak
+CXXFLAGS          =   -Wall -Wextra -Werror -std=c++23 -pedantic -O3 # -fsanitize=address -O3 -g -fsanitize=leak
 
 INC             =   -I${INC_PATH}
 
@@ -26,19 +26,19 @@ UNAME           :=  $(shell uname)
 RM              =   rm -rf
 
 ifeq ($(UNAME), Darwin)
-    CC = g++
+    CXX = g++
 else ifeq ($(UNAME), FreeBSD)
-    CC = clang++
+    CXX = clang++
 else
-    CC  = g++
-    CFLAGS += -D LINUX
+    CXX  = g++
+    CXXFLAGS += -D LINUX
 endif
 
 all:	${NAME}
 
 ${OBJ_D}/%.o:${SRC_PATH}/%.cpp
 			@mkdir -p ${OBJ_D}
-			$(CC) $(CFLAGS) ${INC} -o $@ -c $<
+			$(CXX) $(CXXFLAGS) ${INC} -o $@ -c $<
 
 ${NAME}:   ${OBJ}
 			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
@@ -51,7 +51,7 @@ clean:
 			@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean:     clean
-			$(RM) $(NAME)
+			$(RM) $(NAME) test
 			@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 re: fclean all
@@ -60,13 +60,17 @@ show:
 	@printf "$(C_GREEN)"
 	@printf "UNAME     : $(UNAME)\n"
 	@printf "NAME      : $(C_YELLOW)$(NAME)$(C_GREEN)\n"
-	@printf "CC        : $(CC)\n"
-	@printf "CFLAGS    : $(CFLAGS)\n"
+	@printf "CXX        : $(CXX)\n"
+	@printf "CXXFLAGS    : $(CXXFLAGS)\n"
 	@printf "INCLUDES  : $(INC)\n"
 	@printf "SRC       : $(C_YELLOW)$(SRC)$(C_GREEN)\n"
 	@printf "OBJ       : $(C_YELLOW)[$(OBJ_D)] --> $(OBJ)$(C_END)\n"
 
-.PHONY: all test re
+test:
+	$(CXX) $(CXXFLAGS) $(INC) -o test main.cpp  -L. -lDijkstraGraph
+
+
+.PHONY: all re
 
 C_BLACK     = \033[0;30m
 C_RED       = \033[0;31m

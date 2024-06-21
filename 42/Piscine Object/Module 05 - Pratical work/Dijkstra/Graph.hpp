@@ -1,31 +1,15 @@
-//***************************//
-//*Template by pulgamecanica*//
-//***************************//
-
 #ifndef __GRAPH_HPP__
-# define __GRAPH_HPP__
+#define __GRAPH_HPP__
 
-#include <iostream>
-#include <vector>
+#include "INode.hpp"
 #include <unordered_map>
-#include <queue>
-#include <limits>
-#include <set>
 #include <list>
-
-typedef uint uint_32;
-
-class Node {
- public:
-  explicit Node(uint id) : id(id) {}
-
-  uint id;
-  std::unordered_map<uint, uint> neighbors;  // neighbor_id -> weight
-};
+#include <set>
+#include <limits>
 
 class PathInfo {
- public:
-  std::list<std::pair<uint, uint>> path;  // {node, distance from source}
+public:
+  std::list<std::pair<unsigned, unsigned>> path;  // {node, distance from source}
 
   int TotalDistance() const {
     if (path.empty())
@@ -37,12 +21,13 @@ class PathInfo {
 class Graph {
 public:
   ~Graph();
-  void AddNode(uint id);
-  void AddEdge(uint node_a, uint node_b, uint weight);
-  std::unordered_map<uint, Node*>& GetNodes();
-  PathInfo Dijkstra(uint src, uint dest);
+  void AddNode(INode* node);
+  void AddEdge(INode* from_node, INode* to_node, unsigned weight);
+  std::unordered_map<unsigned, INode*>& GetNodes();
+  PathInfo Dijkstra(unsigned src, unsigned dest);
+
 private:
-  std::unordered_map<uint, Node*> nodes_; // Only reason to have the map is for fast element acces, the uint corresponds to the Node id
+  std::unordered_map<unsigned, INode*> nodes_; // uint corresponds to the Node id
 };
 
-#endif
+#endif // __GRAPH_HPP__
