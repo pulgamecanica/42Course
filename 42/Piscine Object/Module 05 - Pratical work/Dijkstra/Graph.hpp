@@ -1,3 +1,11 @@
+/**
+ * 
+ * PROBABLY THE GRAPH SHOULD BE A SINGLETON
+ * ... WHY NOT... AFTER ALL.... HMMM.....
+ * 
+ * */
+
+
 #ifndef __GRAPH_HPP__
 #define __GRAPH_HPP__
 

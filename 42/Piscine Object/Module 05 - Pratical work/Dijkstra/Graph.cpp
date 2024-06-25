@@ -1,8 +1,7 @@
 #include "Graph.hpp"
 
 Graph::~Graph() {
-  for (const auto& pair : nodes_)
-    delete pair.second;
+  ;
 }
 
 void Graph::AddNode(INode* node) {
@@ -14,8 +13,10 @@ void Graph::AddNode(INode* node) {
 void Graph::AddEdge(INode* from_node, INode* to_node, unsigned weight) {
   AddNode(from_node);
   AddNode(to_node);
-  nodes_[from_node->GetID()]->GetNeighbors()[to_node->GetID()] = weight;
-  nodes_[to_node->GetID()]->GetNeighbors()[from_node->GetID()] = weight;  // bidirectional
+  nodes_[from_node->GetID()]->SetNeighbor(to_node->GetID(), weight);
+  nodes_[to_node->GetID()]->SetNeighbor(from_node->GetID(), weight);  // bidirectional
+  // nodes_[from_node->GetID()]->GetNeighbors()[to_node->GetID()] = weight;
+  // nodes_[to_node->GetID()]->GetNeighbors()[from_node->GetID()] = weight;  // bidirectional
 }
 
 std::unordered_map<unsigned, INode*>& Graph::GetNodes() {

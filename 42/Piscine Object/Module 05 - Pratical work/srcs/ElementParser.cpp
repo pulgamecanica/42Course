@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <regex>
 
 void ElementParser::ParseElementFile(const std::string& filename, RailwaySystem& system) {
   std::ifstream file(filename);
@@ -15,7 +16,7 @@ void ElementParser::ParseElementFile(const std::string& filename, RailwaySystem&
   int line_number = 0;
   while (std::getline(file, line)) {
     if (line.empty())
-        continue ;
+      continue ;
     line_number++;
     std::istringstream iss(line);
     std::string type;
@@ -29,10 +30,13 @@ void ElementParser::ParseElementFile(const std::string& filename, RailwaySystem&
 
     if (type == "Node") {
       Node node;
-      if (!(iss >> node.name)) {
+      std::string node_name;
+      if (!(iss >> node_name)) {
         ErrorHandler::ReportError(filename, line_number, column_number, "Failed to read node name", line);
         continue;
       }
+      // Node(node_name);
+      node.SetName(node_name);
       system.AddNode(node);
     } else if (type == "Rail") {
       Rail rail;
@@ -47,7 +51,20 @@ void ElementParser::ParseElementFile(const std::string& filename, RailwaySystem&
       system.AddRail(rail);
     } else if (type == "Event") {
       Event event;
-      if (!(iss >> event.type >> event.probability >> event.duration >> event.location)) {
+      std::string event_name;
+      
+      // Read the quoted event name
+      iss >> std::ws;  // Consume any leading whitespace
+      if (iss.peek() == '"') {
+        iss.get();  // Consume the opening quote
+        std::getline(iss, event_name, '"');
+      } else {
+        ErrorHandler::ReportError(filename, line_number, column_number, "Failed to read event name", line);
+        continue;
+      }
+      
+      event.type = event_name;
+      if (!(iss >> event.probability >> event.duration >> event.location)) {
         ErrorHandler::ReportError(filename, line_number, column_number, "Failed to read event data", line);
         continue;
       }

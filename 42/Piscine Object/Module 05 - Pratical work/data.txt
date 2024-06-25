@@ -1,12 +1,29 @@
 Node CityA
 Node CityB
 Node CityC
-
-Rail CityI
-Rail CityA CityB 100.5
-Rail CityB CityC 200.3
-Rail CityA CityC 150.0
-
-Event Accident 0.05 2.0 CityA
-Event Delay 0.10 1.5 CityB
-Event Maintenance 0.03 3.0 CityC
+Node RailNodeA
+Node RailNodeB
+Node RailNodeC
+Node RailNodeD
+Node RailNodeE
+Node RailNodeF
+Node RailNodeG
+Event "Riot" 0.05 48h CityA
+Event "Passenger's Discomfort" 0.2 30m CityA
+Event "Passenger's Discomfort" 0.2 30m CityB
+Event "Passenger's Discomfort" 0.2 30m CityC
+Event "Can't happen" 0 356d CityA
+Rail CityA RailNodeA 15.0
+Rail RailNodeA RailNodeB 20.0
+Rail RailNodeB RailNodeC 13.0
+Rail RailNodeC CityB 5.0
+Rail CityB RailNodeD 7.0
+Rail RailNodeD RailNodeE 12.0
+Rail RailNodeE CityC 6.0
+Rail CityA RailNodeF 6.0
+Rail RailNodeF RailNodeG 17.0
+Rail RailNodeG CityC 17.0
+Rail RailNodeA RailNodeD 23.02
+Rail RailNodeA RailNodeE 19.0
+Rail RailNodeA RailNodeG 6.7
+Rail RailNodeB RailNodeD 20.24

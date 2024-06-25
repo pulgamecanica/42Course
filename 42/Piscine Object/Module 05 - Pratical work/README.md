@@ -94,7 +94,7 @@ Rail <NodeName1> <NodeName2> <Distance>
 #### Events
 
 ```plaintext
-Event <EventType> <Probability> <Duration> <Location>
+Event "<EventType>" <Probability> <Duration> <Location>
 ```
 
 ### Schedule Files
@@ -119,7 +119,7 @@ The program provides detailed error reporting, including:
 ```sh
 Error in file elements.txt at line 3, column 12: Distance cannot be negative
 Rail CityA CityB -50
-            ^
+                 ^
 ```
 
 ## Examples
@@ -135,9 +135,10 @@ Rail CityA CityB 100.5
 Rail CityB CityC 200.3
 Rail CityA CityC 150.0
 
-Event Accident 0.05 2.0 CityA
-Event Delay 0.10 1.5 CityB
-Event Maintenance 0.03 3.0 CityC
+Event "Accident" 0.05 2.0 CityA
+Event "Delay" 0.10 1.5 CityB
+Event "Maintenance" 0.03 3.0 CityC
+Event "Passenger's Discomfort" 0.2 30m CityA
 ```
 
 ### Schedule File (`schedule1.schedule`)
@@ -160,7 +161,7 @@ TrainCA2 1.85 1.3 CityC CityA 18h15
 
 1. **Nodes**: Define the nodes (stations) in the railway system.
 2. **Rails**: Define the rails (connections) between nodes, including the distance.
-3. **Events**: Define events that can occur in the railway system, with a probability and duration at a specific location.
+3. **Events**: Define events that can occur in the railway system, with a probability and duration at a specific location. Event names can contain spaces and must be enclosed in double quotes.
 4. **Trains**: Define the train schedules, including the train's name, maximum acceleration, maximum brake force, departure station, arrival station, and departure time.
 
 ### How to Build Files
@@ -226,4 +227,3 @@ The program reads and parses the elements and schedule files, storing the parsed
 | Can there be "Broken" rails "Out of service" (lol)? | Yes |
 | Should Trains stop at each station? | Nope |
 
-### Events & Effects

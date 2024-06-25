@@ -4,7 +4,7 @@
 #include "ScheduleParser.hpp"
 
 void PrintUsage() {
-  std::cout << "Usage: ./program_name [options]\n"
+  std::cout << "Usage: ./program_name [options] | default `-e data.txt -d Schedules`\n"
             << "Options:\n"
             << "  -h, --help        Show this help message\n"
             << "  -e, --elements    Specify the elements file\n"
@@ -15,6 +15,8 @@ int main(int argc, char* argv[]) {
   std::string elements_file;
   std::string schedule_directory;
 
+  elements_file = "data.txt";
+  schedule_directory = "Schedules";
   for (int i = 1; i < argc; ++i) {
     std::string arg = argv[i];
     if (arg == "-h" || arg == "--help") {
@@ -62,8 +64,8 @@ int main(int argc, char* argv[]) {
   element_parser.ParseElementFile(elements_file, system);
   schedule_parser.ParseScheduleFiles(schedule_directory, system);
 
-  system.PrintElementsData();
-  system.PrintSimulationsData();
+
+  system.Run();
 
   return 0;
 }

@@ -4,18 +4,21 @@
 #include <stdexcept>
 
 void RailwaySystem::AddNode(const Node& node) {
-  nodes_[node.name] = node;
+  nodes_.emplace(node.GetName(), node);
 }
 
 void RailwaySystem::AddRail(const Rail& rail) {
-  rails_.push_back(rail);
+  rails_.emplace_back(rail);
+  // Adding rails generates an entry in the graph
+  graph_.AddEdge(&nodes_[rail.node1], &nodes_[rail.node2], rail.distance);
 }
 
 void RailwaySystem::AddEvent(const Event& event) {
   events_.push_back(event);
 }
 
-void RailwaySystem::AddSimulation(const Simulation& simulation) {
+void RailwaySystem::AddSimulation(Simulation& simulation) {
+  simulation.SetGraph(&graph_);
   simulations_.emplace(simulation.GetName(), simulation);
 }
 
@@ -29,7 +32,7 @@ Simulation& RailwaySystem::GetSimulation(const std::string& name) {
 void RailwaySystem::PrintElementsData() const {
   std::cout << "Nodes:" << std::endl;
   for (const auto& [name, node] : nodes_) {
-    std::cout << "  Node: " << name << std::endl;
+    std::cout << "  Node: " << name << " (" << node.GetID() << ")" << std::endl;
   }
 
   std::cout << "Rails:" << std::endl;
@@ -49,3 +52,16 @@ void RailwaySystem::PrintSimulationsData() const {
     simulation.PrintTrainData();
   }
 }
+
+void RailwaySystem::Run() {
+
+  // system.PrintElementsData();
+  std::cout << "Simulation scheduled trips:" << std::endl;
+  PrintSimulationsData();
+
+  // PathInfo path = graph_.Dijkstra(0, 6);
+  // for (const auto& [node, distance] : path.path) {
+  //   std::cout << "Node: " << node << ", Distance: " << distance << std::endl;
+  // }
+}
+

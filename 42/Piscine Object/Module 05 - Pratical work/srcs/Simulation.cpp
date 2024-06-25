@@ -6,6 +6,10 @@ void Simulation::AddTrain(const Train& train) {
   trains_.push_back(train);
 }
 
+void Simulation::SetGraph(Graph * graph) {
+  graph_ = graph;
+}
+
 void Simulation::PrintTrainData() const {
   std::cout << "Simulation: " << name_ << std::endl;
   for (const auto& train : trains_) {

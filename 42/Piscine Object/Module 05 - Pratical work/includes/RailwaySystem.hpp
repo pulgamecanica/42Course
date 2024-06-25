@@ -10,22 +10,25 @@
 #include "Rail.hpp"
 #include "Simulation.hpp"
 
+#include "Graph.hpp" // From Dijkstra's Lib
+
 class RailwaySystem {
  public:
   void AddNode(const Node& node);
   void AddRail(const Rail& rail);
   void AddEvent(const Event& event);
-  void AddSimulation(const Simulation& simulation);
+  void AddSimulation(Simulation& simulation);
   Simulation& GetSimulation(const std::string& name);
 
   void PrintElementsData() const;
   void PrintSimulationsData() const;
-
+  void Run();
  private:
   std::unordered_map<std::string, Node> nodes_;
   std::vector<Rail> rails_;
   std::vector<Event> events_;
   std::unordered_map<std::string, Simulation> simulations_;
+  Graph graph_;
 };
 
 #endif  // RAILWAY_SYSTEM_HPP
