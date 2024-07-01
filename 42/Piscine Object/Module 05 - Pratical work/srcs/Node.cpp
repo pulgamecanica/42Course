@@ -12,25 +12,18 @@ const std::string & Node::GetName() const {
   return name_;
 }
 
-// Node& Node::operator=(const Node& node) {
-//   id_ = node.GetID();
-//   name_ = node.GetName();
-//   neighbors_ = node.GetNeighbors();
-//   return *this;
-// }
-
 void Node::SetName(const std::string & name) {
   name_ = name;
 }
 
-uint Node::GetID() const {
-  return id_;
+std::string Node::GetKey() const {
+  return name_;
 }
 
-const std::unordered_map<uint, uint>& Node::GetNeighbors() const {
+const std::unordered_map<std::string, uint>& Node::GetNeighbors() const {
   return neighbors_;
 }
 
-void Node::SetNeighbor(int id, int weight) {
-  neighbors_[id] = weight;
+void Node::SetNeighbor(std::string name, int weight) {
+  neighbors_[name] = weight;
 }

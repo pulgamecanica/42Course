@@ -10,7 +10,6 @@ SRC_DIR := srcs
 OBJ_DIR := objs
 OBJ_DIR_DEBUG := objs_debug
 LIB_DIR := Dijkstra
-LIB_NAME := libDijkstraGraph.a
 
 # Compiler and flags
 UNAME := $(shell uname)
@@ -25,7 +24,7 @@ endif
 
 CXXFLAGS := -Wall -Wextra -Werror -std=c++23 -pedantic -g -fsanitize=address
 INC := -I${INC_DIR} -I${LIB_DIR}
-LDFLAGS := -L${LIB_DIR} -lDijkstraGraph
+LDFLAGS := # Libraries go here
 RM := rm -rf
 # Colors
 C_BLACK := \033[0;30m
@@ -42,7 +41,7 @@ OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 OBJ_DEBUG := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR_DEBUG)/%.o)
 
 # Default target
-all: $(LIB_DIR)/$(LIB_NAME) $(NAME)
+all: $(NAME)
 
 # Rule to build the release object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -69,12 +68,6 @@ $(NAME_DEBUG): $(OBJ_DEBUG)
 # Debug target
 debug: $(NAME_DEBUG)
 
-# Build the library in the Dijkstra directory
-$(LIB_DIR)/$(LIB_NAME):
-	@printf "Building library $(C_YELLOW)$(LIB_NAME)$(C_END) ... \n"
-	$(MAKE) -C $(LIB_DIR)
-	@printf "$(C_GREEN)DONE$(C_END)\n"
-
 # Test target
 test: all
 	@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
@@ -98,7 +91,6 @@ clean:
 # Clean all generated files and library
 fclean: clean
 	$(RM) $(NAME) $(NAME_DEBUG)
-	$(MAKE) -C $(LIB_DIR) clean
 	@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 # Rebuild target

@@ -52,7 +52,6 @@ void ElementParser::ParseElementFile(const std::string& filename, RailwaySystem&
     } else if (type == "Event") {
       Event event;
       std::string event_name;
-      
       // Read the quoted event name
       iss >> std::ws;  // Consume any leading whitespace
       if (iss.peek() == '"') {
@@ -62,15 +61,30 @@ void ElementParser::ParseElementFile(const std::string& filename, RailwaySystem&
         ErrorHandler::ReportError(filename, line_number, column_number, "Failed to read event name", line);
         continue;
       }
-      
       event.type = event_name;
-      if (!(iss >> event.probability >> event.duration >> event.location)) {
+      column_number = line.find(event_name) + event_name.length() + 3;
+      std::string time_factor;
+      if (!(iss >> event.probability >> event.duration >> time_factor >> event.location)) {
         ErrorHandler::ReportError(filename, line_number, column_number, "Failed to read event data", line);
         continue;
       }
+      // Probability error
       if (event.probability < 0 || event.probability > 1) {
         ErrorHandler::ReportError(filename, line_number, column_number, "Probability must be between 0 and 1", line);
         continue;
+      }
+      column_number += std::to_string(event.probability).length();
+      // Normalize the duration in minutes
+      if (time_factor == "m") {
+        event.duration = event.duration;
+      } else if (time_factor == "h") {
+        event.duration = event.duration * 60;
+      } else if (time_factor == "d") {
+        event.duration = event.duration * 60 * 24;
+      } else if (time_factor == "y") {
+        event.duration = event.duration * 60 * 24 * 365;
+      } else {
+        ErrorHandler::ReportError(filename, line_number, column_number, "Failed to read time format", line);
       }
       system.AddEvent(event);
     } else {

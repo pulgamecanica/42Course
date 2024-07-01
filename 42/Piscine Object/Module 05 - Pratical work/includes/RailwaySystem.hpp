@@ -28,7 +28,7 @@ class RailwaySystem {
   std::vector<Rail> rails_;
   std::vector<Event> events_;
   std::unordered_map<std::string, Simulation> simulations_;
-  Graph graph_;
+  Graph<std::string> graph_;
 };
 
 #endif  // RAILWAY_SYSTEM_HPP

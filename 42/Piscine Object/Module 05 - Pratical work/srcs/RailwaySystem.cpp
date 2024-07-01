@@ -32,7 +32,7 @@ Simulation& RailwaySystem::GetSimulation(const std::string& name) {
 void RailwaySystem::PrintElementsData() const {
   std::cout << "Nodes:" << std::endl;
   for (const auto& [name, node] : nodes_) {
-    std::cout << "  Node: " << name << " (" << node.GetID() << ")" << std::endl;
+    std::cout << "  Node: " << name << std::endl;
   }
 
   std::cout << "Rails:" << std::endl;
@@ -54,10 +54,10 @@ void RailwaySystem::PrintSimulationsData() const {
 }
 
 void RailwaySystem::Run() {
-
-  // system.PrintElementsData();
+  PrintElementsData();
   std::cout << "Simulation scheduled trips:" << std::endl;
   PrintSimulationsData();
+
 
   // PathInfo path = graph_.Dijkstra(0, 6);
   // for (const auto& [node, distance] : path.path) {

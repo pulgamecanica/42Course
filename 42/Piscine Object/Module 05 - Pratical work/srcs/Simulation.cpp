@@ -6,7 +6,7 @@ void Simulation::AddTrain(const Train& train) {
   trains_.push_back(train);
 }
 
-void Simulation::SetGraph(Graph * graph) {
+void Simulation::SetGraph(Graph<std::string> * graph) {
   graph_ = graph;
 }
 
