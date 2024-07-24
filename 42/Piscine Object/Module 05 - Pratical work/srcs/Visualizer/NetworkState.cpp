@@ -26,7 +26,9 @@ void NetworkState::Draw() {
   grid_.Draw();
   DrawText((std::string("Mouse Pos: ") + VecToString(GetMousePosition())).c_str(),
     20, GetScreenHeight() - 20, 10, BLACK);
-  DrawText((std::string("Grid Pos: ") + VecToString(grid_.GetGridCoordinates(GetMousePosition()))).c_str(),
+  DrawText((std::string("Grid Pos: ") + VecToString(grid_.GetRelativeCoordinates(GetMousePosition()))).c_str(),
     220, GetScreenHeight() - 20, 10, BLACK);
+  DrawText((std::string("Offset: ") + VecToString(grid_.GetOffset())).c_str(),
+    420, GetScreenHeight() - 20, 10, BLACK);
   button_manager_.DrawButtons();
 }

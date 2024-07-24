@@ -1,7 +1,9 @@
 #include "Visualizer/EditableGrid.hpp"
 
 EditableGrid::EditableGrid(RailwaySystem &rail_sys, float gridSize, Rectangle displayArea)
-  : Grid(rail_sys, gridSize, displayArea), current_tool_(Tool::MOVE), is_dragging_(false) {}
+  : Grid(rail_sys, gridSize, displayArea), current_tool_(Tool::MOVE), is_dragging_(false) {
+    SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
+  }
 
 void EditableGrid::Update() {
   Vector2 mousePos = GetMousePosition();
@@ -12,7 +14,7 @@ void EditableGrid::Update() {
     switch (current_tool_) {
       case Tool::MOVE:
         for (const auto& [id, node] : nodes) {
-          if (CheckCollisionPointCircle(mousePos, GetGridCoordinates(node.GetPosition()), rad)) {
+          if (CheckCollisionPointCircle(mousePos, GetAbsoluteCoordinates(node.GetPosition()), rad)) {
             selected_node_ = id;
             drag_start_pos_ = mousePos;
             is_dragging_ = true;
@@ -22,7 +24,7 @@ void EditableGrid::Update() {
         break;
       case Tool::REMOVE:
         for (const auto& [id, node] : nodes) {
-          if (CheckCollisionPointCircle(mousePos, GetGridCoordinates(node.GetPosition()), rad)) {
+          if (CheckCollisionPointCircle(mousePos, GetAbsoluteCoordinates(node.GetPosition()), rad)) {
             RemoveNode(id);
             break;
           }
@@ -52,23 +54,6 @@ void EditableGrid::Update() {
 void EditableGrid::Draw() {
   Grid::Draw();
 
-  switch (current_tool_) {
-      case Tool::MOVE:
-          SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
-          break;
-      case Tool::REMOVE:
-          SetMouseCursor(MOUSE_CURSOR_CROSSHAIR);
-          break;
-      case Tool::ADD:
-          SetMouseCursor(MOUSE_CURSOR_CROSSHAIR);
-          break;
-      case Tool::EDIT:
-          SetMouseCursor(MOUSE_CURSOR_IBEAM);
-          break;
-      default:
-          SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-          break;
-  }
 }
 
 void EditableGrid::SetTool(Tool tool) {
@@ -98,7 +83,6 @@ void EditableGrid::MoveNode() {
   if (!selected_node_.empty()) {
     Vector2 current_mouse_pos = GetMousePosition();
     Node & node = rail_sys_.GetNode(selected_node_);
-    Vector2 node_pos = node.GetPosition();
-    node.SetPosition(node_pos);
+    node.SetPosition(GetRelativeCoordinates(current_mouse_pos));
   }
 }

@@ -93,8 +93,8 @@ void Grid::Draw() {
   for (std::vector<Rail>::const_iterator i = rails.begin(); i != rails.end(); ++i) {
     const Node & node1 = rail_sys_.GetNode(i->node1);
     const Node & node2 = rail_sys_.GetNode(i->node2);
-    Vector2 grid_pos1 = GetGridCoordinates(node1.GetPosition());
-    Vector2 grid_pos2 = GetGridCoordinates(node2.GetPosition());
+    Vector2 grid_pos1 = GetAbsoluteCoordinates(node1.GetPosition());
+    Vector2 grid_pos2 = GetAbsoluteCoordinates(node2.GetPosition());
     ClipLine(grid_pos1, grid_pos2);
     DrawLineEx(grid_pos1, grid_pos2, 2.0f, BLUE);
   }
@@ -103,7 +103,7 @@ void Grid::Draw() {
   const float rad = scale_ * 5;
   for (std::unordered_map<std::string, Node>::const_iterator i = nodes_.begin(); i != nodes_.end(); ++i) {
     const Node & node = i->second;
-    Vector2 grid_pos = GetGridCoordinates(node.GetPosition());
+    Vector2 grid_pos = GetAbsoluteCoordinates(node.GetPosition());
     if (CheckCollisionPointRec(grid_pos, display_area_)) {
       DrawPoly(grid_pos, 6, rad, 0.0f, node.GetColor());
       Vector2 node_name_pos = (Vector2){grid_pos.x - rad, grid_pos.y - rad - 10};
@@ -113,8 +113,27 @@ void Grid::Draw() {
   // Draw events
 }
 
-Vector2 Grid::GetGridCoordinates(Vector2 pos) const {
-  return (Vector2){((pos.x - display_area_.x) - offset_.x) * scale_, ((pos.y - display_area_.y) - offset_.y) * scale_};
+/**
+ * Get The Real Coordinates in space of a point in the grid
+ * For example giving the grid coordinates of the point [10, 10]
+ * would return the real position of [10, 10] in the screen
+ * 
+ * pos: should be a relative coordinate to the grid
+**/
+Vector2 Grid::GetAbsoluteCoordinates(Vector2 pos) const {
+  //10 10 must correspond to: display_area.x+10, display_area.y+10 
+  return (Vector2){((pos.x + display_area_.x) - offset_.x) * scale_, ((pos.y + display_area_.y) - offset_.y) * scale_};
+}
+
+
+/**
+ * Get The Relative Coordinates in the grid
+ * 
+ * pos: should be an absolute coordinate of the screen
+ *      which will return the coorespondent coodinate on the grid
+**/
+Vector2 Grid::GetRelativeCoordinates(Vector2 abs_pos) const {
+  return (Vector2){((abs_pos.x / scale_) + offset_.x - display_area_.x), ((abs_pos.y / scale_) + offset_.y - display_area_.y)};
 }
 
 void Grid::ToggleShowGrid() {
@@ -131,6 +150,10 @@ void Grid::SetDisplayArea(Rectangle displayArea) {
 
 void Grid::SetCanDragGrid(bool can_drag) {
   can_drag_grid_ = can_drag;
+}
+
+Vector2 Grid::GetOffset() const {
+  return offset_;
 }
 
 void Grid::DrawGridLines() {

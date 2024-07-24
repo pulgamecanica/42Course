@@ -15,7 +15,9 @@ public:
     void SetGridSize(float gridSize);
     void SetDisplayArea(Rectangle displayArea);
     void SetCanDragGrid(bool can_drag);
-    Vector2 GetGridCoordinates(Vector2 pos) const;
+    Vector2 GetAbsoluteCoordinates(Vector2 pos) const;
+    Vector2 GetRelativeCoordinates(Vector2 pos) const;
+    Vector2 GetOffset() const;
 protected:
     RailwaySystem &rail_sys_;
     float grid_size_;
