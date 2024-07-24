@@ -226,4 +226,4 @@ The program reads and parses the elements and schedule files, storing the parsed
 | Should the network be 100% connected? | Not necesarilly |
 | Can there be "Broken" rails "Out of service" (lol)? | Yes |
 | Should Trains stop at each station? | Nope |
-
+| Are vents intoduced while the simulation is going on? | No, events are launched before the simulation and are applied according to their probability, events are launched for each train, when the train passes in that segment, events apply to trains only, not the external resources |

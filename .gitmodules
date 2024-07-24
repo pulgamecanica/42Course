@@ -25,3 +25,9 @@
 [submodule "42/Piscine Object/Module 05 - Pratical work/Visualizer/raygui"]
 	path = 42/Piscine Object/Module 05 - Pratical work/Visualizer/raygui
 	url = https://github.com/raysan5/raygui.git
+[submodule "42/Piscine Object/Module 05 - Pratical work/raylib"]
+	path = 42/Piscine Object/Module 05 - Pratical work/raylib
+	url = https://github.com/raysan5/raylib
+[submodule "42/Piscine Object/Module 05 - Pratical work/raygui"]
+	path = 42/Piscine Object/Module 05 - Pratical work/raygui
+	url = https://github.com/raysan5/raygui

@@ -1,15 +1,32 @@
-# Makefile for CppOnRails
 
 # Project name
 NAME := CppOnRails
 NAME_DEBUG := ${NAME}_debug
 
-# Directories
 INC_DIR := includes
 SRC_DIR := srcs
 OBJ_DIR := objs
 OBJ_DIR_DEBUG := objs_debug
+
+# Dijkstra header-only library
 LIB_DIR := Dijkstra
+
+# Raylib & Raygui libraries
+RAYLIB			= raylib
+
+RAYLIB_PATH		= raylib/src	
+
+RAYLIB_NAME		= raylib/src/lib$(RAYLIB).a
+
+RAYLIB_INC_PATH = ${RAYLIB_PATH}
+
+RAYGUI			= raygui
+
+RAYGUI_PATH		= raygui/src
+
+RAYGUI_NAME		= raygui/src/lib$(RAYGUI).a
+
+RAYGUI_INC_PATH = $(RAYGUI_PATH)
 
 # Compiler and flags
 UNAME := $(shell uname)
@@ -22,9 +39,9 @@ else
     CXXFLAGS += -D LINUX
 endif
 
-CXXFLAGS := -Wall -Wextra -Werror -std=c++23 -pedantic -g -fsanitize=address
-INC := -I${INC_DIR} -I${LIB_DIR}
-LDFLAGS := # Libraries go here
+CXXFLAGS := -std=c++23 -g -w
+INC := -I${INC_DIR} -I${LIB_DIR} -I$(RAYLIB_INC_PATH) -I$(RAYGUI_INC_PATH)
+LDFLAGS := -L${RAYGUI_PATH} -l${RAYGUI} -L${RAYLIB_PATH} -l${RAYLIB} -lGL -lm -lpthread -ldl -lrt -lX11
 RM := rm -rf
 # Colors
 C_BLACK := \033[0;30m
@@ -36,16 +53,24 @@ C_WHITE := \033[0;37m
 C_END := \033[0m
 
 # Source files
-SRC := $(wildcard $(SRC_DIR)/*.cpp)
+SRC := $(wildcard $(SRC_DIR)/*.cpp $(SRC_DIR)/*/*.cpp)
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 OBJ_DEBUG := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR_DEBUG)/%.o)
 
 # Default target
-all: $(NAME)
+all: $(RAYLIB_NAME) $(RAYGUI_NAME) $(NAME)
+
+${RAYLIB_NAME}:
+	@make -C ${RAYLIB_PATH} PLATFORM=PLATFORM_DESKTOP
+
+${RAYGUI_NAME}:
+	cp $(RAYGUI_PATH)/raygui.h $(RAYGUI_PATH)/raygui.c
+	gcc -c $(RAYGUI_PATH)/raygui.c -o $(RAYGUI_PATH)/raygui.o
+	ar rcs $(RAYGUI_NAME) $(RAYGUI_PATH)/raygui.o
 
 # Rule to build the release object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR) $(OBJ_DIR)/Simulation $(OBJ_DIR)/Visualizer
 	$(CXX) $(CXXFLAGS) $(INC) -o $@ -c $<
 
 # Rule to build the release executable
