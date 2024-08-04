@@ -18,10 +18,10 @@ void init_RayGui() {
 }
 
 int main(int argc, char* argv[]) {
-  srand(time(NULL));
+  srand(time(NULL)); // Seed randomnes entropy
   init_RayGui();
   std::unordered_map<std::string, std::string> options = Parser::ParseProgramOptions(argc, argv);
-  // Perhaps the simulations engine should own the system...?
+  // Perhaps the simulations engine should own the system...? Yes I'll do that later but try avoiding the god's object issue
   RailwaySystem system(options["elements_file"], options["schedule_directory"]);
   SimulationsEngine engine(system);
   engine.Run();

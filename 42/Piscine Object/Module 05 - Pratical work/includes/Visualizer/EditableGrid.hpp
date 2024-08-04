@@ -2,6 +2,7 @@
 #define EDITABLE_GRID_H
 
 #include "Visualizer/Grid.hpp"
+#include "Visualizer/MinimapGrid.hpp"
 #include "Simulation/Node.hpp"
 #include "raylib.h"
 #include <string>
@@ -27,6 +28,8 @@ private:
   std::string selected_node_;
   Vector2 drag_start_pos_;
   bool is_dragging_;
+  bool show_minimap_;
+  MinimapGrid minimap_;
 
   void AddNode(Vector2 position);
   void RemoveNode(const std::string& id);

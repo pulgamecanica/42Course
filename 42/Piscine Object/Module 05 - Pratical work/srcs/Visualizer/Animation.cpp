@@ -20,8 +20,7 @@ Animation::Animation(const std::vector<const char*>& imagePaths, float frameDura
   for (const char* path : imagePaths) {
     Image img = LoadImage(path);
     if (img.data == nullptr) {
-      std::cerr << "Failed to load image: " << path << std::endl;
-      continue;
+      throw std::runtime_error(std::string("Failed to load image: ") + path);
     }
     if (!options["width"] || !options["height"])
       throw std::runtime_error("Width or Height cannot be zero!");

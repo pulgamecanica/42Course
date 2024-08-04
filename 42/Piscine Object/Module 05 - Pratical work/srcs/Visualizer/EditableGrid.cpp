@@ -1,59 +1,80 @@
 #include "Visualizer/EditableGrid.hpp"
+#include <raygui.h>
 
 EditableGrid::EditableGrid(RailwaySystem &rail_sys, float gridSize, Rectangle displayArea)
-  : Grid(rail_sys, gridSize, displayArea), current_tool_(Tool::MOVE), is_dragging_(false) {
+  : Grid(rail_sys, gridSize, displayArea),
+    current_tool_(Tool::MOVE),
+    is_dragging_(false),
+    show_minimap_(false),
+    minimap_(rail_sys, gridSize / 2, displayArea) {
     SetMouseCursor(MOUSE_CURSOR_POINTING_HAND);
   }
 
 void EditableGrid::Update() {
-  Vector2 mousePos = GetMousePosition();
-  const std::unordered_map<std::string, Node>& nodes = rail_sys_.GetNodes();
-  const float rad = scale_ * 5;
+  if (show_minimap_) { // Minimap logic 
+    minimap_.Update();
+  } else { // Grid logic
+    Vector2 mousePos = GetMousePosition();
+    const std::unordered_map<std::string, Node>& nodes = rail_sys_.GetNodes();
+    const float rad = scale_ * 5;
 
-  if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-    switch (current_tool_) {
-      case Tool::MOVE:
-        for (const auto& [id, node] : nodes) {
-          if (CheckCollisionPointCircle(mousePos, GetAbsoluteCoordinates(node.GetPosition()), rad)) {
-            selected_node_ = id;
-            drag_start_pos_ = mousePos;
-            is_dragging_ = true;
-            break;
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+      switch (current_tool_) {
+        case Tool::MOVE:
+          for (const auto& [id, node] : nodes) {
+            if (CheckCollisionPointCircle(mousePos, GetAbsoluteCoordinates(node.GetPosition()), rad)) {
+              selected_node_ = id;
+              drag_start_pos_ = mousePos;
+              is_dragging_ = true;
+              break;
+            }
           }
-        }
-        break;
-      case Tool::REMOVE:
-        for (const auto& [id, node] : nodes) {
-          if (CheckCollisionPointCircle(mousePos, GetAbsoluteCoordinates(node.GetPosition()), rad)) {
-            RemoveNode(id);
-            break;
+          break;
+        case Tool::REMOVE:
+          for (const auto& [id, node] : nodes) {
+            if (CheckCollisionPointCircle(mousePos, GetAbsoluteCoordinates(node.GetPosition()), rad)) {
+              RemoveNode(id);
+              break;
+            }
           }
-        }
-        break;
-      case Tool::ADD:
-        AddNode(mousePos);
-        break;
-      default:
-        break;
+          break;
+        case Tool::ADD:
+          AddNode(mousePos);
+          break;
+        default:
+          break;
+      }
     }
-  }
 
-  if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-      is_dragging_ = false;
-  }
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+        is_dragging_ = false;
+    }
 
-  if (is_dragging_ && current_tool_ == Tool::MOVE) {
-      MoveNode();
+    if (is_dragging_ && current_tool_ == Tool::MOVE) {
+        MoveNode();
+    }
+    if (is_dragging_)
+      can_drag_grid_ = false;
+    Grid::Update();
+    can_drag_grid_ = true;
   }
-  if (is_dragging_)
-    can_drag_grid_ = false;
-  Grid::Update();
-  can_drag_grid_ = true;
 }
 
 void EditableGrid::Draw() {
-  Grid::Draw();
-
+  if (show_minimap_) {
+    minimap_.Draw();
+    if (GuiButton((Rectangle){display_area_.x + display_area_.width - 50, display_area_.y, 50, 25}, GuiIconText(ICON_EYE_OFF, "Map")))
+      show_minimap_ = false;
+  } else {
+    Grid::Draw();
+    int buttons_padding = 5;
+    GuiButton((Rectangle){display_area_.x + ((100 + buttons_padding) * 0), display_area_.y + display_area_.height - 25, 100, 25}, GuiIconText(ICON_GEAR, "Move"));
+    GuiButton((Rectangle){display_area_.x + ((100 + buttons_padding) * 1), display_area_.y + display_area_.height - 25, 100, 25}, GuiIconText(ICON_CROSS, "Remove"));
+    GuiButton((Rectangle){display_area_.x + ((100 + buttons_padding) * 2), display_area_.y + display_area_.height - 25, 100, 25}, GuiIconText(ICON_WAVE, "Add"));
+    GuiButton((Rectangle){display_area_.x + ((100 + buttons_padding) * 3), display_area_.y + display_area_.height - 25, 100, 25}, GuiIconText(ICON_PENCIL, "Edit"));
+    if (GuiButton((Rectangle){display_area_.x + display_area_.width - 50, display_area_.y, 50, 25}, GuiIconText(ICON_EYE_ON, "Map")))
+      show_minimap_ = true;
+  }
 }
 
 void EditableGrid::SetTool(Tool tool) {

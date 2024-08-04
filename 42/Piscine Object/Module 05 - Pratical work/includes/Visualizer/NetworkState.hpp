@@ -4,6 +4,7 @@
 #include "Visualizer/IState.hpp"
 #include "Visualizer/ButtonManager.hpp"
 #include "Visualizer/EditableGrid.hpp"
+#include "Visualizer/Grid.hpp"
 
 #include "raylib.h"
 
@@ -18,7 +19,8 @@ public:
 private:
   SimulationsEngine& engine_;
   ButtonManager button_manager_;
-  EditableGrid grid_;
+  EditableGrid editable_grid_;
+  // Grid grid_;
 };
 
 #endif // NETWORK_STATE_H

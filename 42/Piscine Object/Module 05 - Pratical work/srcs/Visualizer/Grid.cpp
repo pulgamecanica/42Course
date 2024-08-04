@@ -31,9 +31,9 @@ void Grid::Update() {
     if (scale_ < 0.1f) scale_ = 0.1f;
     if (scale_ > 10.0f) scale_ = 10.0f;
 
-    Vector2 mouse_pos = GetMousePosition();
-    offset_.x = mouse_pos.x / scale_ - mouse_pos.x / prev_scale + offset_.x;
-    offset_.y = mouse_pos.y / scale_ - mouse_pos.y / prev_scale + offset_.y;
+    // Vector2 mouse_pos = GetMousePosition();
+    // offset_.x = mouse_pos.x / scale_ - mouse_pos.x / prev_scale + offset_.x;
+    // offset_.y = mouse_pos.y / scale_ - mouse_pos.y / prev_scale + offset_.y;
   }
 }
 

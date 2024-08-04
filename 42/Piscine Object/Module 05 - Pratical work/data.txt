@@ -21,6 +21,7 @@ Rail RailNodeA RailNodeB 20.0
 Rail RailNodeB RailNodeC 13.0
 Rail RailNodeC CityB 5.0
 Rail CityB RailNodeD 7.0
+Rail CityC RailNodeC 7.0
 Rail RailNodeD RailNodeE 12.0
 Rail RailNodeE CityC 6.0
 Rail CityA RailNodeF 6.0

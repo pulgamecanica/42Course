@@ -3,12 +3,12 @@
 
 SimulationsEngine::SimulationsEngine(RailwaySystem& system)
   : rail_sys_(system),
-    current_state_(&menu_state_), // Start with the menu state
-    menu_state_(*this),
-    settings_state_(*this),
-    schedules_state_(*this),
-    network_state_(*this),
-    simulations_state_(*this)
+  current_state_(&menu_state_), // Start with the menu state
+  menu_state_(*this),
+  settings_state_(*this),
+  schedules_state_(*this),
+  network_state_(*this),
+  simulations_state_(*this)
 {
   // network_state_.SetGraph(graph_);
 }
@@ -38,21 +38,18 @@ RailwaySystem & SimulationsEngine::GetRailwaySystem() const {
   return rail_sys_;
 }
 
-
 void SimulationsEngine::Update() {
-  if (current_state_) {
+  if (current_state_)
     current_state_->Update();
-  }
 }
 
+// Liskov's Substitution SO(L)ID
+// Game State Design pattern (current state with interface implementation)
 void SimulationsEngine::Draw() {
   BeginDrawing();
   ClearBackground(RAYWHITE);
-
-  if (current_state_) {
+  if (current_state_)
     current_state_->Draw();
-  }
-
   EndDrawing();
 }
 
