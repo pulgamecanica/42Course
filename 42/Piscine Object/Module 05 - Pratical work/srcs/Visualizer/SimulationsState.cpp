@@ -7,7 +7,7 @@
 SimulationsState::SimulationsState(SimulationsEngine& engine) : engine_(engine) {
   float screenHeight = GetScreenHeight();
   float screenWidth = GetScreenWidth();
-  button_manager_.AddButton("Home", {25, 25, 100, 50}, [this]() { engine_.ChangeState(EngineStates::MENU); });
+  button_manager_.AddButton("Home", {25, 25, 100, 25}, [this]() { engine_.ChangeState(EngineStates::MENU); });
 }
 
 void SimulationsState::Update() {

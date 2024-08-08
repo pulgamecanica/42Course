@@ -11,6 +11,7 @@ class Parser {
   Parser() = delete;
   static void ParseScheduleFiles(const std::string& directory, RailwaySystem& system);
   static void ParseElementsFile(const std::string& filename, RailwaySystem& system);
+  static void WriteDataToFile(const RailwaySystem& system);
   static std::unordered_map<std::string, std::string> ParseProgramOptions(int argc, char *argv[]);
 
  private:

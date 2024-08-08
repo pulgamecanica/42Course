@@ -40,6 +40,11 @@ const std::unordered_map<std::string, Schedule> RailwaySystem::GetSchedules() co
   return schedules_;
 }
 
+const std::vector<Event>& RailwaySystem::GetEvents() const {
+  return events_;
+}
+
+
 const Graph<std::string>& RailwaySystem::GetGraph() const {
   return graph_;
 }

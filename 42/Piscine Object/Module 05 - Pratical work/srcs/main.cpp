@@ -9,7 +9,7 @@
 #include <cmath>
 #include <time.h>
 
-#define WIDTH 900
+#define WIDTH 1000
 #define HEIGHT 600
 
 void init_RayGui() {

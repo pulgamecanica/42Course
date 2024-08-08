@@ -3,7 +3,7 @@
 
 MinimapGrid::MinimapGrid(RailwaySystem &rail_sys, float gridSize, Rectangle displayArea)
   : Grid(rail_sys, gridSize, displayArea) {
-  ToggleShowGrid(); // To disable Show Grid
+  show_grid_ = false;
   SetCanDragGrid(false);
   scale_ = 0.5f;
   std::vector<const char*> backgrounds = { "assets/images/background_map.png" };
@@ -21,7 +21,7 @@ void MinimapGrid::Update() {
     x_min = std::min<int>(x_min, node_pos.x);
     y_min = std::min<int>(y_min, node_pos.y);
   }
-  offset_ = (Vector2){(x_min - display_area_.x - 20) / scale_, (y_min - display_area_.y -20) / scale_};
+  offset_ = (Vector2){(x_min - display_area_.x - 50) / scale_, (y_min - display_area_.y - 50) / scale_};
 }
 
 void MinimapGrid::Draw() {

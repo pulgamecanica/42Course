@@ -32,6 +32,7 @@ void SimulationsEngine::ChangeState(enum EngineStates e_state) {
     current_state_ = &schedules_state_;
   else if (e_state == EngineStates::SIMULATIONS)
     current_state_ = &simulations_state_;
+  SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 }
 
 RailwaySystem & SimulationsEngine::GetRailwaySystem() const {

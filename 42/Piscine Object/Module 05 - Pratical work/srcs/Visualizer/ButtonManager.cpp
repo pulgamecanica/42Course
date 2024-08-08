@@ -1,4 +1,5 @@
 #include "Visualizer/ButtonManager.hpp"
+#include <iostream>
 
 void ButtonManager::AddButton(const std::string& name, Rectangle rect, std::function<void()> action) {
   button_rects_[name] = rect;

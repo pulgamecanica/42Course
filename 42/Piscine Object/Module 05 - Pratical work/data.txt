@@ -1,33 +1,35 @@
-Node CityY
-Node CityX
 Node CityZ
-Node CityA
-Node CityB
-Node CityC
-Node RailNodeA
-Node RailNodeB
-Node RailNodeC
-Node RailNodeD
+Node CityP
+Node OtherNode
 Node RailNodeE
+Node RailNodeD
+Node RailNodeC
+Node RailNodeB
+Node CityD
+Node CityA
 Node RailNodeF
+Node CityC
 Node RailNodeG
-Event "Riot" 0.05 48h CityA
+Node CityB
+Node CityY
+Node RailNodeA
+Rail CityA RailNodeA 15
+Rail RailNodeA RailNodeB 20
+Rail RailNodeB RailNodeC 13
+Rail RailNodeC CityB 5
+Rail CityB RailNodeD 7
+Rail CityC RailNodeC 7
+Rail RailNodeD RailNodeE 12
+Rail RailNodeE CityC 6
+Rail CityA RailNodeF 6
+Rail RailNodeF RailNodeG 17
+Rail RailNodeG CityC 17
+Rail RailNodeA RailNodeD 23.02
+Rail RailNodeA RailNodeE 19
+Rail RailNodeA RailNodeG 6.7
+Rail RailNodeB RailNodeD 20.24
+Event "Riot" 0.05 7.39435e+103y CityA
 Event "Passenger's Discomfort" 0.2 30m CityA
 Event "Passenger's Discomfort" 0.2 30m CityB
 Event "Passenger's Discomfort" 0.2 30m CityC
-Event "Can't happen" 0 356d CityA
-Rail CityA RailNodeA 15.0
-Rail RailNodeA RailNodeB 20.0
-Rail RailNodeB RailNodeC 13.0
-Rail RailNodeC CityB 5.0
-Rail CityB RailNodeD 7.0
-Rail CityC RailNodeC 7.0
-Rail RailNodeD RailNodeE 12.0
-Rail RailNodeE CityC 6.0
-Rail CityA RailNodeF 6.0
-Rail RailNodeF RailNodeG 17.0
-Rail RailNodeG CityC 17.0
-Rail RailNodeA RailNodeD 23.02
-Rail RailNodeA RailNodeE 19.0
-Rail RailNodeA RailNodeG 6.7
-Rail RailNodeB RailNodeD 20.24
+Event "Can't happen" 0 1.31618e+106y CityA

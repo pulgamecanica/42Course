@@ -17,6 +17,9 @@ public:
 private:
   SimulationsEngine& engine_;
   ButtonManager button_manager_;
+  int selected_simulation_;
+  bool enable_simulation_selection_;
+  int number_of_simulations_;
 };
 
 #endif // SCHEDULES_STATE_H

@@ -27,7 +27,7 @@ void Grid::Update() {
   float wheel = GetMouseWheelMove();
   if (wheel != 0) {
     float prev_scale = scale_;
-    scale_ += wheel * 0.1f;
+    scale_ += wheel * 0.1f * scale_;
     if (scale_ < 0.1f) scale_ = 0.1f;
     if (scale_ > 10.0f) scale_ = 10.0f;
 
@@ -134,10 +134,6 @@ Vector2 Grid::GetAbsoluteCoordinates(Vector2 pos) const {
 **/
 Vector2 Grid::GetRelativeCoordinates(Vector2 abs_pos) const {
   return (Vector2){((abs_pos.x / scale_) + offset_.x - display_area_.x), ((abs_pos.y / scale_) + offset_.y - display_area_.y)};
-}
-
-void Grid::ToggleShowGrid() {
-  show_grid_ = !show_grid_;
 }
 
 void Grid::SetGridSize(float gridSize) {

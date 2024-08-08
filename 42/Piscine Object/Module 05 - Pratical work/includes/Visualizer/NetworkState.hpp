@@ -5,6 +5,7 @@
 #include "Visualizer/ButtonManager.hpp"
 #include "Visualizer/EditableGrid.hpp"
 #include "Visualizer/Grid.hpp"
+#include "Visualizer/Animation.hpp"
 
 #include "raylib.h"
 
@@ -20,6 +21,12 @@ private:
   SimulationsEngine& engine_;
   ButtonManager button_manager_;
   EditableGrid editable_grid_;
+  std::unique_ptr<Animation> background_animation_;
+  std::unique_ptr<Animation> blue_train_;
+  std::unique_ptr<Animation> blue_train_rails_;
+  std::unique_ptr<Animation> blue_train_woods_;
+  int blue_train_animation_y_;
+  float blue_train_pos_x_factor;
   // Grid grid_;
 };
 

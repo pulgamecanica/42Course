@@ -24,6 +24,7 @@ public:
   const Graph<std::string>& GetGraph() const;
   const std::unordered_map<std::string, Node>& GetNodes() const;
   const std::vector<Rail>& GetRails() const;
+  const std::vector<Event>& GetEvents() const;
 private:
   std::unordered_map<std::string, Node> nodes_;
   std::vector<Rail> rails_;

@@ -4,9 +4,13 @@
 #include "Simulation/Event.hpp"
 #include "Simulation/Node.hpp"
 #include "Simulation/Rail.hpp"
+#include "Settings.hpp"
 #include <fstream>
 #include <iostream>
 #include <regex>
+#include <sstream>
+#include <chrono>
+#include <iomanip>
 #include <sstream>
 
 void Parser::ParseElementsFile(const std::string& filename, RailwaySystem& system) {
@@ -187,6 +191,44 @@ void Parser::ParseTrainFile(const std::string& filename, RailwaySystem& system) 
   system.AddSchedule(schedule);
 }
 
+void Parser::WriteDataToFile(const RailwaySystem& system) {
+    const std::string& filename = Settings::Instance().GetDataFileName();
+    std::ofstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+        return;
+    }
+
+    // Write Nodes
+    const auto& nodes = system.GetNodes();
+    for (const auto& [node_name, node] : nodes) {
+        file << "Node " << node_name << std::endl;
+    }
+
+    // Write Rails
+    const auto& rails = system.GetRails();
+    for (const auto& rail : rails) {
+        file << "Rail " << rail.node1 << " " << rail.node2 << " " << rail.distance << std::endl;
+    }
+
+    // Write Events
+    const auto& events = system.GetEvents();
+    for (const auto& event : events) {
+        file << "Event \"" << event.type << "\" " << event.probability << " " << event.duration;
+        if (event.duration >= 60 * 24 * 365) {
+            file << "y";
+        } else if (event.duration >= 60 * 24) {
+            file << "d";
+        } else if (event.duration >= 60) {
+            file << "h";
+        } else {
+            file << "m";
+        }
+        file << " " << event.location << std::endl;
+    }
+
+    file.close();
+}
 
 std::unordered_map<std::string, std::string> Parser::ParseProgramOptions(int argc, char *argv[]) {
   std::unordered_map<std::string, std::string> options;
@@ -233,6 +275,18 @@ std::unordered_map<std::string, std::string> Parser::ParseProgramOptions(int arg
     ErrorHandler::ReportError("", 0, 0, "Schedule directory is required", "");
     ErrorHandler::PrintUsage();
     exit(EXIT_FAILURE);
+  }
+  {
+    auto now = std::chrono::system_clock::now();
+    std::time_t t = std::chrono::system_clock::to_time_t(now);
+    std::tm tm = *std::localtime(&t);
+    // Format date and time
+    std::ostringstream oss;
+    oss << std::put_time(&tm, "%d%m%y-%H%M") << " SimulationOutput";
+
+    Settings::Instance().SetScheduleDirectory(options["schedule_directory"]);
+    Settings::Instance().SetDataFileName(options["elements_file"]);
+    Settings::Instance().SetOutputDirectory(oss.str());
   }
   return options;
 }

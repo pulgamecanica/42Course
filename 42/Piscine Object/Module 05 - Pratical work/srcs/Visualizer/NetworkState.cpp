@@ -9,16 +9,61 @@ NetworkState::NetworkState(SimulationsEngine& engine)
     editable_grid_(
       engine.GetRailwaySystem(),
       20.0f,
-      {50, 50, GetScreenWidth() - 100, GetScreenHeight() - 100}) {
+      {85, 100, GetScreenWidth() - 85 * 2, GetScreenHeight() - 100 * 2}) {
   float screenHeight = GetScreenHeight();
   float screenWidth = GetScreenWidth();
-  button_manager_.AddButton("Home", {5, 5, 50, 25}, [this]() { engine_.ChangeState(EngineStates::MENU); });
-  button_manager_.AddButton("Show Grid", {screenWidth - 105, 5, 100, 25}, [this]() { editable_grid_.ToggleShowGrid(); });
+  blue_train_animation_y_ = screenHeight - 100;
+  blue_train_pos_x_factor = 1.0f;
+  {
+    std::vector<const char*> images = { "assets/images/background_network.png" };
+    std::map<std::string, int> options = {{"width", screenWidth}, {"height", screenHeight} };
+    background_animation_ = std::make_unique<Animation>(images, 1.0f, options);
+  }
+  {
+    std::vector<const char*> images = {
+      "assets/images/blue_train_frame_1.png",
+      "assets/images/blue_train_frame_2.png",
+      "assets/images/blue_train_frame_3.png",
+      "assets/images/blue_train_frame_4.png",
+      "assets/images/blue_train_frame_5.png",
+      "assets/images/blue_train_frame_6.png",
+      "assets/images/blue_train_frame_7.png",
+      "assets/images/blue_train_frame_8.png",
+    };
+    std::map<std::string, int> options = {{"width", 120}, {"height", 24}};
+    blue_train_ = std::make_unique<Animation>(images, 0.15f, options);
+  }
+  {
+    std::vector<const char*> images = { "assets/images/blue_train_rails.png" };
+    std::map<std::string, int> options = {{"width", GetScreenWidth() / 2}, {"height", 40} };
+    blue_train_rails_ = std::make_unique<Animation>(images, 1.0f, options);
+  }
+  {
+    std::vector<const char*> images = {
+      "assets/images/blue_train_woods_frame_1.png",
+      "assets/images/blue_train_woods_frame_2.png",
+      "assets/images/blue_train_woods_frame_3.png",
+      "assets/images/blue_train_woods_frame_4.png",
+    };
+    std::map<std::string, int> options = {{"width", GetScreenWidth() / 2}, {"height", 40} };
+    blue_train_woods_ = std::make_unique<Animation>(images, 0.5f, options);
+  }
+  button_manager_.AddButton("Home", {42, 42, 50, 25}, [this]() { engine_.ChangeState(EngineStates::MENU); });
+
+
 }
 
 void NetworkState::Update() {
-  editable_grid_.Update();
+  blue_train_pos_x_factor -= 0.00008f;
+  if ((int)(blue_train_pos_x_factor * (float)GetScreenWidth()) <= -480)
+    blue_train_pos_x_factor = 1.0f;
+
+  background_animation_->UpdateAnimation(GetFrameTime());
+  blue_train_->UpdateAnimation(GetFrameTime());
+  blue_train_rails_->UpdateAnimation(GetFrameTime());
+  blue_train_woods_->UpdateAnimation(GetFrameTime());
   button_manager_.UpdateButtons();
+  editable_grid_.Update();
 }
 
 std::string VecToString(Vector2 vec) {
@@ -26,12 +71,18 @@ std::string VecToString(Vector2 vec) {
 }
 
 void NetworkState::Draw() {
+  background_animation_->DrawAnimation(0, 0);
+  blue_train_rails_->DrawAnimation(0, blue_train_animation_y_);
+  blue_train_rails_->DrawAnimation(GetScreenWidth() / 2, blue_train_animation_y_);
+  blue_train_->DrawAnimation((int)(blue_train_pos_x_factor * (float)GetScreenWidth()), blue_train_animation_y_);
+  blue_train_woods_->DrawAnimation(142, blue_train_animation_y_);
+  blue_train_woods_->DrawAnimation(GetScreenWidth() / 2 + 142, blue_train_animation_y_ - 5);
+  button_manager_.DrawButtons();
   editable_grid_.Draw();
   DrawText((std::string("Mouse Pos: ") + VecToString(GetMousePosition())).c_str(),
-    20, GetScreenHeight() - 20, 10, BLACK);
+    50, GetScreenHeight() - 52, 10, BLACK);
   DrawText((std::string("Grid Pos: ") + VecToString(editable_grid_.GetRelativeCoordinates(GetMousePosition()))).c_str(),
-    220, GetScreenHeight() - 20, 10, BLACK);
+    250, GetScreenHeight() - 52, 10, BLACK);
   DrawText((std::string("Offset: ") + VecToString(editable_grid_.GetOffset())).c_str(),
-    420, GetScreenHeight() - 20, 10, BLACK);
-  button_manager_.DrawButtons();
+    450, GetScreenHeight() - 52, 10, BLACK);
 }

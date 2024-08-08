@@ -4,7 +4,6 @@
 
 #include "Visualizer/Animation.hpp"
 
-
 /**
  * Options accepted:
  * If you want to resize the image, you can pass the following options:
@@ -31,11 +30,6 @@ Animation::Animation(const std::vector<const char*>& imagePaths, float frameDura
     frames_.push_back({ texture, frameDuration });
   }
 }
-
-// Animation::Animation(const char* spriteSheet, float frameDuration) {
-//   current_frame_ = 0;
-//   elapsed_time_ = 0.0f;
-// }
 
 Animation::~Animation() {
   for (AnimationFrame& frame : frames_)
@@ -76,4 +70,3 @@ void Animation::DrawAnimation(int x, int y) {
   Color tint = CalculateTint(tint_frames_cycle_);
   DrawTexture(frames_[current_frame_].texture, x, y, tint);
 }
-

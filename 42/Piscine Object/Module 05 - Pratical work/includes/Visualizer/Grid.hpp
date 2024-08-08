@@ -11,7 +11,6 @@ public:
     Grid(RailwaySystem &rail_sys, float gridSize, Rectangle displayArea);
     virtual void Update();
     virtual void Draw();
-    void ToggleShowGrid();
     void SetGridSize(float gridSize);
     void SetDisplayArea(Rectangle displayArea);
     void SetCanDragGrid(bool can_drag);
