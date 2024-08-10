@@ -28,7 +28,7 @@ MenuState::MenuState(SimulationsEngine& engine)
 
 void MenuState::Update() {  
   // Update the background animation
-  background_animation_->UpdateAnimation(GetFrameTime());
+  background_animation_->Update();
   // Update buttons
   if (!show_info_popup_) {
     button_manager_.UpdateButtons();
@@ -40,7 +40,7 @@ void MenuState::Update() {
 
 void MenuState::Draw() {
   // Draw the background animation
-  background_animation_->DrawAnimation(0, 0);
+  background_animation_->Draw(0, 0);
   // Draw GUI TODO
  
   // Draw text

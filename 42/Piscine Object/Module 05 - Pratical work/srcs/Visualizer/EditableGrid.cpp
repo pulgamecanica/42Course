@@ -119,7 +119,7 @@ void EditableGrid::DrawNewNodeDialog() {
   int result = !GuiTextInputBox((Rectangle){GetScreenWidth() / 2 - 70, GetScreenHeight() / 2 - 80, 140, 160}, "New Node", "Node Name", "Press Enter To Save", text, max_node_name, NULL);
   if (result != 0) {
     adding_node_ = false;
-  } else if (IsKeyPressed(KEY_ENTER)) {
+  } else if (IsKeyPressed(KEY_ENTER) && !std::string(text).empty()) {
     adding_node_ = false;
     Node node;
     node.SetName(text);

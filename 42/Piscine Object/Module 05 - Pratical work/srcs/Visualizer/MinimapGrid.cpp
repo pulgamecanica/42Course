@@ -25,7 +25,7 @@ void MinimapGrid::Update() {
 }
 
 void MinimapGrid::Draw() {
-  background_animation_->DrawAnimation(display_area_.x, display_area_.y);
+  background_animation_->Draw(display_area_.x, display_area_.y);
   DrawRectangleRounded(display_area_, 0.05f, 9, (Color){ 42, 42, 42, 100 });
   Grid::Draw();
   GuiSliderBar((Rectangle){(display_area_.x + display_area_.width / 2) - 20, display_area_.y + display_area_.height - 10, 40, 10}, "-", "+", &scale_, 0.2f, 0.8f);

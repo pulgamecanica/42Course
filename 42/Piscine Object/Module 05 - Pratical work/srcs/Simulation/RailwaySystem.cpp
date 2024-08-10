@@ -7,7 +7,10 @@ RailwaySystem::RailwaySystem(const std::string & elements_file_name, const std::
 }
 
 void RailwaySystem::AddNode(const Node& node) {
-  nodes_.emplace(node.GetName(), node);
+  if (node.GetName().empty())
+    std::cerr << "Node must have a name" << std::endl;
+  else
+    nodes_.emplace(node.GetName(), node);
 }
 
 void RailwaySystem::AddRail(const Rail& rail) {

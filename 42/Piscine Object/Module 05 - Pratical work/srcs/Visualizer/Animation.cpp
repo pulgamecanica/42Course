@@ -36,9 +36,10 @@ Animation::~Animation() {
     UnloadTexture(frame.texture);
 }
 
-void Animation::UpdateAnimation(float delta_time) {
+void Animation::Update() {
   if (frames_.empty()) return;
 
+  float delta_time = GetFrameTime();
   elapsed_time_ += delta_time;
   if (elapsed_time_ >= frames_[current_frame_].duration) {
     elapsed_time_ = 0.0f;
@@ -64,7 +65,7 @@ Color CalculateTint(int framesPerPhase) {
   return tints[tintIndex];
 }
 
-void Animation::DrawAnimation(int x, int y) {
+void Animation::Draw(int x, int y) {
   if (frames_.empty()) return;
 
   Color tint = CalculateTint(tint_frames_cycle_);

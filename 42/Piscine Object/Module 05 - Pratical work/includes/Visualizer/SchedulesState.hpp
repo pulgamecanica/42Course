@@ -3,7 +3,9 @@
 
 #include "Visualizer/IState.hpp"
 #include "Visualizer/ButtonManager.hpp"
-
+#include "Visualizer/Animation.hpp"
+#include "Visualizer/VerticalScrollPanel.hpp"
+#include <memory>
 #include "raylib.h"
 
 class SimulationsEngine;
@@ -17,9 +19,17 @@ public:
 private:
   SimulationsEngine& engine_;
   ButtonManager button_manager_;
+  std::unique_ptr<Animation> background_animation_;
   int selected_simulation_;
   bool enable_simulation_selection_;
   int number_of_simulations_;
+  Rectangle simulation_form_;
+  Rectangle simulation_form_selection_;
+  Rectangle simulations_view_;
+  Rectangle simulation_form_slider_;
+  Rectangle simulation_form_submit_;
+  std::string schedule_options_;
+  VerticalScrollPanel pannel_;
 };
 
 #endif // SCHEDULES_STATE_H

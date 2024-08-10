@@ -22,8 +22,8 @@ public:
   Animation(const std::vector<const char*>& imagePaths, float frameDuration, std::map<std::string, int> options = {});
 
   ~Animation();
-  void UpdateAnimation(float delta_time);
-  void DrawAnimation(int x, int y);
+  void Update();
+  void Draw(int x, int y);
 private:
   std::vector<AnimationFrame> frames_;
   int current_frame_;

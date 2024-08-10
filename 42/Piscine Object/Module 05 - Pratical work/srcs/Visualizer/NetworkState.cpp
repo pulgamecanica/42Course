@@ -49,8 +49,6 @@ NetworkState::NetworkState(SimulationsEngine& engine)
     blue_train_woods_ = std::make_unique<Animation>(images, 0.5f, options);
   }
   button_manager_.AddButton("Home", {42, 42, 50, 25}, [this]() { engine_.ChangeState(EngineStates::MENU); });
-
-
 }
 
 void NetworkState::Update() {
@@ -58,10 +56,9 @@ void NetworkState::Update() {
   if ((int)(blue_train_pos_x_factor * (float)GetScreenWidth()) <= -480)
     blue_train_pos_x_factor = 1.0f;
 
-  background_animation_->UpdateAnimation(GetFrameTime());
-  blue_train_->UpdateAnimation(GetFrameTime());
-  blue_train_rails_->UpdateAnimation(GetFrameTime());
-  blue_train_woods_->UpdateAnimation(GetFrameTime());
+  blue_train_->Update();
+  blue_train_rails_->Update();
+  blue_train_woods_->Update();
   button_manager_.UpdateButtons();
   editable_grid_.Update();
 }
@@ -71,12 +68,12 @@ std::string VecToString(Vector2 vec) {
 }
 
 void NetworkState::Draw() {
-  background_animation_->DrawAnimation(0, 0);
-  blue_train_rails_->DrawAnimation(0, blue_train_animation_y_);
-  blue_train_rails_->DrawAnimation(GetScreenWidth() / 2, blue_train_animation_y_);
-  blue_train_->DrawAnimation((int)(blue_train_pos_x_factor * (float)GetScreenWidth()), blue_train_animation_y_);
-  blue_train_woods_->DrawAnimation(142, blue_train_animation_y_);
-  blue_train_woods_->DrawAnimation(GetScreenWidth() / 2 + 142, blue_train_animation_y_ - 5);
+  background_animation_->Draw(0, 0);
+  blue_train_rails_->Draw(0, blue_train_animation_y_);
+  blue_train_rails_->Draw(GetScreenWidth() / 2, blue_train_animation_y_);
+  blue_train_->Draw((int)(blue_train_pos_x_factor * (float)GetScreenWidth()), blue_train_animation_y_);
+  blue_train_woods_->Draw(142, blue_train_animation_y_);
+  blue_train_woods_->Draw(GetScreenWidth() / 2 + 142, blue_train_animation_y_ - 5);
   button_manager_.DrawButtons();
   editable_grid_.Draw();
   DrawText((std::string("Mouse Pos: ") + VecToString(GetMousePosition())).c_str(),
