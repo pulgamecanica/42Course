@@ -9,6 +9,10 @@ void Schedule::AddTrain(const Train& train) {
   trains_.push_back(train);
 }
 
+const std::vector<Train> Schedule::GetTrains() const {
+  return trains_;
+}
+
 void Schedule::PrintTrainData() const {
   std::cout << "Schedule: " << name_ << std::endl;
   for (const auto& train : trains_) {

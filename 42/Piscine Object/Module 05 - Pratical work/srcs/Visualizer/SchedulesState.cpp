@@ -1,5 +1,6 @@
 #include "Visualizer/SchedulesState.hpp"
 #include "Visualizer/SimulationPanelItem.hpp"
+#include "Simulation/Simulation.hpp"
 #include "SimulationsEngine.hpp"
 
 #include "raygui.h"
@@ -17,6 +18,7 @@ SchedulesState::SchedulesState(SimulationsEngine& engine) : engine_(engine) {
     if (i > 0)
       schedule_options_.append(";");
     schedule_options_.append(name);
+    schedule_options_list_.push_back(name);
     i++;
   }
   {
@@ -38,6 +40,8 @@ SchedulesState::SchedulesState(SimulationsEngine& engine) : engine_(engine) {
   button_manager_.AddButton("", simulation_form_selection_, [this]() { enable_simulation_selection_ = !enable_simulation_selection_; });
   button_manager_.AddButton("Simulate", simulation_form_submit_, [this]() {
     if ( enable_simulation_selection_ ) return ;
+    const Schedule & schedule = engine_.GetRailwaySystem().GetSchedule(schedule_options_list_[selected_simulation_]);
+    Simulation simulation = Simulation(engine_.GetRailwaySystem(), schedule);
     SimulationPanelItem spi = SimulationPanelItem((Rectangle){0, 0, simulations_view_.width - 100, rand() % 142});
     pannel_.AddItem(spi);
   });

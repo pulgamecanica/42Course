@@ -1,3 +1,6 @@
+Todo 
+Events Mediator
+
 # CppOnRails
 
 CppOnRails is a C++ application designed to simulate train schedules and railway systems. The program parses elements such as nodes, rails, and events from a single elements file and train schedules from multiple schedule files. Detailed error handling is provided to ensure that parsing errors are reported with precise information about the location and nature of the error.

@@ -29,6 +29,7 @@ private:
   Rectangle simulation_form_slider_;
   Rectangle simulation_form_submit_;
   std::string schedule_options_;
+  std::vector<std::string> schedule_options_list_;
   VerticalScrollPanel pannel_;
 };
 

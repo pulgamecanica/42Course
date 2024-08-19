@@ -13,9 +13,9 @@ class Parser {
   static void ParseElementsFile(const std::string& filename, RailwaySystem& system);
   static void WriteDataToFile(const RailwaySystem& system);
   static std::unordered_map<std::string, std::string> ParseProgramOptions(int argc, char *argv[]);
-
+  static std::string ParseCurrentTimeString();
  private:
-  static void ParseTrainFile(const std::string& filename, RailwaySystem& system);
+  static void ParseTrainFile(const std::string& filename, const std::string& name, RailwaySystem& system);
 };
 
 #endif  // PARSER_HPP

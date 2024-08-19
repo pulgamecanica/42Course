@@ -9,8 +9,8 @@
 #include <cmath>
 #include <time.h>
 
-#define WIDTH 1200
-#define HEIGHT 700
+#define WIDTH 1000
+#define HEIGHT 600
 
 void init_RayGui() {
   SetTraceLogLevel(LOG_ERROR);

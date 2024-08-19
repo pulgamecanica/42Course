@@ -13,7 +13,7 @@ class Schedule {
   explicit Schedule(const std::string& name, const Graph<std::string> &graph);
   void AddTrain(const Train& train);
   void PrintTrainData() const;
-
+  const std::vector<Train> GetTrains() const;
   const std::string& GetName() const { return name_; }
 
  private:

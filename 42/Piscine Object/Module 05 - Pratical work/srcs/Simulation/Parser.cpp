@@ -5,6 +5,7 @@
 #include "Simulation/Node.hpp"
 #include "Simulation/Rail.hpp"
 #include "Settings.hpp"
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <regex>
@@ -105,7 +106,7 @@ void Parser::ParseScheduleFiles(const std::string& directory, RailwaySystem& sys
   try {
     for (const auto& entry : std::filesystem::directory_iterator(directory)) {
       if (entry.path().extension() == ".schedule") {
-        ParseTrainFile(entry.path().string(), system);
+        ParseTrainFile(entry.path().string(), entry.path().stem().string(), system);
       }
     }
   } catch (std::exception & e) {
@@ -114,14 +115,14 @@ void Parser::ParseScheduleFiles(const std::string& directory, RailwaySystem& sys
   }
 }
 
-void Parser::ParseTrainFile(const std::string& filename, RailwaySystem& system) {
+void Parser::ParseTrainFile(const std::string& filename, const std::string& name, RailwaySystem& system) {
   std::ifstream file(filename);
   if (!file.is_open()) {
     ErrorHandler::ReportError(filename, 0, 0, "Failed to open file", "");
     return;
   }
 
-  Schedule schedule(filename, system.GetGraph());
+  Schedule schedule(name, system.GetGraph());
 
   std::string line;
   int line_number = 0;
@@ -282,11 +283,28 @@ std::unordered_map<std::string, std::string> Parser::ParseProgramOptions(int arg
     std::tm tm = *std::localtime(&t);
     // Format date and time
     std::ostringstream oss;
-    oss << std::put_time(&tm, "%d%m%y-%H%M") << " SimulationOutput";
+    oss << "SimulationsLog_" << std::put_time(&tm, "%d%m%y");
 
     Settings::Instance().SetScheduleDirectory(options["schedule_directory"]);
     Settings::Instance().SetDataFileName(options["elements_file"]);
     Settings::Instance().SetOutputDirectory(oss.str());
   }
   return options;
+}
+
+// Function to get the current time as a string in the format <hour><minute><second>_<day-month-year>
+std::string Parser::ParseCurrentTimeString() {
+  auto now = std::chrono::system_clock::now();
+  std::time_t now_time = std::chrono::system_clock::to_time_t(now);
+  std::tm local_time = *std::localtime(&now_time);
+
+  std::stringstream time_string;
+  time_string << std::setw(2) << std::setfill('0') << local_time.tm_hour
+              << std::setw(2) << std::setfill('0') << local_time.tm_min
+              << std::setw(2) << std::setfill('0') << local_time.tm_sec << "_"
+              << std::setw(2) << std::setfill('0') << local_time.tm_mday << "-"
+              << std::setw(2) << std::setfill('0') << (local_time.tm_mon + 1) << "-"
+              << local_time.tm_year + 1900;
+
+  return time_string.str();
 }
