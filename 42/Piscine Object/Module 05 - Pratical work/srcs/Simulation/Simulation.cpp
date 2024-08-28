@@ -7,9 +7,11 @@ Simulation::Simulation(const RailwaySystem &rail_sys, const Schedule & schedule)
     schedule_(schedule),
     logger_filename_(Settings::Instance().GetOutputDirectory() + "/" + schedule.GetName() + "_" + Parser::ParseCurrentTimeString() + ".log"),
     logger_(logger_filename_) {
+  state_ = State::Starting;
   InitializeNodes();
   InitializeRails();
   InitializeTrains();
+  state_ = State::Running;
 }
 
 void Simulation::InitializeNodes() {
@@ -24,16 +26,45 @@ void Simulation::InitializeRails() {
 
 void Simulation::InitializeTrains() {
   for (const auto &train : schedule_.GetTrains())
-    trains_.emplace_back(train);
+    trains_.emplace_back(*this, train);
 }
 
 void Simulation::Update() {
-  for (auto & train : trains_)
-    train.Update();
+  // for (auto & train : trains_)
+  //   train.Update();
   HandleEvents();
   HandleCollisions();
-  LogSimulationState();
+  // LogSimulationState();
 }
+
+bool Simulation::IsFinished() const {
+  return state_ == State::Finished;
+}
+
+double Simulation::GetRealTravelTime() const {
+  if (state_ == State::Finished)
+    return real_travel_time_;
+  return -1;
+};
+
+double Simulation::GetOptimalTravelTime() const {
+  double optimal_travel_time = 0;
+  for (auto & train : trains_)
+    optimal_travel_time += train.GetOptimalTime();
+  return optimal_travel_time;
+};
+
+NodeSimulation & Simulation::GetNode(const std::string & node_name) {
+  for (auto & node : nodes_)
+    if (node.GetName() == node_name)
+      return node;
+  throw std::runtime_error("Node name not found");
+}
+
+
+// std::vector<std::string> Simulation::GetEventList() {
+//   return std::vector<std::to_string>();
+// }
 
 void Simulation::HandleEvents() {
   // Logic to process events

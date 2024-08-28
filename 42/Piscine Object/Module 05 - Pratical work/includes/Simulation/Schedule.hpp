@@ -17,7 +17,7 @@ class Schedule {
   const std::string& GetName() const { return name_; }
 
  private:
-  std::string name_;
+  const std::string name_;
   std::vector<Train> trains_;
   const Graph<std::string> &graph_; // To get the path info
 };

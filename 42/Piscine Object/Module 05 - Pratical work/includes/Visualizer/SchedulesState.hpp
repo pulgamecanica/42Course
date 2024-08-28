@@ -17,11 +17,14 @@ public:
   void Draw() override;
 
 private:
+  void SubmitForm();
+  
   SimulationsEngine& engine_;
   ButtonManager button_manager_;
   std::unique_ptr<Animation> background_animation_;
   int selected_simulation_;
   bool enable_simulation_selection_;
+  bool form_simulation_submit_;
   int number_of_simulations_;
   Rectangle simulation_form_;
   Rectangle simulation_form_selection_;

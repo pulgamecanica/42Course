@@ -15,6 +15,11 @@ void VerticalScrollPanel::AddItem(SimulationPanelItem & item) {
   // items_.push_back((Rectangle){bounds_.x + 25, posY, bounds_.width - 70, height});
 }
 
+void VerticalScrollPanel::SetXY(Vector2 new_pos) {
+  bounds_.x = new_pos.x;
+  bounds_.y = new_pos.y;
+}
+
 void VerticalScrollPanel::Draw() {
   float content_height = items_.empty() ? 0 : items_.back().GetY() + items_.back().GetHeight() - bounds_.y;
 

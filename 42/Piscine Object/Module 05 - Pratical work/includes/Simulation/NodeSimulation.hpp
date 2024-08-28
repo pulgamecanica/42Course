@@ -13,10 +13,13 @@ class NodeSimulation : public Subject {
   
   void AddTrain(TrainSimulation* train);
   void RemoveTrain(TrainSimulation* train);
+  const std::string& GetName() const;
 
  private:
   const Node & node_;
   EventMediator* mediator_;
 };
+
+bool operator==(const NodeSimulation &lhs, const NodeSimulation &rhs);
 
 #endif  // NODE_SIMULATION_HPP

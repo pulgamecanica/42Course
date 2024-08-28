@@ -18,3 +18,11 @@ void NodeSimulation::RemoveTrain(TrainSimulation* train) {
   //     std::remove(trains_.begin(), trains_.end(), train),
   //     trains_.end());
 }
+
+const std::string& NodeSimulation::GetName() const {
+  return node_.GetName();
+}
+
+bool operator==(const NodeSimulation &lhs, const NodeSimulation &rhs) {
+  return lhs.GetName() == rhs.GetName();
+}

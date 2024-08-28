@@ -1,27 +1,38 @@
-// #ifndef SIMULATIONS_MANAGER_HPP
-// #define SIMULATIONS_MANAGER_HPP
+#ifndef SIMULATIONS_MANAGER_HPP
+#define SIMULATIONS_MANAGER_HPP
 
-// #include "Simulation/Simulation.hpp"
-// #include <vector>
-// #include <memory>
+#include "Simulation/Simulation.hpp"
+#include <vector>
+#include <memory>
+#include <string>
 
-// class SimulationsManager {
-// public:
-//   SimulationsManager(const RailwaySystem &rail_sys, const Schedule &schedule, int num_simulations);
-  
-//   // Run all simulations
-//   void RunSimulations();
+class SimulationsManager {
+public:
+  enum class State {
+    Starting,
+    Running,
+    Finished
+  };
 
-//   // Get results
-//   double GetAverageTravelTime() const;
-//   std::vector<std::string> GetEventList() const;
+  SimulationsManager(const RailwaySystem &rail_sys, const Schedule &schedule, int num_simulations);
+  void UpdateSimulations();
+  bool AreSimulationsFinished() const;
 
-// private:
-//   std::vector<std::unique_ptr<Simulation>> simulations_;
-//   std::vector<double> travel_times_;
-//   std::vector<std::string> event_list_;
+  double GetAverageTravelTime() const;
+  const Schedule & GetSchedule() const;
+  std::vector<std::string> GetEventList() const;
+  std::vector<Simulation> GetSimulations() const;
 
-//   void CollectResults();
-// };
+private:
+  void InitializeSimulations();
+  void CollectResults();
 
-// #endif  // SIMULATIONS_MANAGER_HPP
+  State state_;
+  const Schedule & schedule_;
+  std::vector<Simulation> simulations_;
+  std::vector<double> travel_times_;
+  std::vector<std::string> event_list_;
+  double optimal_travel_time_;
+};
+
+#endif  // SIMULATIONS_MANAGER_HPP

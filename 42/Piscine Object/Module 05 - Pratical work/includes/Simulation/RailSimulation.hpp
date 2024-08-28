@@ -14,7 +14,8 @@ class RailSimulation : public Subject {
   void CheckForCollisions();
   void AddTrain(TrainSimulation* train);
   void RemoveTrain(TrainSimulation* train);
-
+  double Distance() const;
+  double DistanceM() const;
  private:
   const Rail & rail_;
   CollisionMediator* mediator_;

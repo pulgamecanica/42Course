@@ -10,6 +10,7 @@ public:
   VerticalScrollPanel();
   VerticalScrollPanel(Rectangle bounds, float padding);
   void AddItem(SimulationPanelItem & item);
+  void SetXY(Vector2 new_pos);
   void Draw();
 private:
   Rectangle bounds_;

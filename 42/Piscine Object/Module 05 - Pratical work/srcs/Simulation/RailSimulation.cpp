@@ -22,3 +22,11 @@ void RailSimulation::RemoveTrain(TrainSimulation* train) {
   //     std::remove(trains_.begin(), trains_.end(), train),
   //     trains_.end());
 }
+
+double RailSimulation::Distance() const {
+  return rail_.distance;
+}
+
+double RailSimulation::DistanceM() const {
+  return rail_.distance * 1000;
+}

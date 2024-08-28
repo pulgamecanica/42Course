@@ -1,4 +1,5 @@
 #include "SimulationsEngine.hpp"
+#include "Settings.hpp"
 #include "raylib.h"
 
 SimulationsEngine::SimulationsEngine(RailwaySystem& system)
@@ -10,13 +11,20 @@ SimulationsEngine::SimulationsEngine(RailwaySystem& system)
   network_state_(*this),
   simulations_state_(*this)
 {
-  // network_state_.SetGraph(graph_);
+}
+
+SimulationsEngine::~SimulationsEngine() {
+  for (auto & manager : simulations_managers_)
+    delete manager;
+  simulations_managers_.clear();
 }
 
 void SimulationsEngine::Run() {
   while (!WindowShouldClose()) {
     Update();
     Draw();
+    // Update Settings animations
+    Settings::Instance().UpdateAnimations();
     // Update the railwaysystem and all simulations
   }
 }
@@ -42,6 +50,8 @@ RailwaySystem & SimulationsEngine::GetRailwaySystem() const {
 void SimulationsEngine::Update() {
   if (current_state_)
     current_state_->Update();
+  for (auto & manager : simulations_managers_)
+    manager->UpdateSimulations();
 }
 
 // Liskov's Substitution SO(L)ID
@@ -53,6 +63,12 @@ void SimulationsEngine::Draw() {
     current_state_->Draw();
   EndDrawing();
 }
+
+SimulationsManager * SimulationsEngine::GenerateSimulations(const Schedule &schedule, int amount) {
+  simulations_managers_.emplace_back(new SimulationsManager(rail_sys_, schedule, amount));
+  return simulations_managers_.back();
+}
+
 
 // const Graph<std::string>& SimulationsEngine::GetGraph() const {
 //     return rail_sys_.GetGraph();

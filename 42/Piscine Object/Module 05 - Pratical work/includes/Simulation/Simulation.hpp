@@ -16,8 +16,18 @@
 
 class Simulation {
 public:
+  enum class State {
+    Starting,
+    Running,
+    Finished
+  };
   Simulation(const RailwaySystem &rail_sys_, const Schedule & schedule);
   void Update();
+  bool IsFinished() const;
+  double GetRealTravelTime() const;
+  double GetOptimalTravelTime() const;
+  NodeSimulation & GetNode(const std::string & node_name);
+  // std::vector<std::string> GetEventList();
 private:
   void InitializeNodes();
   void InitializeRails();
@@ -29,6 +39,8 @@ private:
   const Schedule                &schedule_;
   const std::string             logger_filename_;
   const FileLogger              logger_;
+  State                         state_;
+  double                        real_travel_time_;
   EventMediator                 event_mediator_;
   CollisionMediator             collision_mediator_;
   std::vector<NodeSimulation>   nodes_;

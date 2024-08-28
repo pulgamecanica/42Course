@@ -20,8 +20,10 @@ void CollisionMediator::CheckForCollisions() {
       float distance = std::abs(trains_[i]->CalculateStoppingDistance() -
                                 trains_[j]->CalculateStoppingDistance());
       if (distance < trains_[i]->CalculateStoppingDistance()) {
-        trains_[i]->SlowDown();
-        trains_[j]->SlowDown();
+        ;
+        // choose the one behind
+        // trains_[i]->SlowDown();
+        // trains_[j]->SlowDown();
       }
     }
   }

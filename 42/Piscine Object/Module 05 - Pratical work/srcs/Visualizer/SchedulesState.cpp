@@ -1,18 +1,20 @@
 #include "Visualizer/SchedulesState.hpp"
 #include "Visualizer/SimulationPanelItem.hpp"
-#include "Simulation/Simulation.hpp"
+#include "Simulation/SimulationsManager.hpp"
 #include "SimulationsEngine.hpp"
 
 #include "raygui.h"
 
 // Constructor initializes the state with a pointer to the Game object
-SchedulesState::SchedulesState(SimulationsEngine& engine) : engine_(engine) {
+SchedulesState::SchedulesState(SimulationsEngine& engine)
+  : engine_(engine),
+    selected_simulation_(0),
+    enable_simulation_selection_(false),
+    form_simulation_submit_(false),
+    number_of_simulations_(0),
+    schedule_options_("") {
   float screenHeight = GetScreenHeight();
   float screenWidth = GetScreenWidth();
-  enable_simulation_selection_ = false;
-  selected_simulation_ = 0;
-  number_of_simulations_ = 0;
-  schedule_options_ = "";
   int i = 0;
   for (auto const& [name, schedule] : engine_.GetRailwaySystem().GetSchedules()) {
     if (i > 0)
@@ -39,17 +41,33 @@ SchedulesState::SchedulesState(SimulationsEngine& engine) : engine_(engine) {
   button_manager_.AddButton("Home", {25, 25, 50, 25}, [this]() { engine_.ChangeState(EngineStates::MENU); });
   button_manager_.AddButton("", simulation_form_selection_, [this]() { enable_simulation_selection_ = !enable_simulation_selection_; });
   button_manager_.AddButton("Simulate", simulation_form_submit_, [this]() {
-    if ( enable_simulation_selection_ ) return ;
-    const Schedule & schedule = engine_.GetRailwaySystem().GetSchedule(schedule_options_list_[selected_simulation_]);
-    Simulation simulation = Simulation(engine_.GetRailwaySystem(), schedule);
-    SimulationPanelItem spi = SimulationPanelItem((Rectangle){0, 0, simulations_view_.width - 100, rand() % 142});
-    pannel_.AddItem(spi);
+    form_simulation_submit_ = true;
   });
   pannel_ = VerticalScrollPanel(simulations_view_, 5);
 }
 
 void SchedulesState::Update() {
   button_manager_.UpdateButtons();
+  if (form_simulation_submit_) {
+    SubmitForm();
+    form_simulation_submit_ = false;
+  }
+}
+
+void SchedulesState::SubmitForm() {
+  SimulationsManager * simulation;
+
+  if (enable_simulation_selection_) return ; // Cannot submit if dropdown selection is open
+  try {
+    const Schedule & schedule = engine_.GetRailwaySystem().GetSchedule(schedule_options_list_[selected_simulation_]);
+    simulation = engine_.GenerateSimulations(schedule, number_of_simulations_);
+  } catch (std::exception &e) {
+    std::cerr << "Simulation aborted!" << std::endl;
+    std::cerr << e.what() << std::endl;
+    return ;
+  }
+  SimulationPanelItem spi = SimulationPanelItem(simulation, (Rectangle){0, 0, simulations_view_.width - 100, 0});
+  pannel_.AddItem(spi);
 }
 
 void SchedulesState::Draw() {
