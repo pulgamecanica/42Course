@@ -6,7 +6,7 @@ Simulation::Simulation(const RailwaySystem &rail_sys, const Schedule & schedule)
   : rail_sys_(rail_sys),
     schedule_(schedule),
     logger_filename_(Settings::Instance().GetOutputDirectory() + "/" + schedule.GetName() + "_" + Parser::ParseCurrentTimeString() + ".log"),
-    logger_(logger_filename_) {
+    logger_(logger_filename_), max_speed_(Settings::Instance().MaxTrainSpeed()) {
   state_ = State::Starting;
   InitializeNodes();
   InitializeRails();
@@ -31,7 +31,7 @@ void Simulation::InitializeTrains() {
 
 void Simulation::Update() {
   // for (auto & train : trains_)
-  //   train.Update();
+    // train.Update();
   HandleEvents();
   HandleCollisions();
   // LogSimulationState();
@@ -61,6 +61,9 @@ NodeSimulation & Simulation::GetNode(const std::string & node_name) {
   throw std::runtime_error("Node name not found");
 }
 
+const RailwaySystem& Simulation::GetRailwaySystem() const {
+  return rail_sys_;
+}
 
 // std::vector<std::string> Simulation::GetEventList() {
 //   return std::vector<std::to_string>();
@@ -76,4 +79,8 @@ void Simulation::HandleCollisions() {
 
 void Simulation::LogSimulationState() {
   // Logic to log the current state of the simulation
+}
+
+double Simulation::GetMaxTrainSpeed() const {
+  return max_speed_;
 }

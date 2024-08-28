@@ -26,7 +26,7 @@ public:
   void AddNode(INode<KeyType>* node);
   void AddEdge(INode<KeyType>* from_node, INode<KeyType>* to_node, unsigned weight);
   std::unordered_map<KeyType, INode<KeyType>*>& GetNodes();
-  PathInfo<KeyType> Dijkstra(KeyType src, KeyType dest);
+  PathInfo<KeyType> Dijkstra(KeyType src, KeyType dest) const;
 
 private:
   std::unordered_map<KeyType, INode<KeyType>*> nodes_;
@@ -58,7 +58,7 @@ std::unordered_map<KeyType, INode<KeyType>*>& Graph<KeyType>::GetNodes() {
 }
 
 template<typename KeyType>
-PathInfo<KeyType> Graph<KeyType>::Dijkstra(KeyType src, KeyType dest) {
+PathInfo<KeyType> Graph<KeyType>::Dijkstra(KeyType src, KeyType dest) const {
   std::unordered_map<KeyType, unsigned> dist;    // Edges
   std::unordered_map<KeyType, KeyType> parent;  // Node source, to next
   std::set<std::pair<unsigned, KeyType>> pq;     // {distance, node_key}
@@ -78,13 +78,13 @@ PathInfo<KeyType> Graph<KeyType>::Dijkstra(KeyType src, KeyType dest) {
       if (current == dest) {
         PathInfo<KeyType> path_info;
         for (KeyType at = dest; at != src; at = parent[at])
-          path_info.path.push_front({*nodes_[at], dist[at]});
-        path_info.path.push_front({*nodes_[src], dist[src]});
+          path_info.path.push_front({*nodes_.at(at), dist[at]});
+        path_info.path.push_front({*nodes_.at(src), dist[src]});
 
         return path_info;
       }
 
-      for (const auto& neighbor : nodes_[current]->GetNeighbors()) {
+      for (const auto& neighbor : nodes_.at(current)->GetNeighbors()) {
         KeyType neighbor_key = neighbor.first;
         unsigned weight = neighbor.second;
         unsigned new_dist = dist[current] + weight;

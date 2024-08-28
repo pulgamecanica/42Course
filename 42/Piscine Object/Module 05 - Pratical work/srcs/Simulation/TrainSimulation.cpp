@@ -3,6 +3,7 @@
 #include "Simulation/Simulation.hpp"
 #include "Settings.hpp"
 #include <algorithm>
+#include <cmath>
 
 TrainSimulation::TrainSimulation(Simulation& simulation, const Train& train)
   : simulation_(simulation),
@@ -16,7 +17,16 @@ TrainSimulation::TrainSimulation(Simulation& simulation, const Train& train)
     acceleration_(0.0f),
     status_(Status::STOPED),
     has_safe_distance_(true) {
-  // SubscribeNode(simulation_.GetNode(train.departure));
+
+    CalculateFastestRoute();
+    total_distance_ = path_info_.TotalDistance();
+    optimal_time_ = 0;
+    if (total_distance_ != -1) {
+      for(auto const [node, dist] : path_info_.path) {
+        optimal_time_ += GetOptimalTimeForDistance(dist);
+      }
+    }
+    std::cout << "Optimal time for train: " << GetName() << " [" << GetOptimalTime() << "s]" << "(" << total_distance_ << "m)" << std::endl;
 }
 
 std::string TrainSimulation::GetName() const {
@@ -42,6 +52,7 @@ void TrainSimulation::Update() {
       }
     }
   }
+  time_passed_s_++;
 }
 
 void TrainSimulation::StartRoute() {
@@ -63,8 +74,8 @@ void TrainSimulation::UpdatePosition() {
   double time_passed_s = 1; // Assuming this returns time in seconds, each frame is one second
   speed_ += time_passed_s * acceleration_;
   speed_ = std::max<float>(0, speed_); // max because the train cannot go in reverse
-  if (speed_ >= Settings::Instance().MaxTrainSpeed()) {
-    speed_ = Settings::Instance().MaxTrainSpeed(); // Manual limit, cannot go over the speed limit
+  if (speed_ >= simulation_.GetMaxTrainSpeed()) {
+    speed_ = simulation_.GetMaxTrainSpeed(); // Manual limit, cannot go over the speed limit
     // acceleration_ = 0; // Not sure if needed, because the acceleration is reseted at each frame
   }
   position_m_ += speed_ * time_passed_s;
@@ -168,7 +179,11 @@ bool TrainSimulation::HasStoped() const {
 }
 
 bool TrainSimulation::HasFinished() const {
-  return node_destiny_ == *current_node_;
+  return InvalidPath() || node_destiny_ == *current_node_;
+}
+
+bool  TrainSimulation::InvalidPath() const {
+  return total_distance_ == -1;
 }
 
 void TrainSimulation::Update(Subject* subject) {
@@ -190,6 +205,7 @@ void TrainSimulation::SetNode(NodeSimulation* node) {
 
 void TrainSimulation::CalculateFastestRoute() {
   // Implement route calculation logic
+  path_info_ = simulation_.GetRailwaySystem().GetGraph().Dijkstra(current_node_->GetName(), node_destiny_.GetName());
 }
 
 float TrainSimulation::CalculateStoppingDistance() const {
@@ -197,11 +213,36 @@ float TrainSimulation::CalculateStoppingDistance() const {
   return (speed_ * speed_) / (2 * GetMaxBrakeForce());
 }
 
+double TrainSimulation::GetOptimalTimeForDistance(double distance) const {
+  // Calculate the distances needed to accelerate to max speed and to decelerate
+  double max_speed = simulation_.GetMaxTrainSpeed();
+  double acceleration = GetMaxAccelerationForce();
+  double deceleration = GetMaxBrakeForce();
+
+  // Calculate the peak speed that can be reached given the distance
+  double peak_speed = std::sqrt(2 * distance / ((1 / acceleration) + (1 / deceleration)));
+  peak_speed = std::min(max_speed, peak_speed); // Cap peak speed if higher than max speed
+
+  // Calculate time for acceleration and deceleration to this peak speed
+  double t_acceleration = peak_speed / acceleration;
+  double t_deceleration = peak_speed / deceleration;
+
+  // If peak speed is less than max speed, calculate constant speed phase
+  double t_constant_speed = 0.0;
+  if (peak_speed == max_speed) {
+    double distance_acceleration = (max_speed * max_speed) / (2 * acceleration);
+    double distance_deceleration = (max_speed * max_speed) / (2 * deceleration);
+    double remaining_distance = distance - (distance_acceleration + distance_deceleration);
+    t_constant_speed = remaining_distance / max_speed;
+  }
+
+  return t_acceleration + t_constant_speed + t_deceleration;
+}
+
 double TrainSimulation::GetOptimalTime() const {
-  return 0; // TODO: Implement optimal time calculation
+  return optimal_time_;
 }
 
 double TrainSimulation::TimePassedS() const {
-  // Placeholder for time passed calculation in seconds
-  return 1.0; // Assume 1 second per update for now
+  return time_passed_s_;
 }

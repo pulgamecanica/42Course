@@ -17,6 +17,7 @@ Settings::Settings() {
     "assets/images/hourglass_animation14.png", "assets/images/hourglass_animation15.png" };
   std::map<std::string, int> options = {{"width", 42}, {"height", 42}};
   hourglass_animation_ = std::make_unique<Animation>(backgrounds, 0.05f, options);
+  max_speed_ = 10;
 }
 
 Settings& Settings::Instance() {
@@ -63,5 +64,5 @@ const std::string& Settings::GetOutputDirectory() const {
 }
 
 double  Settings::MaxTrainSpeed() const {
-  return 60;
+  return max_speed_;
 }

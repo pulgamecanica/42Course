@@ -39,6 +39,7 @@ private:
   std::string schedule_directory_;
   std::string output_directory_;
   std::unique_ptr<Animation> hourglass_animation_;
+  double max_speed_;
 };
 
 #endif // SETTINGS_HPP

@@ -57,6 +57,7 @@ void Parser::ParseElementsFile(const std::string& filename, RailwaySystem& syste
         ErrorHandler::ReportError(filename, line_number, column_number, "Distance cannot be negative", line);
         continue;
       }
+      rail.distance *= 1000; // KM -> m
       system.AddRail(rail);
     } else if (type == "Event") {
       Event event;

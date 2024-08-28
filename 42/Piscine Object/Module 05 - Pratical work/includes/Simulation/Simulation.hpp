@@ -22,19 +22,22 @@ public:
     Finished
   };
   Simulation(const RailwaySystem &rail_sys_, const Schedule & schedule);
-  void Update();
-  bool IsFinished() const;
-  double GetRealTravelTime() const;
-  double GetOptimalTravelTime() const;
-  NodeSimulation & GetNode(const std::string & node_name);
+  void                  Update();
+  bool                  IsFinished() const;
+  double                GetRealTravelTime() const;
+  double                GetOptimalTravelTime() const;
+  NodeSimulation &      GetNode(const std::string & node_name);
+  const RailwaySystem&  GetRailwaySystem() const;
+  double                GetMaxTrainSpeed() const;
   // std::vector<std::string> GetEventList();
 private:
-  void InitializeNodes();
-  void InitializeRails();
-  void InitializeTrains();
-  void HandleEvents();
-  void HandleCollisions();
-  void LogSimulationState();
+  void  InitializeNodes();
+  void  InitializeRails();
+  void  InitializeTrains();
+  void  HandleEvents();
+  void  HandleCollisions();
+  void  LogSimulationState();
+
   const RailwaySystem           &rail_sys_;
   const Schedule                &schedule_;
   const std::string             logger_filename_;
@@ -46,6 +49,7 @@ private:
   std::vector<NodeSimulation>   nodes_;
   std::vector<RailSimulation>   rails_;
   std::vector<TrainSimulation>  trains_;
+  double                        max_speed_;
 };
 
 #endif  // SIMULATION_HPP
