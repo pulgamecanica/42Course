@@ -1,6 +1,3 @@
-Todo 
-Events Mediator
-
 # CppOnRails
 
 CppOnRails is a C++ application designed to simulate train schedules and railway systems. The program parses elements such as nodes, rails, and events from a single elements file and train schedules from multiple schedule files. Detailed error handling is provided to ensure that parsing errors are reported with precise information about the location and nature of the error.
@@ -194,6 +191,73 @@ The program reads and parses the elements and schedule files, storing the parsed
 ```sh
 ./CppOnRails --elements elements.txt --directory schedules/
 ```
+
+---
+
+# Optimal Train Travel Time Calculator
+
+Te purpose of this section is to demonstrates how to calculate the optimal time for a train to travel a given distance under constant acceleration and deceleration, considering a maximum speed limit.
+
+## Problem Statement
+
+Given:
+- A train that accelerates with a constant force up to a maximum speed.
+- The train must cover a specified distance and come to a stop at the end.
+- The train might not always have enough distance to reach its maximum speed.
+
+The goal is to calculate the least amount of time required for the train to travel the specified distance.
+
+## Solution Approach
+
+### Step 1: Define the Train's Parameters
+
+First, we define the train's characteristics:
+
+- **Acceleration (`a`)**: The constant acceleration force applied to the train (in m/s²).
+- **Deceleration (`a_b`)**: The constant braking force applied to decelerate the train (in m/s²).
+- **Maximum Speed (`v_max`)**: The maximum speed the train can achieve (in m/s).
+
+### Step 2: Calculate the Peak Speed
+
+We calculate the peak speed (`v_p`) the train can achieve given the distance. The peak speed is calculated using the following formula:
+
+![Peak Speed Formula](https://github.com/user-attachments/assets/58a553f8-f923-48c4-bbe1-5ce1e8a7e396)
+
+### Step 3: Check If the Peak Speed Exceeds the Maximum Speed
+
+If the calculated peak speed (`v_p`) exceeds the maximum speed (`v_max`), we cap it at the maximum speed:
+
+![Cap Peak Speed Formula](https://github.com/user-attachments/assets/a116b7d3-7672-408d-886f-24915c2e6655)
+
+### Step 4: Calculate the Time for Acceleration and Deceleration
+
+- **Time to Accelerate (`t_1`)**: The time required to accelerate to the peak speed.
+
+![Time to Accelerate Formula](https://github.com/user-attachments/assets/ac538e81-f6b3-4ec7-ac8a-5a4ce0766d67)
+
+- **Time to Decelerate (`t_3`)**: The time required to decelerate from the peak speed to zero.
+
+![Time to Decelerate Formula](https://github.com/user-attachments/assets/551aaf35-9a83-4017-8279-d6eb168a87b4)
+
+### Step 5: Calculate the Time at Constant Speed (If Applicable)
+
+If the train reaches the maximum speed, it may need to travel at this speed for a portion of the distance before decelerating. The remaining distance after acceleration and deceleration is:
+
+![Remaining Distance Formula](https://github.com/user-attachments/assets/65b295aa-7957-4690-a6ff-b1c175a9861b)
+
+The time to travel this distance at constant speed is:
+
+![Time at Constant Speed Formula](https://github.com/user-attachments/assets/41c90e2d-7bef-4efc-92b5-4041b547b3af)
+
+### Step 6: Calculate the Total Time
+
+The total time is the sum of the acceleration, constant speed, and deceleration times:
+
+![Total Time Formula](https://github.com/user-attachments/assets/bcb07b6e-be33-4435-8e3d-0deb7045ba23)
+
+If the peak speed is less than the maximum speed, then the total time is just the sum of the acceleration and deceleration times:
+
+![Total Time Formula (No Constant Speed)](https://github.com/user-attachments/assets/a20b35ab-1f2b-418e-999b-f349c15b016c)
 
 ---
 
