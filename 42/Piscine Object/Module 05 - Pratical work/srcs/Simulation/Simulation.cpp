@@ -30,11 +30,24 @@ void Simulation::InitializeTrains() {
 }
 
 void Simulation::Update() {
-  // for (auto & train : trains_)
-    // train.Update();
-  HandleEvents();
-  HandleCollisions();
-  // LogSimulationState();
+  if (state_ == State::Running) {
+    for (auto & train : trains_)
+      train.Update();
+    HandleEvents();
+    HandleCollisions();
+    // LogSimulationState();
+    if (HasFinished()) {
+      state_ = State::Finished;
+    }
+  }
+}
+
+
+bool Simulation::HasFinished() const {
+  for (auto & train : trains_)
+    if (!train.HasFinished())
+      return false;
+  return true;
 }
 
 bool Simulation::IsFinished() const {
@@ -59,6 +72,13 @@ NodeSimulation & Simulation::GetNode(const std::string & node_name) {
     if (node.GetName() == node_name)
       return node;
   throw std::runtime_error("Node name not found");
+}
+
+RailSimulation * Simulation::GetRailRef(const std::string & node1, const std::string & node2) {
+  for (auto & rail : rails_)
+    if (rail.HasNodes(node1, node2))
+      return &rail;
+  return nullptr;
 }
 
 const RailwaySystem& Simulation::GetRailwaySystem() const {

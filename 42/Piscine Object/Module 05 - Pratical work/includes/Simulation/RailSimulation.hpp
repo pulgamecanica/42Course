@@ -8,16 +8,25 @@
 #include "TrainSimulation.hpp"
 
 class RailSimulation : public Subject {
+  enum Direction
+  {
+    DIR1TO2,
+    DIR2TO1,
+    NODIR
+  };
  public:
   explicit RailSimulation(const Rail & rail, CollisionMediator* mediator);
   
   void CheckForCollisions();
   void AddTrain(TrainSimulation* train);
   void RemoveTrain(TrainSimulation* train);
-  double Distance() const;
-  double DistanceM() const;
+
+  double  Distance() const;
+
+  bool  HasNodes(const std::string & node1, const std::string & node2) const;
  private:
   const Rail & rail_;
+  // Direction
   CollisionMediator* mediator_;
 };
 

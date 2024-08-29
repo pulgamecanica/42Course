@@ -14,12 +14,11 @@ SimulationsManager::SimulationsManager(const RailwaySystem &rail_sys, const Sche
 void SimulationsManager::UpdateSimulations() {
   if (state_ == State::Running) {
     int i = 0;
-    for (auto &simulation : simulations_) {
+    for (auto &simulation : simulations_)
       if (!simulation.IsFinished())
         simulation.Update();
-    }
     if (AreSimulationsFinished()) {
-      CollectResults();
+      // CollectResults();
       state_ = State::Finished;
     }
   }

@@ -33,31 +33,62 @@ std::string TrainSimulation::GetName() const {
   return train_.name;
 }
 
-// Each frame is equivalent to 1 second, no matter when it's called
+// Each frame is equivalent to 1 second
 void TrainSimulation::Update() {
   if (!HasFinished()) {
     if (!HasArrivedToNode()) {
-      acceleration_ = 0;
-      if (HasStoped() || !ShouldStop()) {
-        Accelerate();
-      } else if (!HasStoped()) {
+      if (ShouldStop() && !HasStoped()) {
         Brake();
+      } else {
+        Accelerate();
       }
       UpdatePosition();
       UpdateStatus();
     } else {
+      ManageArrivalToNode();
       CalculateFastestRoute();
       if (CanStart()) {
         StartRoute();
       }
     }
   }
+  std::string status_str = "";
+  if (status_ == STOPED)
+    status_str = "STOPED";
+  else if (status_ == ACCELERATING)
+    status_str = "ACCELERATING";
+  else if (status_ == BRAKING)
+    status_str = "BRAKING";
+  else if (status_ == MANTAINING)
+    status_str = "MANTAINING";
+  if (HasFinished())
+    std::cout << "[FINISHED]" << std::endl;
+  else if (!HasArrivedToNode())
+    std::cout << "[Status: " << status_str << "] - [Dist: " << position_m_ << "m/" << current_rail_->Distance() << "m] - (Speed: " << speed_ << "m/s) - (Acceleration: " << acceleration_ << "N) - {Stoping distance: " << CalculateStoppingDistance() << "}" << std::endl;
   time_passed_s_++;
 }
 
 void TrainSimulation::StartRoute() {
   // current_rail_ == // Setup rail
-  current_node_ == nullptr;
+  if (HasFinished()) return;
+  if (path_info_.path.size() < 2) return;
+  auto it = path_info_.path.begin();
+
+  const std::string node_start = it->first.GetKey();
+  it++;
+  const std::string node_finish = it->first.GetKey();
+  RailSimulation* rail = simulation_.GetRailRef(node_start, node_finish);
+  if (rail == nullptr)
+    throw std::runtime_error("Rail not founded! Check the Path to make sure nodes are connected");
+  // if (rail available to destiny) -> set rail
+  //  Subscribe to rail
+  //  Unsibscribe from node
+  next_node_name_ = std::string(node_finish);
+  current_rail_ = rail;
+  current_node_ = nullptr;
+  speed_ = 0;
+  position_m_ = 0;
+  acceleration_ = 0;
 }
 
 void TrainSimulation::Accelerate() {
@@ -76,20 +107,31 @@ void TrainSimulation::UpdatePosition() {
   speed_ = std::max<float>(0, speed_); // max because the train cannot go in reverse
   if (speed_ >= simulation_.GetMaxTrainSpeed()) {
     speed_ = simulation_.GetMaxTrainSpeed(); // Manual limit, cannot go over the speed limit
-    // acceleration_ = 0; // Not sure if needed, because the acceleration is reseted at each frame
+    acceleration_ = 0;
   }
   position_m_ += speed_ * time_passed_s;
 }
 
 void TrainSimulation::UpdateStatus() {
-  if (acceleration_ > 0)
+  if (acceleration_ > 0) {
     status_ = Status::ACCELERATING;
-  else if (acceleration_ < 0)
-    status_ = Status::BRAKING;
-  else if (acceleration_ == 0 && speed_ == 0)
+  } else if (HasStoped()) {
     status_ = Status::STOPED;
-  else
+    acceleration_ = 0;
+  } else if (acceleration_ < 0) {
+    status_ = Status::BRAKING;
+  } else {
     status_ = Status::MANTAINING;
+  }
+}
+
+void TrainSimulation::ManageArrivalToNode() {
+  if (current_rail_ == nullptr && current_node_ != nullptr) return;
+  std::cout << "Arrived to " << next_node_name_ << std::endl;
+  total_distance_ += current_rail_->Distance();
+  current_node_ = &simulation_.GetNode(next_node_name_);
+  current_rail_ = nullptr;
+  next_node_name_ = "";
 }
 
 bool TrainSimulation::ShouldStop() const {
@@ -97,20 +139,20 @@ bool TrainSimulation::ShouldStop() const {
   //   return true
   if (!current_rail_)
     throw std::runtime_error("Should be on a rail to call `ShouldStop`");
-  float distance_left = current_rail_->DistanceM() - position_m_;
+  float distance_left = current_rail_->Distance() - position_m_;
   return (!has_safe_distance_ || distance_left <= CalculateStoppingDistance());
 }
 
-void TrainSimulation::StartMoving() {
-  if (current_rail_ || HasFinished()) return;
-  if (current_node_ || !current_rail_) {
-    // RailSimulation& next_rail = NULL;
-    // RailSimulation& next_rail = simulation_.GetRail(shortest_path_.NextRail(current_rail_));
-    // SubscribeRail(next_rail);
-    position_m_ = 0;
-  }
-  status_ = Status::ACCELERATING;
-}
+// void TrainSimulation::StartMoving() {
+//   if (current_rail_ || HasFinished()) return;
+//   if (current_node_ || !current_rail_) {
+//     // RailSimulation& next_rail = NULL;
+//     // RailSimulation& next_rail = simulation_.GetRail(shortest_path_.NextRail(current_rail_));
+//     // SubscribeRail(next_rail);
+//     position_m_ = 0;
+//   }
+//   status_ = Status::ACCELERATING;
+// }
 
 
 bool TrainSimulation::HasArrivedToNode() const {
@@ -122,6 +164,7 @@ bool TrainSimulation::HasArrivedToNode() const {
 bool TrainSimulation::CanStart() const {
   // if event not true
   // if departure time is ok
+  if (HasFinished()) return false;
   return true;
 }
 
@@ -152,10 +195,9 @@ void TrainSimulation::UnsubscribeCurrentRail() {
 }
 
 bool TrainSimulation::TraveledAllRail() const {
-  if (!current_rail_) {
+  if (!current_rail_)
     throw std::runtime_error("Cannot calculate traveled rail due to: missing rail");
-  }
-  return current_rail_->DistanceM() <= position_m_;
+  return current_rail_->Distance() <= position_m_ && HasStoped();
 }
 
 double TrainSimulation::GetMaxAccelerationForce() const {
@@ -179,7 +221,9 @@ bool TrainSimulation::HasStoped() const {
 }
 
 bool TrainSimulation::HasFinished() const {
-  return InvalidPath() || node_destiny_ == *current_node_;
+  if (current_node_ == nullptr) return false;
+  if (InvalidPath())  return true;
+  return node_destiny_.GetName() == current_node_->GetName();
 }
 
 bool  TrainSimulation::InvalidPath() const {

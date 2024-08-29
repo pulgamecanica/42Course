@@ -1,5 +1,6 @@
 #include "Simulation/RailSimulation.hpp"
 #include "Simulation/TrainSimulation.hpp"
+#include <iostream>
 
 RailSimulation::RailSimulation(const Rail & rail, CollisionMediator* mediator)
     : rail_(rail), mediator_(mediator) {}
@@ -27,6 +28,9 @@ double RailSimulation::Distance() const {
   return rail_.distance;
 }
 
-double RailSimulation::DistanceM() const {
-  return rail_.distance * 1000;
+bool RailSimulation::HasNodes(const std::string & node1, const std::string & node2) const {
+  return (
+    (rail_.node1 == node1 && rail_.node2 == node2) ||
+    (rail_.node1 == node2 && rail_.node2 == node1)
+    );
 }

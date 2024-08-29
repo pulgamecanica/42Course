@@ -23,6 +23,7 @@ public:
   void  Update(Subject* subject) override;
   void  SetRail(RailSimulation* rail);
   void  SetNode(NodeSimulation* node);
+  void  ManageArrivalToNode();
 
   float   CalculateStoppingDistance() const;
   double  GetOptimalTime() const;
@@ -35,7 +36,7 @@ private:
   void Brake();
   void UpdatePosition();
   void UpdateStatus();
-  void StartMoving();
+  // void StartMoving();
   void SubscribeNode(NodeSimulation& node);
   void SubscribeRail(RailSimulation& rail);
   void UnsubscribeCurrentNode();
@@ -56,7 +57,7 @@ private:
   const std::string GetArrivalName() const;
   const std::string GetDepartureName() const;
 
-  const Simulation&     simulation_;
+  Simulation&     simulation_;
   const Train&          train_;
   const NodeSimulation& node_source_;
   const NodeSimulation& node_destiny_;
@@ -64,6 +65,7 @@ private:
   PathInfo<std::string> path_info_;
   RailSimulation* current_rail_;
   NodeSimulation* current_node_;
+  std::string     next_node_name_;
   float           position_m_; // Meters
   float           speed_; // m / s
   float           acceleration_;

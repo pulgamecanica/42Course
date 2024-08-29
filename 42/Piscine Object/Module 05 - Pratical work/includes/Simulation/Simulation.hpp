@@ -27,6 +27,7 @@ public:
   double                GetRealTravelTime() const;
   double                GetOptimalTravelTime() const;
   NodeSimulation &      GetNode(const std::string & node_name);
+  RailSimulation *      GetRailRef(const std::string & node1, const std::string & node2);
   const RailwaySystem&  GetRailwaySystem() const;
   double                GetMaxTrainSpeed() const;
   // std::vector<std::string> GetEventList();
@@ -37,6 +38,8 @@ private:
   void  HandleEvents();
   void  HandleCollisions();
   void  LogSimulationState();
+
+  bool HasFinished() const;
 
   const RailwaySystem           &rail_sys_;
   const Schedule                &schedule_;
