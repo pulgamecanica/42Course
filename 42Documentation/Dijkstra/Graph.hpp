@@ -10,7 +10,7 @@
 template<typename KeyType>
 class PathInfo {
 public:
-  std::list<std::pair<INode<KeyType>&, unsigned>> path;  // {node, distance from source}
+  std::list<std::pair<KeyType, unsigned>> path;  // {node, distance from source}
 
   int TotalDistance() const {
     if (path.empty())
@@ -64,8 +64,9 @@ PathInfo<KeyType> Graph<KeyType>::Dijkstra(KeyType src, KeyType dest) const {
   std::set<std::pair<unsigned, KeyType>> pq;     // {distance, node_key}
 
   // Set the distance to infinite at first for each edge
-  for (const auto& pair : nodes_)
+  for (auto& pair : nodes_)
     dist[pair.first] = std::numeric_limits<unsigned>::max();
+  // There is an issue with the nodes here... WTF!
 
   if (dist.count(src) > 0) {
     dist[src] = 0;
@@ -78,9 +79,8 @@ PathInfo<KeyType> Graph<KeyType>::Dijkstra(KeyType src, KeyType dest) const {
       if (current == dest) {
         PathInfo<KeyType> path_info;
         for (KeyType at = dest; at != src; at = parent[at])
-          path_info.path.push_front({*nodes_.at(at), dist[at]});
-        path_info.path.push_front({*nodes_.at(src), dist[src]});
-
+          path_info.path.push_front({at, dist[at]});
+        path_info.path.push_front({src, dist[src]});
         return path_info;
       }
 

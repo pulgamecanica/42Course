@@ -1,6 +1,4 @@
 TrainAB1 1.87 1.4 CityA RailNodeC 14h10
 TrainBC1 2.10 1.6 CityD CityC 15h30
-TrainCA1 1.75 1.2 CityC RailNodeE 14h20
-TrainCA1 1.75 1.2 CityA RailNodeE 09h00
-TrainCA1 1.75 1.2 CityB RailNodeE 05h00
-TrainCA1 1.75 1.2 RailNodeA RailNodeE 17h00
+TrainCA1 1.75 1.2 CityC CityA 14h20
+TrainCA2 1.75 1.2 CityA CityC 14h22

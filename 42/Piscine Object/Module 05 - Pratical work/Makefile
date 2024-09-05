@@ -1,139 +1,118 @@
+# Makefile created automatically from script
+# C++ cpp_on_rails [Tue Sep  3 04:18:39 AM CEST 2024]
+#MAKEFLAGS += --silent  # Silence makefile [Commented by default]
+NAME            =   cpp_on_rails
 
-# Project name
-NAME := CppOnRails
-NAME_DEBUG := ${NAME}_debug
+NAME_DEBUG      =   ${NAME}_debug
 
-INC_DIR := includes
-SRC_DIR := srcs
-OBJ_DIR := objs
-OBJ_DIR_DEBUG := objs_debug
+INC_PATH        =   .
 
-# Dijkstra header-only library
-LIB_DIR := Dijkstra
+SRC_PATH        =   .
 
-# Raylib & Raygui libraries
-RAYLIB			= raylib
+SRC             =   ./main.cpp \
+		./RailwaySystem/Subject.cpp \
+		./SimulationsEngine.cpp \
+		./utils/FileLogger.cpp \
+		./utils/Settings.cpp \
+		./utils/ErrorHandler.cpp \
+		./RailwaySystem/RailwaySystem.cpp \
+		./RailwaySystem/Simulation.cpp \
+		./RailwaySystem/SimulationsManager.cpp \
+		./RailwaySystem/EventMediator.cpp \
+		./RailwaySystem/CollisionMediator.cpp \
+		./RailwayElements/Schedule.cpp \
+		./RailwayElements/Event.cpp \
+		./RailwayElements/Train.cpp \
+		./RailwayElements/Rail.cpp \
+		./RailwayElements/Node.cpp \
+		./utils/Parser.cpp \
 
-RAYLIB_PATH		= raylib/src	
+CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -pedantic #-fsanitize=address #-O3 -g -fsanitize=leak
 
-RAYLIB_NAME		= raylib/src/lib$(RAYLIB).a
+INC             =   -I${INC_PATH} -IRailwaySystem -IRailwayElements -Iutils -IDijkstra
 
-RAYLIB_INC_PATH = ${RAYLIB_PATH}
+OBJ_D           =   objs
+OBJ_D_DEBUG     =   objs_debug
 
-RAYGUI			= raygui
+OBJ             =   $(SRC:${SRC_PATH}/%.cpp=${OBJ_D}/%.o)
+OBJ_DEBUG       =   $(SRC:${SRC_PATH}/%.cpp=${OBJ_D_DEBUG}/%.o)
 
-RAYGUI_PATH		= raygui/src
+UNAME           :=  $(shell uname)
 
-RAYGUI_NAME		= raygui/src/lib$(RAYGUI).a
+RM              =   rm -rf
 
-RAYGUI_INC_PATH = $(RAYGUI_PATH)
-
-# Compiler and flags
-UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
-    CXX := c++
+    CC = c++
 else ifeq ($(UNAME), FreeBSD)
-    CXX := clang++
+    CC = clang++
 else
-    CXX := g++
-    CXXFLAGS += -D LINUX
+    CC  = g++
+    CFLAGS += -D LINUX
 endif
 
-CXXFLAGS := -std=c++23 -g -w
-INC := -I${INC_DIR} -I${LIB_DIR} -I$(RAYLIB_INC_PATH) -I$(RAYGUI_INC_PATH)
-LDFLAGS := -L${RAYGUI_PATH} -l${RAYGUI} -L${RAYLIB_PATH} -l${RAYLIB} -lGL -lm -lpthread -ldl -lrt -lX11
-RM := rm -rf
-# Colors
-C_BLACK := \033[0;30m
-C_RED := \033[0;31m
-C_GREEN := \033[0;32m
-C_YELLOW := \033[0;33m
-C_BLUE := \033[0;34m
-C_WHITE := \033[0;37m
-C_END := \033[0m
+all:        ${NAME}
 
-# Source files
-SRC := $(wildcard $(SRC_DIR)/*.cpp $(SRC_DIR)/*/*.cpp)
-OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-OBJ_DEBUG := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR_DEBUG)/%.o)
+${OBJ_D}/%.o:${SRC_PATH}/%.cpp
+			@mkdir -p ${OBJ_D} ${OBJ_D}/RailwaySystem ${OBJ_D}/RailwayElements ${OBJ_D}/utils
+			$(CC) $(CFLAGS) ${INC} -o $@ -c $<
 
-# Default target
-all: $(RAYLIB_NAME) $(RAYGUI_NAME) $(NAME)
+${NAME}:   ${OBJ}
+			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
+			$(CC) $(CFLAGS) ${INC} $(OBJ) -o $(NAME)
+			@printf "$(C_GREEN)DONE$(C_END)\n"
 
-${RAYLIB_NAME}:
-	@make -C ${RAYLIB_PATH} PLATFORM=PLATFORM_DESKTOP
+${OBJ_D_DEBUG}/%.o:${SRC_PATH}/%.cpp
+			@mkdir -p ${OBJ_D_DEBUG}
+			${CC} ${CFLAGS} -D DEBUG=1 ${INC} -o $@ -c $<
 
-${RAYGUI_NAME}:
-	cp $(RAYGUI_PATH)/raygui.h $(RAYGUI_PATH)/raygui.c
-	gcc -c $(RAYGUI_PATH)/raygui.c -o $(RAYGUI_PATH)/raygui.o
-	ar rcs $(RAYGUI_NAME) $(RAYGUI_PATH)/raygui.o
+${NAME_DEBUG}: $(OBJ_DEBUG)
+			@printf "Compiling DEBUG $(C_YELLOW)$(NAME_DEBUG)$(C_END) ...\n"
+			$(CC) $(CFLAGS) ${INC} $(OBJ_DEBUG) -o $(NAME_DEBUG)
+			@printf "$(C_GREEN)DONE$(C_END)\n"
 
-# Rule to build the release object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(OBJ_DIR) $(OBJ_DIR)/Simulation $(OBJ_DIR)/Visualizer
-	$(CXX) $(CXXFLAGS) $(INC) -o $@ -c $<
+debug:      ${NAME_DEBUG}
 
-# Rule to build the release executable
-$(NAME): $(OBJ)
-	@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
-	$(CXX) $(CXXFLAGS) $(INC) $(OBJ) $(LDFLAGS) -o $(NAME)
-	@printf "$(C_GREEN)DONE$(C_END)\n"
+test:       all
+			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
+			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
+			@./$(NAME)
+			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
+			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
+			@$(MAKE) show --no-print-directory
+			@$(MAKE) fclean --no-print-directory
 
-# Rule to build the debug object files
-$(OBJ_DIR_DEBUG)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(OBJ_DIR_DEBUG)
-	$(CXX) $(CXXFLAGS) -D DEBUG=1 $(INC) -o $@ -c $<
+valgrind:   re
+			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) $(NAME)_ARGS
+			@echo "[MAKEFILE] You can setup test arguments by setting up the env $(NAME)_ARGS"
+			@echo "[MAKEFILE] Ex: export $(NAME)_ARGS=\"-a --recursive ..\""
 
-# Rule to build the debug executable
-$(NAME_DEBUG): $(OBJ_DEBUG)
-	@printf "Compiling DEBUG $(C_YELLOW)$(NAME_DEBUG)$(C_END) ...\n"
-	$(CXX) $(CXXFLAGS) $(INC) $(OBJ_DEBUG) $(LDFLAGS) -o $(NAME_DEBUG)
-	@printf "$(C_GREEN)DONE$(C_END)\n"
-
-# Debug target
-debug: $(NAME_DEBUG)
-
-# Test target
-test: all
-	@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
-	@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-	@./$(NAME)
-	@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-	@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
-	@$(MAKE) show --no-print-directory
-
-# Valgrind target
-valgrind: re
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) $(NAME)_ARGS
-	@echo "[MAKEFILE] You can set up test arguments by setting up the env $(NAME)_ARGS"
-	@echo "[MAKEFILE] Ex: export $(NAME)_ARGS=\"-a --recursive ..\""
-
-# Clean object files
 clean:
-	$(RM) $(OBJ_DIR) $(OBJ_DIR_DEBUG)
-	@printf "$(C_RED)Cleaning objs$(C_END)\n"
+			$(RM) $(OBJ_D)
+			@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
-# Clean all generated files and library
-fclean: clean
-	$(RM) $(NAME) $(NAME_DEBUG)
-	@printf "$(C_RED)Deleted Everything$(C_END)\n"
+fclean:     clean
+			$(RM) $(NAME)
+			@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
-# Rebuild target
 re: fclean all
 
-# Show build information
 show:
 	@printf "$(C_GREEN)"
 	@printf "UNAME     : $(UNAME)\n"
 	@printf "NAME      : $(C_YELLOW)$(NAME)$(C_GREEN)\n"
-	@printf "CXX       : $(CXX)\n"
-	@printf "CXXFLAGS  : $(CXXFLAGS)\n"
+	@printf "CC        : $(CC)\n"
+	@printf "CFLAGS    : $(CFLAGS)\n"
 	@printf "INCLUDES  : $(INC)\n"
 	@printf "SRC       : $(C_YELLOW)$(SRC)$(C_GREEN)\n"
-	@printf "OBJ       : $(C_YELLOW)[$(OBJ_DIR)] --> $(OBJ)$(C_END)\n"
+	@printf "OBJ       : $(C_YELLOW)[$(OBJ_D)] --> $(OBJ)$(C_END)\n"
 
-.PHONY: all test re show clean fclean debug valgrind
+.PHONY: all test re
 
-# Include dependency files if they exist
--include $(OBJ:.o=.d)
--include $(OBJ_DEBUG:.o=.d)
+C_BLACK     = \033[0;30m
+C_RED       = \033[0;31m
+C_GREEN     = \033[0;32m
+C_YELLOW    = \033[0;33m
+C_BLUE      = \033[0;34m
+C_WHITE     = \033[0;37m
+C_END       = \033[0m
+
