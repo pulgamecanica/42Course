@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <regex>
+// #include <regex>
 #include <sstream>
 #include <chrono>
 #include <iomanip>
@@ -184,11 +184,11 @@ void Parser::ParseTrainFile(const std::string& filename, const std::string& name
       continue;
     }
 
-    std::regex time_pattern(R"(^\d{2}h\d{2}$)");
-    if (!std::regex_match(hour, time_pattern)) {
-      ErrorHandler::ReportError(filename, line_number, column_number, "Invalid time format", line);
-      continue;
-    }
+    // std::regex time_pattern(R"(^\d{2}h\d{2}$)");
+    // if (!std::regex_match(hour, time_pattern)) {
+    //   ErrorHandler::ReportError(filename, line_number, column_number, "Invalid time format", line);
+    //   continue;
+    // }
     unsigned hour_s = ConvertToSeconds(hour);
     std::unique_ptr<Train> train = std::make_unique<Train>(name, maxAcceleration, maxBrakeForce, departure, arrival, hour_s);
     schedule->AddTrain(train);

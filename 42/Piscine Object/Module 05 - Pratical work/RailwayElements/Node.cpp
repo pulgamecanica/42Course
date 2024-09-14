@@ -34,6 +34,10 @@ Color Node::GetColor() const {
   return color_;
 }
 
+void Node::SetPosition(Vector2 new_pos) {
+  pos_ = new_pos;
+}
+
 // NodeSimulation Implementation
 NodeSimulation::NodeSimulation(const Node& node, EventMediator* mediator)
     : node_(node), mediator_(mediator) {}

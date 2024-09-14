@@ -10,7 +10,6 @@ EventMediator::EventMediator() {
 }
 
 EventMediator::~EventMediator() {
-    std::cout << "EventMediator" << " destroyed" << std::endl;
     // TODO (destructor)
 }
 

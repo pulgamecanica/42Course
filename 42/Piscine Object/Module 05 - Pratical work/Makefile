@@ -1,6 +1,14 @@
 # Makefile created automatically from script
 # C++ cpp_on_rails [Tue Sep  3 04:18:39 AM CEST 2024]
 #MAKEFLAGS += --silent  # Silence makefile [Commented by default]
+RAYLIB		= libraylib.a
+
+RAYLIB_PATH = raylib/src
+
+RAYGUI = libraygui.a
+
+RAYGUI_PATH = raygui/src
+
 NAME            =   cpp_on_rails
 
 NAME_DEBUG      =   ${NAME}_debug
@@ -10,6 +18,16 @@ INC_PATH        =   .
 SRC_PATH        =   .
 
 SRC             =   ./main.cpp \
+		./Visualizer/MinimapGrid.cpp \
+		./Visualizer/EditableGrid.cpp \
+		./Visualizer/Grid.cpp \
+		./utils/Animation.cpp \
+		./utils/ButtonManager.cpp \
+		./Visualizer/SimulationState.cpp \
+		./Visualizer/SettingsState.cpp \
+		./Visualizer/SchedulesState.cpp \
+		./Visualizer/NetworkState.cpp \
+		./Visualizer/MenuState.cpp \
 		./RailwaySystem/Subject.cpp \
 		./SimulationsEngine.cpp \
 		./utils/FileLogger.cpp \
@@ -27,9 +45,11 @@ SRC             =   ./main.cpp \
 		./RailwayElements/Node.cpp \
 		./utils/Parser.cpp \
 
-CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -pedantic #-fsanitize=address #-O3 -g -fsanitize=leak
+CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -g #-fsanitize=address -O3 -g -fsanitize=leak
 
-INC             =   -I${INC_PATH} -IRailwaySystem -IRailwayElements -Iutils -IDijkstra
+INC             =   -I${INC_PATH} -IRailwaySystem -IRailwayElements -Iutils -IVisualizer -IDijkstra
+
+LDFLAGS			=	-L. -lraylib -lraygui
 
 OBJ_D           =   objs
 OBJ_D_DEBUG     =   objs_debug
@@ -50,15 +70,24 @@ else
     CFLAGS += -D LINUX
 endif
 
-all:        ${NAME}
+all: $(RAYGUI) $(RAYLIB) $(NAME)
+
+$(RAYLIB):
+	make -C $(RAYLIB_PATH) PLATFORM=PLATFORM_DESKTOP 
+	mv raylib/src/$(RAYLIB) .
+
+$(RAYGUI):
+	cp $(RAYGUI_PATH)/raygui.h $(RAYGUI_PATH)/raygui.c
+	gcc -c $(RAYGUI_PATH)/raygui.c -o $(RAYGUI_PATH)/raygui.o
+	ar rcs $(RAYGUI) $(RAYGUI_PATH)/raygui.o
 
 ${OBJ_D}/%.o:${SRC_PATH}/%.cpp
-			@mkdir -p ${OBJ_D} ${OBJ_D}/RailwaySystem ${OBJ_D}/RailwayElements ${OBJ_D}/utils
-			$(CC) $(CFLAGS) ${INC} -o $@ -c $<
+			@mkdir -p ${OBJ_D} ${OBJ_D}/RailwaySystem ${OBJ_D}/RailwayElements ${OBJ_D}/utils $(OBJ_D)/Visualizer
+			$(CC) -o $@ $(CFLAGS) -c $< ${INC}
 
 ${NAME}:   ${OBJ}
 			@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
-			$(CC) $(CFLAGS) ${INC} $(OBJ) -o $(NAME)
+			$(CC) $(CFLAGS) ${INC} $(OBJ) -o $(NAME) $(LDFLAGS)
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
 ${OBJ_D_DEBUG}/%.o:${SRC_PATH}/%.cpp
@@ -79,7 +108,6 @@ test:       all
 			@printf "\n$(C_BLUE)********************************************$(C_END)\n"
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show --no-print-directory
-			@$(MAKE) fclean --no-print-directory
 
 valgrind:   re
 			valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME) $(NAME)_ARGS

@@ -56,7 +56,7 @@ TrainSimulation::TrainSimulation(Simulation& simulation, const Train& train)
     status_(Status::kStoped),
     has_safe_distance_(true),
     event_warning_stop_(false),
-    time_running_s_(train.GetHour()) {
+    time_running_s_(0) {
 
     CalculateFastestRoute();
     total_distance_ = path_info_.TotalDistance();
@@ -108,7 +108,7 @@ void TrainSimulation::Log() {
   std::stringstream ss;
 
   if (HasArrivedToNode()) {
-    ss << "[" << Parser::ConvertToTimeString(time_running_s_) << "] - [" << node_source_.GetNode().GetName() << "][" << node_destiny_.GetNode().GetName() << "] - [Waiting]";
+    ss << "[" << Parser::ConvertToTimeString(simulation_.GetCurrentTime()) << "] - [" << node_source_.GetNode().GetName() << "][" << node_destiny_.GetNode().GetName() << "] - [Waiting]";
     // std::cout << "[Status: " << status_str << "] - [Dist: " << position_m_ << "m/" << current_rail_->GetRail().GetDistance() << "m] - (Speed: " << speed_ << "m/s) - (Acceleration: " << acceleration_ << "N) - {Stoping distance: " << GetStoppingDistance() << "}" << std::endl;
   } else {
     // Check for other trains at the same rail
@@ -116,7 +116,7 @@ void TrainSimulation::Log() {
     if (distance_left < 0)
       distance_left = 0;
     const std::string train_str_rep = GetRailStringRep();
-    ss << "[" << Parser::ConvertToTimeString(time_running_s_) << "] - [" << node_source_.GetNode().GetName() << "][" << node_destiny_.GetNode().GetName() << "] - [" << distance_left << "km] - [" << status_str << "] - " << train_str_rep;
+    ss << "[" << Parser::ConvertToTimeString(simulation_.GetCurrentTime()) << "] - [" << node_source_.GetNode().GetName() << "][" << node_destiny_.GetNode().GetName() << "] - [" << distance_left << "km] - [" << status_str << "] - " << train_str_rep;
     ss << " (" << current_rail_->GetObservers().size() << ")";
   }
   // std::cout << ss.str() << std::endl;
@@ -293,7 +293,7 @@ bool TrainSimulation::CanStart() const {
 }
 
 bool TrainSimulation::IsTimeToStart() const {
-  return time_running_s_ >= train_.GetHour();
+  return simulation_.GetCurrentTime() >= train_.GetHour();
 }
 
 bool TrainSimulation::TraveledAllRail() const {

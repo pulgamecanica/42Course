@@ -61,12 +61,11 @@ void RailwaySystem::AddSchedule(std::unique_ptr<Schedule>& schedule) {
   schedules_.emplace(name, std::move(schedule));
 }
 
-std::shared_ptr<Node> RailwaySystem::GetNode(const std::string& name) const {
+Node* RailwaySystem::GetNode(const std::string& name) const {
   auto it = nodes_.find(name);
-  if (it == nodes_.end()) {
+  if (it == nodes_.end())
     throw std::runtime_error("Node '" + name + "' not found");
-  }
-  return std::shared_ptr<Node>(it->second.get());
+  return it->second.get();
 }
 
 std::shared_ptr<Schedule> RailwaySystem::GetSchedule(const std::string& name) const {

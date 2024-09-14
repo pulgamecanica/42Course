@@ -12,13 +12,14 @@ class Node: public INode<std::string> {
   Node(const std::string& name);
   ~Node();
 
-  std::string GetKey() const override;
-  void SetNeighbor(std::string, int weight) override;
   const std::unordered_map<std::string, uint>& GetNeighbors() const override;
-
   std::string GetName() const;
+  std::string GetKey() const override;
   Vector2 GetPosition() const;
   Color GetColor() const;
+
+  void SetPosition(Vector2 new_pos);
+  void SetNeighbor(std::string, int weight) override;
 
  private:
   const std::string name_;

@@ -25,12 +25,13 @@ class Simulation {
   Simulation(const RailwaySystem& railSys, const Schedule& schedule, int id);
 
   std::vector<std::unique_ptr<RailSimulation>>& GetRails();
-  const CollisionMediator& GetCollisionMediator() const;
-  const RailwaySystem& GetRailwaySystem() const;
-  const std::string& GetDirectory() const;
-  NodeSimulation* GetNode(const std::string& nodeName);
-  RailSimulation* GetRailRef(const std::string& node1, const std::string& node2);
-  double GetMaxTrainSpeed() const;
+  const CollisionMediator&  GetCollisionMediator() const;
+  const RailwaySystem&      GetRailwaySystem() const;
+  const std::string&        GetDirectory() const;
+  NodeSimulation*           GetNode(const std::string& nodeName);
+  RailSimulation*           GetRailRef(const std::string& node1, const std::string& node2);
+  double                    GetMaxTrainSpeed() const;
+  unsigned int              GetCurrentTime() const;
 
   void Update();
   bool IsFinished() const;
@@ -66,6 +67,7 @@ class Simulation {
   State state_;
   double real_travel_time_;
   double max_speed_;
+  unsigned start_time_;
   unsigned total_time_;
 
   // Attributes Owned

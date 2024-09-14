@@ -17,6 +17,11 @@ Simulation::Simulation(const RailwaySystem& railSys, const Schedule& schedule, i
   InitializeNodes();
   InitializeRails();
   InitializeTrains();
+
+  start_time_ = trains_.front()->GetTrain().GetHour();
+  for (const auto & train : trains_)
+    start_time_ = std::min(start_time_, train->GetTrain().GetHour());
+
   logger_.write(std::string("Simulation #") + std::to_string(id_));
   logger_.write(std::string("Total Trains: ") + std::to_string(trains_.size()));
   logger_.write(std::string("Total Nodes: ") + std::to_string(nodes_.size()));
@@ -148,4 +153,8 @@ const std::string& Simulation::GetDirectory() const {
 
 double Simulation::GetMaxTrainSpeed() const {
   return max_speed_;
+}
+
+unsigned int Simulation::GetCurrentTime() const {
+  return start_time_ + total_time_;
 }

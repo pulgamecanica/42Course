@@ -1,63 +1,61 @@
 #include "SimulationsEngine.hpp"
-// #include "Settings.hpp"
-// #include "raylib.h"
+#include "Settings.hpp"
+#include "raylib.h"
 
 SimulationsEngine::SimulationsEngine(const std::string& elementsFileName, const std::string& scheduleDirectory)
-  : rail_sys_(elementsFileName, scheduleDirectory)//,
-  // current_state_(&menu_state_), // Start with the menu state
-  // menu_state_(*this),
-  // settings_state_(*this),
+  : rail_sys_(elementsFileName, scheduleDirectory),
+    current_state_(&menu_state_), // Start with the menu state
+    menu_state_(*this),
+    settings_state_(*this),
+    network_state_(*this)
   // schedules_state_(*this),
-  // network_state_(*this),
   // simulations_state_(*this)
 {
 }
 
 void SimulationsEngine::Run() {
-  // while (!WindowShouldClose()) {
-  while(42) {
+  while (!WindowShouldClose()) {
     Update();
-    // Draw();
+    Draw();
     // Update Settings animations
-    // Settings::Instance().UpdateAnimations();
-    // Update the railwaysystem and all simulations
+    Settings::Instance().UpdateAnimations();
   }
 }
 
-// void SimulationsEngine::ChangeState(enum EngineStates e_state) {
-//   if (e_state == EngineStates::MENU)
-//     current_state_ = &menu_state_;
-//   else if (e_state == EngineStates::SETTINGS)
-//     current_state_ = &settings_state_;
-//   else if (e_state == EngineStates::NETWORK)
-//     current_state_ = &network_state_;
-//   else if (e_state == EngineStates::SCHEDULES)
-//     current_state_ = &schedules_state_;
-//   else if (e_state == EngineStates::SIMULATIONS)
-//     current_state_ = &simulations_state_;
-//   SetMouseCursor(MOUSE_CURSOR_DEFAULT);
-// }
+void SimulationsEngine::ChangeState(enum EngineStates e_state) {
+  if (e_state == EngineStates::kMenu)
+    current_state_ = &menu_state_;
+  else if (e_state == EngineStates::kSettings)
+    current_state_ = &settings_state_;
+  else if (e_state == EngineStates::kNetwork)
+    current_state_ = &network_state_;
+  // else if (e_state == EngineStates::kSchedules)
+    //   current_state_ = &schedules_state_;
+  // else if (e_state == EngineStates::kSimulation)
+    //   current_state_ = &simulations_state_;
+  SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+}
 
-const RailwaySystem & SimulationsEngine::GetRailwaySystem() const {
+RailwaySystem & SimulationsEngine::GetRailwaySystem() {
   return rail_sys_;
 }
 
 void SimulationsEngine::Update() {
-  // if (current_state_)
-  //   current_state_->Update();
+  if (current_state_)
+    current_state_->Update();
   for (auto & manager : simulations_managers_)
     manager->UpdateSimulations();
 }
 
 // // Liskov's Substitution SO(L)ID
 // // Game State Design pattern (current state with interface implementation)
-// void SimulationsEngine::Draw() {
-//   BeginDrawing();
-//   ClearBackground(RAYWHITE);
-//   if (current_state_)
-//     current_state_->Draw();
-//   EndDrawing();
-// }
+void SimulationsEngine::Draw() {
+  BeginDrawing();
+  ClearBackground(RAYWHITE);
+  if (current_state_)
+    current_state_->Draw();
+  EndDrawing();
+}
 
 SimulationsManager * SimulationsEngine::GenerateSimulations(const Schedule &schedule, int amount) {
   simulations_managers_.emplace_back(std::make_unique<SimulationsManager>(rail_sys_, schedule, amount));

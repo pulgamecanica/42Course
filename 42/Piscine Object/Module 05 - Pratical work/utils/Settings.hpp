@@ -1,7 +1,7 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
-// #include "Visualizer/Animation.hpp"
+#include "Animation.hpp"
 #include <string>
 #include <memory>
 #include <mutex>
@@ -26,8 +26,10 @@ public:
   const std::string&  GetOutputDirectory() const;
   bool                IsRailTwoWay() const;
   // Others
-  // void DrawHourglass(int x, int y) const;
-  // void UpdateAnimations();
+  void DrawLoadingScreen(float progress, const std::string loading_info, const std::string loading_info_element = "");
+  void InitializeAnimations();
+  void DrawHourglass(int x, int y) const;
+  void UpdateAnimations();
 private:
   Settings();  // Private constructor
   ~Settings() = default;
@@ -38,7 +40,7 @@ private:
   std::string data_file_name_;
   std::string schedule_directory_;
   std::string output_directory_;
-  // std::unique_ptr<Animation> hourglass_animation_;
+  std::unique_ptr<Animation> hourglass_animation_;
   double max_speed_;
   bool   rail_two_way_;
 };

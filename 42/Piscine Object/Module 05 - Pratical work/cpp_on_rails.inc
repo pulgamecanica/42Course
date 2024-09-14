@@ -9,8 +9,8 @@
 # define DEBUG 0
 #endif
 
-#include <iostream>
-
+#define WIDTH 1000
+#define HEIGHT 600
 
 # define C_BLACK  "\033[0;30m"
 # define C_RED    "\033[0;31m"
