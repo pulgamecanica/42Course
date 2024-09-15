@@ -57,6 +57,8 @@ std::unordered_map<KeyType, INode<KeyType>*>& Graph<KeyType>::GetNodes() {
   return nodes_;
 }
 
+// #include <iostream>
+
 template<typename KeyType>
 PathInfo<KeyType> Graph<KeyType>::Dijkstra(KeyType src, KeyType dest) const {
   std::unordered_map<KeyType, unsigned> dist;    // Edges
@@ -81,6 +83,10 @@ PathInfo<KeyType> Graph<KeyType>::Dijkstra(KeyType src, KeyType dest) const {
         for (KeyType at = dest; at != src; at = parent[at])
           path_info.path.push_front({at, dist[at]});
         path_info.path.push_front({src, dist[src]});
+        // std::cout << "Path: ";
+        // for (const auto& elem : path_info.path)
+        //   std::cout << elem.first << "[" << elem.second << "]" << "<=>";
+        // std::cout << std::endl;
         return path_info;
       }
 
