@@ -19,18 +19,12 @@
 [submodule "42/Piscine Object/Module 05 - Pratical work/Dijkstra/MLX42"]
 	path = 42/Piscine Object/Module 05 - Pratical work/Dijkstra/MLX42
 	url = https://github.com/codam-coding-college/MLX42
-[submodule "42/Piscine Object/Module 05 - Pratical work/Visualizer/raylib"]
-	path = 42/Piscine Object/Module 05 - Pratical work/Visualizer/raylib
-	url = https://github.com/raysan5/raylib.git
-[submodule "42/Piscine Object/Module 05 - Pratical work/Visualizer/raygui"]
-	path = 42/Piscine Object/Module 05 - Pratical work/Visualizer/raygui
-	url = https://github.com/raysan5/raygui.git
+[submodule "42Core/CPP_Piscine/CPP_Module_02/ex03/bsp_tester/SDL"]
+	path = 42Core/CPP_Piscine/CPP_Module_02/ex03/bsp_tester/SDL
+	url = https://github.com/libsdl-org/SDL
 [submodule "42/Piscine Object/Module 05 - Pratical work/raylib"]
 	path = 42/Piscine Object/Module 05 - Pratical work/raylib
 	url = https://github.com/raysan5/raylib
 [submodule "42/Piscine Object/Module 05 - Pratical work/raygui"]
 	path = 42/Piscine Object/Module 05 - Pratical work/raygui
 	url = https://github.com/raysan5/raygui
-[submodule "42Core/CPP_Piscine/CPP_Module_02/ex03/bsp_tester/SDL"]
-	path = 42Core/CPP_Piscine/CPP_Module_02/ex03/bsp_tester/SDL
-	url = https://github.com/libsdl-org/SDL
