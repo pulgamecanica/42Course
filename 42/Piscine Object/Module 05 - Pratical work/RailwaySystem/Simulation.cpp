@@ -89,7 +89,8 @@ void Simulation::Update() {
 }
 
 void Simulation::CollectResults() {
-  std::cout << "Finished Simulation " << schedule_.GetName() << std::endl;
+  
+  // std::cout << "Finished Simulation " << schedule_.GetName() << std::endl;
 }
 
 bool Simulation::HasFinished() const {

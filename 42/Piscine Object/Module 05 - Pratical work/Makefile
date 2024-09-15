@@ -18,6 +18,8 @@ INC_PATH        =   .
 SRC_PATH        =   .
 
 SRC             =   ./main.cpp \
+		./Visualizer/SimulationPanelItem.cpp \
+		./Visualizer/VerticalScrollPanel.cpp \
 		./Visualizer/MinimapGrid.cpp \
 		./Visualizer/EditableGrid.cpp \
 		./Visualizer/Grid.cpp \

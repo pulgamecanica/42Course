@@ -39,8 +39,8 @@ private:
   MenuState           menu_state_;
   SettingsState       settings_state_;
   NetworkState        network_state_;
+  SchedulesState      schedules_state_;
   // SimulationsState    simulations_state_;
-  // SchedulesState      schedules_state_;
 };
 
 #endif // GAME_HPP

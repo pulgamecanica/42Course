@@ -33,12 +33,12 @@ int main(int argc, char *argv[]) {
   SimulationsEngine engine = SimulationsEngine(options["elements_file"], options["schedule_directory"]);
   Settings::Instance().DrawLoadingScreen(1.0f, "Loading Simulations Engine");
 
-  {
-    // Example of manual request for simulation
-    std::vector<SimulationsManager *> sims;
-    SimulationsManager * sm = engine.GenerateSimulations(*engine.GetRailwaySystem().GetSchedules().begin()->second, 3);
-    sims.push_back(sm);
-  }
+  // {
+  //   // Example of manual request for simulation
+  //   std::vector<SimulationsManager *> sims;
+  //   SimulationsManager * sm = engine.GenerateSimulations(*engine.GetRailwaySystem().GetSchedules().begin()->second, 1);
+  //   sims.push_back(sm);
+  // }
   engine.Run();
   return (0);
 }

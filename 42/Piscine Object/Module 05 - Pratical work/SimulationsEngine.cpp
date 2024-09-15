@@ -7,8 +7,8 @@ SimulationsEngine::SimulationsEngine(const std::string& elementsFileName, const 
     current_state_(&menu_state_), // Start with the menu state
     menu_state_(*this),
     settings_state_(*this),
-    network_state_(*this)
-  // schedules_state_(*this),
+    network_state_(*this),
+    schedules_state_(*this)//,
   // simulations_state_(*this)
 {
 }
@@ -29,8 +29,8 @@ void SimulationsEngine::ChangeState(enum EngineStates e_state) {
     current_state_ = &settings_state_;
   else if (e_state == EngineStates::kNetwork)
     current_state_ = &network_state_;
-  // else if (e_state == EngineStates::kSchedules)
-    //   current_state_ = &schedules_state_;
+  else if (e_state == EngineStates::kSchedules)
+      current_state_ = &schedules_state_;
   // else if (e_state == EngineStates::kSimulation)
     //   current_state_ = &simulations_state_;
   SetMouseCursor(MOUSE_CURSOR_DEFAULT);

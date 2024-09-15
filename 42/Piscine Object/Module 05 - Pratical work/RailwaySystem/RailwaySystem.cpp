@@ -68,12 +68,12 @@ Node* RailwaySystem::GetNode(const std::string& name) const {
   return it->second.get();
 }
 
-std::shared_ptr<Schedule> RailwaySystem::GetSchedule(const std::string& name) const {
+Schedule* RailwaySystem::GetSchedule(const std::string& name) const {
   auto it = schedules_.find(name);
   if (it == schedules_.end()) {
     throw std::runtime_error("Schedule not found: " + name);
   }
-  return std::shared_ptr<Schedule>(it->second.get());
+  return it->second.get();
 }
 
 const std::unordered_map<std::string, std::unique_ptr<Schedule>>& RailwaySystem::GetSchedules() const {

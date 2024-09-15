@@ -21,7 +21,7 @@ class RailwaySystem {
   void AddSchedule(std::unique_ptr<Schedule>& schedule);
 
   Node* GetNode(const std::string& name) const;
-  std::shared_ptr<Schedule> GetSchedule(const std::string& name) const;
+  Schedule* GetSchedule(const std::string& name) const;
   const std::unordered_map<std::string, std::unique_ptr<Schedule>>& GetSchedules() const;
   const Graph<std::string>& GetGraph() const;
   const std::unordered_map<std::string, std::unique_ptr<Node>>& GetNodes() const;

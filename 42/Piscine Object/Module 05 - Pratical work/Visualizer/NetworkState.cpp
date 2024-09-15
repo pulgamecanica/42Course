@@ -71,10 +71,10 @@ void NetworkState::Draw() {
   button_manager_.DrawButtons();
   editable_grid_.Draw();
   DrawText(GetMousePositionText().c_str(), 50, GetScreenHeight() - 52, 10, BLACK);
-  // DrawText((std::string("Grid Pos: ") + VecToString(editable_grid_.GetRelativeCoordinates(GetMousePosition()))).c_str(),
-  //   250, GetScreenHeight() - 52, 10, BLACK);
-  // DrawText((std::string("Offset: ") + VecToString(editable_grid_.GetOffset())).c_str(),
-  //   450, GetScreenHeight() - 52, 10, BLACK);
+  DrawText((std::string("Grid Pos: ") + VecToString(editable_grid_.GetRelativeCoordinates(GetMousePosition()))).c_str(),
+    250, GetScreenHeight() - 52, 10, BLACK);
+  DrawText((std::string("Offset: ") + VecToString(editable_grid_.GetOffset())).c_str(),
+    450, GetScreenHeight() - 52, 10, BLACK);
 }
 
 void NetworkState::InitializeBackgroundAnimation() {

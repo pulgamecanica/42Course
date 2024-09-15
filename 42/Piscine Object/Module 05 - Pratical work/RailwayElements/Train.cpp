@@ -62,9 +62,8 @@ TrainSimulation::TrainSimulation(Simulation& simulation, const Train& train)
     total_distance_ = path_info_.TotalDistance();
     optimal_time_ = 0;
     if (total_distance_ != -1) {
-      for(auto const &[node, dist] : path_info_.path) {
+      for(auto const &[node, dist] : path_info_.path)
         optimal_time_ += GetOptimalTimeForDistance(dist);
-      }
     }
     // std::cout << "Optimal time for train: " << train_.GetName() << " [" << GetOptimalTime() << "s]" << "(" << total_distance_ << "m)" << std::endl;
 }
@@ -78,15 +77,15 @@ void TrainSimulation::Update() {
       else
         Accelerate();
       UpdatePosition();
-      // UpdateStatus();
+      Log();
     } else {
       ManageArrivalToNode();
+      Log();
       CalculateFastestRoute();
       if (CanStart())
         StartRoute();
     }
     UpdateStatus();
-    Log();
   }
   time_running_s_++;
 }
@@ -108,7 +107,8 @@ void TrainSimulation::Log() {
   std::stringstream ss;
 
   if (HasArrivedToNode()) {
-    ss << "[" << Parser::ConvertToTimeString(simulation_.GetCurrentTime()) << "] - [" << node_source_.GetNode().GetName() << "][" << node_destiny_.GetNode().GetName() << "] - [Waiting]";
+    if (current_node_)
+      ss << "[" << Parser::ConvertToTimeString(simulation_.GetCurrentTime()) << "] - [" << current_node_->GetNode().GetName() << "] - [Waiting]";
     // std::cout << "[Status: " << status_str << "] - [Dist: " << position_m_ << "m/" << current_rail_->GetRail().GetDistance() << "m] - (Speed: " << speed_ << "m/s) - (Acceleration: " << acceleration_ << "N) - {Stoping distance: " << GetStoppingDistance() << "}" << std::endl;
   } else {
     // Check for other trains at the same rail
@@ -116,11 +116,12 @@ void TrainSimulation::Log() {
     if (distance_left < 0)
       distance_left = 0;
     const std::string train_str_rep = GetRailStringRep();
-    ss << "[" << Parser::ConvertToTimeString(simulation_.GetCurrentTime()) << "] - [" << node_source_.GetNode().GetName() << "][" << node_destiny_.GetNode().GetName() << "] - [" << distance_left << "km] - [" << status_str << "] - " << train_str_rep;
+    ss << "[" << Parser::ConvertToTimeString(simulation_.GetCurrentTime()) << "] - [" << prev_node_name_ << "][" << next_node_name_ << "] - [" << distance_left / 1000 << "km | " << speed_ << "m/s] - [" << status_str << "] - " << train_str_rep;
     ss << " (" << current_rail_->GetObservers().size() << ")";
   }
   // std::cout << ss.str() << std::endl;
-  logger_.write(ss.str());
+  if (!ss.str().empty())
+    logger_.write(ss.str());
   // Create the Simulation Tree to explore train path later
 }
 
