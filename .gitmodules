@@ -31,3 +31,6 @@
 [submodule "42/Piscine Object/Module 05 - Pratical work/raygui"]
 	path = 42/Piscine Object/Module 05 - Pratical work/raygui
 	url = https://github.com/raysan5/raygui
+[submodule "42Core/CPP_Piscine/CPP_Module_02/ex03/bsp_tester/SDL"]
+	path = 42Core/CPP_Piscine/CPP_Module_02/ex03/bsp_tester/SDL
+	url = https://github.com/libsdl-org/SDL
