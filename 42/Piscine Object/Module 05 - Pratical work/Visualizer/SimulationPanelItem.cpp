@@ -1,10 +1,13 @@
+#include "SimulationsEngine.hpp"
 #include "SimulationPanelItem.hpp"
 #include "Settings.hpp"
 #include "raygui.h"
 #include <string.h>
 
-SimulationPanelItem::SimulationPanelItem(const SimulationsManager * simulations_manager, Rectangle bounds) 
-  : simulations_manager_(simulations_manager), bounds_(bounds) {
+SimulationPanelItem::SimulationPanelItem(SimulationsEngine& engine, const SimulationsManager * simulations_manager, Rectangle bounds) 
+  : simulations_manager_(simulations_manager),
+    engine_(engine),
+    bounds_(bounds) {
     // int simulations = simulations_manager_.GetSimulations().size();
     // Each Simulation is about 20 pixels:
     bounds_.height = 42;
@@ -52,7 +55,13 @@ void SimulationPanelItem::Draw(Vector2 scroll) const {
       GetWidth(),
       GetHeight()
       }, "")) {
-      std::cout << "Clicked a schedule" << std::endl;
+
+      //
+      //
+      engine_.SetSimulationsManager(simulations_manager_);
+      engine_.ChangeState(EngineStates::kSimulation);
+      //
+      //
     }
   } else {
     DrawRectangleRec((Rectangle){

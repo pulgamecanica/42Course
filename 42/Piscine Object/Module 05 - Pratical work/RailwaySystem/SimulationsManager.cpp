@@ -64,3 +64,7 @@ std::vector<std::string> SimulationsManager::GetEventList() const {
 const std::vector<std::unique_ptr<Simulation>>& SimulationsManager::GetSimulations() const {
   return simulations_;
 }
+
+Simulation& SimulationsManager::GetSimulation(int index) const {
+  return *simulations_[index];
+}

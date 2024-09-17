@@ -32,6 +32,7 @@ class SimulationsManager {
   const std::vector<std::unique_ptr<Simulation>>& GetSimulations() const;
   const Schedule& GetSchedule() const;
   std::vector<std::string> GetEventList() const;
+  Simulation& GetSimulation(int index) const;
 
  private:
   void InitializeSimulations();

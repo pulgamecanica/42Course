@@ -8,8 +8,8 @@ SimulationsEngine::SimulationsEngine(const std::string& elementsFileName, const 
     menu_state_(*this),
     settings_state_(*this),
     network_state_(*this),
-    schedules_state_(*this)//,
-  // simulations_state_(*this)
+    schedules_state_(*this),
+    simulation_state_(*this)
 {
 }
 
@@ -31,8 +31,8 @@ void SimulationsEngine::ChangeState(enum EngineStates e_state) {
     current_state_ = &network_state_;
   else if (e_state == EngineStates::kSchedules)
       current_state_ = &schedules_state_;
-  // else if (e_state == EngineStates::kSimulation)
-    //   current_state_ = &simulations_state_;
+  else if (e_state == EngineStates::kSimulation)
+      current_state_ = &simulation_state_;
   SetMouseCursor(MOUSE_CURSOR_DEFAULT);
 }
 
@@ -60,5 +60,9 @@ void SimulationsEngine::Draw() {
 SimulationsManager * SimulationsEngine::GenerateSimulations(const Schedule &schedule, int amount) {
   simulations_managers_.emplace_back(std::make_unique<SimulationsManager>(rail_sys_, schedule, amount));
   return simulations_managers_.back().get();
+}
+
+void SimulationsEngine::SetSimulationsManager(const SimulationsManager* manager) {
+  simulation_state_.SetSimulationsManager(manager);
 }
 

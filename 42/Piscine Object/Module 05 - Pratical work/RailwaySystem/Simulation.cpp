@@ -60,6 +60,11 @@ std::vector<std::unique_ptr<RailSimulation>>& Simulation::GetRails() {
   return rails_;
 }
 
+std::vector<std::unique_ptr<TrainSimulation>>& Simulation::GetTrains() {
+  return trains_;
+}
+
+
 const CollisionMediator& Simulation::GetCollisionMediator() const {
   return collision_mediator_;
 }
@@ -158,4 +163,8 @@ double Simulation::GetMaxTrainSpeed() const {
 
 unsigned int Simulation::GetCurrentTime() const {
   return start_time_ + total_time_;
+}
+
+unsigned int Simulation::GetTotalTime() const {
+  return total_time_;
 }

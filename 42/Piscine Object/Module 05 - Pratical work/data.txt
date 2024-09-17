@@ -1,3 +1,14 @@
+Node SomeOtherNode
+Node RailNodeF
+Node NewNode
+Node CityC
+Node CityP
+Node CityZ
+Node City4S
+Node RailNodeD
+Node RailNodeC
+Node RailNodeE
+Node OtherNode
 Node CityA
 Node SomeNode
 Node CityD
@@ -6,15 +17,6 @@ Node RailNodeG
 Node CityB
 Node CityY
 Node RailNodeA
-Node CityZ
-Node CityP
-Node RailNodeF
-Node NewNode
-Node CityC
-Node OtherNode
-Node RailNodeE
-Node RailNodeD
-Node RailNodeC
 Rail CityA RailNodeA 15000
 Rail RailNodeA RailNodeB 20000
 Rail RailNodeB RailNodeC 13000
@@ -30,8 +32,8 @@ Rail RailNodeA RailNodeD 23020
 Rail RailNodeA RailNodeE 19000
 Rail RailNodeA RailNodeG 6700
 Rail RailNodeB RailNodeD 20240
-Event "Riot" 0.05 5.64316e+126y CityA
+Event "Riot" 0.05 1.55895e+138y CityA
 Event "Passenger's Discomfort" 0.2 30m CityA
 Event "Passenger's Discomfort" 0.2 30m CityB
 Event "Passenger's Discomfort" 0.2 30m CityC
-Event "Can't happen" 0 1.00447e+129y CityA
+Event "Can't happen" 0 2.7749e+140y CityA

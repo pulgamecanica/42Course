@@ -102,7 +102,7 @@ void SchedulesState::SubmitForm() {
   try {
     Schedule* schedule = engine_.GetRailwaySystem().GetSchedule(schedule_options_list_[selected_simulation_]);
     SimulationsManager* simulation = engine_.GenerateSimulations(*schedule, number_of_simulations_);
-    SimulationPanelItem spi(simulation, {0, 0, SchedulesStateConstants::kSimulationsView.width - 100, 0});
+    SimulationPanelItem spi(engine_, simulation, {0, 0, SchedulesStateConstants::kSimulationsView.width - 100, 0});
     pannel_.AddItem(spi);
   } catch (std::exception &e) {
     std::cerr << "Simulation aborted!" << std::endl;

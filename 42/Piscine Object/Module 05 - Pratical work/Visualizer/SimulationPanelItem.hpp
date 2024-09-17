@@ -4,9 +4,11 @@
 #include "SimulationsManager.hpp"
 #include "raylib.h"
 
+class SimulationsEngine;
+
 class SimulationPanelItem {
 public:
-  SimulationPanelItem(const SimulationsManager * simulations_manager, Rectangle bounds);
+  SimulationPanelItem(SimulationsEngine& engine, const SimulationsManager * simulations_manager, Rectangle bounds);
   SimulationPanelItem(const SimulationPanelItem & item) = default;
   Rectangle GetRectangle() const;
   float GetHeight() const;
@@ -17,6 +19,7 @@ public:
   void Draw(Vector2 scroll) const;
 private:
   const SimulationsManager * simulations_manager_;
+  SimulationsEngine& engine_;
   Rectangle bounds_;
 };
 

@@ -25,6 +25,7 @@ class Simulation {
   Simulation(const RailwaySystem& railSys, const Schedule& schedule, int id);
 
   std::vector<std::unique_ptr<RailSimulation>>& GetRails();
+  std::vector<std::unique_ptr<TrainSimulation>>& GetTrains();
   const CollisionMediator&  GetCollisionMediator() const;
   const RailwaySystem&      GetRailwaySystem() const;
   const std::string&        GetDirectory() const;
@@ -32,7 +33,8 @@ class Simulation {
   RailSimulation*           GetRailRef(const std::string& node1, const std::string& node2);
   double                    GetMaxTrainSpeed() const;
   unsigned int              GetCurrentTime() const;
-
+  unsigned int              GetTotalTime() const;
+  
   void Update();
   bool IsFinished() const;
   bool IsRailTwoWay() const;

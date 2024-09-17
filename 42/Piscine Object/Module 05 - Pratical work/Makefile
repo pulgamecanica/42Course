@@ -18,6 +18,7 @@ INC_PATH        =   .
 SRC_PATH        =   .
 
 SRC             =   ./main.cpp \
+		./Visualizer/SimulationGrid.cpp \
 		./Visualizer/SimulationPanelItem.cpp \
 		./Visualizer/VerticalScrollPanel.cpp \
 		./Visualizer/MinimapGrid.cpp \
@@ -47,7 +48,7 @@ SRC             =   ./main.cpp \
 		./RailwayElements/Node.cpp \
 		./utils/Parser.cpp \
 
-CFLAGS          =   -Wall -Wextra -Werror -std=c++23 -g #-fsanitize=address -O3 -g -fsanitize=leak
+CFLAGS          =   -Wall -Wextra -Werror -std=c++20 -g #-fsanitize=address -O3 -g -fsanitize=leak
 
 INC             =   -I${INC_PATH} -IRailwaySystem -IRailwayElements -Iutils -IVisualizer -IDijkstra
 

@@ -1,1 +1,3 @@
-TrainAB1 1.87 1.4 CityA RailNodeC 14h10
+TrainAC1 1.87 1.4 CityA RailNodeC 14h10
+TrainAB1 1.87 1.4 CityA CityB 14h10
+TrainEA1 1.87 1.4 RailNodeE CityA 14h10

@@ -26,8 +26,10 @@ public:
   void ChangeState(enum EngineStates e_state);
 
   RailwaySystem & GetRailwaySystem();
-
+  
   SimulationsManager* GenerateSimulations(const Schedule &schedule, int amount);
+
+  void SetSimulationsManager(const SimulationsManager* manager);
 private:
   void Update();
   void Draw();
@@ -40,7 +42,7 @@ private:
   SettingsState       settings_state_;
   NetworkState        network_state_;
   SchedulesState      schedules_state_;
-  // SimulationsState    simulations_state_;
+  SimulationsState    simulation_state_;
 };
 
 #endif // GAME_HPP

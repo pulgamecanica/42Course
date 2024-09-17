@@ -17,6 +17,7 @@ class Parser {
   static void ParseTrainFile(const std::string& filename, const std::string& name, RailwaySystem& system);
   static unsigned int ConvertToSeconds(const std::string& timeStr);
   static std::string ConvertToTimeString(unsigned int totalSeconds);
+  static std::string ConvertToTimeStringHHMMSS(unsigned int seconds);
 };
 
 #endif  // PARSER_HPP

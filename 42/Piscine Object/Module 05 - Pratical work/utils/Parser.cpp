@@ -336,6 +336,22 @@ unsigned int Parser::ConvertToSeconds(const std::string& timeStr) {
   return totalSeconds;
 }
 
+
+std::string Parser::ConvertToTimeStringHHMMSS(unsigned int seconds) {
+  std::stringstream ss;
+
+  int s = seconds;
+
+  int h = s / 3600;
+  s -= h * 3600;
+  int m = s / 60;
+  s -= m * 60;
+
+  ss << std::setfill('0') << std::setw(2) << h << ':' << std::setw(2) << m
+            << ':' << std::setw(2) << s;
+  return (ss.str());
+}
+
 std::string Parser::ConvertToTimeString(unsigned int totalSeconds) {
   // Calculate the hour and minute
   unsigned int hour = totalSeconds / 3600;
