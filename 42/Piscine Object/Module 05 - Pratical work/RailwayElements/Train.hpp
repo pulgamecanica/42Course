@@ -30,7 +30,60 @@ class Train {
 
 class RailSimulation;
 class NodeSimulation;
+class TrainSimulation;
 class Simulation;
+
+class TrainSimulationState {
+public:
+  TrainSimulationState(
+    const TrainSimulation& train_simulation,
+    const RailSimulation* current_rail,
+    const NodeSimulation* current_node,
+    const std::string&    next_node_name,
+    const std::string& prev_node_name,
+    float position_m,
+    float speed,
+    float acceleration,
+    bool safe_distance,
+    bool event_warning_stop,
+    double total_distance);
+  TrainSimulationState(const TrainSimulationState& tss) = default;
+  const std::string GetCurrentPositionName() const;
+
+
+  const RailSimulation* GetCurrentRail() const;
+  const NodeSimulation* GetCurrentNode() const;
+  const std::string& GetNextNodeName() const;
+  const std::string& GetPrevNodeName() const;
+  const std::string& GetArrival() const;
+  const std::string& GetDeparture() const;
+  const std::string& GetName() const;
+  const std::string GetHour() const;
+
+  bool HasArrivedToNode() const;
+  bool HasSafeDistance() const;
+  bool HasEventWarningStop() const;
+
+  float GetPosition() const;
+  float GetSpeed() const;
+  float GetAcceleration() const;
+  double GetTotalDistance() const;
+private:
+  const TrainSimulation& train_simulation_;
+  const RailSimulation* current_rail_;
+  const NodeSimulation* current_node_;
+  const std::string     next_node_name_;
+  const std::string     prev_node_name_;
+  
+  const float           position_m_;
+  const float           speed_;
+  const float           acceleration_;
+
+  const bool            safe_distance_;
+  const bool            event_warning_stop_;
+
+  const double          total_distance_;
+};
 
 class TrainSimulation : public Observer {
 public:
@@ -58,6 +111,8 @@ public:
   
   bool        HasFinished() const;
   bool        InvalidPath() const;
+
+  TrainSimulationState GetCurrentState() const;
 private:
   void Accelerate();
   void Brake();

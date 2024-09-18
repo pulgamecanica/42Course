@@ -38,6 +38,8 @@ class Simulation {
   void Update();
   bool IsFinished() const;
   bool IsRailTwoWay() const;
+
+  const std::vector<std::shared_ptr<TrainSimulationState>>& GetSimulationState(int index);
  private:
   void InitializeNodes();
   void InitializeRails();
@@ -45,9 +47,8 @@ class Simulation {
   void CollectResults();
   // void HandleEvents();
   // void HandleCollisions();
-  // void LogSimulationState();
+  void LogSimulationState();
   bool HasFinished() const;
-
 
   // References
   const RailwaySystem& rail_sys_;
@@ -76,6 +77,7 @@ class Simulation {
   std::vector<std::unique_ptr<NodeSimulation>> nodes_;
   std::vector<std::unique_ptr<RailSimulation>> rails_;
   std::vector<std::unique_ptr<TrainSimulation>> trains_;
+  std::vector<std::vector<std::shared_ptr<TrainSimulationState>>> trains_states_; // For each second (collection of seconds) we want the collection of trains
 };
 
 #endif  // SIMULATION_HPP

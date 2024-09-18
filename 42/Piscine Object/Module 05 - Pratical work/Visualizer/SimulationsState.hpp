@@ -21,8 +21,10 @@ public:
   explicit SimulationsState(SimulationsEngine& engine);
   void Update() override;
   void Draw() override;
+  
   void SetSimulationsManager(const SimulationsManager* manager);
   int GetCurrentSimulation() const;
+  int GetProgress() const;
 private:
   void DrawBackground();
   void DrawSettings();

@@ -40,6 +40,100 @@ unsigned Train::GetHour() const {
   return departure_hour_s_;
 }
 
+// TrainSimulationState Implementation
+TrainSimulationState::TrainSimulationState(
+  const TrainSimulation& train_simulation,
+  const RailSimulation* current_rail,
+  const NodeSimulation* current_node,
+  const std::string& next_node_name,
+  const std::string& prev_node_name,
+  float position_m,
+  float speed,
+  float acceleration,
+  bool safe_distance,
+  bool event_warning_stop,
+  double total_distance)
+  : train_simulation_(train_simulation),
+    current_rail_(current_rail),
+    current_node_(current_node),
+    next_node_name_(next_node_name),
+    prev_node_name_(prev_node_name),
+    position_m_(position_m),
+    speed_(speed),
+    acceleration_(acceleration),
+    safe_distance_(safe_distance),
+    event_warning_stop_(event_warning_stop),
+    total_distance_(total_distance) {
+}
+
+const std::string TrainSimulationState::GetCurrentPositionName() const {
+  if (!HasArrivedToNode())
+    return current_rail_->GetRail().GetNode1() + " - " + current_rail_->GetRail().GetNode2();
+  return prev_node_name_;
+}
+
+const RailSimulation* TrainSimulationState::GetCurrentRail() const {
+  return current_rail_;
+}
+
+const NodeSimulation* TrainSimulationState::GetCurrentNode() const {
+  return current_node_;
+}
+
+const std::string& TrainSimulationState::GetNextNodeName() const {
+  return next_node_name_;
+}
+
+const std::string& TrainSimulationState::GetPrevNodeName() const {
+  return prev_node_name_;
+}
+
+bool TrainSimulationState::HasArrivedToNode() const {
+  return current_rail_ == nullptr;
+}
+
+bool TrainSimulationState::HasSafeDistance() const {
+  return safe_distance_;
+}
+
+bool TrainSimulationState::HasEventWarningStop() const {
+  return event_warning_stop_;
+}
+
+float TrainSimulationState::GetPosition() const {
+  return position_m_;
+}
+
+float TrainSimulationState::GetSpeed() const {
+  return speed_;
+}
+
+float TrainSimulationState::GetAcceleration() const {
+  return acceleration_;
+}
+
+double TrainSimulationState::GetTotalDistance() const {
+  return total_distance_;
+}
+
+const std::string& TrainSimulationState::GetArrival() const {
+  return train_simulation_.GetTrain().GetArrival();
+}
+
+const std::string& TrainSimulationState::GetDeparture() const {
+  return train_simulation_.GetTrain().GetDeparture();
+}
+
+const std::string& TrainSimulationState::GetName() const {
+  return train_simulation_.GetTrain().GetName();
+}
+
+const std::string TrainSimulationState::GetHour() const {
+  return Parser::ConvertToTimeString(train_simulation_.GetTrain().GetHour());
+}
+
+
+
 // TrainSimulation Implementation
 TrainSimulation::TrainSimulation(Simulation& simulation, const Train& train)
   : simulation_(simulation),
@@ -376,4 +470,20 @@ double TrainSimulation::GetOptimalTimeForDistance(double distance) const {
 
 double TrainSimulation::GetOptimalTime() const {
   return optimal_time_;
+}
+
+TrainSimulationState TrainSimulation::GetCurrentState() const {
+  return TrainSimulationState(
+    *this,
+    current_rail_,
+    current_node_,
+    next_node_name_,
+    prev_node_name_,
+    position_m_,
+    speed_,
+    acceleration_,
+    has_safe_distance_,
+    event_warning_stop_,
+    total_distance_
+  );
 }

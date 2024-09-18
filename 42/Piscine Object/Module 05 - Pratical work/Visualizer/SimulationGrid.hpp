@@ -12,14 +12,15 @@
 #include <memory>
 #include <iostream>
 
+class SimulationsState;
+
 class SimulationGrid: public Grid {
 public:
-  SimulationGrid(RailwaySystem &rail_sys, float gridSize, Rectangle displayArea);
+  SimulationGrid(RailwaySystem &rail_sys, SimulationsState& sim_state, float gridSize, Rectangle displayArea);
 
   void Update() override;
   void Draw() override;
   void SetSimulationsManager(const SimulationsManager* manager);
-  void SetCurrentSimulation(int sim);
 private:
   void DrawTrainElements();
   void DrawRailElements();
@@ -27,8 +28,8 @@ private:
   void DrawElementsBG(const std::string& title);
 
   const SimulationsManager* manager_;
-
   const Rectangle elements_menu_rec_;
+  SimulationsState& sim_state_;
 
   std::unique_ptr<Animation> train_icon_;
   std::unique_ptr<Animation> rail_icon_;
@@ -42,6 +43,5 @@ private:
 
   Vector2 elements_menu_scroll_;
 
-  int current_simulation_;
 };
 #endif // SIMULATIONGRID_HPP_

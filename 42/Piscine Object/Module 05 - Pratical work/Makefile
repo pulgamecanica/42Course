@@ -26,7 +26,7 @@ SRC             =   ./main.cpp \
 		./Visualizer/Grid.cpp \
 		./utils/Animation.cpp \
 		./utils/ButtonManager.cpp \
-		./Visualizer/SimulationState.cpp \
+		./Visualizer/SimulationsState.cpp \
 		./Visualizer/SettingsState.cpp \
 		./Visualizer/SchedulesState.cpp \
 		./Visualizer/NetworkState.cpp \

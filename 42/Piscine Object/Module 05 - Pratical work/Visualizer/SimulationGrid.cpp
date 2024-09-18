@@ -4,7 +4,8 @@
 
 #include "SimulationGrid.hpp"
 #include "Settings.hpp"
-#include "SimulationState.hpp"
+#include "SimulationsState.hpp"
+#include "Parser.hpp"
 #include "cpp_on_rails.inc"
 
 #include "raygui.h"
@@ -34,16 +35,16 @@ namespace SimulationGridOptions {
   };
 }
 
-SimulationGrid::SimulationGrid(RailwaySystem &rail_sys, float gridSize, Rectangle displayArea)
+SimulationGrid::SimulationGrid(RailwaySystem &rail_sys, SimulationsState& sim_state, float gridSize, Rectangle displayArea)
   : Grid(rail_sys, gridSize, displayArea), 
     manager_(nullptr),
     elements_menu_rec_(displayArea.x + 5, display_area_.y + 5, SimulationGridOptions::kElementsMenuWidth, display_area_.height),
+    sim_state_(sim_state),
     menu_opened_(true),
     element_menu_opened_(false),
     trains_element_open_(false),
     rails_element_open_(false),
-    events_element_open_(false),
-    current_simulation_(0) {
+    events_element_open_(false) {
 
   Settings::Instance().DrawLoadingScreen(1 / 4,"Loading Simulation Grid", "Train Icon");
   train_icon_ = std::make_unique<Animation>(SimulationGridOptions::kTrainIconImages, 1.0f, SimulationGridOptions::kOptions);
@@ -134,21 +135,38 @@ void SimulationGrid::DrawTrainElements() {
   float y = elements_menu_rec_.y;
   y += 30;
   x += 10;
-  float width = elements_menu_rec_.width - 10.0f;
-  Simulation& sim = manager_->GetSimulation(current_simulation_);
-  for(const auto &train : sim.GetTrains()) {
-    const Train & t = train->GetTrain();
-    GuiLabel((Rectangle){x, y, width, 10.0f}, t.GetName().c_str());
-    y += 10.0f;
-    GuiLabel((Rectangle){x, y, width, 10.0f}, ("Departure: " + t.GetDeparture()).c_str());
-    y += 10.0f;
-    GuiLabel((Rectangle){x, y, width, 10.0f}, ("Arrival: " + t.GetArrival()).c_str());
-    y += 10.0f;
-    GuiLabel((Rectangle){x, y, width, 10.0f}, ("Departure time: " + t.GetDeparture()).c_str());
-    y += 10.0f;
-    // GuiLabel((Rectangle)(x, y, width, 10), train.GetTrain().GetName());
 
+  float width = elements_menu_rec_.width - 20.0f;
+  Simulation& sim = manager_->GetSimulation(sim_state_.GetCurrentSimulation());
+  for (const std::shared_ptr<TrainSimulationState> &ts : sim.GetSimulationState(sim_state_.GetProgress())) {
+    GuiLine((Rectangle){x, y, width, 10.0f}, ts->GetName().c_str());
+    y += 10.0f;
+    GuiLabel((Rectangle){x, y, width, 10.0f}, ("Departure: " + ts->GetDeparture()).c_str());
+    y += 10.0f;
+    GuiLabel((Rectangle){x, y, width, 10.0f}, ("Arrival: " + ts->GetArrival()).c_str());
+    y += 10.0f;
+    GuiLabel((Rectangle){x, y, width, 10.0f}, ("Departure time: " + ts->GetHour()).c_str());
+    y += 10.0f;
+    GuiLabel((Rectangle){x, y, width, 10.0f}, ("Current Position: " + ts->GetCurrentPositionName()).c_str());
+    y += 10.0f;
+    GuiLabel((Rectangle){x, y, width, 10.0f}, ("Speed: " + std::to_string(ts->GetSpeed())).c_str());
+    y += 15.0f; // Spacing
+    // GuiLabel((Rectangle)(x, y, width, 10), train.GetTrain().GetName());
   }
+  // for(const auto &train : sim.GetTrains()) {
+  //   const Train & t = train->GetTrain();
+  //   GuiLine((Rectangle){x, y, width, 10.0f}, t.GetName().c_str());
+  //   y += 10.0f;
+  //   GuiLabel((Rectangle){x, y, width, 10.0f}, ("Departure: " + t.GetDeparture()).c_str());
+  //   y += 10.0f;
+  //   GuiLabel((Rectangle){x, y, width, 10.0f}, ("Arrival: " + t.GetArrival()).c_str());
+  //   y += 10.0f;
+  //   GuiLabel((Rectangle){x, y, width, 10.0f}, ("Departure time: " + Parser::ConvertToTimeString(t.GetHour())).c_str());
+  //   y += 10.0f;
+  //   GuiLabel((Rectangle){x, y, width, 10.0f}, ("Time: " + std::to_string(sim_state_.GetProgress())).c_str());
+  //   y += 15.0f; // Spacing
+  //   // GuiLabel((Rectangle)(x, y, width, 10), train.GetTrain().GetName());
+  // }
 
 }
 void SimulationGrid::DrawRailElements() {
@@ -173,11 +191,6 @@ void SimulationGrid::DrawElementsBG(const std::string& title) {
     events_element_open_ = false;
   }
 }
-
-void SimulationGrid::SetCurrentSimulation(int sim) {
-  current_simulation_ = sim;
-}
-
 
 void SimulationGrid::SetSimulationsManager(const SimulationsManager* manager) {
   manager_ = manager;

@@ -1,4 +1,4 @@
-#include "SimulationState.hpp"
+#include "SimulationsState.hpp"
 #include "SimulationsEngine.hpp"
 #include "Parser.hpp"
 
@@ -30,7 +30,7 @@ namespace SimulationsOptions {
 SimulationsState::SimulationsState(SimulationsEngine& engine)
   : engine_(engine),
     manager_(nullptr),
-    grid_(engine.GetRailwaySystem(), SimulationsOptions::kGridSize, SimulationsOptions::kGridArea),
+    grid_(engine.GetRailwaySystem(), *this, SimulationsOptions::kGridSize, SimulationsOptions::kGridArea),
     show_log_(false), simulation_running_(false), settings_open_(false), info_open_(false),
     simulation_progress_(0), current_simulation_(0), last_update_s_(0) {
   button_manager_.AddButton("Home", SimulationsOptions::kHomeButtonArea, [this]() { engine_.ChangeState(EngineStates::kMenu); });
@@ -86,13 +86,17 @@ void SimulationsState::Draw() {
 
 void SimulationsState::SetSimulationsManager(const SimulationsManager* manager) {
   grid_.SetSimulationsManager(manager);
-  grid_.SetCurrentSimulation(current_simulation_);
   manager_ = manager;
 }
 
 int SimulationsState::GetCurrentSimulation() const {
   return current_simulation_;
 }
+
+int SimulationsState::GetProgress() const {
+  return simulation_progress_;
+}
+
 
 void SimulationsState::DrawInfo() {
   if (GuiWindowBox(SimulationsOptions::kInfoArea, "Info"))

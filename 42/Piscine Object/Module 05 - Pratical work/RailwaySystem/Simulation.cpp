@@ -85,7 +85,7 @@ void Simulation::Update() {
       train->Update();
     // HandleEvents();
     // HandleCollisions();
-    // LogSimulationState();
+    LogSimulationState();
     if (HasFinished()) {
       CollectResults();
       state_ = State::kFinished;
@@ -145,9 +145,18 @@ const RailwaySystem& Simulation::GetRailwaySystem() const {
 //   // Logic to process collisions
 // }
 
-// void Simulation::LogSimulationState() {
-//   // Logic to log the current state of the simulation
-// }
+void Simulation::LogSimulationState() {
+  std::vector<std::shared_ptr<TrainSimulationState>> states_;
+  for (auto& train : trains_) {
+    TrainSimulationState state = train->GetCurrentState();
+    states_.push_back(std::make_shared<TrainSimulationState>(state));
+  }
+  trains_states_.push_back(states_);
+}
+
+const std::vector<std::shared_ptr<TrainSimulationState>>& Simulation::GetSimulationState(int index) {
+  return trains_states_[index];
+}
 
 bool Simulation::IsRailTwoWay() const {
   return rail_two_way_;
