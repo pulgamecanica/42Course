@@ -40,5 +40,6 @@ int main(int argc, char *argv[]) {
   //   sims.push_back(sm);
   // }
   engine.Run();
+  Settings::Instance().SaveRailwayNodePositions(engine.GetRailwaySystem());
   return (0);
 }

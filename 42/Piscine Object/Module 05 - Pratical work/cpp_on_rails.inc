@@ -9,8 +9,10 @@
 # define DEBUG 0
 #endif
 
-#define WIDTH 1800
-#define HEIGHT 1000
+#define WIDTH 1000
+#define HEIGHT 650
+
+#define POSITIONS_FILENAME "cache/nodes_positions.txt"
 
 # define C_BLACK  "\033[0;30m"
 # define C_RED    "\033[0;31m"

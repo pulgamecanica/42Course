@@ -1,4 +1,9 @@
 #include "Settings.hpp"
+#include "RailwaySystem.hpp"
+#include "FileLogger.hpp"
+
+#include "cpp_on_rails.inc"
+
 #include <vector>
 #include <map>
 
@@ -6,8 +11,8 @@ std::mutex Settings::mutex_;
 Settings* Settings::instance_ = nullptr;
 
 Settings::Settings()
-  : rail_two_way_(false) {
-  max_speed_ = 100;
+  : rail_two_way_(false), simulation_fps_(10) {
+  max_speed_ = 19.4f; // this is a max speed of 70km/h
 }
 
 Settings& Settings::Instance() {
@@ -57,6 +62,11 @@ void Settings::SetOutputDirectory(const std::string& directory) {
   output_directory_ = directory;
 }
 
+void Settings::SetSimulationFPS(float fps) {
+  if (fps <= 0 || fps > 42) return;
+  simulation_fps_ = fps;
+}
+
 const std::string& Settings::GetDataFileName() const {
   return data_file_name_;
 }
@@ -67,6 +77,21 @@ const std::string& Settings::GetScheduleDirectory() const {
 
 const std::string& Settings::GetOutputDirectory() const {
   return output_directory_;
+}
+
+float Settings::GetSimulationFPS() const {
+  return simulation_fps_;
+}
+
+void Settings::SaveRailwayNodePositions(RailwaySystem& rail_sys) {
+  FileLogger node_positions_log(GetNodePositionsFileName());
+
+  for (const auto& [name, node] : rail_sys.GetNodes())
+    node_positions_log.write((name + " " + std::to_string(node->GetPosition().x) + " " + std::to_string(node->GetPosition().y).c_str()));
+}
+
+const std::string   Settings::GetNodePositionsFileName() const {
+  return std::string(POSITIONS_FILENAME);
 }
 
 bool Settings::IsRailTwoWay() const {

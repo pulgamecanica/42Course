@@ -1,6 +1,7 @@
 #include "SimulationsState.hpp"
 #include "SimulationsEngine.hpp"
 #include "Parser.hpp"
+#include "Settings.hpp"
 
 #include "cpp_on_rails.inc"
 
@@ -24,6 +25,8 @@ namespace SimulationsOptions {
   const Rectangle kPauseResumeArea = {(WIDTH / 2) - 10, HEIGHT - 30, 42, 20};
   const Rectangle kForwardsArea = {(WIDTH / 2) + 40, HEIGHT - 30, 42, 20};
   const Rectangle kStopArea = {WIDTH - 90, HEIGHT - 40, 42, 30};
+  const Vector2   kSpeedBarAreaText = {WIDTH - 230, HEIGHT - 40};
+  const Rectangle kSpeedBarArea = {WIDTH - 230, HEIGHT - 30, 100, 10};
 };
 
 // Constructor initializes the state with a pointer to the Game object
@@ -68,7 +71,13 @@ void SimulationsState::Update() {
 }
 
 bool SimulationsState::IsTimeToUpdate() {
-  return last_update_s_ >= 0.01f;
+  // last_update_s_ fives me the seconds in float
+  // (0) 0.0001 seconds passed
+  // (1) 0.003  seconds passed
+  // (2) 0.01   seconds passed
+  // (3) 0.1    seconds passed
+  // If I want 30 updates every second I must wait for 1/30 of a second at each frame
+  return last_update_s_ >= 1/Settings::Instance().GetSimulationFPS();
 }
 
 void SimulationsState::Draw() {
@@ -118,4 +127,10 @@ void SimulationsState::DrawBackground() {
   const std::string text = Parser::ConvertToTimeStringHHMMSS(start_time + simulation_progress_) + "/" + Parser::ConvertToTimeStringHHMMSS(manager_->GetSimulation(current_simulation_).GetTotalTime() + start_time);
   DrawText(text.c_str(), SimulationsOptions::kTimeProgressVec.x, SimulationsOptions::kTimeProgressVec.y, SimulationsOptions::kTextSize, DARKGRAY);
   GuiSliderBar(SimulationsOptions::kProgressBarArea, NULL, NULL, &simulation_progress_, 0, manager_->GetSimulation(current_simulation_).GetTotalTime());  
+
+  DrawText("FPS", SimulationsOptions::kSpeedBarAreaText.x, SimulationsOptions::kSpeedBarAreaText.y, SimulationsOptions::kTextSize, DARKGRAY);
+  float fps = Settings::Instance().GetSimulationFPS();
+  GuiSliderBar(SimulationsOptions::kSpeedBarArea, "-", "+", &fps, 1.0f, 42.0f);  
+  Settings::Instance().SetSimulationFPS(fps);
+  // GuiSliderBar(Rectangle bounds, const char *textLeft, const char *textRight, float *value, float minValue, float maxValue); // Slider Bar control
 }

@@ -6,6 +6,8 @@
 #include <memory>
 #include <mutex>
 
+class RailwaySystem;
+
 class Settings {
 public:
   static Settings& Instance();
@@ -18,15 +20,20 @@ public:
   void SetDataFileName(const std::string& filename);
   void SetScheduleDirectory(const std::string& directory);
   void SetOutputDirectory(const std::string& directory);
-
+  void SetSimulationFPS(float fps);
   // Getters
   double              MaxTrainSpeed() const;
   const std::string&  GetDataFileName() const;
   const std::string&  GetScheduleDirectory() const;
   const std::string&  GetOutputDirectory() const;
+  const std::string   GetNodePositionsFileName() const;
+
+  float               GetSimulationFPS() const;
   bool                IsRailTwoWay() const;
+
   // Others
   void DrawLoadingScreen(float progress, const std::string loading_info, const std::string loading_info_element = "");
+  void SaveRailwayNodePositions(RailwaySystem& rail_sys);
   void InitializeAnimations();
   void DrawHourglass(int x, int y) const;
   void UpdateAnimations();
@@ -40,9 +47,12 @@ private:
   std::string data_file_name_;
   std::string schedule_directory_;
   std::string output_directory_;
+
   std::unique_ptr<Animation> hourglass_animation_;
+
   double max_speed_;
   bool   rail_two_way_;
+  float simulation_fps_;
 };
 
 #endif // SETTINGS_HPP

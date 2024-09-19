@@ -104,6 +104,7 @@ void Parser::ParseElementsFile(const std::string& filename, RailwaySystem& syste
       ErrorHandler::ReportError(filename, line_number, column_number, "Unknown element type: " + type, line);
     }
   }
+  ParseNodePositions(system);
 }
 
 void Parser::ParseScheduleFiles(const std::string& directory, RailwaySystem& system) {
@@ -335,6 +336,30 @@ unsigned int Parser::ConvertToSeconds(const std::string& timeStr) {
   return totalSeconds;
 }
 
+void Parser::ParseNodePositions(RailwaySystem& system) {
+  std::ifstream file(Settings::Instance().GetNodePositionsFileName());
+  if (!file.is_open()) {
+    ErrorHandler::ReportError(Settings::Instance().GetNodePositionsFileName(), 0, 0, "Failed to open file", "");
+    return;
+  }
+
+  std::string line;
+  while (std::getline(file, line)) {
+    std::istringstream ss(line);
+    std::string node_name;
+    float x, y;
+
+    // Parse the line for node name, x and y coordinates
+    if (!(ss >> node_name >> x >> y)) {
+      ErrorHandler::ReportError(Settings::Instance().GetNodePositionsFileName(), file.tellg(), 0, "Malformed line", line);
+      continue;  // Skip this line and continue reading
+    }
+    try {
+      system.GetNode(node_name)->SetPosition({x, y});
+    } catch (std::exception &e) {(void)e;}
+  }
+  file.close();
+}
 
 std::string Parser::ConvertToTimeStringHHMMSS(unsigned int seconds) {
   std::stringstream ss;

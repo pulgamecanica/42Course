@@ -2,6 +2,7 @@
 #include "SimulationPanelItem.hpp"
 #include "Settings.hpp"
 #include "raygui.h"
+#include "Parser.hpp"
 #include <string.h>
 
 SimulationPanelItem::SimulationPanelItem(SimulationsEngine& engine, const SimulationsManager * simulations_manager, Rectangle bounds) 
@@ -75,13 +76,20 @@ void SimulationPanelItem::Draw(Vector2 scroll) const {
       GetY() + scroll.y);
   }
   const char * schedule_name = std::string(simulations_manager_->GetSchedule().GetName() + " (" + std::to_string(simulations_manager_->GetSimulations().size()) + ")").c_str();
+
   DrawText(
     schedule_name,
     GetX() + scroll.x + 8,
     GetY() + scroll.y + 16,
-    12,
+    10,
     BLACK);
-  // free(schedule_name);
+  DrawText(
+    Parser::ConvertToTimeString(simulations_manager_->GetAverageTravelTime()).c_str(),
+    GetWidth() + scroll.x,
+    GetY() + scroll.y + 16,
+    10,
+    BLACK);
+  
   // int y = bounds_.y;
   // for (auto & simulation : simulations_manager_.GetSimulations()) {
   //   std::string text = "Optimal Travel Time: ";
