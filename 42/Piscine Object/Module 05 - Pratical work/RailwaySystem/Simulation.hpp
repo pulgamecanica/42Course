@@ -34,7 +34,8 @@ class Simulation {
   double                    GetMaxTrainSpeed() const;
   unsigned int              GetCurrentTime() const;
   unsigned int              GetTotalTime() const;
-  
+  unsigned int              GetStartTime() const;
+
   void Update();
   bool IsFinished() const;
   bool IsRailTwoWay() const;

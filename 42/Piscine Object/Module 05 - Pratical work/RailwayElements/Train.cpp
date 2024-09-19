@@ -68,7 +68,7 @@ TrainSimulationState::TrainSimulationState(
 
 const std::string TrainSimulationState::GetCurrentPositionName() const {
   if (!HasArrivedToNode())
-    return current_rail_->GetRail().GetNode1() + " - " + current_rail_->GetRail().GetNode2();
+    return GetPrevNodeName() + " - " + GetNextNodeName();
   return prev_node_name_;
 }
 
@@ -150,6 +150,7 @@ TrainSimulation::TrainSimulation(Simulation& simulation, const Train& train)
     status_(Status::kStoped),
     has_safe_distance_(true),
     event_warning_stop_(false),
+    train_can_start_(true),
     time_running_s_(0) {
 
     CalculateFastestRoute();
@@ -173,11 +174,14 @@ void TrainSimulation::Update() {
       UpdatePosition();
       Log();
     } else {
-      ManageArrivalToNode();
+      if (train_can_start_) {
+        if (CanStart())
+          StartRoute();
+      } else {
+        ManageArrivalToNode();
+        CalculateFastestRoute();
+      }
       Log();
-      CalculateFastestRoute();
-      if (CanStart())
-        StartRoute();
     }
     UpdateStatus();
   }
@@ -317,6 +321,7 @@ void TrainSimulation::ManageArrivalToNode() {
   prev_node_name_ = std::string(next_node_name_);
   next_node_name_ = "";
   position_m_ = 0;
+  train_can_start_ = true;
 }
 
 void TrainSimulation::StartRoute() {
@@ -340,6 +345,7 @@ void TrainSimulation::StartRoute() {
   speed_ = 0;
   position_m_ = 0;
   acceleration_ = 0;
+  train_can_start_ = false;
 }
 
 void TrainSimulation::SubscribeToNode(NodeSimulation* node) {
@@ -378,6 +384,7 @@ bool TrainSimulation::ShouldStop() const {
 }
 
 bool TrainSimulation::HasArrivedToNode() const {
+  if (!IsTimeToStart()) return true;
   if (current_rail_ == nullptr && current_node_ != nullptr) return true;
   if (current_rail_ != nullptr && TraveledAllRail()) return true;
   return false;

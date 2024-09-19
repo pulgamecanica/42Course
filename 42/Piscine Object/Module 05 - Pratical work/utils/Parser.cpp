@@ -56,7 +56,6 @@ void Parser::ParseElementsFile(const std::string& filename, RailwaySystem& syste
         ErrorHandler::ReportError(filename, line_number, column_number, "Distance cannot be negative", line);
         continue;
       }
-      // distance *= 1000; // KM -> m
       if (distance > 100000) { //100 KM is the maximum amout for a rail, let's be real
         ErrorHandler::ReportError(filename, line_number, column_number, "Distance must be < 100,000", line);
         continue;

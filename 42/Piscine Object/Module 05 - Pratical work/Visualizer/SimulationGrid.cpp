@@ -39,6 +39,7 @@ SimulationGrid::SimulationGrid(RailwaySystem &rail_sys, SimulationsState& sim_st
   : Grid(rail_sys, gridSize, displayArea), 
     manager_(nullptr),
     elements_menu_rec_(displayArea.x + 5, display_area_.y + 5, SimulationGridOptions::kElementsMenuWidth, display_area_.height),
+    rail_sys_(rail_sys),
     sim_state_(sim_state),
     menu_opened_(true),
     element_menu_opened_(false),
@@ -151,6 +152,7 @@ void SimulationGrid::DrawTrainElements() {
     y += 10.0f;
     GuiLabel((Rectangle){x, y, width, 10.0f}, ("Speed: " + std::to_string(ts->GetSpeed())).c_str());
     y += 15.0f; // Spacing
+    DrawTrain(ts);
     // GuiLabel((Rectangle)(x, y, width, 10), train.GetTrain().GetName());
   }
   // for(const auto &train : sim.GetTrains()) {
@@ -168,6 +170,32 @@ void SimulationGrid::DrawTrainElements() {
   //   // GuiLabel((Rectangle)(x, y, width, 10), train.GetTrain().GetName());
   // }
 
+}
+
+void SimulationGrid::DrawTrain(const std::shared_ptr<TrainSimulationState>& train) {
+  if (train->HasArrivedToNode()) {
+    // Draw Train in the node
+    const Node & node = train->GetCurrentNode()->GetNode();
+    Vector2 node_pos = GetAbsoluteCoordinates(node.GetPosition());
+    DrawPoly(node_pos, 6, 6, 0.0f, RED);
+  } else {
+    const RailSimulation* rail = train->GetCurrentRail();
+    const Node * node1 = rail_sys_.GetNode(train->GetPrevNodeName());
+    const Node * node2 = rail_sys_.GetNode(train->GetNextNodeName());
+
+    const Vector2 A = GetAbsoluteCoordinates(node1->GetPosition());
+    const Vector2 B = GetAbsoluteCoordinates(node2->GetPosition());
+    float percent = train->GetPosition() / rail->GetRail().GetDistance();
+    if (percent > 1)
+      percent = 1;
+
+    Vector2 node_pos;
+    node_pos.x = A.x + percent * (B.x - A.x);
+    node_pos.y = A.y + percent * (B.y - A.y);
+    DrawPoly(node_pos, 6, 6, 0.0f, ORANGE);
+
+    // Draw Train in the Rail
+  }
 }
 void SimulationGrid::DrawRailElements() {
   if (!manager_)

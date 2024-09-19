@@ -1,39 +1,47 @@
-Node SomeOtherNode
-Node RailNodeF
-Node NewNode
-Node CityC
-Node CityP
-Node CityZ
-Node City4S
-Node RailNodeD
-Node RailNodeC
-Node RailNodeE
-Node OtherNode
-Node CityA
-Node SomeNode
-Node CityD
-Node RailNodeB
-Node RailNodeG
-Node CityB
-Node CityY
-Node RailNodeA
-Rail CityA RailNodeA 15000
-Rail RailNodeA RailNodeB 20000
-Rail RailNodeB RailNodeC 13000
-Rail RailNodeC CityB 5000
-Rail CityB RailNodeD 7000
-Rail CityC RailNodeC 7000
-Rail RailNodeD RailNodeE 12000
-Rail RailNodeE CityC 6000
-Rail CityA RailNodeF 6000
-Rail RailNodeF RailNodeG 17000
-Rail RailNodeG CityC 17000
-Rail RailNodeA RailNodeD 23020
-Rail RailNodeA RailNodeE 19000
-Rail RailNodeA RailNodeG 6700
-Rail RailNodeB RailNodeD 20240
-Event "Riot" 0.05 1.55895e+138y CityA
-Event "Passenger's Discomfort" 0.2 30m CityA
-Event "Passenger's Discomfort" 0.2 30m CityB
-Event "Passenger's Discomfort" 0.2 30m CityC
-Event "Can't happen" 0 2.7749e+140y CityA
+Node Lisboa
+Node Oriente
+Node SeteRios
+Node Entrecampos
+Node Rossio
+Node AlcantaraTerra
+Node AlcantaraMar
+Node CaisDoSodre
+Node Cascais
+Node Sintra
+Node Areeiro
+Node Oeiras
+Node Pragal
+Node Corroios
+Node Coina
+Node Setubal
+Node Campolide
+Node Azambuja
+Node PortoSanto
+Rail Lisboa Oriente 8000
+Rail Oriente Areeiro 5000
+Rail Areeiro SeteRios 4000
+Rail SeteRios Entrecampos 3000
+Rail Entrecampos Rossio 7000
+Rail Rossio AlcantaraTerra 6000
+Rail AlcantaraTerra AlcantaraMar 1000
+Rail AlcantaraMar CaisDoSodre 2000
+Rail CaisDoSodre Oeiras 14000
+Rail Oeiras Cascais 10000
+Rail SeteRios Campolide 5000
+Rail Campolide Sintra 17000
+Rail AlcantaraMar Pragal 9000
+Rail Pragal Corroios 7000
+Rail Corroios Coina 8000
+Rail Coina Setubal 15000
+Rail Oriente Azambuja 20000
+Rail Oriente PortoSanto 17000
+Event "Signal Failure" 0.3 15m SeteRios
+Event "Passenger Strike" 0.5 2h Oriente
+Event "Train Delay" 0.2 30m CaisDoSodre
+Event "Technical Issue" 0.4 1h Sintra
+Event "Severe Weather" 0.1 45m Rossio
+Event "Signal Failure" 0.3 15m SeteRios
+Event "Passenger Strike" 0.5 2h Oriente
+Event "Train Delay" 0.2 30m CaisDoSodre
+Event "Technical Issue" 0.4 1h Sintra
+Event "Severe Weather" 0.1 45m Rossio

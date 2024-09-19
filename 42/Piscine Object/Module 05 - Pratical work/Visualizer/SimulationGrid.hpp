@@ -26,9 +26,11 @@ private:
   void DrawRailElements();
   void DrawEventsElement();
   void DrawElementsBG(const std::string& title);
+  void DrawTrain(const std::shared_ptr<TrainSimulationState>& train);
 
   const SimulationsManager* manager_;
   const Rectangle elements_menu_rec_;
+  RailwaySystem& rail_sys_;
   SimulationsState& sim_state_;
 
   std::unique_ptr<Animation> train_icon_;

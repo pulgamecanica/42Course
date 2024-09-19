@@ -114,7 +114,8 @@ void SimulationsState::DrawBackground() {
   // Bottom Navbar
   DrawRectangleRec(SimulationsOptions::kBottomNavArea, LIGHTGRAY); // Navbar background
   // Player Elements (Which are not buttons)
-  const std::string text = Parser::ConvertToTimeStringHHMMSS(simulation_progress_) + "/" + Parser::ConvertToTimeStringHHMMSS(manager_->GetSimulation(current_simulation_).GetTotalTime());
+  unsigned start_time = manager_->GetSimulation(current_simulation_).GetStartTime();
+  const std::string text = Parser::ConvertToTimeStringHHMMSS(start_time + simulation_progress_) + "/" + Parser::ConvertToTimeStringHHMMSS(manager_->GetSimulation(current_simulation_).GetTotalTime() + start_time);
   DrawText(text.c_str(), SimulationsOptions::kTimeProgressVec.x, SimulationsOptions::kTimeProgressVec.y, SimulationsOptions::kTextSize, DARKGRAY);
   GuiSliderBar(SimulationsOptions::kProgressBarArea, NULL, NULL, &simulation_progress_, 0, manager_->GetSimulation(current_simulation_).GetTotalTime());  
 }

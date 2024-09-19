@@ -83,10 +83,11 @@ void Simulation::Update() {
     total_time_++;
     for (auto& train : trains_)
       train->Update();
+    LogSimulationState();
     // HandleEvents();
     // HandleCollisions();
-    LogSimulationState();
     if (HasFinished()) {
+      LogSimulationState();
       CollectResults();
       state_ = State::kFinished;
     }
@@ -135,6 +136,10 @@ RailSimulation* Simulation::GetRailRef(const std::string& node1, const std::stri
 
 const RailwaySystem& Simulation::GetRailwaySystem() const {
   return rail_sys_;
+}
+
+unsigned int Simulation::GetStartTime() const {
+  return start_time_;
 }
 
 // void Simulation::HandleEvents() {

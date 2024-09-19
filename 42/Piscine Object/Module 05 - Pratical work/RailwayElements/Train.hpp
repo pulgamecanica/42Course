@@ -50,7 +50,6 @@ public:
   TrainSimulationState(const TrainSimulationState& tss) = default;
   const std::string GetCurrentPositionName() const;
 
-
   const RailSimulation* GetCurrentRail() const;
   const NodeSimulation* GetCurrentNode() const;
   const std::string& GetNextNodeName() const;
@@ -158,6 +157,7 @@ private:
   enum Status     status_;
   bool            has_safe_distance_;
   bool            event_warning_stop_;
+  bool            train_can_start_;
 
   double          optimal_time_;
   double          total_distance_;
