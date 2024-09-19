@@ -45,7 +45,8 @@ SimulationGrid::SimulationGrid(RailwaySystem &rail_sys, SimulationsState& sim_st
     element_menu_opened_(false),
     trains_element_open_(false),
     rails_element_open_(false),
-    events_element_open_(false) {
+    events_element_open_(false),
+    selected_train_(nullptr) {
 
   Settings::Instance().DrawLoadingScreen(1 / 4,"Loading Simulation Grid", "Train Icon");
   train_icon_ = std::make_unique<Animation>(SimulationGridOptions::kTrainIconImages, 1.0f, SimulationGridOptions::kOptions);
@@ -73,51 +74,9 @@ void SimulationGrid::Update() {
 void SimulationGrid::Draw() {
   if (manager_) {
     Grid::Draw();
-    if (menu_opened_) {
-      DrawRectangleRec(SimulationGridOptions::kMenuBGArea, GRAY);
-      if (GuiButton(SimulationGridOptions::kCloseMenuArea, GuiIconText(ICON_ARROW_RIGHT_FILL, "")))
-        menu_opened_ = false;
-      
-      float icon_y = SimulationGridOptions::kMenuBGArea.y + (SimulationGridOptions::kMenuBGArea.height / 2) - (SimulationGridOptions::kIconButtonSize / 2);
-      float icon_x = SimulationGridOptions::kMenuBGArea.x;
-
-      bool clicked_train = GuiButton((Rectangle){icon_x, icon_y, SimulationGridOptions::kIconButtonSize, SimulationGridOptions::kIconButtonSize} , "");
-      icon_x += SimulationGridOptions::kIconButtonSize;
-      bool clicked_rail  = GuiButton((Rectangle){icon_x, icon_y, SimulationGridOptions::kIconButtonSize, SimulationGridOptions::kIconButtonSize} , "");
-      icon_x += SimulationGridOptions::kIconButtonSize;
-      bool clicked_event = GuiButton((Rectangle){icon_x, icon_y, SimulationGridOptions::kIconButtonSize, SimulationGridOptions::kIconButtonSize} , "");
-      
-      icon_y += SimulationGridOptions::kIconPadding / 2;
-      icon_x = SimulationGridOptions::kMenuBGArea.x + SimulationGridOptions::kIconPadding / 2;
-      train_icon_->Draw(icon_x, icon_y);
-      icon_x += SimulationGridOptions::kIconButtonSize;
-      rail_icon_->Draw(icon_x, icon_y);
-      icon_x += SimulationGridOptions::kIconButtonSize;
-      event_icon_->Draw(icon_x, icon_y);
-
-      if (clicked_train) {
-        trains_element_open_ = true;
-        rails_element_open_ = false;
-        events_element_open_ = false;
-        element_menu_opened_ = true;
-      } else if (clicked_rail) {
-        trains_element_open_ = false;
-        rails_element_open_ = true;
-        events_element_open_ = false;
-        element_menu_opened_ = true;
-      } else if (clicked_event) {
-        trains_element_open_ = false;
-        rails_element_open_ = false;
-        events_element_open_ = true;
-        element_menu_opened_ = true;
-      }
-    } else {
-      if (GuiButton(SimulationGridOptions::kOpenMenuArea, GuiIconText(ICON_ARROW_LEFT_FILL, "")))
-        menu_opened_ = true;
-    }
-    if (trains_element_open_) {
-      DrawTrainElements();
-    } else if (rails_element_open_) {
+    DrawMenu();
+    DrawTrains();
+    if (rails_element_open_) {
       DrawRailElements();
     } else if (events_element_open_) {
       DrawEventsElement();
@@ -128,10 +87,56 @@ void SimulationGrid::Draw() {
   }
 }
 
-void SimulationGrid::DrawTrainElements() {
+void SimulationGrid::DrawMenu() {
+  if (menu_opened_) {
+    DrawRectangleRec(SimulationGridOptions::kMenuBGArea, GRAY);
+    if (GuiButton(SimulationGridOptions::kCloseMenuArea, GuiIconText(ICON_ARROW_RIGHT_FILL, "")))
+      menu_opened_ = false;
+    
+    float icon_y = SimulationGridOptions::kMenuBGArea.y + (SimulationGridOptions::kMenuBGArea.height / 2) - (SimulationGridOptions::kIconButtonSize / 2);
+    float icon_x = SimulationGridOptions::kMenuBGArea.x;
+
+    bool clicked_train = GuiButton((Rectangle){icon_x, icon_y, SimulationGridOptions::kIconButtonSize, SimulationGridOptions::kIconButtonSize} , "");
+    icon_x += SimulationGridOptions::kIconButtonSize;
+    bool clicked_rail  = GuiButton((Rectangle){icon_x, icon_y, SimulationGridOptions::kIconButtonSize, SimulationGridOptions::kIconButtonSize} , "");
+    icon_x += SimulationGridOptions::kIconButtonSize;
+    bool clicked_event = GuiButton((Rectangle){icon_x, icon_y, SimulationGridOptions::kIconButtonSize, SimulationGridOptions::kIconButtonSize} , "");
+    
+    icon_y += SimulationGridOptions::kIconPadding / 2;
+    icon_x = SimulationGridOptions::kMenuBGArea.x + SimulationGridOptions::kIconPadding / 2;
+    train_icon_->Draw(icon_x, icon_y);
+    icon_x += SimulationGridOptions::kIconButtonSize;
+    rail_icon_->Draw(icon_x, icon_y);
+    icon_x += SimulationGridOptions::kIconButtonSize;
+    event_icon_->Draw(icon_x, icon_y);
+
+    if (clicked_train || clicked_rail || clicked_event) {
+      element_menu_opened_ = true;
+      trains_element_open_ = clicked_train;
+      rails_element_open_ = clicked_rail;
+      events_element_open_ = clicked_event;
+    }
+  } else {
+    if (GuiButton(SimulationGridOptions::kOpenMenuArea, GuiIconText(ICON_ARROW_LEFT_FILL, "")))
+      menu_opened_ = true;
+  }
+}
+
+void SimulationGrid::DrawTrains() {
   if (!manager_)
     throw std::runtime_error("Simulations Manager must be present to draw elements");
+  
+  Simulation& sim = manager_->GetSimulation(sim_state_.GetCurrentSimulation());
+  for (const std::shared_ptr<TrainSimulationState> &ts : sim.GetSimulationState(sim_state_.GetProgress()))
+    DrawTrain(ts);
+  DrawTrainsElements();
+}
+
+void SimulationGrid::DrawTrainsElements() {
+  if (!trains_element_open_) return;
+  
   DrawElementsBG("Trains");
+
   float x = elements_menu_rec_.x;
   float y = elements_menu_rec_.y;
   y += 30;
@@ -140,6 +145,19 @@ void SimulationGrid::DrawTrainElements() {
   float width = elements_menu_rec_.width - 20.0f;
   Simulation& sim = manager_->GetSimulation(sim_state_.GetCurrentSimulation());
   for (const std::shared_ptr<TrainSimulationState> &ts : sim.GetSimulationState(sim_state_.GetProgress())) {
+    Rectangle train_area = {x, y, width, 60};
+    if (GuiLabelButton(train_area, "")) {
+      if (selected_train_ == const_cast<TrainSimulation*>(ts->GetTrainSimulation()))
+        selected_train_ = nullptr;
+      else
+        selected_train_ = const_cast<TrainSimulation*>(ts->GetTrainSimulation());
+    }
+    if (selected_train_ == const_cast<TrainSimulation*>(ts->GetTrainSimulation()) ){
+      DrawRectangleRec(train_area, BEIGE);
+    }
+    if (CheckCollisionPointRec(GetMousePosition(), train_area)) {
+      DrawRectangleRec(train_area, (Color){42, 42, 42, 20});
+    }
     GuiLine((Rectangle){x, y, width, 10.0f}, ts->GetName().c_str());
     y += 10.0f;
     GuiLabel((Rectangle){x, y, width, 10.0f}, ("Departure: " + ts->GetDeparture()).c_str());
@@ -151,25 +169,10 @@ void SimulationGrid::DrawTrainElements() {
     GuiLabel((Rectangle){x, y, width, 10.0f}, ("Current Position: " + ts->GetCurrentPositionName()).c_str());
     y += 10.0f;
     GuiLabel((Rectangle){x, y, width, 10.0f}, ("Speed: " + std::to_string(ts->GetSpeed())).c_str());
-    y += 15.0f; // Spacing
-    DrawTrain(ts);
-    // GuiLabel((Rectangle)(x, y, width, 10), train.GetTrain().GetName());
+    y += 10.0f;
+    //Spacing
+    y += 10.0f;
   }
-  // for(const auto &train : sim.GetTrains()) {
-  //   const Train & t = train->GetTrain();
-  //   GuiLine((Rectangle){x, y, width, 10.0f}, t.GetName().c_str());
-  //   y += 10.0f;
-  //   GuiLabel((Rectangle){x, y, width, 10.0f}, ("Departure: " + t.GetDeparture()).c_str());
-  //   y += 10.0f;
-  //   GuiLabel((Rectangle){x, y, width, 10.0f}, ("Arrival: " + t.GetArrival()).c_str());
-  //   y += 10.0f;
-  //   GuiLabel((Rectangle){x, y, width, 10.0f}, ("Departure time: " + Parser::ConvertToTimeString(t.GetHour())).c_str());
-  //   y += 10.0f;
-  //   GuiLabel((Rectangle){x, y, width, 10.0f}, ("Time: " + std::to_string(sim_state_.GetProgress())).c_str());
-  //   y += 15.0f; // Spacing
-  //   // GuiLabel((Rectangle)(x, y, width, 10), train.GetTrain().GetName());
-  // }
-
 }
 
 void SimulationGrid::DrawTrain(const std::shared_ptr<TrainSimulationState>& train) {
@@ -178,6 +181,9 @@ void SimulationGrid::DrawTrain(const std::shared_ptr<TrainSimulationState>& trai
     const Node & node = train->GetCurrentNode()->GetNode();
     Vector2 node_pos = GetAbsoluteCoordinates(node.GetPosition());
     DrawPoly(node_pos, 6, 6, 0.0f, RED);
+    if (selected_train_ == const_cast<TrainSimulation*>(train->GetTrainSimulation()))
+      DrawRing(node_pos, 6, 8, 0, 360, 100, LIME);
+    // DrawRing(Vector2 center, float innerRadius, float outerRadius, float startAngle, float endAngle, int segments, Color color); // Draw ring
   } else {
     const RailSimulation* rail = train->GetCurrentRail();
     const Node * node1 = rail_sys_.GetNode(train->GetPrevNodeName());
@@ -193,10 +199,11 @@ void SimulationGrid::DrawTrain(const std::shared_ptr<TrainSimulationState>& trai
     node_pos.x = A.x + percent * (B.x - A.x);
     node_pos.y = A.y + percent * (B.y - A.y);
     DrawPoly(node_pos, 6, 6, 0.0f, ORANGE);
-
-    // Draw Train in the Rail
+    if (selected_train_ == const_cast<TrainSimulation*>(train->GetTrainSimulation()))
+      DrawRing(node_pos, 6, 8, 0, 360, 100, LIME);
   }
 }
+
 void SimulationGrid::DrawRailElements() {
   if (!manager_)
     throw std::runtime_error("Simulations Manager must be present to draw elements");

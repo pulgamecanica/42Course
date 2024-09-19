@@ -36,7 +36,7 @@ class Simulation;
 class TrainSimulationState {
 public:
   TrainSimulationState(
-    const TrainSimulation& train_simulation,
+    const TrainSimulation* train_simulation,
     const RailSimulation* current_rail,
     const NodeSimulation* current_node,
     const std::string&    next_node_name,
@@ -52,6 +52,7 @@ public:
 
   const RailSimulation* GetCurrentRail() const;
   const NodeSimulation* GetCurrentNode() const;
+  const TrainSimulation* GetTrainSimulation() const;
   const std::string& GetNextNodeName() const;
   const std::string& GetPrevNodeName() const;
   const std::string& GetArrival() const;
@@ -68,7 +69,7 @@ public:
   float GetAcceleration() const;
   double GetTotalDistance() const;
 private:
-  const TrainSimulation& train_simulation_;
+  const TrainSimulation* train_simulation_;
   const RailSimulation* current_rail_;
   const NodeSimulation* current_node_;
   const std::string     next_node_name_;

@@ -72,9 +72,9 @@ bool SimulationsState::IsTimeToUpdate() {
 }
 
 void SimulationsState::Draw() {
+  grid_.Draw();
   DrawBackground();
   button_manager_.DrawButtons();
-  grid_.Draw();
   if (manager_) {
     // Draw time etc;
   }

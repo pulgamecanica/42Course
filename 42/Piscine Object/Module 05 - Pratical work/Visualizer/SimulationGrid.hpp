@@ -22,9 +22,11 @@ public:
   void Draw() override;
   void SetSimulationsManager(const SimulationsManager* manager);
 private:
-  void DrawTrainElements();
+  void DrawTrains();
+  void DrawTrainsElements();
   void DrawRailElements();
   void DrawEventsElement();
+  void DrawMenu();
   void DrawElementsBG(const std::string& title);
   void DrawTrain(const std::shared_ptr<TrainSimulationState>& train);
 
@@ -45,5 +47,6 @@ private:
 
   Vector2 elements_menu_scroll_;
 
+  TrainSimulation* selected_train_;
 };
 #endif // SIMULATIONGRID_HPP_

@@ -42,7 +42,7 @@ unsigned Train::GetHour() const {
 
 // TrainSimulationState Implementation
 TrainSimulationState::TrainSimulationState(
-  const TrainSimulation& train_simulation,
+  const TrainSimulation* train_simulation,
   const RailSimulation* current_rail,
   const NodeSimulation* current_node,
   const std::string& next_node_name,
@@ -64,6 +64,8 @@ TrainSimulationState::TrainSimulationState(
     safe_distance_(safe_distance),
     event_warning_stop_(event_warning_stop),
     total_distance_(total_distance) {
+    if (!train_simulation_)
+      throw std::runtime_error("Train Simulation must not be null");
 }
 
 const std::string TrainSimulationState::GetCurrentPositionName() const {
@@ -116,23 +118,25 @@ double TrainSimulationState::GetTotalDistance() const {
   return total_distance_;
 }
 
+const TrainSimulation* TrainSimulationState::GetTrainSimulation() const {
+  return train_simulation_;
+}
+
 const std::string& TrainSimulationState::GetArrival() const {
-  return train_simulation_.GetTrain().GetArrival();
+  return train_simulation_->GetTrain().GetArrival();
 }
 
 const std::string& TrainSimulationState::GetDeparture() const {
-  return train_simulation_.GetTrain().GetDeparture();
+  return train_simulation_->GetTrain().GetDeparture();
 }
 
 const std::string& TrainSimulationState::GetName() const {
-  return train_simulation_.GetTrain().GetName();
+  return train_simulation_->GetTrain().GetName();
 }
 
 const std::string TrainSimulationState::GetHour() const {
-  return Parser::ConvertToTimeString(train_simulation_.GetTrain().GetHour());
+  return Parser::ConvertToTimeString(train_simulation_->GetTrain().GetHour());
 }
-
-
 
 // TrainSimulation Implementation
 TrainSimulation::TrainSimulation(Simulation& simulation, const Train& train)
@@ -481,7 +485,7 @@ double TrainSimulation::GetOptimalTime() const {
 
 TrainSimulationState TrainSimulation::GetCurrentState() const {
   return TrainSimulationState(
-    *this,
+    this,
     current_rail_,
     current_node_,
     next_node_name_,
