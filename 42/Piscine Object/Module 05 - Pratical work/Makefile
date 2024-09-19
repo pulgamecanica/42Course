@@ -48,9 +48,9 @@ SRC             =   ./main.cpp \
 		./RailwayElements/Node.cpp \
 		./utils/Parser.cpp \
 
-CFLAGS          =   -Wall -Wextra -Werror -std=c++20 -g #-fsanitize=address -O3 -g -fsanitize=leak
+CFLAGS          =   -w -std=c++20 -O3 #-fsanitize=address -O3 -g -fsanitize=leak
 
-INC             =   -I${INC_PATH} -IRailwaySystem -IRailwayElements -Iutils -IVisualizer -IDijkstra
+INC             =   -I${INC_PATH} -IRailwaySystem -IRailwayElements -Iutils -IVisualizer -IDijkstra -Iraylib/src -Iraygui/src
 
 LDFLAGS			=	-L. -lraylib -lraygui
 
@@ -81,7 +81,7 @@ $(RAYLIB):
 
 $(RAYGUI):
 	cp $(RAYGUI_PATH)/raygui.h $(RAYGUI_PATH)/raygui.c
-	gcc -c $(RAYGUI_PATH)/raygui.c -o $(RAYGUI_PATH)/raygui.o
+	gcc -c $(RAYGUI_PATH)/raygui.c -o $(RAYGUI_PATH)/raygui.o -Iraylib/src
 	ar rcs $(RAYGUI) $(RAYGUI_PATH)/raygui.o
 
 ${OBJ_D}/%.o:${SRC_PATH}/%.cpp
