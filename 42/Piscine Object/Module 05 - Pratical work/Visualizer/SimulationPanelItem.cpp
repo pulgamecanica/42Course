@@ -39,6 +39,8 @@ float SimulationPanelItem::GetWidth() const {
   return bounds_.width;
 }
 
+#include <cstring>
+
 void SimulationPanelItem::Draw(Vector2 scroll) const {
   // Calculate the total height:
   // Number of simulations: * height for indivudual train info 
@@ -75,7 +77,7 @@ void SimulationPanelItem::Draw(Vector2 scroll) const {
       GetX() + scroll.x + (bounds_.width / 2) - 21,
       GetY() + scroll.y);
   }
-  const char * schedule_name = std::string(simulations_manager_->GetSchedule().GetName() + " (" + std::to_string(simulations_manager_->GetSimulations().size()) + ")").c_str();
+  char * schedule_name = strdup(std::string(simulations_manager_->GetSchedule().GetName() + " (" + std::to_string(simulations_manager_->GetSimulations().size()) + ")").c_str());
 
   DrawText(
     schedule_name,
@@ -89,7 +91,7 @@ void SimulationPanelItem::Draw(Vector2 scroll) const {
     GetY() + scroll.y + 16,
     10,
     BLACK);
-  
+  free(schedule_name);
   // int y = bounds_.y;
   // for (auto & simulation : simulations_manager_.GetSimulations()) {
   //   std::string text = "Optimal Travel Time: ";

@@ -1,10 +1,14 @@
 #ifndef NODE_HPP_
 #define NODE_HPP_
 
-#include <string>
-#include <unordered_map>
 #include "INode.hpp" // From Dijkstra's Lib
 #include "raylib.h"
+
+#include <unordered_map>
+#include <string>
+#include <vector>
+
+class Event;
 
 // Node Class
 class Node: public INode<std::string> {
@@ -16,16 +20,18 @@ class Node: public INode<std::string> {
   std::string GetName() const;
   std::string GetKey() const override;
   Vector2 GetPosition() const;
+  const std::vector<Event*> GetEvents() const;
   Color GetColor() const;
 
   void SetPosition(Vector2 new_pos);
   void SetNeighbor(std::string, int weight) override;
-
+  void AddEvent(Event* event);
  private:
   const std::string name_;
   Vector2 pos_;
   Color color_;
   std::unordered_map<std::string, uint> neighbors_;
+  std::vector<Event*> events_;
 };
 
 #include "Subject.hpp"

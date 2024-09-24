@@ -46,6 +46,7 @@ SimulationGrid::SimulationGrid(RailwaySystem &rail_sys, SimulationsState& sim_st
     trains_element_open_(false),
     rails_element_open_(false),
     events_element_open_(false),
+    elements_menu_scroll_({0, 0}),
     selected_train_(nullptr) {
 
   Settings::Instance().DrawLoadingScreen(1 / 4,"Loading Simulation Grid", "Train Icon");
@@ -111,6 +112,7 @@ void SimulationGrid::DrawMenu() {
     event_icon_->Draw(icon_x, icon_y);
 
     if (clicked_train || clicked_rail || clicked_event) {
+      elements_menu_scroll_ = (Vector2){0, 0};
       element_menu_opened_ = true;
       trains_element_open_ = clicked_train;
       rails_element_open_ = clicked_rail;
@@ -129,6 +131,7 @@ void SimulationGrid::DrawTrains() {
   Simulation& sim = manager_->GetSimulation(sim_state_.GetCurrentSimulation());
   for (const std::shared_ptr<TrainSimulationState> &ts : sim.GetSimulationState(sim_state_.GetProgress()))
     DrawTrain(ts);
+
   DrawTrainsElements();
 }
 
@@ -136,9 +139,9 @@ void SimulationGrid::DrawTrainsElements() {
   if (!trains_element_open_) return;
   
   DrawElementsBG("Trains");
-
-  float x = elements_menu_rec_.x;
-  float y = elements_menu_rec_.y;
+  BeginScissorMode(elements_menu_rec_.x, elements_menu_rec_.y + 25, elements_menu_rec_.width, elements_menu_rec_.height);
+  float x = elements_menu_rec_.x + elements_menu_scroll_.x;
+  float y = elements_menu_rec_.y + elements_menu_scroll_.y;
   y += 30;
   x += 10;
 
@@ -173,6 +176,9 @@ void SimulationGrid::DrawTrainsElements() {
     //Spacing
     y += 10.0f;
   }
+  y += 1000;
+  trains_elements_rec_ = (Rectangle){0, 0, x - elements_menu_rec_.x, y};
+  EndScissorMode();
 }
 
 void SimulationGrid::DrawTrain(const std::shared_ptr<TrainSimulationState>& train) {
@@ -216,9 +222,7 @@ void SimulationGrid::DrawEventsElement() {
 }
 
 void SimulationGrid::DrawElementsBG(const std::string& title) {
-  Rectangle content = {0, 0, 10, 10};
-  Rectangle view;
-  GuiScrollPanel(elements_menu_rec_, title.c_str(), content, &elements_menu_scroll_, &view);
+  GuiScrollPanel(elements_menu_rec_, title.c_str(), trains_elements_rec_, &elements_menu_scroll_, &view_);
   if (GuiButton((Rectangle){elements_menu_rec_.x + elements_menu_rec_.width - 22, elements_menu_rec_.y + 2, 20, 20}, GuiIconText(ICON_CROSS, ""))) {
     element_menu_opened_ = false;
     trains_element_open_ = false;

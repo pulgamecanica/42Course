@@ -106,7 +106,6 @@ int SimulationsState::GetProgress() const {
   return simulation_progress_;
 }
 
-
 void SimulationsState::DrawInfo() {
   if (GuiWindowBox(SimulationsOptions::kInfoArea, "Info"))
     info_open_ = false;

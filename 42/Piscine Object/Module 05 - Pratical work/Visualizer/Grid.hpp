@@ -20,7 +20,9 @@ public:
 protected:
   void ClipLine(Vector2& p0, Vector2& p1);
   void DrawGridLines();
-  
+  bool RectangleIsIndependentFromOtherRectangles(const Rectangle & rec, const std::vector<Rectangle>& recs) const;
+  void DrawNode(const Node* node, Color color);
+
   RailwaySystem &rail_sys_;
   float grid_size_;
   float scale_;

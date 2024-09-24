@@ -122,7 +122,7 @@ clean:
 			@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean:     clean
-			$(RM) $(NAME)
+			$(RM) $(NAME) SimulationsLog_*
 			@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 re: fclean all

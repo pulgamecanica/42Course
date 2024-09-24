@@ -46,6 +46,8 @@ private:
   bool events_element_open_;
 
   Vector2 elements_menu_scroll_;
+  Rectangle trains_elements_rec_;
+  Rectangle view_;
 
   TrainSimulation* selected_train_;
 };

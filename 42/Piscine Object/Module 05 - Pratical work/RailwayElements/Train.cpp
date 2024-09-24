@@ -152,11 +152,12 @@ TrainSimulation::TrainSimulation(Simulation& simulation, const Train& train)
     speed_(0.0f),
     acceleration_(0.0f),
     status_(Status::kStoped),
-    has_safe_distance_(true),
     event_warning_stop_(false),
     train_can_start_(true),
+    has_safe_distance_(true),
     time_running_s_(0) {
 
+    SetMaxAcceleration(train_.GetMaxAcceleration());
     CalculateFastestRoute();
     total_distance_ = path_info_.TotalDistance();
     optimal_time_ = 0;
@@ -193,13 +194,9 @@ void TrainSimulation::Update() {
 }
 
 void TrainSimulation::Update(Subject* subject) {
-  NodeSimulation * node = (NodeSimulation*)subject;
-  RailSimulation * rail = (RailSimulation*)subject;
-  if (node) {
-    ; // something
-  } else if (rail) {
-    ; // something
-  }
+  // Collision notification
+  (void)subject;
+  has_safe_distance_ = false;
 }
 
 void TrainSimulation::Log() {
@@ -287,7 +284,7 @@ void TrainSimulation::Accelerate() {
 }
 
 void TrainSimulation::Brake() {
-  if (HasStoped()) return;
+  if (HasStoped()) { return; }
   acceleration_ = -GetMaxBrakeForce();
 }
 
@@ -378,13 +375,24 @@ void TrainSimulation::UnsubscribeCurrentRail() {
   }
 }
 
-bool TrainSimulation::ShouldStop() const {
+bool TrainSimulation::ShouldStop() {
   // if STOP_SIGNAL_MAYDAY
   //   return true
+  // If other trains infront no safe distance
+  // if ()
   if (!current_rail_)
     throw std::runtime_error("Should be on a rail to call `ShouldStop`");
+  if (!HasSafeDistance())
+    return true;
   float distance_left = current_rail_->GetRail().GetDistance() - position_m_;
-  return (!has_safe_distance_ || distance_left <= GetStoppingDistance());
+  return (distance_left <= GetStoppingDistance());
+}
+
+bool TrainSimulation::HasSafeDistance() {
+  if (HasStoped())
+    has_safe_distance_ = true;
+  return has_safe_distance_;
+  // return simulation_.GetCollisionMediator().HasSafeDistance(current_rail_, this);
 }
 
 bool TrainSimulation::HasArrivedToNode() const {
@@ -408,8 +416,12 @@ bool TrainSimulation::TraveledAllRail() const {
   return current_rail_->GetRail().GetDistance() <= position_m_ && HasStoped();
 }
 
+void TrainSimulation::SetMaxAcceleration(double acceleration) {
+  max_acceleration_ = acceleration; 
+}
+
 double TrainSimulation::GetMaxAccelerationForce() const {
-  return train_.GetMaxAcceleration();
+  return max_acceleration_;
 }
 
 double TrainSimulation::GetMaxBrakeForce() const {

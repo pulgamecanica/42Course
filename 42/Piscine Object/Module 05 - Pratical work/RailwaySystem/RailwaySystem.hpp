@@ -30,6 +30,7 @@ class RailwaySystem {
 
  private:
   void SetupRails();
+  void SetupEvents();
   std::unordered_map<std::string, std::unique_ptr<Node>> nodes_;
   std::vector<std::unique_ptr<Rail>> rails_;
   std::vector<std::unique_ptr<Event>> events_;

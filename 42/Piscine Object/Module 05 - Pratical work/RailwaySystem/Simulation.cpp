@@ -84,8 +84,8 @@ void Simulation::Update() {
     for (auto& train : trains_)
       train->Update();
     LogSimulationState();
+    HandleCollisions();
     // HandleEvents();
-    // HandleCollisions();
     if (HasFinished()) {
       LogSimulationState();
       CollectResults();
@@ -146,9 +146,9 @@ unsigned int Simulation::GetStartTime() const {
 //   // Logic to process events
 // }
 
-// void Simulation::HandleCollisions() {
-//   // Logic to process collisions
-// }
+void Simulation::HandleCollisions() {
+  collision_mediator_.CheckForCollisions();
+}
 
 void Simulation::LogSimulationState() {
   std::vector<std::shared_ptr<TrainSimulationState>> states_;

@@ -46,8 +46,8 @@ class Simulation {
   void InitializeRails();
   void InitializeTrains();
   void CollectResults();
+  void HandleCollisions();
   // void HandleEvents();
-  // void HandleCollisions();
   void LogSimulationState();
   bool HasFinished() const;
 

@@ -15,6 +15,17 @@ RailwaySystem::RailwaySystem(const std::string& elementsFileName, const std::str
       throw std::runtime_error("Schedule file is not valid");
   }
   SetupRails();
+  SetupEvents();
+}
+
+void RailwaySystem::SetupEvents() {
+  for (const auto& event: events_) {
+    Node * node = GetNode(event->GetLocation());
+    if (!node) {
+      throw std::runtime_error(("Invalid Event location: " + event->GetLocation()).c_str());
+    }
+    node->AddEvent(event.get());
+  }
 }
 
 void RailwaySystem::SetupRails() {
@@ -31,7 +42,7 @@ void RailwaySystem::SetupRails() {
     if (node1It != nodes_.end() && node2It != nodes_.end()) {
       graph_.AddEdge(node1It->second.get(), node2It->second.get(), railPtr->GetDistance());
     } else {
-      throw std::runtime_error("Rail has node which doesn't exist"); // Maybe do this at the end.
+      throw std::runtime_error((std::string("Rail has node which doesn't exist: ") + node1 + " - " + node2).c_str());
     }
   }
 }
@@ -49,6 +60,7 @@ void RailwaySystem::AddRail(const std::string& node1, const std::string& node2, 
     std::cerr << "Rails must have valid node names" << std::endl;
     return;
   }
+  if (node1 == node2) return ;
   rails_.emplace_back(std::make_unique<Rail>(node1, node2, distance));
 }
 

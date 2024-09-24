@@ -19,6 +19,7 @@ namespace EditableGridOptions {
 EditableGrid::EditableGrid(RailwaySystem &rail_sys, float gridSize, Rectangle displayArea)
   : Grid(rail_sys, gridSize, displayArea),
     current_tool_(Tool::MOVE),
+    rail_source_node_selected_(""),
     is_dragging_(false),
     show_minimap_(false),
     adding_node_(false),
@@ -93,6 +94,14 @@ void EditableGrid::Draw() {
     button_manager_.DrawButtons();
     if (GuiButton((Rectangle){display_area_.x + display_area_.width - 50, display_area_.y, 50, 25}, GuiIconText(ICON_EYE_ON, "Map")))
       show_minimap_ = true;
+    if (!rail_source_node_selected_.empty()) {
+      Node* node = rail_sys_.GetNode(rail_source_node_selected_);
+      DrawNode(node, RED);
+      Vector2 grid_pos = GetAbsoluteCoordinates(node->GetPosition());
+      Vector2 mouse_pos = GetMousePosition();
+      ClipLine(grid_pos, mouse_pos);
+      DrawLineEx(mouse_pos, grid_pos, 1.2f * scale_, ORANGE);
+    }
     if (adding_node_)
       DrawNewNodeDialog();
   }
@@ -102,6 +111,7 @@ void EditableGrid::SetTool(Tool tool) {
   current_tool_ = tool;
   MouseCursor cursor = MOUSE_CURSOR_DEFAULT;
   adding_node_ = false;
+  rail_source_node_selected_ = "";
   
   switch (current_tool_) {
     case Tool::MOVE:
@@ -135,7 +145,12 @@ void EditableGrid::HandleNodeSelection(const Vector2& mousePos, const float rad)
           RemoveNode(id);
           break;
         case Tool::ADDRAIL:
-          std::cout << "Add Rail between node " << id << std::endl;
+          if (rail_source_node_selected_.empty()) {
+            rail_source_node_selected_ = id;
+          } else {
+            AddRail(id);
+            rail_source_node_selected_ = "";
+          }
           break;
         default:
           break;
@@ -181,8 +196,8 @@ void EditableGrid::RemoveNode(const std::string& id) {
 }
 
 void EditableGrid::AddRail(const std::string& id) {
-  (void)id;
-  std::cout << "Editing node " << id << std::endl;
+  rail_sys_.AddRail(rail_source_node_selected_, id, 42);
+  Parser::WriteDataToFile(rail_sys_);
 }
 
 void EditableGrid::MoveNode() {

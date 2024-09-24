@@ -1,9 +1,11 @@
 #include "Settings.hpp"
 #include "RailwaySystem.hpp"
 #include "FileLogger.hpp"
+#include "ErrorHandler.hpp"
 
 #include "cpp_on_rails.inc"
 
+#include <sstream>
 #include <vector>
 #include <map>
 
@@ -12,7 +14,7 @@ Settings* Settings::instance_ = nullptr;
 
 Settings::Settings()
   : rail_two_way_(false), simulation_fps_(10) {
-  max_speed_ = 19.4f; // this is a max speed of 70km/h
+  max_speed_ = 25.0f; // max_speed_ * 3.6 = km/h
 }
 
 Settings& Settings::Instance() {
@@ -84,10 +86,42 @@ float Settings::GetSimulationFPS() const {
 }
 
 void Settings::SaveRailwayNodePositions(RailwaySystem& rail_sys) {
-  FileLogger node_positions_log(GetNodePositionsFileName());
+  std::map<std::string, Vector2> nodes_positions;
 
-  for (const auto& [name, node] : rail_sys.GetNodes())
-    node_positions_log.write((name + " " + std::to_string(node->GetPosition().x) + " " + std::to_string(node->GetPosition().y).c_str()));
+  // Read previous positions
+  std::ifstream file(Settings::Instance().GetNodePositionsFileName());
+  if (!file.is_open()) {
+    ErrorHandler::ReportError(Settings::Instance().GetNodePositionsFileName(), 0, 0, "Failed to open file", "");
+    return;
+  }
+
+  std::string line;
+  while (std::getline(file, line)) {
+    std::istringstream ss(line);
+    std::string node_name;
+    float x, y;
+
+    // Parse the line for node name, x and y coordinates
+    if (!(ss >> node_name >> x >> y)) {
+      ErrorHandler::ReportError(Settings::Instance().GetNodePositionsFileName(), file.tellg(), 0, "Malformed line", line);
+      continue;  // Skip this line and continue reading
+    }
+    try {
+      nodes_positions[node_name] = (Vector2){x, y};
+    } catch (std::exception &e) {(void)e;}
+  }
+  file.close();
+
+  // Update positions and new nodes
+  for (const auto& [name, node] : rail_sys.GetNodes()) {
+    nodes_positions[name] = node->GetPosition();
+  }
+
+  // Write the nodes
+  FileLogger node_positions_log(GetNodePositionsFileName());
+  for (const auto& [name, pos] : nodes_positions) {
+    node_positions_log.write((name + " " + std::to_string(pos.x) + " " + std::to_string(pos.y).c_str()));
+  }
 }
 
 const std::string   Settings::GetNodePositionsFileName() const {

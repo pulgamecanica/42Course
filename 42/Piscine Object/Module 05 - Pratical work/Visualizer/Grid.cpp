@@ -92,19 +92,49 @@ void Grid::Draw() {
     Vector2 grid_pos1 = GetAbsoluteCoordinates(node1->GetPosition());
     Vector2 grid_pos2 = GetAbsoluteCoordinates(node2->GetPosition());
     ClipLine(grid_pos1, grid_pos2);
-    DrawLineEx(grid_pos1, grid_pos2, 2.0f, BLUE);
+    DrawLineEx(grid_pos1, grid_pos2, 1.2f * scale_, BLUE);
+    // DrawLineEx(grid_pos1, grid_pos2, 4.2f * scale_, BLUE);
   }
   // Draw nodes
+  std::vector<Rectangle> names_recs;
   const float rad = scale_ * 5;
   for (auto & [name, node] : rail_sys_.GetNodes()) {
     Vector2 grid_pos = GetAbsoluteCoordinates(node->GetPosition());
     if (CheckCollisionPointRec(grid_pos, display_area_)) {
-      DrawPoly(grid_pos, 6, rad, 0.0f, node->GetColor());
-      Vector2 node_name_pos = (Vector2){grid_pos.x - rad, grid_pos.y - rad - 10};
+      DrawNode(&(*node), node->GetColor());
+
+      int limit = -rad - 10;
+      int kill_limit = 4;
+      float width = MeasureText(name.c_str(), rad);
+      Vector2 node_name_pos = (Vector2){grid_pos.x - rad, grid_pos.y + limit};
+      Rectangle name_rec = {node_name_pos.x, node_name_pos.y, width, rad};
+
+      while (!RectangleIsIndependentFromOtherRectangles(name_rec, names_recs) && kill_limit >= 0) {
+        limit *= -1;
+        node_name_pos = (Vector2){grid_pos.x - rad, grid_pos.y + limit};
+        name_rec = {node_name_pos.x, node_name_pos.y, width, rad};
+        limit += 10 * (limit > 0 ? 1 : -1);
+        kill_limit--;
+      }
+
       DrawText(name.c_str(), node_name_pos.x, node_name_pos.y, rad, BLACK);
+      names_recs.push_back(name_rec);
     }
   }
-  // Draw events
+}
+
+void Grid::DrawNode(const Node* node, Color color) {
+  const float rad = scale_ * 5;
+  Vector2 grid_pos = GetAbsoluteCoordinates(node->GetPosition());
+  if (!CheckCollisionPointRec(grid_pos, display_area_)) return;
+  DrawPoly(grid_pos, 6, rad, 0.0f, color);
+}
+
+bool Grid::RectangleIsIndependentFromOtherRectangles(const Rectangle & rec, const std::vector<Rectangle>& recs) const {
+  for (const auto & r : recs)
+    if (CheckCollisionRecs(r, rec))
+      return false;
+  return true;
 }
 
 /**

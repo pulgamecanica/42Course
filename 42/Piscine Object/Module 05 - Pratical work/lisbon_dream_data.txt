@@ -1,0 +1,134 @@
+Node Benfica
+Node Sintra
+Node Marvila
+Node Campolide
+Node AmadoraEste
+Node Alfornelos
+Node Pontinha
+Node Carnide
+Node ColegioMilitarLuz
+Node AltoDosMoinhos
+Node Laranjeiras
+Node JardimZoologico/SeteRios
+Node PracaDeEspanha
+Node SaoSebastiao
+Node Parque
+Node MarquesDePombal
+Node Avenida
+Node Restauradores
+Node Rossio
+Node BaixaChiado
+Node CaisDoSodre
+Node AlcantaraTerra
+Node AlcantaraMar
+Node Belem
+Node Oriente
+Node CaboRuivo
+Node Olivais
+Node TerreiroDoPaço
+Node BelaVista
+Node Chelas
+Node BraçoDePrata
+Node Aeroporto
+Node Encarnação
+Node Moscavide
+Node Lumiar
+Node Ameixoeira
+Node Odivelas
+Node SenhorRoubado
+Node QuintaDasConchas
+Node CampoGrande
+Node Telheiras
+Node Alvalade
+Node Roma
+Node Roma/Areeiro
+Node Rato
+Node Areeiro
+Node Saldanha
+Node Picoas
+Node Intendente
+Node MartimMoniz
+Node SantaApolonia
+Node Anjos
+Node Santos
+Node Arroios
+Node Alameda
+Node Olaias
+Node CampoPequeno
+Node EntreCampos
+Node CidadeUniversitaria
+Node CampoGrande
+Node Porto
+Rail Sintra Benfica 3000
+Rail Aeroporto Porto 342000
+Rail Benfica JardimZoologico/SeteRios 2870
+Rail Campolide JardimZoologico/SeteRios 1300
+Rail Campolide Benfica 2400
+Rail Campolide AlcantaraTerra 3342
+Rail Campolide Rossio 4242
+Rail Marvila BelaVista 1700
+Rail Marvila BraçoDePrata 942
+Rail SantaApolonia BraçoDePrata 3998
+Rail AmadoraEste Alfornelos 5000
+Rail Alfornelos Pontinha 3500
+Rail Pontinha Carnide 3000
+Rail Carnide ColegioMilitarLuz 2500
+Rail ColegioMilitarLuz AltoDosMoinhos 2000
+Rail AltoDosMoinhos Laranjeiras 2000
+Rail Laranjeiras JardimZoologico/SeteRios 1500
+Rail JardimZoologico/SeteRios PracaDeEspanha 1200
+Rail PracaDeEspanha SaoSebastiao 1100
+Rail SaoSebastiao Parque 900
+Rail Parque MarquesDePombal 500
+Rail MarquesDePombal Avenida 700
+Rail SaoSebastiao Saldanha 900
+Rail Avenida Restauradores 800
+Rail Restauradores Rossio 400
+Rail Rossio BaixaChiado 1000
+Rail BaixaChiado CaisDoSodre 1200
+Rail AlcantaraTerra AlcantaraMar 1500
+Rail AlcantaraMar Belem 5000
+Rail Santos CaisDoSodre 2100
+Rail Santos Belem 1500
+Rail Santos AlcantaraMar 1800
+Rail Oriente CaboRuivo 1500
+Rail CaboRuivo Olivais 2500
+Rail Olivais Chelas 3000
+Rail BelaVista Chelas 2500
+Rail Aeroporto Encarnação 1800
+Rail Encarnação Moscavide 2000
+Rail Moscavide Oriente 2500
+Rail TerreiroDoPaço BaixaChiado 1200
+Rail TerreiroDoPaço SantaApolonia 1400
+Rail Lumiar Ameixoeira 3000
+Rail Ameixoeira SenhorRoubado 2000
+Rail SenhorRoubado Odivelas 2500
+Rail QuintaDasConchas Lumiar 1500
+Rail QuintaDasConchas CampoGrande 2000
+Rail CampoGrande Telheiras 3500
+Rail CampoGrande Alvalade 2500
+Rail Alvalade Roma 1500
+Rail Roma Roma/Areeiro 1000
+Rail Roma/Areeiro Areeiro 1200
+Rail Areeiro Alameda 1000
+Rail Arroios Anjos 1200
+Rail Anjos Intendente 890
+Rail Intendente MartimMoniz 910
+Rail Rossio MartimMoniz 1042
+Rail Alameda Olaias 1000
+Rail BelaVista Olaias 1450
+Rail Oriente BraçoDePrata 2200
+Rail Saldanha Alameda 900
+Rail Saldanha Picoas 700
+Rail Saldanha CampoPequeno 1000
+Rail Picoas MarquesDePombal 1100
+Rail Rato MarquesDePombal 500
+Rail Arroios Alameda 1100
+Rail CampoPequeno EntreCampos 800
+Rail EntreCampos CidadeUniversitaria 1200
+Rail CidadeUniversitaria CampoGrande 1500
+Event "Signal Failure" 0.3 10m Rossio
+Event "Train Delay" 0.2 20m Oriente
+Event "Passenger Overload" 0.4 30m CaisDoSodre
+Event "Technical Issue" 0.2 15m Alameda
+Event "Power Outage" 0.1 1h SaoSebastiao

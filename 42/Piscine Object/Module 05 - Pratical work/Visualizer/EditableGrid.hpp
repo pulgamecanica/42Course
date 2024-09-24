@@ -32,6 +32,7 @@ private:
   
   Tool current_tool_;
   std::string selected_node_;
+  std::string rail_source_node_selected_;
   Vector2 drag_start_pos_;
   bool is_dragging_;
   bool show_minimap_;
@@ -40,7 +41,6 @@ private:
   ButtonManager button_manager_;
   std::string new_node_name_;
   Vector2 new_node_position_;
-
 };
 
 #endif // EDITABLE_GRID_H_

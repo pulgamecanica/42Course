@@ -104,7 +104,10 @@ public:
   const std::string & GetNextNodeDestiny() const;
   const std::string   GetRailStringRep() const;
 
+  void SetMaxAcceleration(double acceleration);
+
   double  GetOptimalTime() const;
+  double  GetMaxAccelerationForce() const;
   float   GetStoppingDistance() const;
   float   GetPosition() const;
   float   GetPositionPercentage() const;
@@ -126,14 +129,14 @@ private:
   void StartRoute();
   void Log();
 
-  bool ShouldStop() const;
+  bool ShouldStop();
   bool CanStart() const;
   bool HasStoped() const;
   bool HasArrivedToNode() const;
   bool TraveledAllRail() const;
   bool IsTimeToStart() const;
+  bool HasSafeDistance();
 
-  double GetMaxAccelerationForce() const;
   double GetMaxBrakeForce() const;
   double GetOptimalTimeForDistance(double distance) const;
 
@@ -156,11 +159,12 @@ private:
   float           acceleration_;
   
   enum Status     status_;
-  bool            has_safe_distance_;
   bool            event_warning_stop_;
   bool            train_can_start_;
+  bool            has_safe_distance_;
 
   double          optimal_time_;
+  double          max_acceleration_;
   double          total_distance_;
   unsigned        time_running_s_;
 };

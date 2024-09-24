@@ -21,4 +21,14 @@ class Event {
   const std::string location_;
 };
 
+class EventOccurrence {
+ public:
+  EventOccurrence(const Event&, unsigned start);
+
+  bool IsFinished(unsigned time) const;
+ private:
+  const Event& event_;
+  const unsigned start_;
+};
+
 #endif  // EVENT_HPP_

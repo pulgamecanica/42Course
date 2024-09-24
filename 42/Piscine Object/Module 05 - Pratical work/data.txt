@@ -1,132 +1,364 @@
+Node VendasNovas
+Node Chança
+Node CeloricoDaBeira
+Node Alferrarede
+Node CasteloNovo
+Node Alverca
+Node Malveira
+Node Rede
+Node Mangualde
+Node Mealhada
+Node Mortágua
+Node Alpedrinha
+Node LisboaStaApolónia
+Node Óbidos
+Node Esmoriz
+Node PinhalNovo
+Node Santarém
+Node Souselas
+Node OliveiraDeAzeméis
+Node PortoDeRei
+Node MessinesAlte
+Node Funcheira
+Node SantaCombaDão
+Node Pala
+Node Pombal
+Node PortoCampanhã
+Node ValedePrazeres
+Node Mosteiró
+Node PraiaDoRibatejo
+Node PonteDeSor
+Node Pocinho
+Node VilaNovaDeCerveira
+Node OliveiraDoBairro
+Node Pinhão
+Node Cuba
+Node Mogofores
+Node Pampilhosa
+Node BarcaDaAmieiraEnvendos
+Node TorreDasVargens
+Node Portalegre
+Node Ovar
+Node Lardosa
+Node StªClaraSabóia
+Node Pragal
+Node PeroNegro
+Node Alcaide
+Node SãoJoãoDaMadeira
+Node Maçainhas
+Node Livração
+Node Alcaria
+Node MarinhaGrande
+Node CaldasDaRainha
+Node Alcáçovas
+Node SernadaDoVouga
+Node VilaFrancadeXira
+Node CoimbraB
+Node Ermida
+Node GranjaDoUlmeiroAlfarelos
+Node VianaDoCastelo
+Node Covilhã
+Node MouriscasA
+Node Outeiro
+Node CasaBranca
+Node PraiasDoSado
+Node Tortosendo
+Node Vizela
+Node FornosDeAlgodres
+Node VilaDaFeira
+Node CarregaldoSal
+Node SantaMargarida
 Node Benfica
+Node Braga
+Node Caxarias
+Node FatelaPenamacor
+Node Tunes
+Node Benespera
+Node Soure
+Node SantoTirso
+Node Nelas
+Node Donas
+Node Mafra
+Node CaldasDeMoledo
+Node Nine
+Node BifurcaçãoDeLares
+Node Barcelos
+Node Faro
+Node Setúbal
+Node Penafiel
+Node Setil
+Node Entroncamento
+Node FreixoDeNumão
+Node Caria
 Node Sintra
-Node Marvila
-Node Campolide
-Node AmadoraEste
-Node Alfornelos
-Node Pontinha
-Node Carnide
-Node ColegioMilitarLuz
-Node AltoDosMoinhos
-Node Laranjeiras
-Node JardimZoologico/SeteRios
-Node PracaDeEspanha
-Node SaoSebastiao
-Node Parque
-Node MarquesDePombal
-Node Avenida
-Node Restauradores
-Node Rossio
-Node BaixaChiado
-Node CaisDoSodre
-Node AlcantaraTerra
-Node AlcantaraMar
-Node Belem
-Node Oriente
-Node CaboRuivo
-Node Olivais
-Node TerreiroDoPaço
-Node BelaVista
-Node Chelas
-Node BraçoDePrata
-Node Aeroporto
-Node Encarnação
-Node Moscavide
-Node Lumiar
-Node Ameixoeira
-Node Odivelas
-Node SenhorRoubado
-Node QuintaDasConchas
-Node CampoGrande
-Node Telheiras
-Node Alvalade
-Node Roma
-Node Roma/Areeiro
-Node Rato
-Node Areeiro
-Node Saldanha
-Node Picoas
-Node Intendente
-Node MartimMoniz
-Node SantaApolonia
-Node Anjos
-Node Santos
-Node Arroios
-Node Alameda
-Node Olaias
-Node CampoPequeno
-Node EntreCampos
-Node CidadeUniversitaria
-Node CampoGrande
-Rail Sintra Benfica 3000
-Rail Benfica JardimZoologico/SeteRios 2870
-Rail Campolide JardimZoologico/SeteRios 1300
-Rail Campolide Benfica 2400
-Rail Campolide AlcantaraTerra 3342
-Rail Campolide Rossio 4242
-Rail Marvila BelaVista 1700
-Rail Marvila BraçoDePrata 942
-Rail SantaApolonia BraçoDePrata 3998
-Rail AmadoraEste Alfornelos 5000
-Rail Alfornelos Pontinha 3500
-Rail Pontinha Carnide 3000
-Rail Carnide ColegioMilitarLuz 2500
-Rail ColegioMilitarLuz AltoDosMoinhos 2000
-Rail AltoDosMoinhos Laranjeiras 2000
-Rail Laranjeiras JardimZoologico/SeteRios 1500
-Rail JardimZoologico/SeteRios PracaDeEspanha 1200
-Rail PracaDeEspanha SaoSebastiao 1100
-Rail SaoSebastiao Parque 900
-Rail Parque MarquesDePombal 500
-Rail MarquesDePombal Avenida 700
-Rail SaoSebastiao Saldanha 900
-Rail Avenida Restauradores 800
-Rail Restauradores Rossio 400
-Rail Rossio BaixaChiado 1000
-Rail BaixaChiado CaisDoSodre 1200
-Rail AlcantaraTerra AlcantaraMar 1500
-Rail AlcantaraMar Belem 5000
-Rail Santos CaisDoSodre 2100
-Rail Santos Belem 1500
-Rail Santos AlcantaraMar 1800
-Rail Oriente CaboRuivo 1500
-Rail CaboRuivo Olivais 2500
-Rail Olivais Chelas 3000
-Rail BelaVista Chelas 2500
-Rail Aeroporto Encarnação 1800
-Rail Encarnação Moscavide 2000
-Rail Moscavide Oriente 2500
-Rail TerreiroDoPaço BaixaChiado 1200
-Rail TerreiroDoPaço SantaApolonia 1400
-Rail Lumiar Ameixoeira 3000
-Rail Ameixoeira SenhorRoubado 2000
-Rail SenhorRoubado Odivelas 2500
-Rail QuintaDasConchas Lumiar 1500
-Rail QuintaDasConchas CampoGrande 2000
-Rail CampoGrande Telheiras 3500
-Rail CampoGrande Alvalade 2500
-Rail Alvalade Roma 1500
-Rail Roma Roma/Areeiro 1000
-Rail Roma/Areeiro Areeiro 1200
-Rail Areeiro Alameda 1000
-Rail Arroios Anjos 1200
-Rail Anjos Intendente 890
-Rail Intendente MartimMoniz 910
-Rail Rossio MartimMoniz 1042
-Rail Alameda Olaias 1000
-Rail BelaVista Olaias 1450
-Rail Oriente BraçoDePrata 2200
-Rail Saldanha Alameda 900
-Rail Saldanha Picoas 700
-Rail Saldanha CampoPequeno 1000
-Rail Picoas MarquesDePombal 1100
-Rail Rato MarquesDePombal 500
-Rail Arroios Alameda 1100
-Rail CampoPequeno EntreCampos 800
-Rail EntreCampos CidadeUniversitaria 1200
-Rail CidadeUniversitaria CampoGrande 1500
-Event "Signal Failure" 0.3 10m Rossio
-Event "Train Delay" 0.2 20m Oriente
-Event "Passenger Overload" 0.4 30m CaisDoSodre
-Event "Technical Issue" 0.2 15m Alameda
-Event "Power Outage" 0.1 1h SaoSebastiao
+Node Ramalhal
+Node SãoMartinhoDoPorto
+Node VilaMeã
+Node VilaNovaDeGaia
+Node Reguengo
+Node Coimbra
+Node Verride
+Node Soalheira
+Node Sabugo
+Node DoisPortos
+Node Vigo
+Node TorresVedras
+Node VilaRealDeSantoAntónio
+Node Rodão
+Node Sabugal
+Node ErmidasSado
+Node Tomar
+Node Régua
+Node AlbergariaAVelha
+Node Lagos
+Node BelverGavião
+Node Águeda
+Node Alcains
+Node Alvito
+Node Paredes
+Node Juncal
+Node Crato
+Node Arronches
+Node Assumar
+Node Fratel
+Node AlbergariaDosDoze
+Node Caíde
+Node Granja
+Node MiraSintraMeleçasAgualvaCacém
+Node Aregos
+Node Martingança
+Node Estarreja
+Node Ferradosa
+Node Bemposta
+Node Tancos
+Node Guarda
+Node Tua
+Node Fundão
+Node Ermesinde
+Node ValadoNazaréAlcobaça
+Node Barroselas
+Node Trofa
+Node Sarnadas
+Node ÂncoraPraia
+Node Barquinha
+Node Valença
+Node Guimarães
+Node Tramagal
+Node FigueiraDaFoz
+Node LisboaOriente
+Node AlvegaOrtiga
+Node Aveiro
+Node Almourol
+Node Caminha
+Node Louriçal
+Node PortoSaoBento
+Node BelmonteManteigas
+Node Grândola
+Node VilaFrancadasNaves
+Node Entrecampos
+Node Espinho
+Node Badajoz
+Node Beja
+Node Évora
+Node Bombarral
+Node Azambuja
+Node Retaxo
+Node Abrantes
+Node Lousado
+Node CasteloBranco
+Node Elvas
+Node SantaEulália
+Node Lamarosa
+Node VilarFormoso
+Node Famalicão
+Node MarcoDeCanaveses
+Node Leiria
+Node VilaNovaDaBaronia
+Node MonteReal
+Node Fátima
+Rail Vigo Valença 31600
+Rail Valença VilaNovaDeCerveira 13600
+Rail VilaNovaDeCerveira Caminha 5900
+Rail Caminha ÂncoraPraia 10900
+Rail ÂncoraPraia VianaDoCastelo 20900
+Rail VianaDoCastelo Barroselas 7500
+Rail Barroselas Barcelos 12700
+Rail Barcelos Nine 13700
+Rail Nine Braga 10600
+Rail Nine Famalicão 10700
+Rail Famalicão Lousado 11200
+Rail Lousado SantoTirso 11500
+Rail SantoTirso Vizela 11700
+Rail Vizela Guimarães 10600
+Rail Lousado Trofa 13200
+Rail Trofa Ermesinde 16300
+Rail Ermesinde PortoSaoBento 10600
+Rail PortoCampanhã PortoSaoBento 3100
+Rail PortoSaoBento VilaNovaDeGaia 6100
+Rail PortoCampanhã Ermesinde 11600
+Rail Ermesinde Paredes 18900
+Rail Paredes Penafiel 12800
+Rail Penafiel Caíde 11800
+Rail Caíde VilaMeã 9300
+Rail VilaMeã Livração 10500
+Rail Livração MarcoDeCanaveses 14700
+Rail MarcoDeCanaveses Juncal 16300
+Rail Juncal Pala 6000
+Rail Pala Mosteiró 8700
+Rail Mosteiró Aregos 10100
+Rail Aregos Ermida 7900
+Rail Ermida PortoDeRei 8600
+Rail PortoDeRei Rede 6200
+Rail Rede CaldasDeMoledo 17600
+Rail CaldasDeMoledo Régua 14800
+Rail Régua Pinhão 26300
+Rail Pinhão Tua 10300
+Rail Tua Ferradosa 18800
+Rail Ferradosa FreixoDeNumão 12800
+Rail FreixoDeNumão Pocinho 8600
+Rail VilaNovaDeGaia Granja 13200
+Rail Granja Espinho 10600
+Rail Espinho Esmoriz 8700
+Rail Esmoriz Ovar 10500
+Rail Ovar VilaDaFeira 15300
+Rail VilaDaFeira SãoJoãoDaMadeira 10900
+Rail SãoJoãoDaMadeira OliveiraDeAzeméis 16400
+Rail OliveiraDeAzeméis Estarreja 13500
+Rail Estarreja Aveiro 16900
+Rail Aveiro AlbergariaAVelha 16000
+Rail Aveiro OliveiraDoBairro 14700
+Rail Aveiro Águeda 14600
+Rail Águeda SernadaDoVouga 17600
+Rail SernadaDoVouga AlbergariaAVelha 17800
+Rail OliveiraDoBairro Mogofores 12000
+Rail Mogofores Mealhada 12700
+Rail Mealhada Pampilhosa 18100
+Rail Mealhada Mortágua 16000
+Rail Mortágua SantaCombaDão 16200
+Rail SantaCombaDão CarregaldoSal 17000
+Rail CarregaldoSal Nelas 11300
+Rail Nelas Mangualde 17200
+Rail Mangualde FornosDeAlgodres 18800
+Rail FornosDeAlgodres CeloricoDaBeira 15200
+Rail CeloricoDaBeira VilaFrancadasNaves 13700
+Rail VilaFrancadasNaves Guarda 13000
+Rail Guarda VilarFormoso 37000
+Rail Guarda Sabugal 40700
+Rail Sabugal Benespera 22000
+Rail Benespera Maçainhas 14500
+Rail Maçainhas BelmonteManteigas 14100
+Rail BelmonteManteigas Caria 10200
+Rail Caria Covilhã 11100
+Rail Covilhã Tortosendo 6100
+Rail Tortosendo Alcaria 7800
+Rail Alcaria Fundão 6500
+Rail Fundão Donas 9200
+Rail Donas Alcaide 8000
+Rail Alcaide FatelaPenamacor 8000
+Rail FatelaPenamacor ValedePrazeres 10200
+Rail ValedePrazeres Alpedrinha 9900
+Rail Alpedrinha CasteloNovo 9400
+Rail CasteloNovo Soalheira 9600
+Rail Soalheira Lardosa 9000
+Rail Lardosa Alcains 12000
+Rail Alcains CasteloBranco 11100
+Rail CasteloBranco Retaxo 9500
+Rail Retaxo Sarnadas 7100
+Rail Sarnadas Rodão 8000
+Rail Rodão Fratel 9600
+Rail Fratel BarcaDaAmieiraEnvendos 7600
+Rail BarcaDaAmieiraEnvendos BelverGavião 8200
+Rail BelverGavião AlvegaOrtiga 7100
+Rail AlvegaOrtiga MouriscasA 8300
+Rail MouriscasA Alferrarede 9500
+Rail Alferrarede Abrantes 7800
+Rail Abrantes Bemposta 11300
+Rail Bemposta PonteDeSor 16700
+Rail PonteDeSor TorreDasVargens 14700
+Rail TorreDasVargens Chança 12100
+Rail Chança Crato 11000
+Rail Crato Portalegre 10500
+Rail Portalegre Assumar 14500
+Rail Assumar Arronches 13500
+Rail Arronches SantaEulália 9000
+Rail SantaEulália Elvas 11000
+Rail Elvas Badajoz 25000
+Rail Abrantes Tramagal 15000
+Rail Tramagal SantaMargarida 11000
+Rail SantaMargarida PraiaDoRibatejo 6100
+Rail PraiaDoRibatejo Almourol 7800
+Rail Almourol Barquinha 8800
+Rail Barquinha Tancos 7700
+Rail Tancos Entroncamento 7200
+Rail Entroncamento Lamarosa 23000
+Rail Lamarosa Tomar 37000
+Rail Lamarosa Fátima 23000
+Rail Fátima Caxarias 14000
+Rail Caxarias AlbergariaDosDoze 21000
+Rail AlbergariaDosDoze Pombal 25000
+Rail Pombal Soure 25000
+Rail Soure GranjaDoUlmeiroAlfarelos 25000
+Rail Louriçal MonteReal 20000
+Rail GranjaDoUlmeiroAlfarelos Verride 11000
+Rail GranjaDoUlmeiroAlfarelos CoimbraB 11000
+Rail CoimbraB Coimbra 18000
+Rail CoimbraB Souselas 21000
+Rail Souselas Pampilhosa 25000
+Rail Verride BifurcaçãoDeLares 6000
+Rail BifurcaçãoDeLares FigueiraDaFoz 13000
+Rail BifurcaçãoDeLares Louriçal 16000
+Rail Leiria MonteReal 11000
+Rail MarinhaGrande Leiria 11000
+Rail MarinhaGrande Martingança 9000
+Rail Outeiro Bombarral 10600
+Rail Bombarral Óbidos 9000
+Rail Óbidos CaldasDaRainha 12000
+Rail ValadoNazaréAlcobaça SãoMartinhoDoPorto 14000
+Rail SãoMartinhoDoPorto CaldasDaRainha 12000
+Rail Martingança ValadoNazaréAlcobaça 7100
+Rail Ramalhal Outeiro 9600
+Rail TorresVedras Ramalhal 9000
+Rail DoisPortos TorresVedras 8000
+Rail PeroNegro DoisPortos 6000
+Rail Malveira PeroNegro 14000
+Rail Mafra Malveira 10000
+Rail Sabugo Mafra 6000
+Rail MiraSintraMeleçasAgualvaCacém Sabugo 9500
+Rail Sintra Benfica 19600
+Rail Benfica LisboaStaApolónia 6300
+Rail Benfica Entrecampos 4200
+Rail MiraSintraMeleçasAgualvaCacém Benfica 15200
+Rail Entrecampos Pragal 15200
+Rail LisboaStaApolónia LisboaOriente 4400
+Rail LisboaOriente Alverca 17000
+Rail Alverca VilaFrancadeXira 17000
+Rail Entroncamento Santarém 48000
+Rail Santarém Setil 25000
+Rail Setil Reguengo 15000
+Rail Reguengo Azambuja 18000
+Rail Azambuja VilaFrancadeXira 12000
+Rail Pragal PinhalNovo 21000
+Rail PinhalNovo PraiasDoSado 23000
+Rail PraiasDoSado Setúbal 16000
+Rail PinhalNovo VendasNovas 18000
+Rail VendasNovas CasaBranca 18000
+Rail CasaBranca Alcáçovas 10000
+Rail CasaBranca Évora 8000
+Rail Alcáçovas VilaNovaDaBaronia 14000
+Rail VilaNovaDaBaronia Alvito 18000
+Rail PinhalNovo Grândola 44000
+Rail Grândola ErmidasSado 17000
+Rail ErmidasSado Funcheira 17000
+Rail Cuba Alvito 8700
+Rail Beja Cuba 11500
+Rail MessinesAlte StªClaraSabóia 11100
+Rail StªClaraSabóia Funcheira 12300
+Rail Tunes MessinesAlte 12000
+Rail Lagos Tunes 8200
+Rail Tunes Faro 25400
+Rail Faro VilaRealDeSantoAntónio 49000
+Event "Signal Failure" 0.3 10m Faro
+Event "Train Delay" 0.2 20m VilaNovaDeGaia
+Event "Passenger Overload" 0.4 30m Sintra
+Event "Technical Issue" 0.2 15m Grândola
+Event "Power Outage" 0.1 1y Évora

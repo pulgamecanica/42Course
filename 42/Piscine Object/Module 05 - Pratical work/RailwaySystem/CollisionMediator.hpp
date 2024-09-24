@@ -13,7 +13,6 @@ class CollisionMediator {
   CollisionMediator(Simulation & simulation);
   void CheckForCollisions();
   bool CanJoinRail(RailSimulation & rail, const std::string dest, const bool two_way) const;
-
  private:
   Simulation & simulation_;
 };

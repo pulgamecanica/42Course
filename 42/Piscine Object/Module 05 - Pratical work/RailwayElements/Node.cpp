@@ -1,4 +1,5 @@
 #include "Node.hpp"
+#include "Event.hpp"
 #include "Train.hpp"
 #include <cmath>
 
@@ -21,6 +22,14 @@ void Node::SetNeighbor(std::string name, int weight) {
   neighbors_[name] = weight;
 }
 
+void Node::AddEvent(Event* event) {
+  events_.push_back(event);
+}
+
+const std::vector<Event*> Node::GetEvents() const {
+  return events_;
+}
+
 // Node Implementation
 std::string Node::GetName() const {
   return name_;
@@ -40,7 +49,7 @@ void Node::SetPosition(Vector2 new_pos) {
 
 // NodeSimulation Implementation
 NodeSimulation::NodeSimulation(const Node& node, EventMediator* mediator)
-    : node_(node), mediator_(mediator) {}
+    : node_(node), mediator_(mediator) {    }
 
 NodeSimulation::~NodeSimulation() {}
 
@@ -52,8 +61,25 @@ EventMediator* NodeSimulation::GetMediator() const {
   return mediator_;
 }
 
+#include <random>
+
+std::knuth_b rand_engine;
+std::uniform_real_distribution<> uniform_zero_to_one(0.0, 1.0);
 void NodeSimulation::AddTrain(TrainSimulation* train) {
   AddObserver(train);
+  // Possibly throw an event, train should subscribe to events
+  for (const auto & event : node_.GetEvents()) {
+    bool prob = uniform_zero_to_one(rand_engine) >= event->GetProbability();
+    if (prob) {
+      // Add Event here
+    }
+  }
+  // EventMediator will update the train when the event is done
+}
+
+bool random_bool_with_prob( double prob )  // probability between 0.0 and 1.0
+{
+    return uniform_zero_to_one(rand_engine) >= prob;
 }
 
 void NodeSimulation::RemoveTrain(TrainSimulation* train) {

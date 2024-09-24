@@ -19,3 +19,12 @@ double Event::GetDuration() const {
 std::string Event::GetLocation() const {
   return location_;
 }
+
+// Event Occurrence Implementation
+
+EventOccurrence::EventOccurrence(const Event& e, unsigned start)
+  : event_(e), start_(start) {}
+
+bool EventOccurrence::IsFinished(unsigned time) const {
+  return start_ + event_.GetDuration() <= time;
+}

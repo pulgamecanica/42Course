@@ -5,6 +5,7 @@
 #include "CollisionMediator.hpp"
 #include "Train.hpp"
 #include "Rail.hpp"
+#include "Train.hpp"
 #include "Simulation.hpp"
 #include <vector>
 #include <set>
@@ -16,18 +17,31 @@ CollisionMediator::CollisionMediator(Simulation & simulation)
 void CollisionMediator::CheckForCollisions() {
   // Simple collision detection logic
   for (auto & rail : simulation_.GetRails()) {
-    std::vector<float> positions;
+    std::vector<TrainSimulation*> rail_trains;
     for (const auto observer : rail->GetObservers()) {
       TrainSimulation * train = (TrainSimulation*)observer;
       if (train) {
-        positions.push_back(train->GetPosition());
+        rail_trains.push_back(train);
       } else {
         throw std::runtime_error("Observer couldn't be casted to TrainSimulation");
       }
     }
-    std::set<float> unique_positions(positions.begin(), positions.end()); // Set should be same size if there are no duplicates
-    if (unique_positions.size() != positions.size())
-      rail->NotifyObservers(); // Notify all observers if there was a collision
+    for (const auto& train: rail_trains) {
+      for (const auto& train_behind: rail_trains) {
+        if (train == train_behind) continue;
+        if (train->GetNextNodeDestiny() == train->GetNextNodeDestiny()) {
+          if (train->GetPosition() > train_behind->GetPosition()) { // It's not behind then!
+            float distance_between_trains = train->GetPosition() - train_behind->GetPosition();
+            if (train_behind->GetStoppingDistance() <= distance_between_trains - 100) { // + 100 meters safe distance
+              train_behind->SetMaxAcceleration(train->GetMaxAccelerationForce());
+            }
+            if (distance_between_trains <= 10) { // Collision risk! Warn all observers of the rail!
+              rail->NotifyObservers();
+            }
+          }
+        }
+      }
+    }
   }
 }
 
