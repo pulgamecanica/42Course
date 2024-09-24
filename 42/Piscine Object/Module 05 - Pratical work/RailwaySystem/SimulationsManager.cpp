@@ -1,7 +1,7 @@
 #include "SimulationsManager.hpp"
 
 SimulationsManager::SimulationsManager(const RailwaySystem &rail_sys, const Schedule &schedule, int num_simulations)
-  : schedule_(schedule), state_(State::kStarting) {
+  : schedule_(schedule), state_(State::kStarting), time_running_(0) {
   if (num_simulations <= 0)
     throw std::runtime_error("Should execute at least 1 or more simulations");
   try {
@@ -10,6 +10,7 @@ SimulationsManager::SimulationsManager(const RailwaySystem &rail_sys, const Sche
   } catch (std::exception & e) {
     throw std::runtime_error(std::string("Couldn't initialize Simulation. ") + e.what());
   }
+  start_time_ = simulations_[0]->GetStartTime();
   state_ = State::kRunning;
 }
 
@@ -22,7 +23,12 @@ void SimulationsManager::UpdateSimulations() {
       // CollectResults();
       state_ = State::kFinished;
     }
+    time_running_++;
   }
+}
+
+unsigned SimulationsManager::GetCurrentTime() const {
+  return start_time_ + time_running_;
 }
 
 bool SimulationsManager::AreSimulationsFinished() const {

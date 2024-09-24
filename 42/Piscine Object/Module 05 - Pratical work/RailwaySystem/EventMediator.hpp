@@ -7,10 +7,13 @@
 
 #include <iostream>
 
+class Simulation;
+
 class EventMediator {
-    public:
-        EventMediator();
-        ~EventMediator();
-    private:
+ public:
+  EventMediator(Simulation & simulation);
+  void UpdateEvents();
+ private:
+  Simulation& simulation_;
 };
 #endif

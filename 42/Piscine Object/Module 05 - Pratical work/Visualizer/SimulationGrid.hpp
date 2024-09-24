@@ -23,9 +23,9 @@ public:
   void SetSimulationsManager(const SimulationsManager* manager);
 private:
   void DrawTrains();
+  void DrawEvents();
   void DrawTrainsElements();
-  void DrawRailElements();
-  void DrawEventsElement();
+  void DrawEventsElements();
   void DrawMenu();
   void DrawElementsBG(const std::string& title);
   void DrawTrain(const std::shared_ptr<TrainSimulationState>& train);
@@ -38,6 +38,7 @@ private:
   std::unique_ptr<Animation> train_icon_;
   std::unique_ptr<Animation> rail_icon_;
   std::unique_ptr<Animation> event_icon_;
+  std::unique_ptr<Animation> event_icon_small_;
 
   bool menu_opened_;
   bool element_menu_opened_;
@@ -46,7 +47,7 @@ private:
   bool events_element_open_;
 
   Vector2 elements_menu_scroll_;
-  Rectangle trains_elements_rec_;
+  Rectangle elements_rec_;
   Rectangle view_;
 
   TrainSimulation* selected_train_;

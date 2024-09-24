@@ -86,7 +86,7 @@ void SimulationPanelItem::Draw(Vector2 scroll) const {
     10,
     BLACK);
   DrawText(
-    Parser::ConvertToTimeString(simulations_manager_->GetAverageTravelTime()).c_str(),
+    Parser::ConvertToTimeStringHHMMSS(simulations_manager_->GetCurrentTime()).c_str(),
     GetWidth() + scroll.x,
     GetY() + scroll.y + 16,
     10,

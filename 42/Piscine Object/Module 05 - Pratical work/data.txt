@@ -357,8 +357,11 @@ Rail Tunes MessinesAlte 12000
 Rail Lagos Tunes 8200
 Rail Tunes Faro 25400
 Rail Faro VilaRealDeSantoAntónio 49000
-Event "Signal Failure" 0.3 10m Faro
-Event "Train Delay" 0.2 20m VilaNovaDeGaia
-Event "Passenger Overload" 0.4 30m Sintra
-Event "Technical Issue" 0.2 15m Grândola
-Event "Power Outage" 0.1 1y Évora
+Event "Signal Failure" 0.5 10m Faro
+Event "Train Delay" 0.5 20m VilaNovaDeGaia
+Event "Passenger Overload" 0.5 30m Sintra
+Event "Technical Issue" 0.5 15m Grândola
+Event "Power Outage" 0.5 12m LisboaStaApolónia
+Event "Cat Puke" 0.5 1h LisboaStaApolónia
+Event "Engine Failure" 0.2 30m BifurcaçãoDeLares
+Event "Derailing" 0.4 1.42h Pampilhosa

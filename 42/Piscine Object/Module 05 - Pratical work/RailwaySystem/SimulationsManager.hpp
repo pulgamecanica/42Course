@@ -33,6 +33,7 @@ class SimulationsManager {
   const Schedule& GetSchedule() const;
   std::vector<std::string> GetEventList() const;
   Simulation& GetSimulation(int index) const;
+  unsigned    GetCurrentTime() const;
 
  private:
   void InitializeSimulations();
@@ -44,6 +45,8 @@ class SimulationsManager {
   std::vector<std::unique_ptr<Simulation>>  simulations_;
   std::vector<double>                       travel_times_;
   std::vector<std::string>                  event_list_;
+  unsigned                                  start_time_;
+  unsigned                                  time_running_;
 };
 
 #endif  // SIMULATIONS_MANAGER_HPP

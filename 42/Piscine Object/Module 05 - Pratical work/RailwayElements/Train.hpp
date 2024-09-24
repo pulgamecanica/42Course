@@ -106,6 +106,7 @@ public:
 
   void SetMaxAcceleration(double acceleration);
 
+  unsigned int GetCurrentTime() const;
   double  GetOptimalTime() const;
   double  GetMaxAccelerationForce() const;
   float   GetStoppingDistance() const;
@@ -145,7 +146,7 @@ private:
   const NodeSimulation& node_source_;
   const NodeSimulation& node_destiny_;
 
-  FileLogger logger_;
+  // FileLogger logger_;
 
   PathInfo<std::string> path_info_;
 

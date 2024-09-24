@@ -89,13 +89,13 @@ void Parser::ParseElementsFile(const std::string& filename, RailwaySystem& syste
       column_number += std::to_string(probability).length();
       // Normalize the duration in minutes
       if (time_factor == "m") {
-        duration = duration;
-      } else if (time_factor == "h") {
         duration = duration * 60;
+      } else if (time_factor == "h") {
+        duration = duration * 60 * 60;
       } else if (time_factor == "d") {
-        duration = duration * 60 * 24;
+        duration = duration * 60 * 60 * 24;
       } else if (time_factor == "y") {
-        duration = duration * 60 * 24 * 365;
+        duration = duration * 60 * 60 * 24 * 365;
       } else {
         ErrorHandler::ReportError(filename, line_number, column_number, "Failed to read time format", line);
       }

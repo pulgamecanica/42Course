@@ -61,7 +61,16 @@ EventMediator* NodeSimulation::GetMediator() const {
   return mediator_;
 }
 
+bool NodeSimulation::IsNodeBlocked() const {
+  for (const auto& event : events_occurrences_)
+    if (!event->IsFinished())
+      return true;
+  return false;
+}
+
 #include <random>
+
+// https://en.cppreference.com/w/cpp/numeric/random
 
 std::knuth_b rand_engine;
 std::uniform_real_distribution<> uniform_zero_to_one(0.0, 1.0);
@@ -70,8 +79,8 @@ void NodeSimulation::AddTrain(TrainSimulation* train) {
   // Possibly throw an event, train should subscribe to events
   for (const auto & event : node_.GetEvents()) {
     bool prob = uniform_zero_to_one(rand_engine) >= event->GetProbability();
-    if (prob) {
-      // Add Event here
+    if (!prob) {
+      events_occurrences_.emplace_back(std::make_unique<EventOccurrence>(*event, train->GetCurrentTime()));
     }
   }
   // EventMediator will update the train when the event is done
@@ -84,4 +93,8 @@ bool random_bool_with_prob( double prob )  // probability between 0.0 and 1.0
 
 void NodeSimulation::RemoveTrain(TrainSimulation* train) {
   RemoveObserver(train);
+}
+
+std::vector<std::unique_ptr<EventOccurrence>>& NodeSimulation::GetEventsOccurrences() {
+  return events_occurrences_;
 }

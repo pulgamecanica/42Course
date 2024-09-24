@@ -24,6 +24,10 @@ namespace SimulationGridOptions {
     {"width", kIconSize}, 
     {"height", kIconSize}
   };
+  const std::map<std::string, int> kOptionsSmall = {
+    {"width", 20}, 
+    {"height", 20}
+  };
   const std::vector<const char*> kTrainIconImages = {
     "assets/images/train_icon.png"
   };
@@ -49,19 +53,22 @@ SimulationGrid::SimulationGrid(RailwaySystem &rail_sys, SimulationsState& sim_st
     elements_menu_scroll_({0, 0}),
     selected_train_(nullptr) {
 
-  Settings::Instance().DrawLoadingScreen(1 / 4,"Loading Simulation Grid", "Train Icon");
+  Settings::Instance().DrawLoadingScreen(1 / 5,"Loading Simulation Grid", "Train Icon");
   train_icon_ = std::make_unique<Animation>(SimulationGridOptions::kTrainIconImages, 1.0f, SimulationGridOptions::kOptions);
 
-  Settings::Instance().DrawLoadingScreen(2 / 4,"Loading Simulation Grid", "Rail Icon");
+  Settings::Instance().DrawLoadingScreen(2 / 5,"Loading Simulation Grid", "Rail Icon");
   rail_icon_ = std::make_unique<Animation>(SimulationGridOptions::kRailIconImages, 1.0f, SimulationGridOptions::kOptions);
 
-  Settings::Instance().DrawLoadingScreen(3 / 4,"Loading Simulation Grid", "Event Icon");
+  Settings::Instance().DrawLoadingScreen(3 / 5,"Loading Simulation Grid", "Event Icon");
   event_icon_ = std::make_unique<Animation>(SimulationGridOptions::kEventIconImages, 1.0f, SimulationGridOptions::kOptions);
+
+  Settings::Instance().DrawLoadingScreen(4 / 5,"Loading Simulation Grid", "Event Icon");
+  event_icon_small_ = std::make_unique<Animation>(SimulationGridOptions::kEventIconImages, 1.0f, SimulationGridOptions::kOptionsSmall);
 
   SimulationGridOptions::kMenuBGArea.y += displayArea.y;
   SimulationGridOptions::kOpenMenuArea.y += displayArea.y;
   SimulationGridOptions::kCloseMenuArea.y += displayArea.y;
-  Settings::Instance().DrawLoadingScreen(4 / 4,"Loading Simulation Grid");
+  Settings::Instance().DrawLoadingScreen(4 / 5,"Loading Simulation Grid");
 }
 
 void SimulationGrid::Update() {
@@ -77,12 +84,7 @@ void SimulationGrid::Draw() {
     Grid::Draw();
     DrawMenu();
     DrawTrains();
-    if (rails_element_open_) {
-      DrawRailElements();
-    } else if (events_element_open_) {
-      DrawEventsElement();
-    }
-    ; // TODO
+    DrawEvents();
   } else {
     DrawText("No Simulation Available", 350, 280, 20, BLACK);
   }
@@ -129,7 +131,7 @@ void SimulationGrid::DrawTrains() {
     throw std::runtime_error("Simulations Manager must be present to draw elements");
   
   Simulation& sim = manager_->GetSimulation(sim_state_.GetCurrentSimulation());
-  for (const std::shared_ptr<TrainSimulationState> &ts : sim.GetSimulationState(sim_state_.GetProgress()))
+  for (const std::shared_ptr<TrainSimulationState> &ts : sim.GetSimulationTrainsState(sim_state_.GetProgress()))
     DrawTrain(ts);
 
   DrawTrainsElements();
@@ -145,9 +147,9 @@ void SimulationGrid::DrawTrainsElements() {
   y += 30;
   x += 10;
 
-  float width = elements_menu_rec_.width - 20.0f;
+  float width = elements_menu_rec_.width - 25.0f;
   Simulation& sim = manager_->GetSimulation(sim_state_.GetCurrentSimulation());
-  for (const std::shared_ptr<TrainSimulationState> &ts : sim.GetSimulationState(sim_state_.GetProgress())) {
+  for (const std::shared_ptr<TrainSimulationState> &ts : sim.GetSimulationTrainsState(sim_state_.GetProgress())) {
     Rectangle train_area = {x, y, width, 60};
     if (GuiLabelButton(train_area, "")) {
       if (selected_train_ == const_cast<TrainSimulation*>(ts->GetTrainSimulation()))
@@ -177,7 +179,7 @@ void SimulationGrid::DrawTrainsElements() {
     y += 10.0f;
   }
   y += 1000;
-  trains_elements_rec_ = (Rectangle){0, 0, x - elements_menu_rec_.x, y};
+  elements_rec_ = (Rectangle){0, 0, x - elements_menu_rec_.x, y};
   EndScissorMode();
 }
 
@@ -210,19 +212,50 @@ void SimulationGrid::DrawTrain(const std::shared_ptr<TrainSimulationState>& trai
   }
 }
 
-void SimulationGrid::DrawRailElements() {
+void SimulationGrid::DrawEventsElements() {
   if (!manager_)
     throw std::runtime_error("Simulations Manager must be present to draw elements");
-  DrawElementsBG("Rails");
-}
-void SimulationGrid::DrawEventsElement() {
-  if (!manager_)
-    throw std::runtime_error("Simulations Manager must be present to draw elements");
+  if (!events_element_open_) return;
+
   DrawElementsBG("Events");
+  BeginScissorMode(elements_menu_rec_.x, elements_menu_rec_.y + 25, elements_menu_rec_.width, elements_menu_rec_.height);
+  Simulation& sim = manager_->GetSimulation(sim_state_.GetCurrentSimulation());
+  float x = elements_menu_rec_.x + elements_menu_scroll_.x;
+  float y = elements_menu_rec_.y + elements_menu_scroll_.y;
+  y += 30;
+  x += 10;
+  float width = elements_menu_rec_.width - 25.0f;
+
+  for (const std::shared_ptr<EventSimulationState> &event_state : sim.GetSimulationEventsState(sim_state_.GetProgress())) {
+    GuiLine((Rectangle){x, y, width, 10.0f}, (event_state->GetType() + " at " + event_state->GetLocationName()).c_str());
+    y += 10.0f;
+    GuiLabel((Rectangle){x, y, width, 10.0f}, (event_state->IsFinished() ? "Status: Finished!" : "Status: On Progress..."));
+    y += 10.0f;
+    GuiLabel((Rectangle){x, y, width, 10.0f}, (std::string("Start: ") + event_state->GetStartString()).c_str());
+    y += 10.0f;
+    GuiLabel((Rectangle){x, y, width, 10.0f}, (std::string("Duration: ") + event_state->GetDurationString() + " (" + std::to_string(event_state->GetDuration()) + "s)").c_str());
+    y += 20.0f;
+  }
+  y += 1000.0f;
+  elements_rec_ = (Rectangle){0, 0, x - elements_menu_rec_.x, y};
+  EndScissorMode();
+}
+
+void SimulationGrid::DrawEvents() {
+  Simulation& sim = manager_->GetSimulation(sim_state_.GetCurrentSimulation());
+
+  for (const std::shared_ptr<EventSimulationState> &event_state : sim.GetSimulationEventsState(sim_state_.GetProgress())) {
+    if (!event_state->IsFinished()) {
+      Node * node = event_state->GetEventOccurrence().GetEvent().GetNode();
+      const Vector2 node_pos = GetAbsoluteCoordinates(node->GetPosition());
+      event_icon_small_->Draw(node_pos.x, node_pos.y);
+    }
+  }
+  DrawEventsElements();
 }
 
 void SimulationGrid::DrawElementsBG(const std::string& title) {
-  GuiScrollPanel(elements_menu_rec_, title.c_str(), trains_elements_rec_, &elements_menu_scroll_, &view_);
+  GuiScrollPanel(elements_menu_rec_, title.c_str(), elements_rec_, &elements_menu_scroll_, &view_);
   if (GuiButton((Rectangle){elements_menu_rec_.x + elements_menu_rec_.width - 22, elements_menu_rec_.y + 2, 20, 20}, GuiIconText(ICON_CROSS, ""))) {
     element_menu_opened_ = false;
     trains_element_open_ = false;

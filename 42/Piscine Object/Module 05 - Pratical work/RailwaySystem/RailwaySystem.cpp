@@ -25,6 +25,7 @@ void RailwaySystem::SetupEvents() {
       throw std::runtime_error(("Invalid Event location: " + event->GetLocation()).c_str());
     }
     node->AddEvent(event.get());
+    event->SetNode(node);
   }
 }
 

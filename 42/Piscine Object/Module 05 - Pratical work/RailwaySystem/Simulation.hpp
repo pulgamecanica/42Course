@@ -6,6 +6,7 @@
 #include "Train.hpp"
 #include "Node.hpp"
 #include "Rail.hpp"
+#include "Event.hpp"
 #include "EventMediator.hpp"
 #include "CollisionMediator.hpp"
 #include "FileLogger.hpp"
@@ -26,6 +27,7 @@ class Simulation {
 
   std::vector<std::unique_ptr<RailSimulation>>& GetRails();
   std::vector<std::unique_ptr<TrainSimulation>>& GetTrains();
+  std::vector<std::unique_ptr<NodeSimulation>>& GetNodes();
   const CollisionMediator&  GetCollisionMediator() const;
   const RailwaySystem&      GetRailwaySystem() const;
   const std::string&        GetDirectory() const;
@@ -40,14 +42,15 @@ class Simulation {
   bool IsFinished() const;
   bool IsRailTwoWay() const;
 
-  const std::vector<std::shared_ptr<TrainSimulationState>>& GetSimulationState(int index);
+  const std::vector<std::shared_ptr<TrainSimulationState>>& GetSimulationTrainsState(int index);
+  const std::vector<std::shared_ptr<EventSimulationState>>& GetSimulationEventsState(int index);
  private:
   void InitializeNodes();
   void InitializeRails();
   void InitializeTrains();
   void CollectResults();
   void HandleCollisions();
-  // void HandleEvents();
+  void HandleEvents();
   void LogSimulationState();
   bool HasFinished() const;
 
@@ -79,6 +82,7 @@ class Simulation {
   std::vector<std::unique_ptr<RailSimulation>> rails_;
   std::vector<std::unique_ptr<TrainSimulation>> trains_;
   std::vector<std::vector<std::shared_ptr<TrainSimulationState>>> trains_states_; // For each second (collection of seconds) we want the collection of trains
+  std::vector<std::vector<std::shared_ptr<EventSimulationState>>> events_states_;
 };
 
 #endif  // SIMULATION_HPP

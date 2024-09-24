@@ -35,7 +35,9 @@ class Node: public INode<std::string> {
 };
 
 #include "Subject.hpp"
+#include "Event.hpp"
 
+#include <memory>
 // Forward declaration of EventMediator class
 class EventMediator;
 class TrainSimulation;
@@ -51,10 +53,13 @@ class NodeSimulation : public Subject {
 
   void AddTrain(TrainSimulation* train);
   void RemoveTrain(TrainSimulation* train);
+  std::vector<std::unique_ptr<EventOccurrence>>& GetEventsOccurrences();
+  bool IsNodeBlocked() const;
 
  private:
   const Node& node_;
   EventMediator* mediator_;
+  std::vector<std::unique_ptr<EventOccurrence>> events_occurrences_;
 };
 
 #endif  // NODE_HPP_

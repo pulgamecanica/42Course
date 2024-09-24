@@ -18,6 +18,7 @@ namespace SimulationsOptions {
   const Rectangle kProgressBarArea = {50, HEIGHT - 55, WIDTH - 100, 10};
   const Rectangle kTopNavArea = {0, 0, WIDTH, 25};
   const Rectangle kSettingsArea = {WIDTH / 2 - 200, 100, WIDTH / 2, 400};
+  const Rectangle kDropdownSimsButtonArea = {kSettingsArea.x + 10, kSettingsArea.y + 60, 42, 21};
   const Rectangle kInfoArea = {WIDTH / 2 - 200, 100, WIDTH / 2, 400};
   const Rectangle kBottomNavArea = {0, HEIGHT - 60, WIDTH, 60};
   const Vector2   kTimeProgressVec = {10, HEIGHT - 30};
@@ -35,7 +36,7 @@ SimulationsState::SimulationsState(SimulationsEngine& engine)
     manager_(nullptr),
     grid_(engine.GetRailwaySystem(), *this, SimulationsOptions::kGridSize, SimulationsOptions::kGridArea),
     show_log_(false), simulation_running_(false), settings_open_(false), info_open_(false),
-    simulation_progress_(0), current_simulation_(0), last_update_s_(0) {
+    simulation_progress_(0), current_simulation_(0), last_update_s_(0), simulation_options_enabled_(false) {
   button_manager_.AddButton("Home", SimulationsOptions::kHomeButtonArea, [this]() { engine_.ChangeState(EngineStates::kMenu); });
   button_manager_.AddButton("Schedules", SimulationsOptions::kSchedulesButtonArea, [this]() { engine_.ChangeState(EngineStates::kSchedules); });
   button_manager_.AddButton(GuiIconText(ICON_GEAR, ""), SimulationsOptions::kSettingsButtonArea, [this]() { settings_open_ = !settings_open_; });
@@ -93,9 +94,19 @@ void SimulationsState::Draw() {
     DrawSettings();
 }
 
+void SimulationsState::SetupNewSimulation() {
+  simulation_progress_ = 0;
+  last_update_s_ = 0;
+  simulation_running_ = false;
+}
+
 void SimulationsState::SetSimulationsManager(const SimulationsManager* manager) {
   grid_.SetSimulationsManager(manager);
   manager_ = manager;
+  for (int i = 0; i < (int)manager->GetSimulations().size(); i++) {
+    if (i > 0) simulation_options_ += ";";
+    simulation_options_ += std::to_string(i);
+  } 
 }
 
 int SimulationsState::GetCurrentSimulation() const {
@@ -114,6 +125,9 @@ void SimulationsState::DrawInfo() {
 void SimulationsState::DrawSettings() {
   if (GuiWindowBox(SimulationsOptions::kSettingsArea, "Settings"))
     settings_open_ = false;
+  if (GuiButton(SimulationsOptions::kDropdownSimsButtonArea, ""))
+    simulation_options_enabled_ = !simulation_options_enabled_;
+  GuiDropdownBox(SimulationsOptions::kDropdownSimsButtonArea, simulation_options_.c_str(), &current_simulation_, simulation_options_enabled_);
 }
 
 void SimulationsState::DrawBackground() {

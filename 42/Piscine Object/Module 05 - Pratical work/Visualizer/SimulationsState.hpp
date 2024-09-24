@@ -22,6 +22,8 @@ public:
   void Update() override;
   void Draw() override;
   
+  void SetupNewSimulation();
+  
   void SetSimulationsManager(const SimulationsManager* manager);
   int GetCurrentSimulation() const;
   int GetProgress() const;
@@ -48,6 +50,8 @@ private:
   float last_update_s_;
 
   enum Controls control_;
+  std::string simulation_options_;
+  bool simulation_options_enabled_;
 
 };
 

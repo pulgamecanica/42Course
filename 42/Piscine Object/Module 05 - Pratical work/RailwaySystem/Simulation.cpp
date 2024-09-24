@@ -10,6 +10,7 @@ Simulation::Simulation(const RailwaySystem& railSys, const Schedule& schedule, i
       directory_(Settings::Instance().GetOutputDirectory() + "/" +
                       schedule.GetName() + "_" + std::to_string(id) + "_" + Parser::ParseCurrentTimeString()),
       logger_(directory_ + "/simulation.log"),
+      event_mediator_(*this),
       collision_mediator_(*this),
       state_(State::kStarting),
       max_speed_(Settings::Instance().MaxTrainSpeed()),
@@ -56,6 +57,10 @@ void Simulation::InitializeTrains() {
   }
 }
 
+std::vector<std::unique_ptr<NodeSimulation>>& Simulation::GetNodes() {
+  return nodes_;
+}
+
 std::vector<std::unique_ptr<RailSimulation>>& Simulation::GetRails() {
   return rails_;
 }
@@ -85,7 +90,7 @@ void Simulation::Update() {
       train->Update();
     LogSimulationState();
     HandleCollisions();
-    // HandleEvents();
+    HandleEvents();
     if (HasFinished()) {
       LogSimulationState();
       CollectResults();
@@ -142,9 +147,9 @@ unsigned int Simulation::GetStartTime() const {
   return start_time_;
 }
 
-// void Simulation::HandleEvents() {
-//   // Logic to process events
-// }
+void Simulation::HandleEvents() {
+  event_mediator_.UpdateEvents();
+}
 
 void Simulation::HandleCollisions() {
   collision_mediator_.CheckForCollisions();
@@ -152,15 +157,26 @@ void Simulation::HandleCollisions() {
 
 void Simulation::LogSimulationState() {
   std::vector<std::shared_ptr<TrainSimulationState>> states_;
-  for (auto& train : trains_) {
+  std::vector<std::shared_ptr<EventSimulationState>> events_;
+  for (const auto& train : trains_) {
     TrainSimulationState state = train->GetCurrentState();
     states_.push_back(std::make_shared<TrainSimulationState>(state));
   }
+  for (const auto& node : nodes_) {
+    for (const auto& event : node->GetEventsOccurrences()) {
+      EventSimulationState state = event->GetCurrentState();
+      events_.push_back(std::make_shared<EventSimulationState>(state));
+    }
+  }
   trains_states_.push_back(states_);
+  events_states_.push_back(events_);
 }
 
-const std::vector<std::shared_ptr<TrainSimulationState>>& Simulation::GetSimulationState(int index) {
+const std::vector<std::shared_ptr<TrainSimulationState>>& Simulation::GetSimulationTrainsState(int index) {
   return trains_states_[index];
+}
+const std::vector<std::shared_ptr<EventSimulationState>>& Simulation::GetSimulationEventsState(int index) {
+  return events_states_[index];
 }
 
 bool Simulation::IsRailTwoWay() const {

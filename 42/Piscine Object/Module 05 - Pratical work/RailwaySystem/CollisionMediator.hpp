@@ -2,7 +2,6 @@
 #define COLLISION_MEDIATOR_HPP_
 
 #include <string>
-#include <vector>
 
 class TrainSimulation;
 class RailSimulation;

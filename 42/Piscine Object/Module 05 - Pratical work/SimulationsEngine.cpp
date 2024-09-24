@@ -64,5 +64,6 @@ SimulationsManager * SimulationsEngine::GenerateSimulations(const Schedule &sche
 
 void SimulationsEngine::SetSimulationsManager(const SimulationsManager* manager) {
   simulation_state_.SetSimulationsManager(manager);
+  simulation_state_.SetupNewSimulation();
 }
 
