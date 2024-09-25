@@ -64,7 +64,7 @@ class Simulation {
 
   // Loggers
   const std::string directory_;
-  FileLogger logger_;
+  // FileLogger logger_;
 
   // Mediators
   EventMediator event_mediator_;

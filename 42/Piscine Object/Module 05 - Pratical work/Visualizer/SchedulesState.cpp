@@ -15,7 +15,7 @@ namespace SchedulesStateConstants {
   constexpr int kHomeButtonWidth = 50;
   constexpr int kHomeButtonHeight = 25;
   constexpr float kSliderMin = 1.0f;
-  constexpr float kSliderMax = 100.0f;
+  constexpr float kSliderMax = 10.0f;
   constexpr float kFormPaddingDivisor = 4.0f;
   const std::vector<const char*> kBackgroundImages = { "assets/images/background_schedules.png" };
   const std::map<std::string, int> kBackgroundOptions = {

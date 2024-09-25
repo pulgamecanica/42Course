@@ -22,9 +22,11 @@ Animation::Animation(const std::vector<const char*>& imagePaths, float frameDura
     if (img.data == nullptr) {
       throw std::runtime_error(std::string("Failed to load image: ") + path);
     }
-    if (!options["width"] || !options["height"])
-      throw std::runtime_error("Width or Height cannot be zero!");
-    ImageResizeNN(&img, options["width"], options["height"]);
+    if (!options["width"] || !options["height"]) {
+      // throw std::runtime_error("Width or Height cannot be zero!");
+    } else { 
+      ImageResizeNN(&img, options["width"], options["height"]);
+    }
     Texture2D texture = LoadTextureFromImage(img);
     UnloadImage(img);
 
@@ -48,9 +50,11 @@ Animation::Animation(const std::vector<std::string>& imagePaths, float frameDura
     if (img.data == nullptr) {
       throw std::runtime_error(std::string("Failed to load image: ") + path);
     }
-    if (!options["width"] || !options["height"])
-      throw std::runtime_error("Width or Height cannot be zero!");
-    ImageResizeNN(&img, options["width"], options["height"]);
+    if (!options["width"] || !options["height"]) {
+      // throw std::runtime_error("Width or Height cannot be zero!");
+    } else {
+      ImageResizeNN(&img, options["width"], options["height"]);
+    }
     Texture2D texture = LoadTextureFromImage(img);
     UnloadImage(img);
 

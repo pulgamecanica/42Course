@@ -13,7 +13,7 @@ std::mutex Settings::mutex_;
 Settings* Settings::instance_ = nullptr;
 
 Settings::Settings()
-  : rail_two_way_(false), simulation_fps_(10) {
+  : rail_two_way_(false), simulation_fps_(10), map_background_(nullptr) {
   max_speed_ = 25.0f; // max_speed_ * 3.6 = km/h
 }
 
@@ -132,8 +132,31 @@ bool Settings::IsRailTwoWay() const {
   return rail_two_way_;
 }
 
+void Settings::SetRailTwoWay(bool b) {
+  rail_two_way_ = b;
+}
+
+void Settings::SetDistancePreference(bool meters) {
+  distance_preference_in_meters_ = meters;
+}
+
 double  Settings::MaxTrainSpeed() const {
   return max_speed_;
+}
+
+void Settings::DrawMapBackground(int x, int y) const {
+  map_background_->Draw(x, y);
+}
+
+void Settings::SetBackground(std::string background_image_path, int width, int height) {
+  std::map<std::string, int> options = {{"width", 42}, {"height", 42}};
+  std::vector<std::string> imgs = { background_image_path };
+  map_background_ = std::make_unique<Animation>(imgs, 1, options);
+}
+
+
+bool Settings::PreferMeters() const {
+  return distance_preference_in_meters_;
 }
 
 #include "raylib.h"

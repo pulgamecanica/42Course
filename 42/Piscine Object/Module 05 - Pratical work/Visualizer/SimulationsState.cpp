@@ -139,6 +139,10 @@ void SimulationsState::DrawBackground() {
   unsigned start_time = manager_->GetSimulation(current_simulation_).GetStartTime();
   const std::string text = Parser::ConvertToTimeStringHHMMSS(start_time + simulation_progress_) + "/" + Parser::ConvertToTimeStringHHMMSS(manager_->GetSimulation(current_simulation_).GetTotalTime() + start_time);
   DrawText(text.c_str(), SimulationsOptions::kTimeProgressVec.x, SimulationsOptions::kTimeProgressVec.y, SimulationsOptions::kTextSize, DARKGRAY);
+  if (simulation_progress_ > manager_->GetSimulation(current_simulation_).GetTotalTime()) {
+    // simulation_progress_ = 0;
+    simulation_progress_ = manager_->GetSimulation(current_simulation_).GetTotalTime()  / 2;
+  }
   GuiSliderBar(SimulationsOptions::kProgressBarArea, NULL, NULL, &simulation_progress_, 0, manager_->GetSimulation(current_simulation_).GetTotalTime());  
 
   DrawText("FPS", SimulationsOptions::kSpeedBarAreaText.x, SimulationsOptions::kSpeedBarAreaText.y, SimulationsOptions::kTextSize, DARKGRAY);

@@ -88,7 +88,9 @@ void Parser::ParseElementsFile(const std::string& filename, RailwaySystem& syste
       }
       column_number += std::to_string(probability).length();
       // Normalize the duration in minutes
-      if (time_factor == "m") {
+      if (time_factor == "s") {
+        duration = duration;
+      } else if (time_factor == "m") {
         duration = duration * 60;
       } else if (time_factor == "h") {
         duration = duration * 60 * 60;
@@ -224,16 +226,7 @@ void Parser::WriteDataToFile(const RailwaySystem& system) {
     // Write Events
     const auto& events = system.GetEvents();
     for (const auto& event : events) {
-        file << "Event \"" << event->GetType() << "\" " << event->GetProbability() << " " << event->GetDuration();
-        if (event->GetDuration() >= 60 * 24 * 365) {
-            file << "y";
-        } else if (event->GetDuration() >= 60 * 24) {
-            file << "d";
-        } else if (event->GetDuration() >= 60) {
-            file << "h";
-        } else {
-            file << "m";
-        }
+        file << "Event \"" << event->GetType() << "\" " << event->GetProbability() << " " << event->GetDuration() << "s";
         file << " " << event->GetLocation() << std::endl;
     }
     file.close();

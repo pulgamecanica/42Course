@@ -9,7 +9,7 @@ Simulation::Simulation(const RailwaySystem& railSys, const Schedule& schedule, i
       rail_two_way_(Settings::Instance().IsRailTwoWay()),
       directory_(Settings::Instance().GetOutputDirectory() + "/" +
                       schedule.GetName() + "_" + std::to_string(id) + "_" + Parser::ParseCurrentTimeString()),
-      logger_(directory_ + "/simulation.log"),
+      // logger_(directory_ + "/simulation.log"),
       event_mediator_(*this),
       collision_mediator_(*this),
       state_(State::kStarting),
@@ -23,19 +23,19 @@ Simulation::Simulation(const RailwaySystem& railSys, const Schedule& schedule, i
   for (const auto & train : trains_)
     start_time_ = std::min(start_time_, train->GetTrain().GetHour());
 
-  logger_.write(std::string("Simulation #") + std::to_string(id_));
-  logger_.write(std::string("Total Trains: ") + std::to_string(trains_.size()));
-  logger_.write(std::string("Total Nodes: ") + std::to_string(nodes_.size()));
-  logger_.write(std::string("Total Rails: ") + std::to_string(rails_.size()));
+  // logger_.write(std::string("Simulation #") + std::to_string(id_));
+  // logger_.write(std::string("Total Trains: ") + std::to_string(trains_.size()));
+  // logger_.write(std::string("Total Nodes: ") + std::to_string(nodes_.size()));
+  // logger_.write(std::string("Total Rails: ") + std::to_string(rails_.size()));
 
-  // This should be done when collecting results
-  logger_.write("Total Event Counter: TODO");
-  logger_.write("Time Spent Simulating: TODO");
-  logger_.write("");
-  for(const auto & train : trains_)
-    logger_.write("Train " + train->GetTrain().GetName() + " | 15:00 - 22:00 | Real Time [39m] | Optimal Time [" + std::to_string(train->GetOptimalTime()) + "]");
-  logger_.write("");
-  logger_.write("Status: OK/KO");
+  // // This should be done when collecting results
+  // logger_.write("Total Event Counter: TODO");
+  // logger_.write("Time Spent Simulating: TODO");
+  // logger_.write("");
+  // for(const auto & train : trains_)
+  //   logger_.write("Train " + train->GetTrain().GetName() + " | 15:00 - 22:00 | Real Time [39m] | Optimal Time [" + std::to_string(train->GetOptimalTime()) + "]");
+  // logger_.write("");
+  // logger_.write("Status: OK/KO");
   state_ = State::kRunning;
 }
 

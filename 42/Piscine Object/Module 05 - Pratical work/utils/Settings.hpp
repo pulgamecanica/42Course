@@ -21,12 +21,17 @@ public:
   void SetScheduleDirectory(const std::string& directory);
   void SetOutputDirectory(const std::string& directory);
   void SetSimulationFPS(float fps);
+  void SetRailTwoWay(bool b);
+  void SetDistancePreference(bool meters);
+  void SetBackground(std::string background_image_path, int width, int height);
+
   // Getters
   double              MaxTrainSpeed() const;
   const std::string&  GetDataFileName() const;
   const std::string&  GetScheduleDirectory() const;
   const std::string&  GetOutputDirectory() const;
   const std::string   GetNodePositionsFileName() const;
+  bool                PreferMeters() const;
 
   float               GetSimulationFPS() const;
   bool                IsRailTwoWay() const;
@@ -36,6 +41,7 @@ public:
   void SaveRailwayNodePositions(RailwaySystem& rail_sys);
   void InitializeAnimations();
   void DrawHourglass(int x, int y) const;
+  void DrawMapBackground(int x, int y) const;
   void UpdateAnimations();
 private:
   Settings();  // Private constructor
@@ -49,10 +55,13 @@ private:
   std::string output_directory_;
 
   std::unique_ptr<Animation> hourglass_animation_;
+  std::unique_ptr<Animation> map_background_;
 
   double max_speed_;
   bool   rail_two_way_;
+  bool   distance_preference_in_meters_;
   float simulation_fps_;
+
 };
 
 #endif // SETTINGS_HPP

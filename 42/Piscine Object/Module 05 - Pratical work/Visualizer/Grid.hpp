@@ -29,6 +29,7 @@ protected:
   Vector2 offset_;
   Rectangle display_area_;
   bool show_grid_;
+  // bool show_distance_;
   Vector2 drag_start_pos_;
   bool is_dragging_;
   bool can_drag_grid_;
