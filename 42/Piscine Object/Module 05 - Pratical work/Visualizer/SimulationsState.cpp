@@ -17,7 +17,7 @@ namespace SimulationsOptions {
   const Rectangle kGridArea = {0, 25, WIDTH, HEIGHT - 90};
   const Rectangle kProgressBarArea = {50, HEIGHT - 55, WIDTH - 100, 10};
   const Rectangle kTopNavArea = {0, 0, WIDTH, 25};
-  const Vector2   kPopupSize = {WIDTH / 3, HEIGHT / 3};
+  const Vector2   kPopupSize = {WIDTH / 3, (HEIGHT / 5) * 4};
   const Rectangle kSettingsArea = {WIDTH / 2 - kPopupSize.x / 2, HEIGHT / 2 - kPopupSize.y / 2, kPopupSize.x, kPopupSize.y};
   const Rectangle kDropdownSimsButtonLabel = {kSettingsArea.x + 10, kSettingsArea.y + 60, 100, 30};
   const Rectangle kDropdownSimsButtonArea = {kDropdownSimsButtonLabel.x + kDropdownSimsButtonLabel.width + 10, kDropdownSimsButtonLabel.y, 42, 30};

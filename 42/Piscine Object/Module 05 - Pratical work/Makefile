@@ -49,9 +49,9 @@ SRC             =   ./main.cpp \
 		./RailwayElements/Node.cpp \
 		./utils/Parser.cpp \
 
-CFLAGS          =   -w -std=c++20 -O3 #-fsanitize=address -O3 -g -fsanitize=leak
+CFLAGS          =   -Wall -Werror -Wextra -std=c++20 -O3 #-fsanitize=address -O3 -g -fsanitize=leak
 
-INC             =   -I${INC_PATH} -IRailwaySystem -IRailwayElements -Iutils -IVisualizer -IDijkstra -Iraylib/src -Iraygui/src
+INC             =   -I${INC_PATH} -IRailwaySystem -IRailwayElements -Iutils -IVisualizer -IDijkstra # -Iraylib/src -Iraygui/src
 
 LDFLAGS			=	-L. -lraylib -lraygui
 

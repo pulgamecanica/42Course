@@ -20,6 +20,7 @@ public:
 private:
   void DrawBackgroundSelector();
   void DrawOutputDirectory();
+  void DrawMapSize();
   void DrawBidirectonal();
   void DrawDistance();
   void DrawMaxSpeed();

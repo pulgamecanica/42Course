@@ -168,7 +168,7 @@ void Simulation::Log() const {
     FileLogger logger(GetDirectory() + "/" + train->GetTrain().GetName() + ".log");
     logger.write(std::string("Train : ") + train->GetTrain().GetName());
     logger.write(std::string("Estimated optimal travel time : ") + Parser::ConvertToTimeStringHHMMSS(train->GetOptimalTime()));
-    logger.write(std::string("Travel from ") + train->GetTrain().GetDeparture() + " to " + train->GetTrain().GetDeparture() + " at " + Parser::ConvertToTimeStringHHMMSS(train->GetTrain().GetHour()));
+    logger.write(std::string("Travel from ") + train->GetTrain().GetDeparture() + " to " + train->GetTrain().GetArrival() + " at " + Parser::ConvertToTimeStringHHMMSS(train->GetTrain().GetHour()));
     logger.write("");
     logger.write(train->GetLogs());
   }

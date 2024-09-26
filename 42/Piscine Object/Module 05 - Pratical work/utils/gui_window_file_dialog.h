@@ -170,10 +170,11 @@ static int GuiListViewFiles(Rectangle bounds, FileInfo *files, int count, int *f
 //----------------------------------------------------------------------------------
 GuiWindowFileDialogState InitGuiWindowFileDialog(const char *initPath)
 {
-    GuiWindowFileDialogState state = { 0 };
+    GuiWindowFileDialogState state;
+    bzero(&state, sizeof(GuiWindowFileDialogState));
 
     // Init window data
-    state.windowBounds = (Rectangle){ GetScreenWidth()/2 - 440/2, GetScreenHeight()/2 - 310/2, 440, 310 };
+    state.windowBounds = (Rectangle){(float)(GetScreenWidth()/2 - 440/2), (float)(GetScreenHeight()/2 - 310/2), 440, 310 };
     state.windowActive = false;
     state.supportDrag = true;
     state.dragMode = false;
@@ -358,7 +359,7 @@ void GuiWindowFileDialog(GuiWindowFileDialogState *state)
                 if (FileExists(TextFormat("%s/%s", state->dirPathText, state->fileNameText)))
                 {
                     // Select filename from list view
-                    for (int i = 0; i < state->dirFiles.count; i++)
+                    for (unsigned int i = 0; i < state->dirFiles.count; i++)
                     {
                         if (TextIsEqual(state->fileNameText, state->dirFiles.paths[i]))
                         {
@@ -435,7 +436,7 @@ static void ReloadDirectoryFiles(GuiWindowFileDialogState *state)
     for (int i = 0; i < MAX_DIRECTORY_FILES; i++) memset(dirFilesIcon[i], 0, MAX_ICON_PATH_LENGTH);
 
     // Copy paths as icon + fileNames into dirFilesIcon
-    for (int i = 0; i < state->dirFiles.count; i++)
+    for (unsigned int i = 0; i < state->dirFiles.count; i++)
     {
         if (IsPathFile(state->dirFiles.paths[i]))
         {

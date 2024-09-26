@@ -11,7 +11,7 @@ namespace SettingsOptions {
   const float kMidWidth = WIDTH / 2;
   const float kMidHeight = HEIGHT / 2;
   const int   kWindowWidth = (WIDTH / 3) * 2;
-  const int   kWindowHeight = (HEIGHT / 5) * 3;
+  const int   kWindowHeight = (HEIGHT / 5) * 4;
   const int   kMinimapWidth = 100;
   const int   kMinimapHeight = 60;
   const std::map<std::string, int> kOptionsMini = {
@@ -77,11 +77,20 @@ void SettingsState::Save() {
 void SettingsState::Draw() {
   GuiWindowBox(SettingsOptions::kWindowArea, "General Settings");
   button_manager_.DrawButtons();
+  DrawMapSize();
   DrawOutputDirectory();
   DrawBidirectonal();
   DrawDistance();
   DrawMaxSpeed();
   DrawBackgroundSelector();
+}
+
+void SettingsState::DrawMapSize() {
+  GuiLabel(SettingsOptions::kSelectImageSizeLabel, "Map Size");
+  if (GuiValueBox(SettingsOptions::kSelectImageSizeWidth, "", &map_width_, 42, 4200, map_width_enabled_))
+    map_width_enabled_ = !map_width_enabled_;
+  if (GuiValueBox(SettingsOptions::kSelectImageSizeHeight, "x", &map_height_, 42, 4200, map_height_enabled_))
+    map_height_enabled_ = !map_height_enabled_;
 }
 
 void SettingsState::DrawMaxSpeed() {
@@ -98,7 +107,6 @@ void SettingsState::DrawDistance() {
 void SettingsState::DrawBidirectonal() {
   GuiLabel(SettingsOptions::kToggleBidirectionalLabel, "Rails:");
   GuiToggle(SettingsOptions::kToggleBidirectional, bidirectional_toggle_ ? GuiIconText(ICON_OK_TICK, "Bidirectional") : GuiIconText(ICON_CROSS, "Bidirectional"), &bidirectional_toggle_);
-  // if (GuiLabelButton(SettingsOptions::kToggleBidirectional, ""));
 }
 
 void SettingsState::DrawOutputDirectory() {
@@ -110,7 +118,6 @@ void SettingsState::DrawOutputDirectory() {
 }
 
 void SettingsState::DrawBackgroundSelector() {
-  char file_name[512] = { 0 };
   if (map_background_img_mini_) {
     Rectangle rec_mini = {SettingsOptions::kSelectImagePos.x, SettingsOptions::kSelectImagePos.y, SettingsOptions::kMinimapWidth, SettingsOptions::kMinimapHeight};
     map_background_img_mini_->Draw(SettingsOptions::kSelectImagePos.x, SettingsOptions::kSelectImagePos.y);
@@ -144,10 +151,4 @@ void SettingsState::DrawBackgroundSelector() {
   GuiUnlock();
 
   GuiWindowFileDialog(&file_dialog_state_);
-   
-  GuiLabel(SettingsOptions::kSelectImageSizeLabel, "Map Size");
-  if (GuiValueBox(SettingsOptions::kSelectImageSizeWidth, "", &map_width_, 42, 4200, map_width_enabled_))
-    map_width_enabled_ = !map_width_enabled_;
-  if (GuiValueBox(SettingsOptions::kSelectImageSizeHeight, "x", &map_height_, 42, 4200, map_height_enabled_))
-    map_height_enabled_ = !map_height_enabled_;
 }

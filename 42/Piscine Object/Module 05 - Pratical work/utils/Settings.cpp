@@ -13,8 +13,7 @@ std::mutex Settings::mutex_;
 Settings* Settings::instance_ = nullptr;
 
 Settings::Settings()
-  : rail_two_way_(false), simulation_fps_(10), map_background_(nullptr), map_position_(0, 0) {
-  max_speed_ = 25.0f; // max_speed_ * 3.6 = km/h
+  : map_background_(nullptr), max_speed_(25.0f), rail_two_way_(false), simulation_fps_(10), map_position_(0, 0) {
 }
 
 Settings& Settings::Instance() {
