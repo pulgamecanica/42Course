@@ -6,7 +6,8 @@ void ErrorHandler::ReportError(const std::string& file, int line, int column, co
     std::cerr << C_YELLOW << line_content << ENDC << std::endl;
   }
   if (column > 0)
-    std::cerr << std::string(column - 1, ' ') << C_GREEN << "^" << ENDC << std::endl;  
+    std::cerr << std::string(column - 1, ' ') << C_GREEN << "^" << ENDC << std::endl;
+  throw std::runtime_error("Parsing Error");
 }
 
 void ErrorHandler::PrintUsage() {

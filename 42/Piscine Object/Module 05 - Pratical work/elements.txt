@@ -1,0 +1,11 @@
+Node Granada
+Node madrid
+Node barcelona
+Node valencia
+Node andalucia
+Rail Granada andalucia 42
+Rail andalucia valencia 42
+Rail valencia barcelona 42
+Rail barcelona madrid 42
+Rail madrid valencia 42
+Rail madrid Granada 42

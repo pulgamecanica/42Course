@@ -23,6 +23,7 @@ void init_RayGui() {
 }
 
 int main(int argc, char *argv[]) {
+  SimulationsEngine* engine;
   srand(time(NULL)); // Seed randomnes entropy
 
   init_RayGui();
@@ -36,16 +37,16 @@ int main(int argc, char *argv[]) {
   Settings::Instance().DrawLoadingScreen(1.0f, "Loading Programm Options");
 
   Settings::Instance().DrawLoadingScreen(0.0f, "Loading Simulations Engine");
-  SimulationsEngine engine = SimulationsEngine(options["elements_file"], options["schedule_directory"]);
+  try {
+    engine = new SimulationsEngine(options["elements_file"], options["schedule_directory"]);
+  } catch (std::exception& e) {
+    std::cerr << e.what() << std::endl;
+    return (1);
+  }
   Settings::Instance().DrawLoadingScreen(1.0f, "Loading Simulations Engine");
 
-  // {
-  //   // Example of manual request for simulation
-  //   std::vector<SimulationsManager *> sims;
-  //   SimulationsManager * sm = engine.GenerateSimulations(*engine.GetRailwaySystem().GetSchedules().begin()->second, 1);
-  //   sims.push_back(sm);
-  // }
-  engine.Run();
-  Settings::Instance().SaveRailwayNodePositions(engine.GetRailwaySystem());
+  engine->Run();
+  Settings::Instance().SaveRailwayNodePositions(engine->GetRailwaySystem());
+  delete engine;
   return (0);
 }
