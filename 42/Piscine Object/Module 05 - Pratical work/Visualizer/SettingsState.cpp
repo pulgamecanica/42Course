@@ -12,9 +12,11 @@ namespace SettingsOptions {
   const float kMidHeight = HEIGHT / 2;
   const int   kWindowWidth = (WIDTH / 3) * 2;
   const int   kWindowHeight = (HEIGHT / 5) * 3;
+  const int   kMinimapWidth = 100;
+  const int   kMinimapHeight = 60;
   const std::map<std::string, int> kOptionsMini = {
-    {"width", 100}, 
-    {"height", 60}
+    {"width", kMinimapWidth}, 
+    {"height", kMinimapHeight}
   };
   const Rectangle kWindowArea = {kMidWidth - (kWindowWidth / 2), kMidHeight - (kWindowHeight / 2), kWindowWidth, kWindowHeight};
   const Rectangle kSelectImageLabel = {kWindowArea.x + 42, kWindowArea.y + 42, 100, 30};
@@ -29,6 +31,9 @@ namespace SettingsOptions {
   const Rectangle kToggleBidirectional = {kToggleBidirectionalLabel.x + 110, kToggleBidirectionalLabel.y, 200, 30};
   const Rectangle kDistanceLabel = {kToggleBidirectionalLabel.x, kToggleBidirectionalLabel.y + 60, 100, 30};
   const Rectangle kDistanceBox = {kDistanceLabel.x + kDistanceLabel.width + 10 , kDistanceLabel.y, 100, 30};
+  const Rectangle kMaxSpeedLabel = {kDistanceLabel.x, kDistanceLabel.y + 60, 100, 30};
+  const Rectangle kMaxSpeedBox = {kMaxSpeedLabel.x + kMaxSpeedLabel.width + 10, kMaxSpeedLabel.y, 100, 30};
+  const Rectangle kMaxSpeedConvertLabel = {kMaxSpeedBox.x + kMaxSpeedBox.width + 30, kMaxSpeedLabel.y, 242, 30};
   const Rectangle kSaveRec = {kWindowArea.x + 10, kWindowArea.y + kWindowArea.height - 60, kWindowArea.width - 20, 50};
 
 };
@@ -43,7 +48,8 @@ SettingsState::SettingsState(SimulationsEngine& engine)
     map_width_(WIDTH),
     map_width_enabled_(false),
     map_height_(HEIGHT),
-    map_height_enabled_(false) {
+    map_height_enabled_(false),
+    max_speed_(Settings::Instance().MaxTrainSpeed()) {
   button_manager_.AddButton("Home", SettingsOptions::kMenuRec, [this]() { engine_.ChangeState(EngineStates::kMenu); });
   button_manager_.AddButton("Save", SettingsOptions::kSaveRec, [this]() { Save(); });
   strcpy(output_direcctory_, Settings::Instance().GetOutputDirectory().c_str());
@@ -64,6 +70,8 @@ void SettingsState::Save() {
   Settings::Instance().SetRailTwoWay(bidirectional_toggle_);
   Settings::Instance().SetDistancePreference(distance_preference_ == 0);
   Settings::Instance().SetBackground(map_background_img_path_, map_width_, map_height_);
+  Settings::Instance().SetMapPosition({0, 0});
+  Settings::Instance().SetMaxSpeed(max_speed_);
 }
 
 void SettingsState::Draw() {
@@ -73,10 +81,17 @@ void SettingsState::Draw() {
   DrawOutputDirectory();
   DrawBidirectonal();
   DrawDistance();
+  DrawMaxSpeed();
+}
+
+void SettingsState::DrawMaxSpeed() {
+  GuiLabel(SettingsOptions::kMaxSpeedLabel, "Max Train Speed:");
+  GuiSliderBar(SettingsOptions::kMaxSpeedBox, "-", "+", &max_speed_, 1.0f, 420.0f);
+  GuiButton(SettingsOptions::kMaxSpeedConvertLabel, (std::to_string(max_speed_) + " m/s | " + std::to_string(max_speed_ * 3.6) + "km/h").c_str());
 }
 
 void SettingsState::DrawDistance() {
-  GuiLabel(SettingsOptions::kDistanceLabel, "Distance Format");
+  GuiLabel(SettingsOptions::kDistanceLabel, "Distance Format:");
   GuiToggleSlider(SettingsOptions::kDistanceBox, "m;km", &distance_preference_);
 }
 
@@ -97,15 +112,21 @@ void SettingsState::DrawOutputDirectory() {
 void SettingsState::DrawBackgroundSelector() {
   char file_name[512] = { 0 };
   if (map_background_img_mini_) {
+    Rectangle rec_mini = {SettingsOptions::kSelectImagePos.x, SettingsOptions::kSelectImagePos.y, SettingsOptions::kMinimapWidth, SettingsOptions::kMinimapHeight};
     map_background_img_mini_->Draw(SettingsOptions::kSelectImagePos.x, SettingsOptions::kSelectImagePos.y);
+    if (CheckCollisionPointRec(GetMousePosition(), rec_mini)) {
+      DrawRectangleRec(rec_mini, Color(122, 42, 42, 122));
+      GuiLabel(rec_mini, "-> Remove");
+    }
+    if (GuiLabelButton(rec_mini, "")) {
+      map_background_img_path_ = "";
+      map_background_img_mini_ = nullptr;
+    }
   }
   if (file_dialog_state_.SelectFilePressed) {
   // Load image file (if supported extension)
   if (IsFileExtension(file_dialog_state_.fileNameText, ".png")) {
     std::vector<std::string> imgs;
-    std::map<std::string, int> options;
-    options["width"] = 142;
-    options["height"] = 142;
     map_background_img_path_ = std::string(TextFormat("%s/%s", file_dialog_state_.dirPathText, file_dialog_state_.fileNameText));
     imgs.push_back(map_background_img_path_);
     map_background_img_mini_ = std::make_unique<Animation>(imgs, 1, SettingsOptions::kOptionsMini);

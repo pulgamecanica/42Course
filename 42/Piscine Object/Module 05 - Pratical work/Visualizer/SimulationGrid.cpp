@@ -150,7 +150,7 @@ void SimulationGrid::DrawTrainsElements() {
   float width = elements_menu_rec_.width - 25.0f;
   Simulation& sim = manager_->GetSimulation(sim_state_.GetCurrentSimulation());
   for (const std::shared_ptr<TrainSimulationState> &ts : sim.GetSimulationTrainsState(sim_state_.GetProgress())) {
-    Rectangle train_area = {x, y, width, 60};
+    Rectangle train_area = {x, y, width, 70};
     if (GuiLabelButton(train_area, "")) {
       if (selected_train_ == const_cast<TrainSimulation*>(ts->GetTrainSimulation()))
         selected_train_ = nullptr;
@@ -175,6 +175,13 @@ void SimulationGrid::DrawTrainsElements() {
     y += 10.0f;
     GuiLabel((Rectangle){x, y, width, 10.0f}, ("Speed: " + std::to_string(ts->GetSpeed())).c_str());
     y += 10.0f;
+    GuiLabel((Rectangle){x, y, width, 10.0f}, ("Train Average Time: " + 
+      Parser::ConvertToTimeStringHHMMSS(
+        manager_->GetTrainAverageTime(
+          &(ts->GetTrainSimulation()->GetTrain())
+        )
+      )
+    ).c_str());
     //Spacing
     y += 10.0f;
   }

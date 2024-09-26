@@ -1,5 +1,6 @@
 #include "EditableGrid.hpp"
 #include "Parser.hpp"
+#include "Settings.hpp"
 #include "cpp_on_rails.inc"
 
 #include <raygui.h>
@@ -32,7 +33,7 @@ EditableGrid::EditableGrid(RailwaySystem &rail_sys, float gridSize, Rectangle di
     EditableGridOptions::kButtonHeight}, 
     [this]() { show_grid_ = !show_grid_; });
 
-  for (int i = 0; i < 4; ++i) {
+  for (int i = 0; i < 5; ++i) {
     std::string button_text;
     Tool tool_type;
     
@@ -52,6 +53,10 @@ EditableGrid::EditableGrid(RailwaySystem &rail_sys, float gridSize, Rectangle di
       case 3:
         button_text = GuiIconText(ICON_PENCIL, "Add Rail");
         tool_type = Tool::ADDRAIL;
+        break;
+      case 4:
+        button_text = GuiIconText(ICON_GEAR, "Move Map");
+        tool_type = Tool::MOVEMAP;
         break;
     }
 
@@ -79,6 +84,8 @@ void EditableGrid::Update() {
     if (is_dragging_ && current_tool_ == Tool::MOVE)
       MoveNode();
     can_drag_grid_ = !is_dragging_;
+    if (current_tool_ == Tool::MOVEMAP)
+      MoveMap();
     Grid::Update();
     button_manager_.UpdateButtons();
   }
@@ -125,6 +132,9 @@ void EditableGrid::SetTool(Tool tool) {
       break;
     case Tool::ADDRAIL:
       cursor = MOUSE_CURSOR_IBEAM;
+      break;
+    case Tool::MOVEMAP:
+      cursor = MOUSE_CURSOR_POINTING_HAND;
       break;
     default:
       break;
@@ -205,5 +215,24 @@ void EditableGrid::MoveNode() {
     Vector2 current_mouse_pos = GetMousePosition();
     Node* node = rail_sys_.GetNode(selected_node_);
     node->SetPosition(GetRelativeCoordinates(current_mouse_pos));
+  }
+}
+
+
+void EditableGrid::MoveMap() {
+  can_drag_grid_ = false;
+  if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    drag_start_pos_ = GetMousePosition();
+    is_dragging_ = true;
+  }
+  if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+    is_dragging_ = false;
+  }
+  if (is_dragging_) {
+    Vector2 current_mouse_pos = GetMousePosition();
+    Vector2 offset = Settings::Instance().GetMapPosition();
+    offset.x += (current_mouse_pos.x - drag_start_pos_.x) * 0.2f;
+    offset.y += (current_mouse_pos.y - drag_start_pos_.y) * 0.2f;
+    Settings::Instance().SetMapPosition(offset);
   }
 }

@@ -10,6 +10,7 @@
 
 enum class Tool {
   MOVE,
+  MOVEMAP,
   REMOVE,
   ADDNODE,
   ADDRAIL,
@@ -28,6 +29,7 @@ private:
   void RemoveNode(const std::string& id);
   void AddRail(const std::string& id);
   void MoveNode();
+  void MoveMap();
   void DrawNewNodeDialog();
   
   Tool current_tool_;

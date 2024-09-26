@@ -103,6 +103,11 @@ void SimulationsState::SetupNewSimulation() {
 void SimulationsState::SetSimulationsManager(const SimulationsManager* manager) {
   grid_.SetSimulationsManager(manager);
   manager_ = manager;
+  last_update_s_ = 0;
+  simulation_running_ = false;
+  simulation_progress_ = 0;
+  simulation_options_ = "";
+  current_simulation_ = 0;
   for (int i = 0; i < (int)manager->GetSimulations().size(); i++) {
     if (i > 0) simulation_options_ += ";";
     simulation_options_ += std::to_string(i);
@@ -120,6 +125,37 @@ int SimulationsState::GetProgress() const {
 void SimulationsState::DrawInfo() {
   if (GuiWindowBox(SimulationsOptions::kInfoArea, "Info"))
     info_open_ = false;
+  Simulation& sim = manager_->GetSimulation(current_simulation_);
+  int total_simulations = manager_->GetSimulations().size();
+  int total_trains = sim.GetTrains().size();
+  int current_simulation_time = sim.GetTotalTime();
+  int total_time = manager_->GetTotalTime();
+  int average_total_time = manager_->GetTotalAverageTime();
+  Rectangle rec_area = {SimulationsOptions::kInfoArea.x + 10, SimulationsOptions::kInfoArea.y + 42, 200, 30};
+  Rectangle rec_area_button = {rec_area.x + rec_area.width + 10, rec_area.y, 142, 30};
+  GuiLabel(rec_area, "Current Simulation:");
+  GuiButton(rec_area_button, std::to_string(current_simulation_).c_str());
+  rec_area.y += 40;
+  rec_area_button.y += 40;
+  GuiLabel(rec_area, "Total Simulations:");
+  GuiButton(rec_area_button, std::to_string(total_simulations).c_str());
+  rec_area.y += 40;
+  rec_area_button.y += 40;
+  GuiLabel(rec_area, "Trains Simulated:");
+  GuiButton(rec_area_button, std::to_string(total_trains).c_str());
+  rec_area.y += 40;
+  rec_area_button.y += 40;
+  GuiLabel(rec_area, "Current Simulation Total Time:");
+  GuiButton(rec_area_button, Parser::ConvertToTimeStringHHMMSS(current_simulation_time).c_str());
+  rec_area.y += 40;
+  rec_area_button.y += 40;
+  GuiLabel(rec_area, "Simulations Average Total Time:");
+  GuiButton(rec_area_button, Parser::ConvertToTimeStringHHMMSS(average_total_time).c_str());
+  rec_area.y += 40;
+  rec_area_button.y += 40;
+  GuiLabel(rec_area, "Simulations Total Time Running:");
+  GuiButton(rec_area_button, Parser::ConvertToTimeStringHHMMSS(total_time).c_str());
+
 }
 
 void SimulationsState::DrawSettings() {
@@ -127,7 +163,10 @@ void SimulationsState::DrawSettings() {
     settings_open_ = false;
   if (GuiButton(SimulationsOptions::kDropdownSimsButtonArea, ""))
     simulation_options_enabled_ = !simulation_options_enabled_;
+  int tmp = current_simulation_;
   GuiDropdownBox(SimulationsOptions::kDropdownSimsButtonArea, simulation_options_.c_str(), &current_simulation_, simulation_options_enabled_);
+  if (current_simulation_ != tmp)
+    SetupNewSimulation();
 }
 
 void SimulationsState::DrawBackground() {
@@ -139,10 +178,6 @@ void SimulationsState::DrawBackground() {
   unsigned start_time = manager_->GetSimulation(current_simulation_).GetStartTime();
   const std::string text = Parser::ConvertToTimeStringHHMMSS(start_time + simulation_progress_) + "/" + Parser::ConvertToTimeStringHHMMSS(manager_->GetSimulation(current_simulation_).GetTotalTime() + start_time);
   DrawText(text.c_str(), SimulationsOptions::kTimeProgressVec.x, SimulationsOptions::kTimeProgressVec.y, SimulationsOptions::kTextSize, DARKGRAY);
-  if (simulation_progress_ > manager_->GetSimulation(current_simulation_).GetTotalTime()) {
-    // simulation_progress_ = 0;
-    simulation_progress_ = manager_->GetSimulation(current_simulation_).GetTotalTime()  / 2;
-  }
   GuiSliderBar(SimulationsOptions::kProgressBarArea, NULL, NULL, &simulation_progress_, 0, manager_->GetSimulation(current_simulation_).GetTotalTime());  
 
   DrawText("FPS", SimulationsOptions::kSpeedBarAreaText.x, SimulationsOptions::kSpeedBarAreaText.y, SimulationsOptions::kTextSize, DARKGRAY);

@@ -1,7 +1,11 @@
 #include "SimulationsManager.hpp"
 
 SimulationsManager::SimulationsManager(const RailwaySystem &rail_sys, const Schedule &schedule, int num_simulations)
-  : schedule_(schedule), state_(State::kStarting), time_running_(0) {
+  : schedule_(schedule),
+    state_(State::kStarting),
+    ttm_(*this),
+    time_running_(0),
+    average_time_running(0) {
   if (num_simulations <= 0)
     throw std::runtime_error("Should execute at least 1 or more simulations");
   try {
@@ -20,7 +24,7 @@ void SimulationsManager::UpdateSimulations() {
       if (!simulation->IsFinished())
         simulation->Update();
     if (AreSimulationsFinished()) {
-      // CollectResults();
+      CollectResults();
       state_ = State::kFinished;
     }
     time_running_++;
@@ -39,16 +43,26 @@ bool SimulationsManager::AreSimulationsFinished() const {
 }
 
 void SimulationsManager::CollectResults() {
-  // travel_times_.clear();
-  // event_list_.clear();
+  average_time_running = 0;
+  for (const auto & sim : simulations_) {
+    for (auto & train : sim->GetTrains())
+      ttm_.AddObserver(train.get());
+    average_time_running += sim->GetTotalTime();
+  }
+  average_time_running /= simulations_.size();
+  ttm_.SetupAverages();
+}
 
-  // for (const auto &simulation : simulations_) {
-  //   double travel_time = simulation.GetRealTravelTime();
-  //   travel_times_.push_back(travel_time);
+unsigned SimulationsManager::GetTrainAverageTime(const Train* train) const {
+  return ttm_.GetTrainAverageTime(train);
+}
 
-  //   // auto events = simulation->GetEventList();
-  //   // event_list_.insert(event_list_.end(), events.begin(), events.end());
-  // }
+unsigned SimulationsManager::GetTotalAverageTime() const {
+  return average_time_running;
+}
+
+unsigned SimulationsManager::GetTotalTime() const {
+  return time_running_;
 }
 
 double SimulationsManager::GetAverageTravelTime() const {

@@ -40,6 +40,7 @@ SRC             =   ./main.cpp \
 		./RailwaySystem/Simulation.cpp \
 		./RailwaySystem/SimulationsManager.cpp \
 		./RailwaySystem/EventMediator.cpp \
+		./RailwaySystem/TrainsTimeMediator.cpp \
 		./RailwaySystem/CollisionMediator.cpp \
 		./RailwayElements/Schedule.cpp \
 		./RailwayElements/Event.cpp \

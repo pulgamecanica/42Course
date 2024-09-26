@@ -1,5 +1,6 @@
 #include "Grid.hpp"
 #include "Node.hpp"
+#include "Settings.hpp"
 
 #include <cmath>
 
@@ -82,6 +83,9 @@ void Grid::ClipLine(Vector2& p0, Vector2& p1) {
 }
 
 void Grid::Draw() {
+  BeginScissorMode(display_area_.x, display_area_.y, display_area_.width, display_area_.height);
+  Settings::Instance().DrawMapBackground();
+  EndScissorMode();
   if (show_grid_) {
     DrawGridLines();
   }

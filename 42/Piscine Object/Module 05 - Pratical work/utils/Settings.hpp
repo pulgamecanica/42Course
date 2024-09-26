@@ -24,6 +24,8 @@ public:
   void SetRailTwoWay(bool b);
   void SetDistancePreference(bool meters);
   void SetBackground(std::string background_image_path, int width, int height);
+  void SetMapPosition(Vector2 pos);
+  void SetMaxSpeed(double max_speed);
 
   // Getters
   double              MaxTrainSpeed() const;
@@ -31,6 +33,7 @@ public:
   const std::string&  GetScheduleDirectory() const;
   const std::string&  GetOutputDirectory() const;
   const std::string   GetNodePositionsFileName() const;
+  const Vector2       GetMapPosition() const;
   bool                PreferMeters() const;
 
   float               GetSimulationFPS() const;
@@ -41,7 +44,7 @@ public:
   void SaveRailwayNodePositions(RailwaySystem& rail_sys);
   void InitializeAnimations();
   void DrawHourglass(int x, int y) const;
-  void DrawMapBackground(int x, int y) const;
+  void DrawMapBackground() const;
   void UpdateAnimations();
 private:
   Settings();  // Private constructor
@@ -61,6 +64,7 @@ private:
   bool   rail_two_way_;
   bool   distance_preference_in_meters_;
   float simulation_fps_;
+  Vector2 map_position_;
 
 };
 

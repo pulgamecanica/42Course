@@ -189,8 +189,12 @@ void TrainSimulation::Update() {
       Log();
     }
     UpdateStatus();
+    time_running_s_++;
   }
-  time_running_s_++;
+}
+
+unsigned int TrainSimulation::GetTotalTime() const {
+  return time_running_s_;
 }
 
 void TrainSimulation::Update(Subject* subject) {

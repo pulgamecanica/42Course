@@ -12,7 +12,7 @@ class Subject {
   void NotifyObservers();
   const std::vector<Observer*>& GetObservers() const;
 
- private:
+ protected:
   std::vector<Observer*> observers_;
 };
 

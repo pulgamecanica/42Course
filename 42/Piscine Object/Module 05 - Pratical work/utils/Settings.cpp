@@ -13,7 +13,7 @@ std::mutex Settings::mutex_;
 Settings* Settings::instance_ = nullptr;
 
 Settings::Settings()
-  : rail_two_way_(false), simulation_fps_(10), map_background_(nullptr) {
+  : rail_two_way_(false), simulation_fps_(10), map_background_(nullptr), map_position_(0, 0) {
   max_speed_ = 25.0f; // max_speed_ * 3.6 = km/h
 }
 
@@ -67,6 +67,11 @@ void Settings::SetOutputDirectory(const std::string& directory) {
 void Settings::SetSimulationFPS(float fps) {
   if (fps <= 0 || fps > 42) return;
   simulation_fps_ = fps;
+}
+
+void Settings::SetMaxSpeed(double max_speed) {
+  if (max_speed_ > 0)
+    max_speed_ = max_speed;
 }
 
 const std::string& Settings::GetDataFileName() const {
@@ -144,20 +149,34 @@ double  Settings::MaxTrainSpeed() const {
   return max_speed_;
 }
 
-void Settings::DrawMapBackground(int x, int y) const {
-  map_background_->Draw(x, y);
+void Settings::DrawMapBackground() const {
+  if (map_background_)
+    map_background_->Draw(map_position_.x, map_position_.y);
 }
 
 void Settings::SetBackground(std::string background_image_path, int width, int height) {
-  std::map<std::string, int> options = {{"width", 42}, {"height", 42}};
-  std::vector<std::string> imgs = { background_image_path };
-  map_background_ = std::make_unique<Animation>(imgs, 1, options);
+  if (background_image_path.empty()) {
+    map_background_ = nullptr;
+  } else {
+    std::map<std::string, int> options = {{"width", width}, {"height", height}};
+    std::vector<std::string> imgs = { background_image_path };
+    map_background_ = std::make_unique<Animation>(imgs, 1, options);
+  }
 }
 
+void Settings::SetMapPosition(Vector2 pos) {
+  if (map_background_)
+    map_position_ = pos;
+}
+
+const Vector2 Settings::GetMapPosition() const {
+  return map_position_;
+}
 
 bool Settings::PreferMeters() const {
   return distance_preference_in_meters_;
 }
+
 
 #include "raylib.h"
 #include "raygui.h"

@@ -22,6 +22,7 @@ private:
   void DrawOutputDirectory();
   void DrawBidirectonal();
   void DrawDistance();
+  void DrawMaxSpeed();
   void Save();
 
   SimulationsEngine& engine_;
@@ -37,6 +38,7 @@ private:
   bool map_width_enabled_;
   int map_height_;
   bool map_height_enabled_;
+  float max_speed_;
 };
 
 #endif // SETTINGS_STATE_H_

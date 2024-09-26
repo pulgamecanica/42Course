@@ -10,6 +10,7 @@
 #define SIMULATIONS_MANAGER_HPP
 
 #include "Simulation.hpp"
+#include "TrainsTimeMediator.hpp"
 #include <vector>
 #include <memory>
 #include <string>
@@ -28,12 +29,15 @@ class SimulationsManager {
   void UpdateSimulations();
   bool AreSimulationsFinished() const;
 
+  unsigned GetTotalAverageTime() const;
+  unsigned GetTotalTime() const;
   double GetAverageTravelTime() const;
   const std::vector<std::unique_ptr<Simulation>>& GetSimulations() const;
   const Schedule& GetSchedule() const;
   std::vector<std::string> GetEventList() const;
   Simulation& GetSimulation(int index) const;
   unsigned    GetCurrentTime() const;
+  unsigned    GetTrainAverageTime(const Train* train) const;
 
  private:
   void InitializeSimulations();
@@ -41,12 +45,14 @@ class SimulationsManager {
 
   const Schedule& schedule_;
   State state_;
+  TrainsTimeMediator ttm_;
 
   std::vector<std::unique_ptr<Simulation>>  simulations_;
   std::vector<double>                       travel_times_;
   std::vector<std::string>                  event_list_;
   unsigned                                  start_time_;
   unsigned                                  time_running_;
+  unsigned                                  average_time_running;
 };
 
 #endif  // SIMULATIONS_MANAGER_HPP

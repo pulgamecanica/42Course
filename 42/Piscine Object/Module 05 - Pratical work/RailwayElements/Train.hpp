@@ -107,6 +107,7 @@ public:
   void SetMaxAcceleration(double acceleration);
 
   unsigned int GetCurrentTime() const;
+  unsigned int GetTotalTime() const;
   double  GetOptimalTime() const;
   double  GetMaxAccelerationForce() const;
   float   GetStoppingDistance() const;
