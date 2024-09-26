@@ -1,0 +1,2987 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="648.758mm" height="278.342mm"
+ viewBox="0 0 2452 1052"
+ xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"  version="1.2" baseProfile="tiny">
+<title>Qt SVG Document</title>
+<desc>Generated with Qt</desc>
+<defs>
+</defs>
+<g fill="none" stroke="black" stroke-width="1" fill-rule="evenodd" stroke-linecap="square" stroke-linejoin="bevel" >
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#f6f5f4" fill-opacity="1" stroke="none" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<rect x="-704.983" y="-202.011" width="2454.29" height="1054"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<rect x="0" y="0" width="946" height="208"/>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="453.5" y="12.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+ >Event</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,16 946,16 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="28.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- type_ : const std::string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="44.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- probability_ : const double</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="60.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- duration_ : const double</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="76.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- location_ : const std::string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="92.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- node_ : Node*</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,96 946,96 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="108.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ Event(type : const std::string&amp;, probability : double, duration : double, location : const std::string&amp;) «constructor»</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="124.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ SetNode(node : Node*)</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="140.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetType() : const std::string&amp;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="156.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetProbability() : double</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="172.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetDuration() : double</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="188.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetLocation() : const std::string&amp;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="204.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetNode() : Node*</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1.49715,842.898)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<rect x="0" y="21" width="521" height="96"/>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-dasharray="1,2" stroke-dashoffset="0" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<rect x="488" y="0" width="65" height="26"/>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="493" y="17.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >KeyType</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="217.609" y="33.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+ >«interface»</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="241" y="49.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="italic" 
+ >INode</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,53 521,53 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="65.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+ >+ ~INode() «destructor»</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="81.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+ >+ GetKey()</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="97.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+ >+ SetNeighbor(key : , weight : int)</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="113.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+ >+ GetNeighbors() : const std::unordered_map&lt; KeyType, unsigned &gt;&amp;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="italic" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,187.52,1.49715)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(-0.997992,0.0147777,-0.0147777,-0.997992,464.508,128.255)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffff" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" transform="matrix(-0.997992,0.0147777,-0.0147777,-0.997992,464.508,128.255)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M-6,0 L0,10 L6,0 L-6,0"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(-0.997992,0.0147777,-0.0147777,-0.997992,464.508,128.255)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#990000" stroke-opacity="1" stroke-dasharray="4,2" stroke-dashoffset="0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M-237.779,48.9016 L-239.592,-73.5122"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(-0.998057,0.00938794,-0.00938794,-0.998057,469.698,531.901)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" transform="matrix(-0.998057,0.00938794,-0.00938794,-0.998057,469.698,531.901)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M-6,0 L0,10 L6,0"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(-0.998057,0.00938794,-0.00938794,-0.998057,469.698,531.901)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#990000" stroke-opacity="1" stroke-dasharray="4,2" stroke-dashoffset="0" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M-231.461,642.49 L-234.486,320.902"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998057,-0.00938794,0.00938794,0.998057,472.529,832.917)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffff" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.998057,-0.00938794,0.00938794,0.998057,472.529,832.917)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M0,-10 L-5,0 L0,10 L5,0 L0,-10"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998057,-0.00938794,0.00938794,0.998057,472.529,832.917)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M-231.649,622.491 L-234.486,320.902"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<rect x="0" y="0" width="751" height="144"/>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="359.906" y="12.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+ >Rail</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,16 751,16 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="28.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- node1_ : const std::string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="44.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- node2_ : const std::string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="60.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- distance_ : const double</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,64 751,64 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="76.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ Rail(node1 : const std::string&amp;, node2 : const std::string&amp;, distance : double) «constructor»</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="92.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ ~Rail() «destructor»</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="108.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetNode1() : string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="124.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetNode2() : string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="140.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetDistance() : double</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1201.96,189.838)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<rect x="0" y="0" width="517" height="128"/>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="227.313" y="12.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+ >Schedule</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,16 517,16 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="28.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- name_ : const std::string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="44.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- trains_ : std::vector&lt;std::unique_ptr&lt;Train&gt;&gt;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,48 517,48 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="60.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ Schedule(name : const std::string&amp;) «explicit constructor»</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="76.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ AddTrain(train : std::unique_ptr&lt; Train &gt;&amp;)</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="92.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ PrintTrainData()</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="108.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetTrains() : const std::vector&lt; std :: unique_ptr &lt; Train &gt; &gt;&amp;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="124.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetName() : const std::string&amp;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1505.44,919.55)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(-0.997654,0.029904,-0.029904,-0.997654,1758.08,804.484)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#990000" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" transform="matrix(-0.997654,0.029904,-0.029904,-0.997654,1758.08,804.484)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M0,-10 L-5,0 L0,10 L5,0 L0,-10"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(-0.997654,0.029904,-0.029904,-0.997654,1758.08,804.484)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M1056.74,613.999 L1059.9,719.288"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1762.63,895.308)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1762.63,895.308)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1762.63,895.308)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="3.92188" y="16" font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+ >*</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1762.63,895.308)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(-0.997654,0.029904,-0.029904,-0.997654,1758.08,804.484)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#990000" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" transform="matrix(-0.997654,0.029904,-0.029904,-0.997654,1758.08,804.484)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M0,-10 L-5,0 L0,10 L5,0 L0,-10"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(-0.997654,0.029904,-0.029904,-0.997654,1758.08,804.484)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<path vector-effect="none" fill-rule="evenodd" d="M1056.74,613.999 L1059.9,719.288"/>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,703.644,201.628)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1762.63,895.308)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1762.63,895.308)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1762.63,895.308)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="3.92188" y="16" font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+ >*</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1762.63,895.308)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,546.279,512.075)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,546.279,512.075)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,546.279,512.075)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="3.92188" y="16" font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+ >-node_</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,546.279,512.075)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,487.056,521.02)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,487.056,521.02)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,487.056,521.02)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4.10938" y="16" font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+ >0..1</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,487.056,521.02)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<rect x="0" y="0" width="533" height="272"/>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="250.906" y="12.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+ >Node</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,16 533,16 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="28.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- name_ : const std::string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="44.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- pos_ : Vector2</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="60.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- color_ : Color</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="76.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- neighbors_ : std::unordered_map&lt; std :: string, uint &gt;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="92.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- events_ : std::vector&lt; Event * &gt;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,96 533,96 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="108.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ Node(name : const std::string&amp;) «constructor»</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="124.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ ~Node() «destructor»</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="140.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetNeighbors() : const std::unordered_map&lt; std :: string, uint &gt;&amp;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="156.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetName() : string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="172.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetKey() : string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="188.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetPosition() : Vector2</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="204.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetEvents() : const std::vector&lt; Event * &gt;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="220.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetColor() : Color</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="236.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ SetPosition(new_pos : Vector2)</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="252.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ SetNeighbor( : string, weight : int)</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="268.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ AddEvent(event : Event*)</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,202.333,250.436)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<rect x="0" y="0" width="1391" height="256"/>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="676" y="12.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+ >Train</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="700" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,16 1391,16 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="28.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- name_ : string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="44.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- departure_ : string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="60.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- arrival_ : string</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="76.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- maxAcceleration_ : double</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="92.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- maxBrakeForce_ : double</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="108.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- departure_hour_s_ : unsigned</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="124.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- new_attribute : Schedule</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="140.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >- new_attribute_1 : Schedule</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#990000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<polyline fill="none" vector-effect="none" points="0,144 1391,144 " />
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="156.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ Train(name : const std::string&amp;, maxAcceleration : double, maxBrakeForce : double, departure : const std::string&amp;, arrival : const std::string&amp;, hour : unsigned) «constructor»</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="172.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetName() : const std::string&amp;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="188.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetDeparture() : const std::string&amp;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="204.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetArrival() : const std::string&amp;</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="220.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetMaxAcceleration() : double</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="236.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetMaxBrakeForce() : double</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="5" y="252.5" font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+ >+ GetHour() : unsigned</text>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="#ffffc0" fill-opacity="1" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Source Code Pro Medium" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1059.77,538.994)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1724.76,879.654)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1724.76,879.654)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1724.76,879.654)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4.20313" y="16" font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+ >-trains_</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1724.76,879.654)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1724.76,879.654)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1724.76,879.654)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1724.76,879.654)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+<text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="4.20313" y="16" font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+ >-trains_</text>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(0.998102,0,0,0.998102,1724.76,879.654)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+
+<g fill="none" stroke="#000000" stroke-opacity="1" stroke-width="1" stroke-linecap="square" stroke-linejoin="bevel" transform="matrix(1,0,0,1,0,0)"
+font-family="Noto Sans" font-size="13.3333" font-weight="400" font-style="normal" 
+>
+</g>
+</g>
+</svg>
