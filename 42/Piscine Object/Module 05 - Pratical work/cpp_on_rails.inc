@@ -9,8 +9,8 @@
 # define DEBUG 0
 #endif
 
-#define WIDTH 2200
-#define HEIGHT 1080
+#define WIDTH 1600
+#define HEIGHT 950
 
 #define POSITIONS_FILENAME "cache/nodes_positions.txt"
 

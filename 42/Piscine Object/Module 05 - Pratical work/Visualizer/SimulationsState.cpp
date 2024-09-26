@@ -17,9 +17,13 @@ namespace SimulationsOptions {
   const Rectangle kGridArea = {0, 25, WIDTH, HEIGHT - 90};
   const Rectangle kProgressBarArea = {50, HEIGHT - 55, WIDTH - 100, 10};
   const Rectangle kTopNavArea = {0, 0, WIDTH, 25};
-  const Rectangle kSettingsArea = {WIDTH / 2 - 200, 100, WIDTH / 2, 400};
-  const Rectangle kDropdownSimsButtonArea = {kSettingsArea.x + 10, kSettingsArea.y + 60, 42, 21};
-  const Rectangle kInfoArea = {WIDTH / 2 - 200, 100, WIDTH / 2, 400};
+  const Vector2   kPopupSize = {WIDTH / 3, HEIGHT / 3};
+  const Rectangle kSettingsArea = {WIDTH / 2 - kPopupSize.x / 2, HEIGHT / 2 - kPopupSize.y / 2, kPopupSize.x, kPopupSize.y};
+  const Rectangle kDropdownSimsButtonLabel = {kSettingsArea.x + 10, kSettingsArea.y + 60, 100, 30};
+  const Rectangle kDropdownSimsButtonArea = {kDropdownSimsButtonLabel.x + kDropdownSimsButtonLabel.width + 10, kDropdownSimsButtonLabel.y, 42, 30};
+  const Rectangle kGenerateSimulationLogArea = {kDropdownSimsButtonLabel.x, kDropdownSimsButtonLabel.y + 60, 142, 30};
+  const Rectangle kGenerateAllSimulationsLogArea = {kGenerateSimulationLogArea.x + kGenerateSimulationLogArea.width + 10, kGenerateSimulationLogArea.y, 142, 30};
+  const Rectangle kInfoArea = {WIDTH / 2 - kPopupSize.x / 2, HEIGHT / 2 - kPopupSize.y / 2, kPopupSize.x, kPopupSize.y};
   const Rectangle kBottomNavArea = {0, HEIGHT - 60, WIDTH, 60};
   const Vector2   kTimeProgressVec = {10, HEIGHT - 30};
   const Rectangle kBackwardsArea = {(WIDTH / 2) - 60, HEIGHT - 30, 42, 20};
@@ -72,12 +76,6 @@ void SimulationsState::Update() {
 }
 
 bool SimulationsState::IsTimeToUpdate() {
-  // last_update_s_ fives me the seconds in float
-  // (0) 0.0001 seconds passed
-  // (1) 0.003  seconds passed
-  // (2) 0.01   seconds passed
-  // (3) 0.1    seconds passed
-  // If I want 30 updates every second I must wait for 1/30 of a second at each frame
   return last_update_s_ >= 1/Settings::Instance().GetSimulationFPS();
 }
 
@@ -161,9 +159,14 @@ void SimulationsState::DrawInfo() {
 void SimulationsState::DrawSettings() {
   if (GuiWindowBox(SimulationsOptions::kSettingsArea, "Settings"))
     settings_open_ = false;
+  if (GuiButton(SimulationsOptions::kGenerateSimulationLogArea, "Log Simulation"))
+    manager_->LogSimulation(current_simulation_);
+  if (GuiButton(SimulationsOptions::kGenerateAllSimulationsLogArea, "Log Full Simulation"))
+    manager_->LogSimulations();
   if (GuiButton(SimulationsOptions::kDropdownSimsButtonArea, ""))
     simulation_options_enabled_ = !simulation_options_enabled_;
   int tmp = current_simulation_;
+  GuiLabel(SimulationsOptions::kDropdownSimsButtonLabel, "Change Simulation:");
   GuiDropdownBox(SimulationsOptions::kDropdownSimsButtonArea, simulation_options_.c_str(), &current_simulation_, simulation_options_enabled_);
   if (current_simulation_ != tmp)
     SetupNewSimulation();

@@ -41,6 +41,7 @@ class Simulation {
   void Update();
   bool IsFinished() const;
   bool IsRailTwoWay() const;
+  void Log() const;
 
   const std::vector<std::shared_ptr<TrainSimulationState>>& GetSimulationTrainsState(int index);
   const std::vector<std::shared_ptr<EventSimulationState>>& GetSimulationEventsState(int index);
@@ -48,7 +49,6 @@ class Simulation {
   void InitializeNodes();
   void InitializeRails();
   void InitializeTrains();
-  void CollectResults();
   void HandleCollisions();
   void HandleEvents();
   void LogSimulationState();
@@ -64,7 +64,6 @@ class Simulation {
 
   // Loggers
   const std::string directory_;
-  // FileLogger logger_;
 
   // Mediators
   EventMediator event_mediator_;

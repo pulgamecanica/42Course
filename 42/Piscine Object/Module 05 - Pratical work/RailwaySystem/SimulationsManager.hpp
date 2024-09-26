@@ -38,7 +38,9 @@ class SimulationsManager {
   Simulation& GetSimulation(int index) const;
   unsigned    GetCurrentTime() const;
   unsigned    GetTrainAverageTime(const Train* train) const;
-
+  void LogSimulation(unsigned id) const;
+  void LogSimulations() const;
+  
  private:
   void InitializeSimulations();
   void CollectResults();

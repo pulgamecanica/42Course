@@ -9,7 +9,6 @@ Simulation::Simulation(const RailwaySystem& railSys, const Schedule& schedule, i
       rail_two_way_(Settings::Instance().IsRailTwoWay()),
       directory_(Settings::Instance().GetOutputDirectory() + "/" +
                       schedule.GetName() + "_" + std::to_string(id) + "_" + Parser::ParseCurrentTimeString()),
-      // logger_(directory_ + "/simulation.log"),
       event_mediator_(*this),
       collision_mediator_(*this),
       state_(State::kStarting),
@@ -22,20 +21,6 @@ Simulation::Simulation(const RailwaySystem& railSys, const Schedule& schedule, i
   start_time_ = trains_.front()->GetTrain().GetHour();
   for (const auto & train : trains_)
     start_time_ = std::min(start_time_, train->GetTrain().GetHour());
-
-  // logger_.write(std::string("Simulation #") + std::to_string(id_));
-  // logger_.write(std::string("Total Trains: ") + std::to_string(trains_.size()));
-  // logger_.write(std::string("Total Nodes: ") + std::to_string(nodes_.size()));
-  // logger_.write(std::string("Total Rails: ") + std::to_string(rails_.size()));
-
-  // // This should be done when collecting results
-  // logger_.write("Total Event Counter: TODO");
-  // logger_.write("Time Spent Simulating: TODO");
-  // logger_.write("");
-  // for(const auto & train : trains_)
-  //   logger_.write("Train " + train->GetTrain().GetName() + " | 15:00 - 22:00 | Real Time [39m] | Optimal Time [" + std::to_string(train->GetOptimalTime()) + "]");
-  // logger_.write("");
-  // logger_.write("Status: OK/KO");
   state_ = State::kRunning;
 }
 
@@ -93,15 +78,9 @@ void Simulation::Update() {
     HandleEvents();
     if (HasFinished()) {
       LogSimulationState();
-      CollectResults();
       state_ = State::kFinished;
     }
   }
-}
-
-void Simulation::CollectResults() {
-  
-  // std::cout << "Finished Simulation " << schedule_.GetName() << std::endl;
 }
 
 bool Simulation::HasFinished() const {
@@ -114,21 +93,6 @@ bool Simulation::HasFinished() const {
 bool Simulation::IsFinished() const {
   return state_ == State::kFinished;
 }
-
-// double Simulation::GetRealTravelTime() const {
-//   if (state_ == State::kFinished) {
-//     return real_travel_time_;
-//   }
-//   return -1;
-// }
-
-// double Simulation::GetOptimalTravelTime() const {
-//   double optimalTravelTime = 0;
-//   for (const auto& train : trains_) {
-//     optimalTravelTime += train->GetOptimalTime();
-//   }
-//   return optimalTravelTime;
-// }
 
 RailSimulation* Simulation::GetRailRef(const std::string& node1, const std::string& node2) {
   for (auto& rail : rails_) {
@@ -197,4 +161,15 @@ unsigned int Simulation::GetCurrentTime() const {
 
 unsigned int Simulation::GetTotalTime() const {
   return total_time_;
+}
+
+void Simulation::Log() const {
+  for (const auto& train : trains_) {
+    FileLogger logger(GetDirectory() + "/" + train->GetTrain().GetName() + ".log");
+    logger.write(std::string("Train : ") + train->GetTrain().GetName());
+    logger.write(std::string("Estimated optimal travel time : ") + Parser::ConvertToTimeStringHHMMSS(train->GetOptimalTime()));
+    logger.write(std::string("Travel from ") + train->GetTrain().GetDeparture() + " to " + train->GetTrain().GetDeparture() + " at " + Parser::ConvertToTimeStringHHMMSS(train->GetTrain().GetHour()));
+    logger.write("");
+    logger.write(train->GetLogs());
+  }
 }

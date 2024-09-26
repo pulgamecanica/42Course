@@ -77,17 +77,17 @@ void SettingsState::Save() {
 void SettingsState::Draw() {
   GuiWindowBox(SettingsOptions::kWindowArea, "General Settings");
   button_manager_.DrawButtons();
-  DrawBackgroundSelector();
   DrawOutputDirectory();
   DrawBidirectonal();
   DrawDistance();
   DrawMaxSpeed();
+  DrawBackgroundSelector();
 }
 
 void SettingsState::DrawMaxSpeed() {
   GuiLabel(SettingsOptions::kMaxSpeedLabel, "Max Train Speed:");
   GuiSliderBar(SettingsOptions::kMaxSpeedBox, "-", "+", &max_speed_, 1.0f, 420.0f);
-  GuiButton(SettingsOptions::kMaxSpeedConvertLabel, (std::to_string(max_speed_) + " m/s | " + std::to_string(max_speed_ * 3.6) + "km/h").c_str());
+  GuiButton(SettingsOptions::kMaxSpeedConvertLabel, (std::to_string(max_speed_) + " m/s | " + std::to_string(max_speed_ * 3.6) + " km/h").c_str());
 }
 
 void SettingsState::DrawDistance() {

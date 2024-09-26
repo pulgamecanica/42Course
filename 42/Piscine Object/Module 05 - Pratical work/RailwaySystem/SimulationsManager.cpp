@@ -88,3 +88,13 @@ const std::vector<std::unique_ptr<Simulation>>& SimulationsManager::GetSimulatio
 Simulation& SimulationsManager::GetSimulation(int index) const {
   return *simulations_[index];
 }
+
+void SimulationsManager::LogSimulation(unsigned id) const {
+  simulations_[id]->Log();
+}
+
+void SimulationsManager::LogSimulations() const {
+  for (const auto & simulation: simulations_)
+    simulation->Log();
+}
+

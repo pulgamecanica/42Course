@@ -103,6 +103,7 @@ public:
   const Train & GetTrain() const;
   const std::string & GetNextNodeDestiny() const;
   const std::string   GetRailStringRep() const;
+  const std::string& GetLogs() const;
 
   void SetMaxAcceleration(double acceleration);
 
@@ -150,6 +151,8 @@ private:
   // FileLogger logger_;
 
   PathInfo<std::string> path_info_;
+
+  std::string train_logs_;
 
   RailSimulation* current_rail_;
   NodeSimulation* current_node_;

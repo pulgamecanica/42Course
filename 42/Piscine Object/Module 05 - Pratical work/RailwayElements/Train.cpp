@@ -161,11 +161,13 @@ TrainSimulation::TrainSimulation(Simulation& simulation, const Train& train)
     CalculateFastestRoute();
     total_distance_ = path_info_.TotalDistance();
     optimal_time_ = 0;
+    unsigned last_dist = 0;
     if (total_distance_ != -1) {
-      for(auto const &[node, dist] : path_info_.path)
-        optimal_time_ += GetOptimalTimeForDistance(dist);
+      for(auto const &[node, dist] : path_info_.path) {
+        optimal_time_ += GetOptimalTimeForDistance(dist - last_dist);
+        last_dist = dist;
+      }
     }
-    // std::cout << "Optimal time for train: " << train_.GetName() << " [" << GetOptimalTime() << "s]" << "(" << total_distance_ << "m)" << std::endl;
 }
 
 // // Each frame is equivalent to 1 second
@@ -209,29 +211,32 @@ void TrainSimulation::Update(Subject* subject) {
 }
 
 void TrainSimulation::Log() {
-  // if (HasFinished()) return ;
-  // std::string status_str_list[4] = {"Stoped", "Speed Up", "Braking", "Mantaining"}; 
-  // std::string status_str = status_str_list[status_];
-  // std::stringstream ss;
+  if (HasFinished()) return ;
+  std::string status_str_list[4] = {"Stoped", "Speed Up", "Braking", "Mantaining"}; 
+  std::string status_str = status_str_list[status_];
+  std::stringstream ss;
 
-  // if (HasArrivedToNode()) {
-  //   if (current_node_)
-  //     ss << "[" << Parser::ConvertToTimeString(simulation_.GetCurrentTime()) << "] - [" << current_node_->GetNode().GetName() << "] - [Waiting]";
-  //   // std::cout << "[Status: " << status_str << "] - [Dist: " << position_m_ << "m/" << current_rail_->GetRail().GetDistance() << "m] - (Speed: " << speed_ << "m/s) - (Acceleration: " << acceleration_ << "N) - {Stoping distance: " << GetStoppingDistance() << "}" << std::endl;
-  // } else {
-  //   // Check for other trains at the same rail
-  //   double distance_left = current_rail_->GetRail().GetDistance() - position_m_;
-  //   if (distance_left < 0)
-  //     distance_left = 0;
-  //   const std::string train_str_rep = GetRailStringRep();
-  //   ss << "[" << Parser::ConvertToTimeString(simulation_.GetCurrentTime()) << "] - [" << prev_node_name_ << "][" << next_node_name_ << "] - [" << distance_left / 1000 << "km | " << speed_ << "m/s] - [" << status_str << "] - " << train_str_rep;
-  //   ss << " (" << current_rail_->GetObservers().size() << ")";
-  // }
-  // // std::cout << ss.str() << std::endl;
-  // if (!ss.str().empty())
-  //   logger_.write(ss.str());
-  // // Create the Simulation Tree to explore train path later
+  if (HasArrivedToNode()) {
+    if (current_node_)
+      ss << "[" << Parser::ConvertToTimeString(simulation_.GetCurrentTime()) << "] - [" << current_node_->GetNode().GetName() << "] - [Waiting]";
+  } else {
+    double distance_left = current_rail_->GetRail().GetDistance() - position_m_;
+    if (distance_left < 0)
+      distance_left = 0;
+    const std::string train_str_rep = GetRailStringRep();
+    ss << "[" << Parser::ConvertToTimeString(simulation_.GetCurrentTime()) << "] - [" << prev_node_name_ << "][" << next_node_name_ << "] - [" << distance_left / 1000 << "km | " << speed_ << "m/s] - [" << status_str << "] - " << train_str_rep;
+    ss << " (" << current_rail_->GetObservers().size() << ")";
+  }
+  if (!ss.str().empty()) {
+    ss << std::endl;
+    train_logs_.append(ss.str());
+  }
 }
+
+const std::string& TrainSimulation::GetLogs() const {
+  return train_logs_;
+}
+
 
 const std::string TrainSimulation::GetRailStringRep() const {
   if (!current_rail_) return std::string("");
@@ -385,10 +390,6 @@ void TrainSimulation::UnsubscribeCurrentRail() {
 }
 
 bool TrainSimulation::ShouldStop() {
-  // if STOP_SIGNAL_MAYDAY
-  //   return true
-  // If other trains infront no safe distance
-  // if ()
   if (!current_rail_)
     throw std::runtime_error("Should be on a rail to call `ShouldStop`");
   if (!HasSafeDistance())
@@ -486,6 +487,7 @@ double TrainSimulation::GetOptimalTimeForDistance(double distance) const {
   double max_speed = simulation_.GetMaxTrainSpeed();
   double acceleration = GetMaxAccelerationForce();
   double deceleration = GetMaxBrakeForce();
+
 
   // Calculate the peak speed that can be reached given the distance
   double peak_speed = std::sqrt(2 * distance / ((1 / acceleration) + (1 / deceleration)));
