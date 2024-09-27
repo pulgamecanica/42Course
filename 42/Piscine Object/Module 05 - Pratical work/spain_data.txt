@@ -1,0 +1,255 @@
+Node Segovia
+Node Alcoy
+Node Loja
+Node Granada
+Node Fuengirola
+Node Collanzo
+Node Cádiz
+Node CiudadReal
+Node Gijón
+Node Gandía
+Node Burgos
+Node Albacete
+Node Alsasua
+Node Madrid
+Node Logroño
+Node Sagunto
+Node Águilas
+Node VentadeBaños
+Node JerezDeLosCaballeros
+Node Soria
+Node ValenciaDeAlcántara
+Node Plasencia
+Node Algeciras
+Node Badajoz
+Node Sanabria
+Node MirandadeEbro
+Node Avilés
+Node LaEncina
+Node Valladolid
+Node Valencia
+Node Lugo
+Node Santander
+Node Cáceres
+Node Zafra
+Node Huelva
+Node SantiagodeCompostela
+Node Jaén
+Node LosNietos
+Node Villena
+Node Requena-Utiel
+Node Cartagena
+Node SanSebastián
+Node Antequera
+Node Chinchilla
+Node FuentesDeOñoro
+Node Palencia
+Node Alicante
+Node Torralba
+Node Hendaya
+Node Tortosa
+Node Lleida
+Node Pontevedra
+Node Córdoba
+Node Palma
+Node Castejón
+Node Salamanca
+Node Guadalajara
+Node Reus
+Node Tui
+Node Tardienta
+Node León
+Node Castellón
+Node Barcelona
+Node LaCoruña
+Node Ávila
+Node Cuenca
+Node Moreda
+Node Elche
+Node Oviedo
+Node Girona
+Node Almería
+Node Pamplona
+Node Canfranc
+Node LaPobladeSegur
+Node Huesca
+Node Sóller
+Node MonforteDeLemos
+Node LatourdeCarol
+Node Tarragona
+Node Murcia
+Node Orihuela
+Node Cerbere
+Node Figueres
+Node Málaga
+Node Utrera
+Node MedinadelCampo
+Node Orense
+Node Toledo
+Node Teruel
+Node ArandaDeDuero
+Node AlcázardeSanJuan
+Node Manacor
+Node Almorchón
+Node Linares-Baeza
+Node Tarancón
+Node Bilbao
+Node Bobadilla
+Node Zaragoza
+Node Sevilla
+Node Dénia
+Node Manzanares
+Node Vitoria
+Node Zamora
+Node Santurce
+Node Ferrol
+Node Játiva
+Node Vigo
+Node Mérida
+Rail LaCoruña Ferrol 67000
+Rail LaCoruña SantiagodeCompostela 74000
+Rail LaCoruña Lugo 98000
+Rail SantiagodeCompostela Orense 109000
+Rail Orense Vigo 90000
+Rail Tui Vigo 27000
+Rail Vigo Pontevedra 33000
+Rail Pontevedra SantiagodeCompostela 62000
+Rail Orense MonforteDeLemos 46000
+Rail MonforteDeLemos Lugo 41000
+Rail Sanabria Orense 104000
+Rail Avilés Ferrol 140000
+Rail Avilés Oviedo 30000
+Rail Oviedo Gijón 28000
+Rail Oviedo Collanzo 56000
+Rail León Oviedo 120000
+Rail Oviedo Santander 185000
+Rail León Palencia 106000
+Rail Palencia VentadeBaños 12000
+Rail VentadeBaños Valladolid 40000
+Rail Valladolid MedinadelCampo 44000
+Rail MedinadelCampo Zamora 91000
+Rail Zamora Sanabria 88000
+Rail Salamanca MedinadelCampo 82000
+Rail Salamanca Ávila 115000
+Rail FuentesDeOñoro Salamanca 96000
+Rail Plasencia Cáceres 82000
+Rail Cáceres ValenciaDeAlcántara 113000
+Rail Cáceres Mérida 82000
+Rail Mérida Badajoz 57000
+Rail Mérida Zafra 60000
+Rail Zafra JerezDeLosCaballeros 57000
+Rail Huelva Zafra 147000
+Rail Sevilla Huelva 97000
+Rail Sevilla Utrera 24000
+Rail Utrera Cádiz 99000
+Rail Sevilla Zafra 149000
+Rail Mérida Almorchón 66000
+Rail Almorchón CiudadReal 167000
+Rail Algeciras Bobadilla 178000
+Rail Bobadilla Málaga 68000
+Rail Málaga Fuengirola 33000
+Rail Antequera Bobadilla 19000
+Rail Antequera Utrera 106000
+Rail Antequera Loja 47000
+Rail Antequera Córdoba 122000
+Rail Córdoba Jaén 106000
+Rail Jaén Linares-Baeza 37000
+Rail Linares-Baeza Manzanares 97000
+Rail Manzanares CiudadReal 65000
+Rail Moreda Linares-Baeza 53000
+Rail Granada Moreda 49000
+Rail Granada Loja 57000
+Rail Almería Moreda 115000
+Rail Bobadilla Moreda 96000
+Rail AlcázardeSanJuan Manzanares 62000
+Rail AlcázardeSanJuan Madrid 151000
+Rail Madrid Tarancón 87000
+Rail Madrid Toledo 74000
+Rail Madrid Guadalajara 60000
+Rail Guadalajara Toledo 116000
+Rail AlcázardeSanJuan Albacete 142000
+Rail Albacete Chinchilla 22000
+Rail Chinchilla LaEncina 94000
+Rail LaEncina Játiva 51000
+Rail Játiva Alcoy 58000
+Rail Játiva Valencia 62000
+Rail Játiva Gandía 53000
+Rail Alicante Dénia 83000
+Rail Alicante Villena 64000
+Rail Villena LaEncina 17000
+Rail Elche Villena 49000
+Rail Elche Orihuela 22000
+Rail Orihuela Murcia 28000
+Rail Murcia Cartagena 55000
+Rail Cartagena LosNietos 19000
+Rail Murcia Águilas 103000
+Rail Murcia Chinchilla 111000
+Rail Valencia Sagunto 26000
+Rail Sagunto Castellón 63000
+Rail Requena-Utiel Valencia 78000
+Rail Requena-Utiel Cuenca 134000
+Rail Cuenca Madrid 168000
+Rail Cuenca Albacete 139000
+Rail Sagunto Teruel 120000
+Rail Teruel Zaragoza 181000
+Rail Castellón Tortosa 78000
+Rail Tortosa Tarragona 81000
+Rail Tarragona Reus 15000
+Rail Tarragona Lleida 90000
+Rail Lleida LaPobladeSegur 121000
+Rail Lleida Zaragoza 142000
+Rail Zaragoza Tardienta 67000
+Rail Tardienta Huesca 24000
+Rail Huesca Canfranc 91000
+Rail Torralba Castejón 113000
+Rail Torralba Madrid 164000
+Rail Torralba Soria 74000
+Rail Castejón Pamplona 57000
+Rail Pamplona Alsasua 60000
+Rail Alsasua Vitoria 74000
+Rail MirandadeEbro Vitoria 37000
+Rail MirandadeEbro Logroño 58000
+Rail Logroño Castejón 72000
+Rail MirandadeEbro Bilbao 108000
+Rail Bilbao Santurce 15000
+Rail Santurce Santander 83000
+Rail Santurce SanSebastián 119000
+Rail SanSebastián Alsasua 100000
+Rail SanSebastián Hendaya 28000
+Rail MirandadeEbro Burgos 94000
+Rail Burgos VentadeBaños 87000
+Rail Palencia Burgos 90000
+Rail Burgos ArandaDeDuero 93000
+Rail ArandaDeDuero Madrid 160000
+Rail Madrid Segovia 92000
+Rail Segovia Ávila 67000
+Rail Ávila Madrid 110000
+Rail Madrid Plasencia 204000
+Rail Palma Sóller 27000
+Rail Palma Manacor 53000
+Rail Tarragona Barcelona 97000
+Rail Barcelona LatourdeCarol 171000
+Rail Barcelona Girona 100000
+Rail Barcelona Figueres 136000
+Rail Figueres Girona 43000
+Rail Figueres Cerbere 41000
+Rail Reus Zaragoza 184000
+Rail MonforteDeLemos León 187000
+Rail Palencia Santander 145000
+Rail León Bilbao 208000
+Rail Valladolid Palencia 47000
+Rail MedinadelCampo Segovia 106000
+Rail Ávila MedinadelCampo 88000
+Rail CiudadReal Toledo 116000
+Rail Córdoba CiudadReal 142000
+Rail Córdoba Sevilla 141000
+Rail Linares-Baeza Córdoba 92000
+Rail Alicante LaEncina 51000
+Rail Requena-Utiel Tarancón 87000
+Rail Lleida Huesca 97000
+Rail Barcelona Lleida 160000
+Rail Lleida Reus 66000
+Rail Zaragoza Guadalajara 75000
+Rail Guadalajara Torralba 25000
+Rail Torralba Zaragoza 50000
+Rail Zaragoza Castejón 85000
