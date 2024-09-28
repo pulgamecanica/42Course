@@ -1,0 +1,7 @@
+[package]
+name = "ft_matrix"
+version = "0.1.0"
+authors = ["pulgamecanica pulgamecanica11@gmail.com"]
+edition = "2021"
+
+[dependencies]
