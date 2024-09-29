@@ -13,7 +13,7 @@ std::mutex Settings::mutex_;
 Settings* Settings::instance_ = nullptr;
 
 Settings::Settings()
-  : map_background_(nullptr), max_speed_(25.0f), rail_two_way_(false), simulation_fps_(10), map_position_(0, 0) {
+  : map_background_(nullptr), max_speed_(25.0f), rail_two_way_(false), show_node_names_(false), simulation_fps_(10), node_size_(4.2f), map_position_(0, 0) {
 }
 
 Settings& Settings::Instance() {
@@ -22,6 +22,14 @@ Settings& Settings::Instance() {
     instance_ = new Settings();
   }
   return *instance_;
+}
+
+void Settings::ToggleShowNodeNames() {
+  show_node_names_ = !show_node_names_;
+}
+
+bool Settings::ShowNodeNames() const {
+  return show_node_names_;
 }
 
 void Settings::InitializeAnimations() {
@@ -87,6 +95,15 @@ const std::string& Settings::GetOutputDirectory() const {
 
 float Settings::GetSimulationFPS() const {
   return simulation_fps_;
+}
+
+float Settings::GetNodeSize() const {
+  return node_size_;
+}
+
+void Settings::SetNodeSize(float size) {
+  if (size >= 0.1f && size <= 42.0f)
+    node_size_ = size;
 }
 
 void Settings::SaveRailwayNodePositions(RailwaySystem& rail_sys) {

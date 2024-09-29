@@ -26,6 +26,8 @@ public:
   void SetBackground(std::string background_image_path, int width, int height);
   void SetMapPosition(Vector2 pos);
   void SetMaxSpeed(double max_speed);
+  void ToggleShowNodeNames();
+  void SetNodeSize(float size);
 
   // Getters
   double              MaxTrainSpeed() const;
@@ -35,7 +37,8 @@ public:
   const std::string   GetNodePositionsFileName() const;
   const Vector2       GetMapPosition() const;
   bool                PreferMeters() const;
-
+  bool                ShowNodeNames() const;
+  float               GetNodeSize() const;
   float               GetSimulationFPS() const;
   bool                IsRailTwoWay() const;
 
@@ -62,8 +65,10 @@ private:
 
   double max_speed_;
   bool   rail_two_way_;
+  bool   show_node_names_;
   bool   distance_preference_in_meters_;
   float simulation_fps_;
+  float node_size_;
   Vector2 map_position_;
 
 };

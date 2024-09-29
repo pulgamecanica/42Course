@@ -31,7 +31,7 @@ void Grid::Update() {
   if (wheel != 0) {
     scale_ += wheel * 0.1f * scale_;
     if (scale_ < 0.1f) scale_ = 0.1f;
-    if (scale_ > 10.0f) scale_ = 10.0f;
+    if (scale_ > 42.0f) scale_ = 42.0f;
   }
 }
 
@@ -96,12 +96,12 @@ void Grid::Draw() {
     Vector2 grid_pos1 = GetAbsoluteCoordinates(node1->GetPosition());
     Vector2 grid_pos2 = GetAbsoluteCoordinates(node2->GetPosition());
     ClipLine(grid_pos1, grid_pos2);
-    DrawLineEx(grid_pos1, grid_pos2, 1.2f * scale_, BLUE);
+    DrawLineEx(grid_pos1, grid_pos2, (Settings::Instance().GetNodeSize() / 2) * scale_, BLUE);
     // DrawLineEx(grid_pos1, grid_pos2, 4.2f * scale_, BLUE);
   }
   // Draw nodes
   std::vector<Rectangle> names_recs;
-  const float rad = scale_ * 5;
+  const float rad = scale_ * (Settings::Instance().GetNodeSize() / 2);
   for (auto & [name, node] : rail_sys_.GetNodes()) {
     Vector2 grid_pos = GetAbsoluteCoordinates(node->GetPosition());
     if (CheckCollisionPointRec(grid_pos, display_area_)) {
@@ -120,15 +120,15 @@ void Grid::Draw() {
         limit += 10 * (limit > 0 ? 1 : -1);
         kill_limit--;
       }
-
-      DrawText(name.c_str(), node_name_pos.x, node_name_pos.y, rad, BLACK);
+      if (Settings::Instance().ShowNodeNames())
+        DrawText(name.c_str(), node_name_pos.x, node_name_pos.y, rad, BLACK);
       names_recs.push_back(name_rec);
     }
   }
 }
 
 void Grid::DrawNode(const Node* node, Color color) {
-  const float rad = scale_ * 5;
+  const float rad = scale_ * Settings::Instance().GetNodeSize();
   Vector2 grid_pos = GetAbsoluteCoordinates(node->GetPosition());
   if (!CheckCollisionPointRec(grid_pos, display_area_)) return;
   DrawPoly(grid_pos, 6, rad, 0.0f, color);

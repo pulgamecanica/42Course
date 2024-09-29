@@ -253,3 +253,4 @@ Rail Zaragoza Guadalajara 75000
 Rail Guadalajara Torralba 25000
 Rail Torralba Zaragoza 50000
 Rail Zaragoza Castejón 85000
+Event "Engine Failure" 0.75 10m Torralba

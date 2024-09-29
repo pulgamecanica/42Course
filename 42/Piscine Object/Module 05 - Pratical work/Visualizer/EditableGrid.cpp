@@ -11,8 +11,8 @@ namespace EditableGridOptions {
   constexpr int kButtonPadding = 5;
   constexpr int kButtonWidth = 100;
   constexpr int kButtonHeight = 25;
-  constexpr int kShowGridButtonXOffset = WIDTH - 125;
-  constexpr int kShowGridButtonYOffset = 42;
+  const Rectangle kShowGrid = {WIDTH - 125, 42, kButtonWidth, kButtonHeight};
+  const Rectangle kShowNodeNames = {kShowGrid.x - kButtonWidth - 10, 42, kButtonWidth, kButtonHeight};
   const Color kNewNodeColor = {250, 128, 114, 255};
   const Rectangle kNewNodeBoxRec = {WIDTH / 2 - 70, HEIGHT / 2 - 80, 140, 160};
 }
@@ -27,11 +27,13 @@ EditableGrid::EditableGrid(RailwaySystem &rail_sys, float gridSize, Rectangle di
     minimap_(rail_sys, gridSize / 2, displayArea) {
 
   button_manager_.AddButton("Show Grid", 
-    {EditableGridOptions::kShowGridButtonXOffset, 
-    EditableGridOptions::kShowGridButtonYOffset, 
-    EditableGridOptions::kButtonWidth, 
-    EditableGridOptions::kButtonHeight}, 
+    EditableGridOptions::kShowGrid, 
     [this]() { show_grid_ = !show_grid_; });
+  
+  button_manager_.AddButton("Show Names", 
+    EditableGridOptions::kShowNodeNames, 
+    [this]() { Settings::Instance().ToggleShowNodeNames(); });
+  
 
   for (int i = 0; i < 5; ++i) {
     std::string button_text;
@@ -107,7 +109,7 @@ void EditableGrid::Draw() {
       Vector2 grid_pos = GetAbsoluteCoordinates(node->GetPosition());
       Vector2 mouse_pos = GetMousePosition();
       ClipLine(grid_pos, mouse_pos);
-      DrawLineEx(mouse_pos, grid_pos, 1.2f * scale_, ORANGE);
+      DrawLineEx(mouse_pos, grid_pos, (Settings::Instance().GetNodeSize() / 2) * scale_, ORANGE);
     }
     if (adding_node_)
       DrawNewNodeDialog();

@@ -24,6 +24,7 @@ private:
   void DrawBidirectonal();
   void DrawDistance();
   void DrawMaxSpeed();
+  void DrawNodeSize();
   void Save();
 
   SimulationsEngine& engine_;
@@ -40,6 +41,7 @@ private:
   int map_height_;
   bool map_height_enabled_;
   float max_speed_;
+  float node_size_;
 };
 
 #endif // SETTINGS_STATE_H_

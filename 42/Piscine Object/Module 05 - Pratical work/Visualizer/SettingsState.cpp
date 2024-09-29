@@ -34,6 +34,8 @@ namespace SettingsOptions {
   const Rectangle kMaxSpeedLabel = {kDistanceLabel.x, kDistanceLabel.y + 60, 100, 30};
   const Rectangle kMaxSpeedBox = {kMaxSpeedLabel.x + kMaxSpeedLabel.width + 10, kMaxSpeedLabel.y, 100, 30};
   const Rectangle kMaxSpeedConvertLabel = {kMaxSpeedBox.x + kMaxSpeedBox.width + 30, kMaxSpeedLabel.y, 242, 30};
+  const Rectangle kNodeSizeLabel = {kMaxSpeedLabel.x, kMaxSpeedLabel.y + 60, 142, 30};
+  const Rectangle kNodeSizeBox = {kNodeSizeLabel.x + kNodeSizeLabel.width + 10, kNodeSizeLabel.y, 142, 30};
   const Rectangle kSaveRec = {kWindowArea.x + 10, kWindowArea.y + kWindowArea.height - 60, kWindowArea.width - 20, 50};
 
 };
@@ -49,7 +51,8 @@ SettingsState::SettingsState(SimulationsEngine& engine)
     map_width_enabled_(false),
     map_height_(HEIGHT),
     map_height_enabled_(false),
-    max_speed_(Settings::Instance().MaxTrainSpeed()) {
+    max_speed_(Settings::Instance().MaxTrainSpeed()),
+    node_size_(Settings::Instance().GetNodeSize()) {
   button_manager_.AddButton("Home", SettingsOptions::kMenuRec, [this]() { engine_.ChangeState(EngineStates::kMenu); });
   button_manager_.AddButton("Save", SettingsOptions::kSaveRec, [this]() { Save(); });
   strcpy(output_direcctory_, Settings::Instance().GetOutputDirectory().c_str());
@@ -72,6 +75,7 @@ void SettingsState::Save() {
   Settings::Instance().SetBackground(map_background_img_path_, map_width_, map_height_);
   Settings::Instance().SetMapPosition({0, 0});
   Settings::Instance().SetMaxSpeed(max_speed_);
+  Settings::Instance().SetNodeSize(node_size_);
 }
 
 void SettingsState::Draw() {
@@ -83,6 +87,12 @@ void SettingsState::Draw() {
   DrawDistance();
   DrawMaxSpeed();
   DrawBackgroundSelector();
+  DrawNodeSize();
+}
+
+void SettingsState::DrawNodeSize() {
+  GuiLabel(SettingsOptions::kNodeSizeLabel, (std::string("Node Radius (") + std::to_string(node_size_) + "):").c_str());
+  GuiSliderBar(SettingsOptions::kNodeSizeBox, "-", "+", &node_size_, 0.1f, 12.0f);
 }
 
 void SettingsState::DrawMapSize() {
