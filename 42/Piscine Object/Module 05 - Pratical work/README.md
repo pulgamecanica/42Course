@@ -1,3 +1,11 @@
+![Screenshot from 2024-09-30 22-42-31](https://github.com/user-attachments/assets/e1bc4fb9-fd43-45aa-b9ae-5ad534c27ca7)
+
+# European Railway System Visualizations:
+
+![Screenshot from 2024-09-30 22-41-53](https://github.com/user-attachments/assets/f5bd9789-99c9-4347-aef9-1881d4a5f562)
+![Screenshot from 2024-09-30 22-37-31](https://github.com/user-attachments/assets/9ae21bce-8e37-4c2b-902b-11f884bc5578)
+![Screenshot from 2024-09-30 22-32-03](https://github.com/user-attachments/assets/a7012da3-08e4-43f6-9a89-82d538651c44)
+
 # CppOnRails
 
 CppOnRails is a C++ application designed to simulate train schedules and railway systems. The program parses elements such as nodes, rails, and events from a single elements file and train schedules from multiple schedule files. Detailed error handling is provided to ensure that parsing errors are reported with precise information about the location and nature of the error.
@@ -72,8 +80,6 @@ The program requires an elements file and a directory containing schedule files 
 ```sh
 ./CppOnRails --elements elements.txt --directory schedules/
 ```
-
-## File Formats
 
 ### Elements File
 
@@ -194,6 +200,17 @@ The program reads and parses the elements and schedule files, storing the parsed
 
 ---
 
+<details>
+  <summary>Simulations Visualizer</summary>
+
+![Screenshot from 2024-09-30 22-42-07](https://github.com/user-attachments/assets/6f6c9260-26fd-4374-b7a8-ff8f7364738c)
+
+![Screenshot from 2024-09-30 22-42-16](https://github.com/user-attachments/assets/480f5929-99d7-4da3-b74c-db5126831d51)
+
+</details>
+
+---
+
 # Optimal Train Travel Time Calculator
 
 Te purpose of this section is to demonstrates how to calculate the optimal time for a train to travel a given distance under constant acceleration and deceleration, considering a maximum speed limit.
@@ -261,6 +278,13 @@ If the peak speed is less than the maximum speed, then the total time is just th
 
 ---
 
+### Settings:
+
+![Screenshot from 2024-09-30 22-42-03](https://github.com/user-attachments/assets/7cc1d093-6a7a-47b9-9855-ce6571fa90cb)
+
+
+---
+
 ## Questions:
 
 | Question | Answer |
@@ -284,7 +308,7 @@ If the peak speed is less than the maximum speed, then the total time is just th
 | Should I implement a Logging system for each train? | yes, it's a good idea |
 | In case of an event, should the train stop right there, or wait the given amoun at the station next available (City)? Maybe this depends. | Depending on the event, some events might be inmediat and vlock the rail for some time, others will need the train to stop at the nearest station | 
 | What happens if there is no way to get to the destination? | Display error on the logfile and stay put |
-| How often should the system update(fps)? | Probably each second or every 2 seconds |
+| How often should the system update(fps)? | Probably each second or every second |
 | Can trains wait in a node and other trains pass by? (is this overtaking) | Exactly |
 | Can Trains block the rails? | Yes, in case of event, derail |
 | Can trains calculate their paths on runtime? (after they started their journey, in case another train is blocking the way?) | No, the path is decided before hand |
