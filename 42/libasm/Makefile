@@ -1,6 +1,8 @@
-NAME = libasmft.a
+NAME = libasm.a
 
-SRCS = strlen.s
+SRCS = 	ft_strlen.s \
+				ft_strcpy.s \
+				ft_strcmp.s
 
 OBJS = ${SRCS:%.s=%.o}
 
@@ -12,9 +14,9 @@ CXX = c++
 
 ASFLAGS = -f elf64
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 
-CXXFLAGS = -Wall -Werror -Wextra
+CXXFLAGS = -Wall -Werror -Wextra -g
 
 AR = ar
 
@@ -42,7 +44,7 @@ test_c: test_lib.c
 test_cpp: test_lib.cpp
 	$(CXX) $(CXXFLAGS) -o test_cpp test_lib.cpp $(LDFLAGS)
 
-test:
+test: all test_c test_cpp
 	@echo -e $(YELLOW)"Testing library with C"$(RESET)
 	-@ ./test_c
 	@echo -e $(YELLOW)"\nTesting library with C++"$(RESET)
@@ -56,4 +58,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean fclean re all test
+.PHONY: clean fclean re all
