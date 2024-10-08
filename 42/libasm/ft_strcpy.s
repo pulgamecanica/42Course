@@ -1,5 +1,5 @@
 section .text
-  global ft_strcpy        ; Export the function (non static)
+  global ft_strcpy    ; Export the function (non static)
 
 ; Original: (man strcpy) char *strcpy(char *restrict dst, const char *restrict src);
 ;

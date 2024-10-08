@@ -1,5 +1,5 @@
 section .text
-  global ft_strlen        ; Export the function (non static)
+  global ft_strlen    ; Export the function (non static)
 
 ; Original: (man strlen) size_t strlen(const char *s);
 ;
@@ -10,7 +10,7 @@ section .text
 ;     if a pointer to something else, different from a string is given
 ;     the behaviour is undefined
 ; Return:
-;     rax - the length of the string (size_t)
+;   rax - the length of the string (size_t)
 ft_strlen:
   push rdi            ; put the first argument (pointing to the string) onto the stack
                       ; to follow the callee-saved convention (push instead of mov)

@@ -3,9 +3,7 @@
 #include <unistd.h>
 #include <assert.h>
 
-extern size_t ft_strlen(const char* str);
-extern char *ft_strcpy(char *restrict dst, const char *restrict src);
-extern int ft_strcmp(const char *s1, const char *s2);
+#include "libasm.h"
 
 const char *pink = "\033[38;5;205m";  // Pink text
 const char *bold = "\033[1m";         // Bold text
@@ -85,9 +83,29 @@ static void run_test_strcmp() {
   ok("[ft_strcmp] Well done, all test passed!");
 }
 
+
+static void test_single_write(int fd, const void* str, size_t count) {
+  int res = ft_write(fd, str, count);
+  write(1, "\n", 1);
+  int res_real = write(fd, str, count);
+  write(1, "\n", 1);
+  assert(res == res_real);
+}
+
+static void run_test_write() {
+  const int i = 500;
+  test_single_write(1, "hello", 5);
+  test_single_write(1, "Hello there my friend!", 10);
+  test_single_write(2, "I am the Cid campeador, and I am here to claim Castilla!", 42);
+  test_single_write(1, &i, 2);
+  test_single_write(1, &test_single_write, 10);
+  ok("[ft_write] Well done, all test passed!");
+}
+
 int main() {
   run_test_strlen();
   run_test_strcpy();
   run_test_strcmp();
+  run_test_write();
   return 0;
 }
