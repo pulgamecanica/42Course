@@ -3,7 +3,9 @@ NAME = libasm.a
 SRCS = 	ft_strlen.s \
 				ft_strcpy.s \
 				ft_strcmp.s \
-				ft_write.s
+				ft_write.s \
+				ft_read.s \
+				ft_strdup.s \
 
 OBJS = ${SRCS:%.s=%.o}
 
@@ -13,13 +15,15 @@ CC = gcc
 
 CXX = c++
 
-ASFLAGS = -f elf64
+ASFLAGS = -felf64
 
 CFLAGS = -Wall -Werror -Wextra -g
 
 CXXFLAGS = -Wall -Werror -Wextra -g
 
 AR = ar
+
+RANLIB = ranlib
 
 ARFLAGS = rcs
 
@@ -38,6 +42,7 @@ all: $(NAME) test_c test_cpp
 
 $(NAME): $(OBJS)
 	$(AR) $(ARFLAGS) $(@) $(OBJS)
+	$(RANLIB) $(NAME)
 
 test_c: test_lib.c
 	$(CC) $(CFLAGS) -o test_c test_lib.c $(LDFLAGS)
