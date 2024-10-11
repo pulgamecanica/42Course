@@ -117,3 +117,8 @@ info variables
 info locals
 info args
 ```
+
+
+***
+
+nm -D /usr/lib/libc.so.6 | grep "__errno_location"

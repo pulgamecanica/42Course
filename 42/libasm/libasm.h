@@ -1,6 +1,8 @@
 #ifndef LIBASM_
 #define LIBASM_
 
+#include "errno.h"
+
 #ifdef __cplusplus
 extern "C" size_t ft_strlen(const char* str);
 extern "C" char *ft_strcpy(char *dst, const char *src);

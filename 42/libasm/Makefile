@@ -11,11 +11,11 @@ OBJS = ${SRCS:%.s=%.o}
 
 AS = nasm
 
-CC = gcc
+CC = cc
 
 CXX = c++
 
-ASFLAGS = -felf64
+ASFLAGS = -felf64 -werror
 
 CFLAGS = -Wall -Werror -Wextra -g
 

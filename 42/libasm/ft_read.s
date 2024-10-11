@@ -1,5 +1,6 @@
 section .text
   global ft_read      ; Export the function (non static)
+  extern __errno_location
 
 ; Original: (man 2 read) ssize_t read(int fd, void buf[.count], size_t count);
 ;
@@ -19,6 +20,9 @@ ft_read:
   ret
 
 .error:
-  call extern __errno_location
+  neg rax             ; negate rax to get a possive error code (errno)
+  mov rdi, rax        ; save rax to rdi
+  call __errno_location wrt ..plt ; call error to get the address of errno
+  mov [rax], rdi
   mov rax, -1         ; system write would return an error number (negative), not -1
   ret

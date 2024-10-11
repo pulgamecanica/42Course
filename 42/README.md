@@ -13,6 +13,7 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 4. [scop](#scop)
 5. [Zappy](#zappy)
 6. [Piscine Object](#piscine-object)
+6. [libasm](#libasm)
 
 ---
 
@@ -102,5 +103,23 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 - Template programming
 - Smart pointers and memory management
 - Design patterns and best practices
+
+---
+
+## libasm
+
+![assembly 86x64](https://img.shields.io/badge/language-asm86x64%2B%2B-green.svg)
+
+[libasm](https://github.com/pulgamecanica/42Course/tree/main/42/libasm) is a project covering the basics of the assembly language (64 bits architecture with Intel syntax)
+
+### Exercises:
+- ft_read (man 2 read)
+- ft_strcmp (man strcmp)
+- ft_strcpy (man strcpy)
+- ft_strdup (man strdup)
+- ft_strlen (man strlen)
+- ft_write (man 2 write)
+
+You will also learn how to load dynamically assigned objects (through the PLT [Procedure Linkage Table]) like the ones in glibc.so.6
 
 ---
