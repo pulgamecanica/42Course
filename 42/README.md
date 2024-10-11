@@ -13,7 +13,8 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 4. [scop](#scop)
 5. [Zappy](#zappy)
 6. [Piscine Object](#piscine-object)
-6. [libasm](#libasm)
+7. [snow-crash](#snow-crash)
+8. [libasm](#libasm)
 
 ---
 
@@ -104,11 +105,30 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 - Smart pointers and memory management
 - Design patterns and best practices
 
+### Index
+
+1. [Module 00 - Encapsulation](https://github.com/pulgamecanica/42Course/tree/main/42/Piscine%20Object/Module%2000%20-%20Encapsulation)
+2. [Module 01 - Relationship](https://github.com/pulgamecanica/42Course/tree/main/42/Piscine%20Object/Module%2001%20-%20Relationship)
+3. [Module 02 - UML](https://github.com/pulgamecanica/42Course/tree/main/42/Piscine%20Object/Module%2002%20-%20UML)
+4. [Module 03 - SMART](https://github.com/pulgamecanica/42Course/tree/main/42/Piscine%20Object/Module%2003%20-%20SMART)
+5. [Module 04 - Design Pattern (C++98)](https://github.com/pulgamecanica/42Course/tree/main/42/Piscine%20Object/Module%2004%20-%20Design%20Pattern%20(C%2B%2B98))
+6. [Module 04 - Design Pattern](https://github.com/pulgamecanica/42Course/tree/main/42/Piscine%20Object/Module%2004%20-%20Design%20Pattern)
+7. [Module 05 - Pratical work](https://github.com/pulgamecanica/42Course/tree/main/42/Piscine%20Object/Module%2005%20-%20Pratical%20work)
+
+---
+
+## snow-crash
+
+![cybersecurity](https://img.shields.io/badge/cybersecurity-level_access%2B%2B-blue.svg)
+
+In this module you need to explore a VM given to you and you m ust find how to access the next level (user)
+You will need to implement different exploits and use a lot of creativity.
+
 ---
 
 ## libasm
 
-![assembly 86x64](https://img.shields.io/badge/language-asm86x64%2B%2B-green.svg)
+![assembly 86x64](https://img.shields.io/badge/language-asm86x64%2B%2B-blue.svg)
 
 [libasm](https://github.com/pulgamecanica/42Course/tree/main/42/libasm) is a project covering the basics of the assembly language (64 bits architecture with Intel syntax)
 
