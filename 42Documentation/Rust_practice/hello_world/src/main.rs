@@ -89,10 +89,15 @@ fn test_transpose() {
 
 mod collatz;
 mod array_utils;
+mod elevator;
+mod expression;
+mod logger;
 
 use collatz::collatz_length;
 use array_utils::magnitude;
 use array_utils::normalize;
+use elevator::print_elevator_events;
+use logger::print_logger;
 
 fn main() {
   let mut num: u16 = 10 ;
@@ -127,5 +132,9 @@ fn main() {
     println!("Magnitude of {v:?}: {}", magnitude(&v));
     normalize(&mut v);
     println!("Magnitude of {v:#?} after normalization: {}", magnitude(&v));
+    // Test elevator events
+    print_elevator_events();
+    // Test logger
+    print_logger();
 }
 
