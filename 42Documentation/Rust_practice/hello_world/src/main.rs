@@ -92,12 +92,40 @@ mod array_utils;
 mod elevator;
 mod expression;
 mod logger;
+mod counter;
+mod rot13;
 
 use collatz::collatz_length;
 use array_utils::magnitude;
 use array_utils::normalize;
 use elevator::print_elevator_events;
 use logger::print_logger;
+use counter::Counter;
+use std::cmp::Ordering;
+
+// fn min<T: Ord>(left: T, right: T) -> T {
+//   return left.min(right);
+// }
+
+fn min<T: Ord>(left: T, right: T) -> T {
+    match left.cmp(&right) {
+      Ordering::Greater => right,
+      _ => left,
+    }
+}
+
+#[test]
+fn test_min() {
+  assert_eq!(min(0, 10), 0);
+  assert_eq!(min(500, 123), 123);
+
+  assert_eq!(min('a', 'z'), 'a');
+  assert_eq!(min('7', '1'), '1');
+
+  assert_eq!(min("hello", "goodbye"), "goodbye");
+  assert_eq!(min("bat", "armadillo"), "armadillo");
+}
+
 
 fn main() {
   let mut num: u16 = 10 ;
@@ -136,5 +164,33 @@ fn main() {
     print_elevator_events();
     // Test logger
     print_logger();
+    // Use min
+    min(1, 2);
+    // Counter testing
+    let mut ctr = Counter::new();
+    ctr.count(13);
+    ctr.count(14);
+    ctr.count(16);
+    ctr.count(14);
+    ctr.count(14);
+    ctr.count(11);
+
+    for i in 10..20 {
+        println!("saw {} values equal to {}", ctr.times_seen(i), i);
+    }
+
+    let mut strctr = Counter::new();
+    strctr.count("apple");
+    strctr.count("orange");
+    strctr.count("apple");
+    println!("got {} apples", strctr.times_seen("apple"));
 }
 
+
+// fn main() {
+//     let mut rot =
+//         RotDecoder { input: "Gb trg gb gur bgure fvqr!".as_bytes(), rot: 13 };
+//     let mut result = String::new();
+//     rot.read_to_string(&mut result).unwrap();
+//     println!("{}", result);
+// }
