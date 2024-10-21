@@ -15,6 +15,7 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 6. [Piscine Object](#piscine-object)
 7. [snow-crash](#snow-crash)
 8. [libasm](#libasm)
+9. [ft_matrix](#ft_matrix)
 
 ---
 
@@ -119,16 +120,16 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 
 ## snow-crash
 
-![cybersecurity](https://img.shields.io/badge/cybersecurity-level_access%2B%2B-blue.svg)
+![cybersecurity](https://img.shields.io/badge/cybersecurity-level_access-blue.svg)
 
-In this module you need to explore a VM given to you and you m ust find how to access the next level (user)
+[snow-crash](https://github.com/pulgamecanica/42Course/tree/main/42/snow-crash) is a project that forces you to explore a VM given to you and you m ust find how to access the next level (user)
 You will need to implement different exploits and use a lot of creativity.
 
 ---
 
 ## libasm
 
-![assembly 86x64](https://img.shields.io/badge/language-asm86x64%2B%2B-blue.svg)
+![assembly 86x64](https://img.shields.io/badge/language-asm86x64-blue.svg)
 
 [libasm](https://github.com/pulgamecanica/42Course/tree/main/42/libasm) is a project covering the basics of the assembly language (64 bits architecture with Intel syntax)
 
@@ -141,5 +142,13 @@ You will need to implement different exploits and use a lot of creativity.
 - ft_write (man 2 write)
 
 You will also learn how to load dynamically assigned objects (through the PLT [Procedure Linkage Table]) like the ones in glibc.so.6
+
+---
+
+## ft_matrix
+![Rust](https://img.shields.io/badge/language-Rust-blue.svg)
+
+
+[ft_matrix](https://github.com/pulgamecanica/42Course/tree/main/42/ft_matrix) is a project that allows you to explore Vectors and Matrixes, after this project you should have no problems understanding linear algebra, and how useful are matrixes and vectors in programming.
 
 ---

@@ -3,6 +3,10 @@
 //! This library provides functionality for working with vectors and matrices. 
 //! It includes utility functions for operations like calculating size, reshaping, and printing.
 
+
+/// The scalar module provides a trait generic for scalars.
+pub mod scalar;
+
 /// The vector module provides a generic `Vector` struct and related methods.
 pub mod vector;
 
@@ -12,3 +16,4 @@ pub mod matrix;
 // Optionally, re-export types to make them easier to access from the top level.
 pub use vector::Vector;
 pub use matrix::Matrix;
+pub use scalar::Scalar;

@@ -1,20 +1,22 @@
+use crate::scalar::Scalar;
 use crate::Vector;
 
 /// A struct representing a mathematical matrix.
 /// 
 /// The `Matrix` struct is generic over type `K` but is currently implemented
-/// for `f32`, which represents a matrix of 32-bit floating-point numbers.
-pub struct Matrix<K> {
+/// for `K`, which represents a matrix of 32-bit Scalar numbers (such as f32).
+#[derive(Debug)]
+pub struct Matrix<K: Scalar> {
     // The underlying data of the matrix stored as a `Vec<Vec<K>>`.
     pub data: Vec<Vec<K>>,
 }
 
-impl Matrix<f32> {
-    /// Creates a new `Matrix<f32>` from a vector of vectors (rows of the matrix).
+impl<K: Scalar + std::fmt::Debug> Matrix<K> {
+    /// Creates a new `Matrix<K>` from a vector of vectors (rows of the matrix).
     ///
     /// # Arguments
     ///
-    /// * `data` - A 2D vector of `f32` values representing the rows of the matrix.
+    /// * `data` - A 2D vector of `K` values representing the rows of the matrix.
     ///
     /// # Example
     ///
@@ -23,7 +25,7 @@ impl Matrix<f32> {
     ///
     /// let mat = Matrix::new(vec![vec![1.0, 2.0], vec![3.0, 4.0]]);
     /// ```
-    pub fn new(data: Vec<Vec<f32>>) -> Self {
+    pub fn new(data: Vec<Vec<K>>) -> Self {
         Self { data }
     }
 
@@ -98,7 +100,7 @@ impl Matrix<f32> {
     /// let vec = mat.flatten();
     /// assert_eq!(vec.size(), 4);
     /// ```
-    pub fn flatten(&self) -> Vector<f32> {
+    pub fn flatten(&self) -> Vector<K> {
         let data = self.data.iter().flat_map(|row| row.clone()).collect();
         Vector { data }
     }
@@ -127,6 +129,8 @@ mod tests {
     #[test]
     fn test_matrix_print() {
         let mat = Matrix { data: vec![vec![1.0, 2.0], vec![3.0, 4.0]] };
-        mat.print();
+        println!("{mat:?}");
     }
 }
+
+

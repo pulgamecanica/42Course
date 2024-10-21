@@ -94,6 +94,7 @@ mod expression;
 mod logger;
 mod counter;
 mod rot13;
+mod builder;
 
 use collatz::collatz_length;
 use array_utils::magnitude;
@@ -102,6 +103,7 @@ use elevator::print_elevator_events;
 use logger::print_logger;
 use counter::Counter;
 use std::cmp::Ordering;
+use builder::test_builder;
 
 // fn min<T: Ord>(left: T, right: T) -> T {
 //   return left.min(right);
@@ -184,13 +186,6 @@ fn main() {
     strctr.count("orange");
     strctr.count("apple");
     println!("got {} apples", strctr.times_seen("apple"));
+    // Test builder
+    test_builder();
 }
-
-
-// fn main() {
-//     let mut rot =
-//         RotDecoder { input: "Gb trg gb gur bgure fvqr!".as_bytes(), rot: 13 };
-//     let mut result = String::new();
-//     rot.read_to_string(&mut result).unwrap();
-//     println!("{}", result);
-// }

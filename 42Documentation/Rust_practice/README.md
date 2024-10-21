@@ -14,3 +14,7 @@
 
 hello_world is a compilation of exercises from the Android Team's tutorial for Rust: https://google.github.io/comprehensive-rust/
 
+---
+
+https://google.github.io/comprehensive-rust/generics/trait-bounds.html
+"When working with generics, you often want to require the types to implement some trait, so that you can call this trait's methods." (Interface metaphore)

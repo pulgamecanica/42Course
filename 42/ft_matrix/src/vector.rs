@@ -1,20 +1,67 @@
+use crate::scalar::Scalar;
 use crate::Matrix;
+use std::fmt;
 
-/// A struct representing a mathematical vector.
-/// 
-/// The `Vector` struct is generic over type `K` but is currently implemented
-/// for `f32`, which represents a vector of 32-bit floating-point numbers.
-pub struct Vector<K> {
+/// A struct representing a mathematical vector that is generic over type `K`.
+///
+/// The type `K` must implement the `Scalar` trait, which ensures that it supports
+/// basic arithmetic operations like addition, subtraction, multiplication, and division.
+#[derive(Debug)]
+pub struct Vector<K: Scalar> {
     // The underlying data of the vector stored as a `Vec<K>`.
     pub data: Vec<K>,
 }
 
-impl Vector<f32> {
-    /// Creates a new `Vector<f32>` from a vector of `f32` values.
+
+impl<K: Scalar, const N: usize> From<[K; N]> for Vector<K> {
+    /// The From trait is implemented to convert an array [K; N] to a `Vector<K>`.
+    /// Inside the function, we use `array.to_vec()` to convert the array into a `Vec<K>`,
+    /// which is then passed to the `Vector::new()` function to create a `Vector<K>`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Vector;
+    ///
+    /// println!("{}", Vector::from([42.0, 42.0]));
+    /// ```
+    fn from(array: [K; N]) -> Self {
+        Vector::new(array.to_vec())
+    }
+}
+
+impl<K: Scalar + fmt::Display> fmt::Display for Vector<K> {
+    /// Implement fmt to display a vector whenever you want
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Vector;
+    ///
+    /// let v = Vector::from([2., 3.]);
+    /// println!("{}", v);
+    /// // [2.0, 3.0]
+    /// ```
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "[")?;
+        let mut first = true;
+        for val in &self.data {
+            if !first {
+                write!(f, ", ")?;
+            }
+            write!(f, "{}", val)?;
+            first = false;
+        }
+        write!(f, "]")
+    }
+}
+
+impl<K: Scalar> Vector<K> {
+    /// Creates a new `Vector<K>` from a vector of `K` values.
     ///
     /// # Arguments
     ///
-    /// * `data` - A `Vec<f32>` representing the elements of the vector.
+    /// * `data` - A `Vec<K>` representing the elements of the vector.
     ///
     /// # Example
     ///
@@ -23,11 +70,11 @@ impl Vector<f32> {
     ///
     /// let vec = Vector::new(vec![1.0, 2.0, 3.0]);
     /// ```
-    pub fn new(data: Vec<f32>) -> Self {
+    pub fn new(data: Vec<K>) -> Self {
         Self { data }
     }
 
-    /// Returns the size (i.e., the number of elements) of the vector.
+    /// Returns the size (i.e., the number of elements) of the `Vector`.
     ///
     /// # Example
     ///
@@ -41,17 +88,15 @@ impl Vector<f32> {
         self.data.len()
     }
 
-    /// Prints the contents of the vector to the standard output.
+    /// Prints the contents of the `Vector` to the standard output.
     ///
-    /// The vector will be printed in a single line format, like:
+    /// The `Vector` will be printed in a single line format, like:
     /// 
     /// ```text
     /// [1.0, 2.0, 3.0]
     /// ```
     ///
     /// # Example
-    /// use ft_matrix::Vector;
-    ///
     ///
     /// ```
     /// use ft_matrix::Vector;
@@ -63,7 +108,7 @@ impl Vector<f32> {
         println!("{:?}", self.data);
     }
 
-    /// Reshapes the vector into a matrix with the specified number of rows and columns.
+    /// Reshapes the `Vector` into a matrix with the specified number of rows and columns.
     ///
     /// # Arguments
     ///
@@ -72,7 +117,7 @@ impl Vector<f32> {
     ///
     /// # Panics
     ///
-    /// This function will panic if the size of the vector does not match the
+    /// This function will panic if the size of the `Vector` does not match the
     /// requested dimensions (i.e., `rows * cols` must equal `self.size()`).
     ///
     /// # Example
@@ -84,9 +129,10 @@ impl Vector<f32> {
     /// let mat = vec.reshape(2, 2);
     /// assert_eq!(mat.size(), (2, 2));
     /// ```
-    pub fn reshape(&self, rows: usize, cols: usize) -> Matrix<f32> {
+    pub fn reshape(&self, rows: usize, cols: usize) -> Matrix<K> {
         assert_eq!(self.data.len(), rows * cols, "Vector size does not match the dimensions of the matrix.");
-        
+        assert!(rows * cols != 0, "Reshape invalid dimensions.");
+
         let data = self.data
             .chunks(cols)
             .map(|chunk| chunk.to_vec())
@@ -94,7 +140,87 @@ impl Vector<f32> {
 
         Matrix { data }
     }
+
+    /// Adds another `Vector<K>` to the calling `Vector<K>`.
+    ///
+    /// # Arguments
+    ///
+    /// * `v` - A reference to the other `Vector<K>` to add.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the vectors are not of the same size.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Vector;
+    ///
+    /// let mut vec1 = Vector::new(vec![42.0, 4.2]);
+    /// let vec2 = Vector::new(vec![-42.0, 4.2]);
+    /// vec1.add(&vec2);
+    /// assert_eq!(vec1.data, vec![0.0, 8.4]);
+    /// ```
+    pub fn add(&mut self, v: &Vector<K>) {
+        assert_eq!(self.size(), v.size(), "Vectors must be the same size for addition.");
+
+        for (i, val) in v.data.iter().enumerate() {
+            self.data[i] += *val;
+        }
+    }
+
+    /// Substracts another `Vector<K>` to the calling `Vector<K>`.
+    ///
+    /// # Arguments
+    ///
+    /// * `v` - A reference to the other `Vector<K>` to subtract.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the `Vector`s are not of the same size.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Vector;
+    ///
+    /// let mut vec1 = Vector::new(vec![42.0, 4.2]);
+    /// let vec2 = Vector::new(vec![-42.0, 4.2]);
+    /// vec1.sub(&vec2);
+    /// assert_eq!(vec1.data, vec![84.0, 0.0]);
+    /// ```
+    pub fn sub(&mut self, v: &Vector<K>) {
+        assert_eq!(self.size(), v.size(), "Vectors must be the same size for subtraction.");
+
+        for (i, val) in v.data.iter().enumerate() {
+            self.data[i] -= *val;
+        }
+    }
+
+    /// Scales the calling `Vector<K>` by a factor `a`.
+    ///
+    /// Each element in the `Vector` is multiplied by the scalar `a`.
+    ///
+    /// # Arguments
+    ///
+    /// * `a` - The scaling factor.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Vector;
+    ///
+    /// let mut vec1 = Vector::new(vec![42.0, 4.2]);
+    /// vec1.scl(2.0);
+    /// assert_eq!(vec1.data, vec![84.0, 8.4]);
+    /// ```
+    pub fn scl(&mut self, a: K) {
+        for elem in &mut self.data {
+            *elem *= a;
+        }
+    }
 }
+
 
 // Unit Tests
 
@@ -110,15 +236,191 @@ mod tests {
     }
 
     #[test]
-    fn test_vector_print() {
-        let vec = Vector::new(vec![1.0, 2.0, 3.0]);
-        vec.print();
+    fn test_vector_size_zero() {
+        let vec: Vector<f32> = Vector::new(vec![]);
+        assert_eq!(vec.size(), 0);
+    }
+
+    #[test]
+    fn test_vector_reshape_square() {
+        let vec = Vector::new(vec![1.0, 2.0, 3.0, 4.0]);
+        let mat = vec.reshape(2, 2);
+        assert_eq!(mat.size(), (2, 2));
     }
 
     #[test]
     fn test_vector_reshape() {
-        let vec = Vector::new(vec![1.0, 2.0, 3.0, 4.0]);
-        let mat = vec.reshape(2, 2);
-        assert_eq!(mat.size(), (2, 2));
+        let vec = Vector::new(vec![1.0, 2.0, 3.0]);
+        let mat = vec.reshape(1, 3);
+        assert_eq!(mat.size(), (1, 3));
+    }
+
+    #[test]
+    #[should_panic(expected = "Vector size does not match the dimensions of the matrix.")]
+    fn test_vector_reshape_few_elements() {
+        let vec = Vector::new(vec![1.0, 2.0, 3.0]);
+        let mat = vec.reshape(2, 3);
+        assert_eq!(mat.size(), (2, 3));
+    }
+
+    #[test]
+    #[should_panic(expected = "Vector size does not match the dimensions of the matrix.")]
+    fn test_vector_reshape_lots_of_elements() {
+        let vec = Vector::new(vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0]);
+        let mat = vec.reshape(2, 3);
+        assert_eq!(mat.size(), (2, 3));
+    }
+
+    #[test]
+    #[should_panic(expected = "Reshape invalid dimensions.")]
+    fn test_vector_reshape_invalid_dimensions() {
+        let vec: Vector<f32> = Vector::new(vec![]);
+        let mat = vec.reshape(0, 0);
+        assert_eq!(mat.size(), (0, 0));
+    }
+
+    #[test]
+    fn test_vector_add_with_zero_vector() {
+        let mut vec1 = Vector::new(vec![10.0, 20.0, 30.0]);
+        let vec2 = Vector::new(vec![0.0, 0.0, 0.0]);
+        vec1.add(&vec2);
+
+        // The result should remain unchanged when adding a zero vector
+        assert_eq!(vec1.data, vec![10.0, 20.0, 30.0]);
+    }
+
+    #[test]
+    fn test_vector_add_negative_numbers() {
+        let mut vec1 = Vector::new(vec![10.0, -5.0, 30.0]);
+        let vec2 = Vector::new(vec![-10.0, -5.0, -30.0]);
+        vec1.add(&vec2);
+
+        // The result should be element-wise addition with negative numbers
+        assert_eq!(vec1.data, vec![0.0, -10.0, 0.0]);
+    }
+
+    #[test]
+    fn test_vector_add_large_numbers() {
+        let mut vec1 = Vector::new(vec![1e6, 2e6, 3e6]);
+        let vec2 = Vector::new(vec![1e6, 2e6, 3e6]);
+        vec1.add(&vec2);
+
+        // Test that large numbers are added correctly
+        assert_eq!(vec1.data, vec![2e6, 4e6, 6e6]);
+    }
+
+    #[test]
+    #[should_panic(expected = "Vectors must be the same size for addition.")]
+    fn test_vector_add_panic_on_different_sizes() {
+        let mut vec1 = Vector::new(vec![10.0, 20.0]);
+        let vec2 = Vector::new(vec![1.0, 2.0, 3.0]);
+
+        // This should panic because the vectors are of different sizes
+        vec1.add(&vec2);
+    }
+
+    #[test]
+    fn test_vector_add_empty_vectors() {
+        let mut vec1 : Vector<f32> = Vector::new(vec![]);
+        let vec2: Vector<f32> = Vector::new(vec![]);
+        vec1.add(&vec2);
+
+        // Test that adding two empty vectors results in an empty vector
+        assert_eq!(vec1.data, vec![]);
+    }
+
+    #[test]
+    fn test_vector_sub_with_zero_vector() {
+        let mut vec1 = Vector::new(vec![10.0, 20.0, 30.0]);
+        let vec2 = Vector::new(vec![0.0, 0.0, 0.0]);
+        vec1.sub(&vec2);
+
+        // The result should remain unchanged when subtracting a zero vector
+        assert_eq!(vec1.data, vec![10.0, 20.0, 30.0]);
+    }
+
+    #[test]
+    fn test_vector_sub_negative_numbers() {
+        let mut vec1 = Vector::new(vec![10.0, -5.0, 30.0]);
+        let vec2 = Vector::new(vec![-10.0, -5.0, -30.0]);
+        vec1.sub(&vec2);
+
+        // The result should be element-wise subtraction with negative numbers
+        assert_eq!(vec1.data, vec![20.0, 0.0, 60.0]);
+    }
+
+    #[test]
+    fn test_vector_sub_large_numbers() {
+        let mut vec1 = Vector::new(vec![1e6, -2e6, 3e6]);
+        let vec2 = Vector::new(vec![1e6, 2e6, -3e6]);
+        vec1.sub(&vec2);
+
+        // Test that large numbers are subtracted correctly
+        assert_eq!(vec1.data, vec![0.0, -4e6, 6e6]);
+    }
+
+    #[test]
+    #[should_panic(expected = "Vectors must be the same size for subtraction.")]
+    fn test_vector_sub_panic_on_different_sizes() {
+        let mut vec1 = Vector::new(vec![10.0, 20.0]);
+        let vec2 = Vector::new(vec![3.0]);
+
+        // This should panic because the vectors are of different sizes
+        vec1.sub(&vec2);
+    }
+
+    #[test]
+    fn test_vector_sub_empty_vectors() {
+        let mut vec1 : Vector<f32> = Vector::new(vec![]);
+        let vec2: Vector<f32> = Vector::new(vec![]);
+        vec1.add(&vec2);
+
+        // Test that subtracting two empty vectors results in an empty vector
+        assert_eq!(vec1.data, vec![]);
+    }
+
+    #[test]
+    fn test_vector_scaling_basic() {
+        let mut vec1 = Vector::new(vec![42.0, 4.2]);
+        vec1.scl(2.0);
+
+        // Test that scaling by 2.0 works correctly
+        assert_eq!(vec1.data, vec![84.0, 8.4]);
+    }
+
+    #[test]
+    fn test_vector_scaling_by_zero() {
+        let mut vec1 = Vector::new(vec![10.0, 20.0, 30.0]);
+        vec1.scl(0.0);
+
+        // Test that scaling by 0.0 results in a vector of zeros
+        assert_eq!(vec1.data, vec![0.0, 0.0, 0.0]);
+    }
+
+    #[test]
+    fn test_vector_scaling_by_negative() {
+        let mut vec1 = Vector::new(vec![10.0, -5.0, 30.0]);
+        vec1.scl(-1.0);
+
+        // Test that scaling by -1.0 negates all the elements
+        assert_eq!(vec1.data, vec![-10.0, 5.0, -30.0]);
+    }
+
+    #[test]
+    fn test_vector_scaling_with_large_factor() {
+        let mut vec1 = Vector::new(vec![1.0, 2.0, 3.0]);
+        vec1.scl(1e6);
+
+        // Test that scaling by a large factor works correctly
+        assert_eq!(vec1.data, vec![1e6, 2e6, 3e6]);
+    }
+
+    #[test]
+    fn test_vector_scaling_empty_vector() {
+        let mut vec1: Vector<f32> = Vector::new(vec![]);
+        vec1.scl(5.0);
+
+        // Test that scaling an empty vector does nothing and remains empty
+        assert_eq!(vec1.data, vec![]);
     }
 }
