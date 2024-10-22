@@ -12,7 +12,6 @@ pub struct Vector<K: Scalar> {
     pub data: Vec<K>,
 }
 
-
 impl<K: Scalar, const N: usize> From<[K; N]> for Vector<K> {
     /// The From trait is implemented to convert an array [K; N] to a `Vector<K>`.
     /// Inside the function, we use `array.to_vec()` to convert the array into a `Vec<K>`,

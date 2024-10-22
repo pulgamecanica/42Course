@@ -1,22 +1,82 @@
 use crate::scalar::Scalar;
 use crate::Vector;
+use std::fmt;
 
 /// A struct representing a mathematical matrix.
 /// 
-/// The `Matrix` struct is generic over type `K` but is currently implemented
-/// for `K`, which represents a matrix of 32-bit Scalar numbers (such as f32).
+/// The `Matrix` struct is generic over type `K` that implements the `Scalar`
+/// type, that which ensures that it supports basic arithmetic operations
+/// like addition, subtraction, multiplication, and division.
 #[derive(Debug)]
 pub struct Matrix<K: Scalar> {
     // The underlying data of the matrix stored as a `Vec<Vec<K>>`.
+    // First Vec represents the "row", each element of Vec<Vec> represents the "col"
     pub data: Vec<Vec<K>>,
 }
 
-impl<K: Scalar + std::fmt::Debug> Matrix<K> {
-    /// Creates a new `Matrix<K>` from a vector of vectors (rows of the matrix).
+impl<K: Scalar, const N: usize> From<[K; N]> for Matrix<K> {
+    /// The From trait is implemented to convert an array [K; N] to a square `Matrix<K>`.
+    /// Inside the function, we use `array.to_vec()` to convert the array into a `Vec<K>`,
+    /// which is then passed to the `Matrix::new()` function to create a `Matrix<K>`.
+    ///
+    /// # Panics
+    ///
+    /// The function will panic if the matrix conversion makes no sense (no square)
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Matrix;
+    ///
+    /// let v = Matrix::from([
+    /// 7., 4.,
+    /// -2., 2.
+    /// ]);
+    /// ```
+    fn from(array: [K; N]) -> Self {
+        Vector::new(array.to_vec()).reshape(array.len() / 2, array.len() / 2)
+    }
+}
+
+impl<K: Scalar + fmt::Display> fmt::Display for Matrix<K> {
+    /// Implement fmt to display a matrix whenever you want
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Matrix;
+    ///
+    /// let m = Matrix::from([
+    ///     2., 3.,
+    ///     4., 5.
+    /// ]);
+    /// println!("{}", m);
+    /// // [2.0, 3.0]
+    /// // [4.0, 5.0]
+    /// ```
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        for row in &self.data {
+            write!(f, "[")?;
+            let mut first = true;
+            for col in row {
+                if !first {
+                    write!(f, ", ")?;
+                }
+                write!(f, "{}", col)?;
+                first = false;
+            }
+            write!(f, "]")?
+        }
+        Ok(())
+    }
+}
+
+impl<K: Scalar> Matrix<K> {
+    /// Creates a new `Matrix<K>` from a matrix of matrices (rows of the matrix).
     ///
     /// # Arguments
     ///
-    /// * `data` - A 2D vector of `K` values representing the rows of the matrix.
+    /// * `data` - A 2D matrix of `K` values representing the rows of the matrix.
     ///
     /// # Example
     ///
@@ -89,7 +149,7 @@ impl<K: Scalar + std::fmt::Debug> Matrix<K> {
         }
     }
 
-    /// Reshapes the matrix into a vector by flattening its rows.
+    /// Reshapes the `Martix` into a `Vector` by flattening its rows.
     ///
     /// # Example
     ///
@@ -104,8 +164,122 @@ impl<K: Scalar + std::fmt::Debug> Matrix<K> {
         let data = self.data.iter().flat_map(|row| row.clone()).collect();
         Vector { data }
     }
-}
 
+    /// Adds another `Matrix<K>` to the calling `Matrix<K>`.
+    ///
+    /// # Arguments
+    ///
+    /// * `v` - A reference to the other `Matrix<K>` to add.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the matrixes are not of the same size.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Matrix;
+    ///
+    /// let mut mat1 = Matrix::new(vec![
+    ///     vec![42.0, 4.2],
+    ///     vec![1.0, 2.0]
+    /// ]);
+    /// let mat2 = Matrix::new(vec![
+    ///     vec![-42.0, 4.2],
+    ///     vec![1.0, 2.0]
+    /// ]);
+    ///
+    /// mat1.add(&mat2);
+    ///
+    /// assert_eq!(mat1.data, vec![
+    ///     vec![0.0, 8.4],
+    ///     vec![2.0, 4.0]
+    /// ]);
+    /// ```
+    pub fn add(&mut self, v: &Matrix<K>) {
+        assert_eq!(self.size(), v.size(), "Matrices must be the same size for addition.");
+
+        for (row_id, row) in self.data.iter_mut().enumerate() {
+            for (col_id, elem) in row.iter_mut().enumerate() {
+                *elem += v.data[row_id][col_id];
+            }
+        }
+    }
+
+    /// Substracts another `Matrix<K>` to the calling `Matrix<K>`.
+    ///
+    /// # Arguments
+    ///
+    /// * `v` - A reference to the other `Matrix<K>` to subtract.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the `Matrix`s are not of the same size.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Matrix;
+    ///
+    /// let mut mat1 = Matrix::new(vec![
+    ///     vec![42.0, 4.2],
+    ///     vec![1.0, 2.0]
+    /// ]);
+    /// let mat2 = Matrix::new(vec![
+    ///     vec![1.0, 2.0],
+    ///     vec![-42.0, 4.2]
+    /// ]);
+    ///
+    /// mat1.sub(&mat2);
+    ///
+    /// assert_eq!(mat1.data, vec![
+    ///     vec![42.0 - 1.0, 4.2 - 2.0],
+    ///     vec![1.0 - -42.0, 2.0 - 4.2]
+    /// ]);
+    /// ```
+    pub fn sub(&mut self, v: &Matrix<K>) {
+        assert_eq!(self.size(), v.size(), "Matrices must be the same size for subtraction.");
+
+        for (row_id, row) in self.data.iter_mut().enumerate() {
+            for (col_id, elem) in row.iter_mut().enumerate() {
+                *elem -= v.data[row_id][col_id];
+            }
+        }
+    }
+
+    /// Scales the calling `Matrix<K>` by a factor `a`.
+    ///
+    /// Each element in the `Matrix` is multiplied by the scalar `a`.
+    ///
+    /// # Arguments
+    ///
+    /// * `a` - The scaling factor.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Matrix;
+    ///
+    /// let mut mat = Matrix::new(vec![
+    ///     vec![1.0, 2.0],
+    ///     vec![3.0, 4.0]
+    /// ]);
+    ///
+    /// mat.scl(2.0); // Scale by 2
+    ///
+    /// assert_eq!(mat.data, vec![
+    ///     vec![2.0, 4.0],
+    ///     vec![6.0, 8.0]
+    /// ]);
+    /// ```
+    pub fn scl(&mut self, a: K) {
+        for row in &mut self.data {
+            for elem in row {
+                *elem *= a;
+            }
+        }
+    }
+}
 
 // Unit Tests
 
@@ -131,6 +305,181 @@ mod tests {
         let mat = Matrix { data: vec![vec![1.0, 2.0], vec![3.0, 4.0]] };
         println!("{mat:?}");
     }
+
+    #[test]
+    fn test_matrix_add_basic() {
+        let mut mat1 = Matrix::new(vec![
+            vec![1.0, 2.0],
+            vec![3.0, 4.0]
+        ]);
+        let mat2 = Matrix::new(vec![
+            vec![1.0, 1.0],
+            vec![1.0, 1.0]
+        ]);
+
+        mat1.add(&mat2);
+
+        assert_eq!(mat1.data, vec![
+            vec![2.0, 3.0],
+            vec![4.0, 5.0]
+        ]);
+    }
+
+    #[test]
+    #[should_panic(expected = "Matrices must be the same size for addition.")]
+    fn test_matrix_add_size_mismatch() {
+        let mut mat1 = Matrix::new(vec![
+            vec![1.0, 2.0]
+        ]);
+        let mat2 = Matrix::new(vec![
+            vec![1.0, 1.0],
+            vec![1.0, 1.0]
+        ]);
+
+        mat1.add(&mat2);
+    }
+
+    #[test]
+    fn test_matrix_add_negative_values() {
+        let mut mat1 = Matrix::new(vec![
+            vec![1.0, -2.0],
+            vec![3.0, -4.0]
+        ]);
+        let mat2 = Matrix::new(vec![
+            vec![5.0, 6.0],
+            vec![-7.0, 8.0]
+        ]);
+
+        mat1.add(&mat2);
+
+        assert_eq!(mat1.data, vec![
+            vec![6.0, 4.0],
+            vec![-4.0, 4.0]
+        ]);
+    }
+
+    #[test]
+    fn test_matrix_add_empty_matrix() {
+        let mut mat1: Matrix<f32> = Matrix::new(vec![]);
+        let mat2: Matrix<f32> = Matrix::new(vec![]);
+
+        mat1.add(&mat2);
+
+        assert_eq!(mat1.data, vec![] as Vec<Vec<f32>>);
+    }
+
+    #[test]
+    fn test_matrix_sub_basic() {
+        let mut mat1 = Matrix::new(vec![
+            vec![5.0, 6.0],
+            vec![7.0, 8.0]
+        ]);
+        let mat2 = Matrix::new(vec![
+            vec![1.0, 2.0],
+            vec![3.0, 4.0]
+        ]);
+
+        mat1.sub(&mat2);
+
+        assert_eq!(mat1.data, vec![
+            vec![4.0, 4.0],
+            vec![4.0, 4.0]
+        ]);
+    }
+
+    #[test]
+    #[should_panic(expected = "Matrices must be the same size for subtraction.")]
+    fn test_matrix_sub_size_mismatch() {
+        let mut mat1 = Matrix::new(vec![
+            vec![1.0, 2.0]
+        ]);
+        let mat2 = Matrix::new(vec![
+            vec![1.0, 1.0],
+            vec![1.0, 1.0]
+        ]);
+
+        mat1.sub(&mat2);
+    }
+
+    #[test]
+    fn test_matrix_sub_negative_values() {
+        let mut mat1 = Matrix::new(vec![
+            vec![10.0, -5.0],
+            vec![-3.0, 6.0]
+        ]);
+        let mat2 = Matrix::new(vec![
+            vec![1.0, 2.0],
+            vec![3.0, 4.0]
+        ]);
+
+        mat1.sub(&mat2);
+
+        assert_eq!(mat1.data, vec![
+            vec![9.0, -7.0],
+            vec![-6.0, 2.0]
+        ]);
+    }
+
+    #[test]
+    fn test_matrix_sub_empty_matrix() {
+        let mut mat1: Matrix<f32> = Matrix::new(vec![]);
+        let mat2: Matrix<f32> = Matrix::new(vec![]);
+
+        mat1.sub(&mat2);
+
+        assert_eq!(mat1.data, vec![] as Vec<Vec<f32>>);
+    }
+
+    #[test]
+    fn test_matrix_scl_basic() {
+        let mut mat = Matrix::new(vec![
+            vec![1.0, 2.0],
+            vec![3.0, 4.0]
+        ]);
+
+        mat.scl(2.0);
+
+        assert_eq!(mat.data, vec![
+            vec![2.0, 4.0],
+            vec![6.0, 8.0]
+        ]);
+    }
+
+    #[test]
+    fn test_matrix_scl_zero() {
+        let mut mat = Matrix::new(vec![
+            vec![1.0, 2.0],
+            vec![3.0, 4.0]
+        ]);
+
+        mat.scl(0.0);
+
+        assert_eq!(mat.data, vec![
+            vec![0.0, 0.0],
+            vec![0.0, 0.0]
+        ]);
+    }
+
+    #[test]
+    fn test_matrix_scl_negative() {
+        let mut mat = Matrix::new(vec![
+            vec![1.0, -2.0],
+            vec![3.0, -4.0]
+        ]);
+
+        mat.scl(-2.0);
+
+        assert_eq!(mat.data, vec![
+            vec![-2.0, 4.0],
+            vec![-6.0, 8.0]
+        ]);
+    }
+
+    #[test]
+    fn test_matrix_scl_empty_matrix() {
+        let mut mat: Matrix<f32> = Matrix::new(vec![]);
+        mat.scl(5.0);
+
+        assert_eq!(mat.data, vec![] as Vec<Vec<f32>>);
+    }
 }
-
-
