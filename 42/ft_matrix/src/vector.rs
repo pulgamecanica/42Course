@@ -218,6 +218,41 @@ impl<K: Scalar> Vector<K> {
             *elem *= a;
         }
     }
+
+    /// Computes the linear combination of a set of vectors using Fused Multiply-Add (FMA).
+    ///
+    /// This implementation uses SIMD intrinsics for performance when the type `K` allows it.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the length of `u` and `coefs` does not match,
+    /// or if the vectors in `u` are not all of the same size.
+    ///
+    /// # Arguments
+    ///
+    /// * `u` - A vector of `Vector`s of type `K` to be combined.
+    /// * `coefs` - A vector coefficients of type `K`, each corresponding to a vector in `u`.
+    pub fn linear_combination(u: &[Vector<K>], coefs: &[K]) -> Vector<K> {
+        assert_eq!(u.len(), coefs.len(), "Vectors and coefficients must have the same length.");
+        if u.is_empty() {
+            return Vector::new(vec![]);
+        }
+        
+        let size = u[0].size();
+        for vector in u.iter() {
+            assert_eq!(vector.size(), size, "All vectors must have the same size.");
+        }
+        
+        let mut result = Vector::new(vec![K::zero(); size]);
+        for (i, vector) in u.iter().enumerate() {
+            let coef = coefs[i];
+            for (j, elem) in vector.data.iter().enumerate() {
+                // result.data[j] += *elem * coef; // 
+                result.data[j] = K::fma(*elem, coef, result.data[j]);
+            }
+        }
+        result
+    }
 }
 
 
@@ -284,7 +319,6 @@ mod tests {
         let vec2 = Vector::new(vec![0.0, 0.0, 0.0]);
         vec1.add(&vec2);
 
-        // The result should remain unchanged when adding a zero vector
         assert_eq!(vec1.data, vec![10.0, 20.0, 30.0]);
     }
 
@@ -294,7 +328,6 @@ mod tests {
         let vec2 = Vector::new(vec![-10.0, -5.0, -30.0]);
         vec1.add(&vec2);
 
-        // The result should be element-wise addition with negative numbers
         assert_eq!(vec1.data, vec![0.0, -10.0, 0.0]);
     }
 
@@ -304,7 +337,6 @@ mod tests {
         let vec2 = Vector::new(vec![1e6, 2e6, 3e6]);
         vec1.add(&vec2);
 
-        // Test that large numbers are added correctly
         assert_eq!(vec1.data, vec![2e6, 4e6, 6e6]);
     }
 
@@ -314,7 +346,6 @@ mod tests {
         let mut vec1 = Vector::new(vec![10.0, 20.0]);
         let vec2 = Vector::new(vec![1.0, 2.0, 3.0]);
 
-        // This should panic because the vectors are of different sizes
         vec1.add(&vec2);
     }
 
@@ -324,7 +355,6 @@ mod tests {
         let vec2: Vector<f32> = Vector::new(vec![]);
         vec1.add(&vec2);
 
-        // Test that adding two empty vectors results in an empty vector
         assert_eq!(vec1.data, vec![]);
     }
 
@@ -334,7 +364,6 @@ mod tests {
         let vec2 = Vector::new(vec![0.0, 0.0, 0.0]);
         vec1.sub(&vec2);
 
-        // The result should remain unchanged when subtracting a zero vector
         assert_eq!(vec1.data, vec![10.0, 20.0, 30.0]);
     }
 
@@ -344,7 +373,6 @@ mod tests {
         let vec2 = Vector::new(vec![-10.0, -5.0, -30.0]);
         vec1.sub(&vec2);
 
-        // The result should be element-wise subtraction with negative numbers
         assert_eq!(vec1.data, vec![20.0, 0.0, 60.0]);
     }
 
@@ -354,7 +382,6 @@ mod tests {
         let vec2 = Vector::new(vec![1e6, 2e6, -3e6]);
         vec1.sub(&vec2);
 
-        // Test that large numbers are subtracted correctly
         assert_eq!(vec1.data, vec![0.0, -4e6, 6e6]);
     }
 
@@ -364,7 +391,6 @@ mod tests {
         let mut vec1 = Vector::new(vec![10.0, 20.0]);
         let vec2 = Vector::new(vec![3.0]);
 
-        // This should panic because the vectors are of different sizes
         vec1.sub(&vec2);
     }
 
@@ -374,7 +400,6 @@ mod tests {
         let vec2: Vector<f32> = Vector::new(vec![]);
         vec1.add(&vec2);
 
-        // Test that subtracting two empty vectors results in an empty vector
         assert_eq!(vec1.data, vec![]);
     }
 
@@ -383,7 +408,6 @@ mod tests {
         let mut vec1 = Vector::new(vec![42.0, 4.2]);
         vec1.scl(2.0);
 
-        // Test that scaling by 2.0 works correctly
         assert_eq!(vec1.data, vec![84.0, 8.4]);
     }
 
@@ -392,7 +416,6 @@ mod tests {
         let mut vec1 = Vector::new(vec![10.0, 20.0, 30.0]);
         vec1.scl(0.0);
 
-        // Test that scaling by 0.0 results in a vector of zeros
         assert_eq!(vec1.data, vec![0.0, 0.0, 0.0]);
     }
 
@@ -401,7 +424,6 @@ mod tests {
         let mut vec1 = Vector::new(vec![10.0, -5.0, 30.0]);
         vec1.scl(-1.0);
 
-        // Test that scaling by -1.0 negates all the elements
         assert_eq!(vec1.data, vec![-10.0, 5.0, -30.0]);
     }
 
@@ -410,7 +432,6 @@ mod tests {
         let mut vec1 = Vector::new(vec![1.0, 2.0, 3.0]);
         vec1.scl(1e6);
 
-        // Test that scaling by a large factor works correctly
         assert_eq!(vec1.data, vec![1e6, 2e6, 3e6]);
     }
 
@@ -419,7 +440,64 @@ mod tests {
         let mut vec1: Vector<f32> = Vector::new(vec![]);
         vec1.scl(5.0);
 
-        // Test that scaling an empty vector does nothing and remains empty
         assert_eq!(vec1.data, vec![]);
+    }
+
+    /// Test linear combination using f32 with FMA
+    #[test]
+    fn test_linear_combination_fma_f32() {
+        let vec1 = Vector::new(vec![1.0, 2.0, 3.0, 4.0]);
+        let vec2 = Vector::new(vec![0.5, 1.5, 2.5, 3.5]);
+        let coefs = vec![2.0, 0.5];
+
+        let result = Vector::linear_combination(&[vec1, vec2], &coefs);
+
+        assert_eq!(result.data, vec![2.0 * 1.0 + 0.5 * 0.5, 2.0 * 2.0 + 0.5 * 1.5, 2.0 * 3.0 + 0.5 * 2.5, 2.0 * 4.0 + 0.5 * 3.5]);
+    }
+
+    /// Test linear combination using i32 (without FMA, should fallback to a * b + c)
+    #[test]
+    fn test_linear_combination_i32() {
+        let vec1 = Vector::new(vec![1, 2, 3, 4]);
+        let vec2 = Vector::new(vec![1, 2, 3, 4]);
+        let coefs = vec![2, 1];
+
+        let result = Vector::linear_combination(&[vec1, vec2], &coefs);
+
+        assert_eq!(result.data, vec![3, 6, 9, 12]);
+    }
+
+    #[test]
+    fn test_linear_combination_empty() {
+        let vec1: Vector<f32> = Vector::new(vec![]);
+        let vec2: Vector<f32> = Vector::new(vec![]);
+        let coefs = vec![2.0, 0.5];
+
+        let result = Vector::linear_combination(&[vec1, vec2], &coefs);
+
+        assert_eq!(result.data, vec![]);
+    }
+
+    #[test]
+    #[should_panic(expected = "Vectors and coefficients must have the same length.")]
+    fn test_linear_combination_mismatched_sizes() {
+        let vec1 = Vector::new(vec![1.0, 2.0, 3.0]);
+        let vec2 = Vector::new(vec![1.0, 2.0, 3.0]);
+        let coefs = vec![2.0];  // Coefficient list is too short (1 coef for 2 vectors)
+
+        // This should panic because the number of vectors and coefficients don't match
+        let _ = Vector::linear_combination(&[vec1, vec2], &coefs);
+    }
+
+    /// Test using negative coefficients
+    #[test]
+    fn test_linear_combination_negative_coefficients() {
+        let vec1 = Vector::new(vec![1, 2, 3, 4]);
+        let vec2 = Vector::new(vec![-5, -15, -25, -35]);
+        let coefs = vec![2, -5];
+
+        let result = Vector::linear_combination(&[vec1, vec2], &coefs);
+
+        assert_eq!(result.data, vec![2 * 1 - 5 * -5, 2 * 2 - 5 * -15, 2 * 3 - 5 * -25, 2 * 4 - 5 * -35]);
     }
 }
