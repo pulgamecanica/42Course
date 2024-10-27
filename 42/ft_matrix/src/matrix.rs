@@ -34,7 +34,7 @@ impl<K: Scalar, const N: usize> From<[K; N]> for Matrix<K> {
     /// ]);
     /// ```
     fn from(array: [K; N]) -> Self {
-        Vector::new(array.to_vec()).reshape(array.len() / 2, array.len() / 2)
+        Vector::new(array.to_vec()).reshape(f32::sqrt(N as f32) as usize, f32::sqrt(N as f32) as usize)
     }
 }
 
@@ -65,7 +65,7 @@ impl<K: Scalar + fmt::Display> fmt::Display for Matrix<K> {
                 write!(f, "{}", col)?;
                 first = false;
             }
-            write!(f, "]")?
+            write!(f, "]\n")?;
         }
         Ok(())
     }
