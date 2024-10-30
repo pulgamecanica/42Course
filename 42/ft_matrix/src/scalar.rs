@@ -20,6 +20,8 @@ pub trait Scalar: Copy + Clone + Debug + Zero
     fn fma(a: Self, b: Self, c: Self) -> Self {
         a * b + c
     }
+
+    fn from_f32(value: f32) -> Self;
 }
 
 // Specialize for f32 using SIMD FMA intrinsics
@@ -39,10 +41,39 @@ impl Scalar for f32 {
             _mm_cvtss_f32(result) // Return the first element of the SIMD result
         }
     }
+
+    fn from_f32(value: f32) -> Self {
+        value
+    }
 }
 
-// Default behavior (no specialization) for `i32`, `i64`, `u32`, `u64`, etc.
-impl Scalar for i32 {}
-impl Scalar for i64 {}
-impl Scalar for u32 {}
-impl Scalar for u64 {}
+// Default behavior (no specialization) for `f64` `i32`, `i64`, `u32`, `u64`, etc.
+impl Scalar for f64 {
+    fn from_f32(value: f32) -> Self {
+        value as f64
+    }
+}
+
+impl Scalar for i32 {
+    fn from_f32(value: f32) -> Self {
+        value as i32
+    }
+}
+
+impl Scalar for i64 {
+    fn from_f32(value: f32) -> Self {
+        value as i64
+    }
+}
+
+impl Scalar for u32 {
+    fn from_f32(value: f32) -> Self {
+        value as u32
+    }
+}
+
+impl Scalar for u64 {
+    fn from_f32(value: f32) -> Self {
+        value as u64
+    }
+}

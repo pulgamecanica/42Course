@@ -6,7 +6,7 @@ use std::fmt;
 ///
 /// The type `K` must implement the `Scalar` trait, which ensures that it supports
 /// basic arithmetic operations like addition, subtraction, multiplication, and division.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Vector<K: Scalar> {
     // The underlying data of the vector stored as a `Vec<K>`.
     pub data: Vec<K>,
@@ -140,6 +140,41 @@ impl<K: Scalar> Vector<K> {
         Matrix { data }
     }
 
+    /// Computes the linear combination of a set of vectors using Fused Multiply-Add (FMA).
+    ///
+    /// This implementation uses SIMD intrinsics for performance when the type `K` allows it.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the length of `u` and `coefs` does not match,
+    /// or if the vectors in `u` are not all of the same size.
+    ///
+    /// # Arguments
+    ///
+    /// * `u` - A vector of `Vector`s of type `K` to be combined.
+    /// * `coefs` - A vector coefficients of type `K`, each corresponding to a vector in `u`.
+    pub fn linear_combination(u: &[Vector<K>], coefs: &[K]) -> Vector<K> {
+        assert_eq!(u.len(), coefs.len(), "Vectors and coefficients must have the same length.");
+        if u.is_empty() {
+            return Vector::new(vec![]);
+        }
+        
+        let size = u[0].size();
+        for vector in u.iter() {
+            assert_eq!(vector.size(), size, "All vectors must have the same size.");
+        }
+        
+        let mut result = Vector::new(vec![K::zero(); size]);
+        for (i, vector) in u.iter().enumerate() {
+            let coef = coefs[i];
+            for (j, elem) in vector.data.iter().enumerate() {
+                // result.data[j] += *elem * coef; // 
+                result.data[j] = K::fma(*elem, coef, result.data[j]);
+            }
+        }
+        result
+    }
+
     /// Adds another `Vector<K>` to the calling `Vector<K>`.
     ///
     /// # Arguments
@@ -218,46 +253,29 @@ impl<K: Scalar> Vector<K> {
             *elem *= a;
         }
     }
+}
 
-    /// Computes the linear combination of a set of vectors using Fused Multiply-Add (FMA).
-    ///
-    /// This implementation uses SIMD intrinsics for performance when the type `K` allows it.
-    ///
-    /// # Panics
-    ///
-    /// This function will panic if the length of `u` and `coefs` does not match,
-    /// or if the vectors in `u` are not all of the same size.
-    ///
-    /// # Arguments
-    ///
-    /// * `u` - A vector of `Vector`s of type `K` to be combined.
-    /// * `coefs` - A vector coefficients of type `K`, each corresponding to a vector in `u`.
-    pub fn linear_combination(u: &[Vector<K>], coefs: &[K]) -> Vector<K> {
-        assert_eq!(u.len(), coefs.len(), "Vectors and coefficients must have the same length.");
-        if u.is_empty() {
-            return Vector::new(vec![]);
-        }
-        
-        let size = u[0].size();
-        for vector in u.iter() {
-            assert_eq!(vector.size(), size, "All vectors must have the same size.");
-        }
-        
-        let mut result = Vector::new(vec![K::zero(); size]);
-        for (i, vector) in u.iter().enumerate() {
-            let coef = coefs[i];
-            for (j, elem) in vector.data.iter().enumerate() {
-                // result.data[j] += *elem * coef; // 
-                result.data[j] = K::fma(*elem, coef, result.data[j]);
-            }
-        }
-        result
+use std::ops::{AddAssign, SubAssign, MulAssign};
+
+impl<K: Scalar> AddAssign for Vector<K> {
+    fn add_assign(&mut self, other: Self) {
+        self.add(&other)
     }
 }
 
+impl<K: Scalar> SubAssign for Vector<K> {
+    fn sub_assign(&mut self, other: Self) {
+        self.sub(&other)
+    }
+}
+
+impl<K: Scalar> MulAssign<K> for Vector<K> {
+    fn mul_assign(&mut self, scalar: K) {
+        self.scl(scalar)
+    }
+}
 
 // Unit Tests
-
 
 #[cfg(test)]
 mod tests {
@@ -407,6 +425,16 @@ mod tests {
     fn test_vector_scaling_basic() {
         let mut vec1 = Vector::new(vec![42.0, 4.2]);
         vec1.scl(2.0);
+
+        assert_eq!(vec1.data, vec![84.0, 8.4]);
+    }
+
+
+    #[test]
+    fn test_vector_scaling_basic_2() {
+        let mut vec1: Vector<f64> = Vector::new(vec![42.0, 4.2]);
+        let scalar: f64 = 2.0;
+        vec1 *= scalar;
 
         assert_eq!(vec1.data, vec![84.0, 8.4]);
     }

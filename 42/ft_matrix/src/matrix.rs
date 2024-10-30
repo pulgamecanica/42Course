@@ -7,7 +7,7 @@ use std::fmt;
 /// The `Matrix` struct is generic over type `K` that implements the `Scalar`
 /// type, that which ensures that it supports basic arithmetic operations
 /// like addition, subtraction, multiplication, and division.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Matrix<K: Scalar> {
     // The underlying data of the matrix stored as a `Vec<Vec<K>>`.
     // First Vec represents the "row", each element of Vec<Vec> represents the "col"
@@ -281,8 +281,27 @@ impl<K: Scalar> Matrix<K> {
     }
 }
 
-// Unit Tests
+use std::ops::{AddAssign, SubAssign, MulAssign};
 
+impl<K: Scalar> AddAssign for Matrix<K> {
+    fn add_assign(&mut self, other: Self) {
+        self.add(&other)
+    }
+}
+
+impl<K: Scalar> SubAssign for Matrix<K> {
+    fn sub_assign(&mut self, other: Self) {
+        self.sub(&other)
+    }
+}
+
+impl<K: Scalar> MulAssign<K> for Matrix<K> {
+    fn mul_assign(&mut self, scalar: K) {
+        self.scl(scalar)
+    }
+}
+
+// Unit Tests
 
 #[cfg(test)]
 mod tests {

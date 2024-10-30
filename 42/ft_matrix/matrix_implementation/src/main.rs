@@ -1,5 +1,5 @@
 use ft_matrix::{Matrix, Vector};
-
+use ft_matrix::linear_interpolation::lerp;
 
 // Example from the subject
 fn try_linear_combination() {
@@ -19,6 +19,23 @@ fn try_linear_combination() {
     // [10.]
     // [0.]
     // [230.]
+}
+
+fn try_linear_interpolation(factor: f32) {
+    let mat1 = Matrix::from([
+        0.0, 12.5, 25.0,
+        37.5, 50.0, 62.5,
+        75.0, 87.5, 100.0,
+    ]);
+
+    let mat2 = Matrix::from([
+        5.0, 20.0, 45.0,
+        30.0, 60.0, 80.0,
+        25.0, 70.0, 95.0,
+    ]);
+    println!("{}", "*".repeat(42));
+    println!("Having the following matrixes:\n{mat1}\n{mat2}\nThe linear interpolation for {factor} results in:\n");
+    println!("{}", lerp(mat1, mat2, factor));
 }
 
 fn try_add_sub_scale() {
@@ -63,4 +80,7 @@ fn try_add_sub_scale() {
 fn main() {
     try_add_sub_scale();
     try_linear_combination();
+    try_linear_interpolation(0.0);
+    try_linear_interpolation(0.5);
+    try_linear_interpolation(2.0);
 }

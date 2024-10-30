@@ -13,7 +13,12 @@ pub mod vector;
 /// The matrix module provides a generic `Matrix` struct and related methods.
 pub mod matrix;
 
+
+/// The linear interpolation module provides a generic function implementation to apply an interpolation.
+pub mod linear_interpolation;
+
 // Optionally, re-export types to make them easier to access from the top level.
 pub use vector::Vector;
 pub use matrix::Matrix;
 pub use scalar::Scalar;
+
