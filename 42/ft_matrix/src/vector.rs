@@ -175,6 +175,34 @@ impl<K: Scalar> Vector<K> {
         result
     }
 
+    /// Computes the dot product with another `Vector<K>`
+    ///
+    /// # Arguments
+    ///
+    /// * `v` - A reference to the other `Vector<K>`.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the vectors are not of the same size.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Vector;
+    ///
+    /// let vec1 = Vector::new(vec![42.0, 4.2]);
+    /// let vec2 = Vector::new(vec![-42.0, 4.2]);
+    /// assert_eq!(vec1.dot(&vec2), -1746.36);
+    pub fn dot(&self, v: &Vector::<K>) -> K {
+        assert_eq!(self.size(), v.size());
+        let mut result = K::zero();
+
+        for (a, b) in self.data.iter().zip(v.data.iter()) {
+            result = K::fma(*a, *b, result);
+        }
+        result
+    }
+
     /// Adds another `Vector<K>` to the calling `Vector<K>`.
     ///
     /// # Arguments
@@ -517,7 +545,6 @@ mod tests {
         let _ = Vector::linear_combination(&[vec1, vec2], &coefs);
     }
 
-    /// Test using negative coefficients
     #[test]
     fn test_linear_combination_negative_coefficients() {
         let vec1 = Vector::new(vec![1, 2, 3, 4]);
@@ -527,5 +554,22 @@ mod tests {
         let result = Vector::linear_combination(&[vec1, vec2], &coefs);
 
         assert_eq!(result.data, vec![2 * 1 - 5 * -5, 2 * 2 - 5 * -15, 2 * 3 - 5 * -25, 2 * 4 - 5 * -35]);
+    }
+
+
+    #[test]
+    fn test_dot_product_vec_i32() {
+        let vec1: Vector<i32> = Vector::new(vec![1, 1]);
+        let vec2: Vector<i32> = Vector::new(vec![1, 1]);
+
+        assert_eq!(vec1.dot(&vec2), 2);
+    }
+
+    #[test]
+    fn test_dot_product_vec_f32() {
+        let vec1 = Vector::new(vec![3.0, 5.5]);
+        let vec2 = Vector::new(vec![-1.0, 2.0]);
+
+        assert_eq!(vec1.dot(&vec2), 8.0);
     }
 }

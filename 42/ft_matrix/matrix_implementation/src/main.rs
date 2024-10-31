@@ -21,6 +21,17 @@ fn try_linear_combination() {
     // [230.]
 }
 
+fn try_dot_product() {
+    let e1 = Vector::from([1., 0., 0.]);
+    let e2 = Vector::from([0., 1., 0.]);
+    let e3 = Vector::from([2., 1., 3.]);
+    let e4 = Vector::from([1., 1., 1.]);
+
+    println!("Should be zero: [{}]", e1.dot(&e2));
+    println!("Should be two: [{}]", e1.dot(&e3));
+    println!("Should be six: [{}]", e3.dot(&e4));
+}
+
 fn try_linear_interpolation(factor: f32) {
     let mat1 = Matrix::from([
         0.0, 12.5, 25.0,
@@ -83,4 +94,5 @@ fn main() {
     try_linear_interpolation(0.0);
     try_linear_interpolation(0.5);
     try_linear_interpolation(2.0);
+    try_dot_product();
 }

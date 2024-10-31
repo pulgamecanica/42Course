@@ -1,31 +1,22 @@
 use std::ops::{AddAssign, SubAssign, MulAssign};
 
-// /// Define the lerp function, which takes two objects of type V and a scalar t of type f32.
-// /// V must implement the LinearOps trait, and the scalar is used to determine the interpolation factor.
-// ///
-// /// Formula: `lerp(u,v,t) = u+t × (v−u)`
-// /// Prototype FMA: We: A + B * (C1-C2) <=> A + B * C
-// /// fma does: a * b + c, in this case
-// /// Option1: fma(B, C, A)
-// /// Option2: fma(C, B, A)
-#[allow(dead_code)]
+/// Define the lerp function, which takes two objects of type V and a scalar t of type f32.
+/// V should be an object implementing the Clone, MulAssign<f32>, AddAssign & SubAssign traits
+///
+/// Formula: `lerp(u,v,t) = u+t × (v−u)`
+/// Prototype FMA: We: A + B * (C1-C2) <=> A + B * C
+/// fma does: a * b + c, or in this case =>
+/// Option1: fma(B, C, A)
+/// Option2: fma(C, B, A)
 pub fn lerp<V>(u: V, v: V, t: f32) -> V
 where
     V: Clone + AddAssign + SubAssign + MulAssign<f32>,
 {
-    // Make a cloned instance of `u` to use as the base for our result
     let mut result = u.clone();
-
-    // Compute `v - u` by creating a clone of `v` and subtracting `u` from it
     let mut diff = v.clone();
     diff -= u;
-
-    // Scale the difference by `t`
     diff *= t;
-
-    // Add the scaled difference to `result`
     result += diff;
-
     result
 }
 
