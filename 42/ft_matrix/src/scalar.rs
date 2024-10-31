@@ -21,6 +21,12 @@ pub trait Scalar: Copy + Clone + Debug + Zero
         a * b + c
     }
 
+    fn abs(self) -> Self {
+        self
+    }
+
+    fn to_f32(self) -> f32;
+
     fn from_f32(value: f32) -> Self;
 }
 
@@ -45,6 +51,10 @@ impl Scalar for f32 {
     fn from_f32(value: f32) -> Self {
         value
     }
+
+    fn to_f32(self) -> f32 {
+        self as f32
+    }
 }
 
 // Default behavior (no specialization) for `f64` `i32`, `i64`, `u32`, `u64`, etc.
@@ -52,11 +62,19 @@ impl Scalar for f64 {
     fn from_f32(value: f32) -> Self {
         value as f64
     }
+
+    fn to_f32(self) -> f32 {
+        self as f32
+    }
 }
 
 impl Scalar for i32 {
     fn from_f32(value: f32) -> Self {
         value as i32
+    }
+
+    fn to_f32(self) -> f32 {
+        self as f32
     }
 }
 
@@ -64,16 +82,28 @@ impl Scalar for i64 {
     fn from_f32(value: f32) -> Self {
         value as i64
     }
+
+    fn to_f32(self) -> f32 {
+        self as f32
+    }
 }
 
 impl Scalar for u32 {
     fn from_f32(value: f32) -> Self {
         value as u32
     }
+
+    fn to_f32(self) -> f32 {
+        self as f32
+    }
 }
 
 impl Scalar for u64 {
     fn from_f32(value: f32) -> Self {
         value as u64
+    }
+
+    fn to_f32(self) -> f32 {
+        self as f32
     }
 }

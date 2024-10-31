@@ -19,3 +19,5 @@ The project is divided in 16 modules.
 | 0 | Add, Sub & Scl | `v1 + v2`, `m1 - m2` & `v * 3.0` |
 | 1 | Linear Combination | Providing a list of objects and an instance of the same object, compute all the combinations |
 | 2 | Linear Interpolation | To compute the instance object defined between two objects (or beyond) |
+| 3 | Dot Product | Compute the dot product of two vectors, uses `fma` |
+| 4 | Norm | Compute the norm for the following kinds of norms: `Manhattan`, `Euclidean` & `Supremum/maximum` |

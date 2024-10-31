@@ -83,6 +83,10 @@ impl<K: Scalar> Vector<K> {
     /// let vec = Vector::new(vec![1.0, 2.0, 3.0]);
     /// assert_eq!(vec.size(), 3);
     /// ```
+    ///
+    /// # Returns
+    ///
+    /// The size of the `Vector<K>`
     pub fn size(&self) -> usize {
         self.data.len()
     }
@@ -128,6 +132,10 @@ impl<K: Scalar> Vector<K> {
     /// let mat = vec.reshape(2, 2);
     /// assert_eq!(mat.size(), (2, 2));
     /// ```
+    ///
+    /// # Returns
+    ///
+    /// A `Matrix<K>` from the `Vector<K>`
     pub fn reshape(&self, rows: usize, cols: usize) -> Matrix<K> {
         assert_eq!(self.data.len(), rows * cols, "Vector size does not match the dimensions of the matrix.");
         assert!(rows * cols != 0, "Reshape invalid dimensions.");
@@ -153,6 +161,10 @@ impl<K: Scalar> Vector<K> {
     ///
     /// * `u` - A vector of `Vector`s of type `K` to be combined.
     /// * `coefs` - A vector coefficients of type `K`, each corresponding to a vector in `u`.
+    ///
+    /// # Returns
+    ///
+    /// A `Vector<K>` with all the linear combinations
     pub fn linear_combination(u: &[Vector<K>], coefs: &[K]) -> Vector<K> {
         assert_eq!(u.len(), coefs.len(), "Vectors and coefficients must have the same length.");
         if u.is_empty() {
@@ -193,6 +205,11 @@ impl<K: Scalar> Vector<K> {
     /// let vec1 = Vector::new(vec![42.0, 4.2]);
     /// let vec2 = Vector::new(vec![-42.0, 4.2]);
     /// assert_eq!(vec1.dot(&vec2), -1746.36);
+    /// ```
+    ///
+    /// # Returns
+    ///
+    /// The result of the dot product of type `K`
     pub fn dot(&self, v: &Vector::<K>) -> K {
         assert_eq!(self.size(), v.size());
         let mut result = K::zero();
@@ -201,6 +218,92 @@ impl<K: Scalar> Vector<K> {
             result = K::fma(*a, *b, result);
         }
         result
+    }
+
+    /// Computes the 1-norm (Manhattan norm) of the vector.
+    /// 
+    /// The 1-norm is defined as the sum of the absolute values of each element in the vector.
+    /// 
+    /// <div>
+    /// <h3> Formula </h3>
+    /// <img src="https://github.com/user-attachments/assets/aa97364a-0260-41ea-a723-2250d156565a" alt="Manhattan norm"/>
+    /// </div>
+    /// <hr>
+    ///
+    /// # Example
+    /// 
+    /// ```
+    /// use ft_matrix::Vector;
+    /// 
+    /// let vec = Vector::new(vec![3, -4, 5]);
+    /// assert_eq!(vec.norm_1(), 12.0);
+    /// ```
+    /// 
+    /// # Returns
+    /// 
+    /// The computed 1-norm as type `K`, where `K` implements `Scalar`.
+    pub fn norm_1(&self) -> f32 {
+        self.data.iter().map(|&x| x.to_f32().abs()).sum()
+    }
+
+    /// Computes the 2-norm (Euclidean norm) of the vector.
+    /// 
+    /// The 2-norm is defined as the square root of the sum of the squares of each element in the vector.
+    /// 
+    /// <div>
+    /// <h3> Formula </h3>
+    /// <img src="https://github.com/user-attachments/assets/4e796701-2c65-4ecb-b189-d041ce48551e" alt="Euclidean norm"/>
+    /// </div>
+    /// <hr>
+    ///
+    /// # Example
+    /// 
+    /// ```
+    /// use ft_matrix::Vector;
+    /// 
+    /// let vec = Vector::new(vec![3.0, -4.0, 5.0]);
+    /// assert_eq!(vec.norm(), (3.0_f32.powi(2) + 4.0_f32.powi(2) + 5.0_f32.powi(2)).sqrt());
+    /// ```
+    /// 
+    /// # Returns
+    /// 
+    /// The computed 2-norm as an `f32`.
+    /// 
+    /// # Notes
+    /// 
+    /// If available, this function uses `fma` (fused multiply-add) to improve numerical accuracy.
+    pub fn norm(&self) -> f32 {
+        let mut sum_of_squares = 0.0;
+        for &x in &self.data {
+            sum_of_squares = K::fma(x, x, K::from_f32(sum_of_squares)).to_f32();
+        }
+        sum_of_squares.sqrt()
+    }
+
+    /// Computes the ∞-norm (supremum or maximum norm) of the vector.
+    /// 
+    /// The ∞-norm is defined as the maximum absolute value of the elements in the vector.
+    /// 
+    /// <div>
+    /// <h3> Formula </h3>
+    /// <img src="https://github.com/user-attachments/assets/622e614c-e17e-4733-9352-31f4d65977de" alt="Supremum/maximum norm"/>
+    /// </div>
+    /// <hr>
+    ///
+    /// # Example
+    /// 
+    /// ```
+    /// use ft_matrix::Vector;
+    /// 
+    /// let vec = Vector::new(vec![3.0, -4.0, 5.0]);
+    /// assert_eq!(vec.norm_inf(), 5.0);
+    /// ```
+    /// 
+    /// # Returns
+    /// 
+    /// The computed ∞-norm as an `f32`.
+    pub fn norm_inf(&self) -> f32 {
+        self.data.iter().map(|&x| x.to_f32().abs()).fold(0.0, f32::max)
     }
 
     /// Adds another `Vector<K>` to the calling `Vector<K>`.
@@ -571,5 +674,69 @@ mod tests {
         let vec2 = Vector::new(vec![-1.0, 2.0]);
 
         assert_eq!(vec1.dot(&vec2), 8.0);
+    }
+
+
+    #[test]
+    fn test_norm_1_f32() {
+        let vec = Vector::new(vec![3.0, -4.0, 5.0]);
+        let result = vec.norm_1();
+        assert_eq!(result, 12.0);
+    }
+
+    #[test]
+    fn test_norm_1_f64() {
+        let vec: Vector<f64> = Vector::new(vec![3.0, -4.5, 5.0]);
+        let result = vec.norm_1();
+        assert_eq!(result, 12.5);
+    }
+
+    #[test]
+    fn test_norm_1_u32() {
+        let vec = Vector::new(vec![3, 4, 5]);
+        let result = vec.norm_1();
+        assert_eq!(result, 12.0);
+    }
+
+    #[test]
+    fn test_norm_f32() {
+        let vec: Vector<f32> = Vector::new(vec![3.0, 4.0]);
+        let result = vec.norm();
+        assert_eq!(result, 5.0);
+    }
+
+    #[test]
+    fn test_norm_f64() {
+        let vec: Vector<f64> = Vector::new(vec![3.0, 4.0]);
+        let result = vec.norm();
+        assert_eq!(result, 5.0);
+    }
+
+    #[test]
+    fn test_norm_u32() {
+        let vec: Vector<u32> = Vector::new(vec![6, 8]);
+        let result = vec.norm();
+        assert_eq!(result, 10.0);
+    }
+
+    #[test]
+    fn test_norm_inf_f32() {
+        let vec: Vector<f32> = Vector::new(vec![3.0, -7.0, 5.0]);
+        let result = vec.norm_inf();
+        assert_eq!(result, 7.0);
+    }
+
+    #[test]
+    fn test_norm_inf_f64() {
+        let vec: Vector<f64> = Vector::new(vec![3.0, -7.0, 5.0]);
+        let result = vec.norm_inf();
+        assert_eq!(result, 7.0);
+    }
+
+    #[test]
+    fn test_norm_inf_u32() {
+        let vec: Vector<u32> = Vector::new(vec![2, 9, 5]);
+        let result = vec.norm_inf();
+        assert_eq!(result, 9.0);
     }
 }

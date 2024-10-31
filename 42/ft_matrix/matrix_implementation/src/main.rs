@@ -32,6 +32,16 @@ fn try_dot_product() {
     println!("Should be six: [{}]", e3.dot(&e4));
 }
 
+fn try_norms() {
+    let e1 = Vector::from([33.5, 22.3, 9.9]);
+    let e2 = Vector::from([42.0]);
+    let e3 = Vector::from([22.2, 10.1, 3.0]);
+
+    println!("Norm1: {} = {}", e1, e1.norm_1());
+    println!("Norm: {} = {}", e2, e3.norm());
+    println!("Norm inf: {} = {}", e3, e3.norm_inf());
+}
+
 fn try_linear_interpolation(factor: f32) {
     let mat1 = Matrix::from([
         0.0, 12.5, 25.0,
@@ -95,4 +105,5 @@ fn main() {
     try_linear_interpolation(0.5);
     try_linear_interpolation(2.0);
     try_dot_product();
+    try_norms()
 }

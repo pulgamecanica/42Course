@@ -14,8 +14,9 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 5. [Zappy](#zappy)
 6. [Piscine Object](#piscine-object)
 7. [snow-crash](#snow-crash)
-8. [libasm](#libasm)
-9. [ft_matrix](#ft_matrix)
+8. [rainfall](#rainfall)
+9. [libasm](#libasm)
+10. [ft_matrix](#ft_matrix)
 
 ---
 
@@ -122,8 +123,18 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 
 ![cybersecurity](https://img.shields.io/badge/cybersecurity-level_access-blue.svg)
 
-[snow-crash](https://github.com/pulgamecanica/42Course/tree/main/42/snow-crash) is a project that forces you to explore a VM given to you and you m ust find how to access the next level (user)
+[snow-crash](https://github.com/pulgamecanica/42Course/tree/main/42/snow-crash) is a project that forces you to explore a VM given to you and you must find how to access the next level (user)
 You will need to implement different exploits and use a lot of creativity.
+
+---
+
+## rainfall
+
+![cybersecurity](https://img.shields.io/badge/cybersecurity-level_access-blue.svg)
+
+[rainfall](https://github.com/pulgamecanica/42Course/tree/main/42/rainfall) is a project that forces you to explore a VM given to you and you must find how to access the next level (user)
+You will need to implement different exploits and use a lot of creativity.
+This is the continuation of snow-crash
 
 ---
 
