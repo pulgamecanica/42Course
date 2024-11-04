@@ -384,6 +384,59 @@ impl<K: Scalar> Vector<K> {
             *elem *= a;
         }
     }
+
+    /// Calculates the cosine of the angle between two `Vector`s, `u` and `v`.
+    ///
+    /// This function computes the cosine of the angle θ between two vectors `u` and `v`
+    /// using the formula:
+    ///
+    /// ```text
+    /// cos(θ) = (u ⋅ v) / (‖u‖ * ‖v‖)
+    /// ```
+    ///
+    /// where `u ⋅ v` is the dot product of `u` and `v`, and `‖u‖` and `‖v‖` are the norms (magnitudes) of the vectors `u` and `v`.
+    ///
+    /// The cosine value returned is between -1.0 and 1.0, where:
+    /// - 1.0 indicates that the vectors are parallel and pointing in the same direction,
+    /// - -1.0 indicates that the vectors are parallel and pointing in opposite directions,
+    /// - 0.0 indicates that the vectors are perpendicular.
+    ///
+    /// # Arguments
+    ///
+    /// * `u` - The first `Vector`.
+    /// * `v` - The second `Vector`.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the `Vector`s are not the same size or if either vector has zero magnitude (norm).
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Vector;
+    ///
+    /// let vec1 = Vector::new(vec![0, 1]);
+    /// let vec2 = Vector::new(vec![0, -1]);
+    /// assert_eq!(Vector::angle_cos(&vec1, &vec2), -1.0);
+    /// ```
+    ///
+    /// # Returns
+    ///
+    /// Returns a `f32` value between -1.0 and 1.0, representing the cosine of the angle between `u` and `v`.
+    pub fn angle_cos(u: &Vector<K>, v: &Vector<K>) -> f32 {
+        assert_eq!(u.size(), v.size(), "Vectors must be the same size.");
+
+        let u_norm = u.norm();
+        let v_norm = v.norm();
+
+        if u_norm == 0.0 || v_norm == 0.0 {
+            panic!("Cannot compute angle between zero vectors.");
+        }
+
+        let cos_theta = Scalar::to_f32(Vector::dot(u, v)) / (u_norm * v_norm);
+        cos_theta.clamp(-1.0, 1.0)
+    }
+
 }
 
 use std::ops::{AddAssign, SubAssign, MulAssign};
@@ -712,6 +765,14 @@ mod tests {
         assert_eq!(result, 5.0);
     }
 
+
+    #[test]
+    fn test_norm_i32() {
+        let vec: Vector<i32> = Vector::new(vec![6, 8]);
+        let result = vec.norm();
+        assert_eq!(result, 10.0);
+    }
+
     #[test]
     fn test_norm_u32() {
         let vec: Vector<u32> = Vector::new(vec![6, 8]);
@@ -738,5 +799,91 @@ mod tests {
         let vec: Vector<u32> = Vector::new(vec![2, 9, 5]);
         let result = vec.norm_inf();
         assert_eq!(result, 9.0);
+    }
+
+    #[test]
+    fn test_angle_cos_parallel_vectors() {
+        let vec1 = Vector::new(vec![1.0, 0.0]);
+        let vec2 = Vector::new(vec![2.0, 0.0]);
+        assert_eq!(Vector::angle_cos(&vec1, &vec2), 1.0);
+    }
+
+    #[test]
+    fn test_angle_cos_opposite_vectors() {
+        let vec1 = Vector::new(vec![1.0, 0.0]);
+        let vec2 = Vector::new(vec![-1.0, 0.0]);
+        assert_eq!(Vector::angle_cos(&vec1, &vec2), -1.0);
+    }
+
+    #[test]
+    fn test_angle_cos_perpendicular_vectors() {
+        let vec1 = Vector::new(vec![1.0, 0.0]);
+        let vec2 = Vector::new(vec![0.0, 1.0]);
+        assert_eq!(Vector::angle_cos(&vec1, &vec2), 0.0);
+    }
+
+    #[test]
+    fn test_angle_cos_with_f32() {
+        let vec1 = Vector::new(vec![1.0f32, 2.0, 3.0]);
+        let vec2 = Vector::new(vec![1.0f32, 2.0, 3.0]);
+        let result = Vector::angle_cos(&vec1, &vec2); 
+        println!("{result}");
+        assert!(result > 0.999);
+    }
+
+    #[test]
+    fn test_angle_cos_with_f64() {
+        let vec1 = Vector::new(vec![1.0f64, 2.0, 3.0]);
+        let vec2 = Vector::new(vec![4.0f64, -5.0, 6.0]);
+        let result = Vector::angle_cos(&vec1, &vec2);
+        println!("{result}");
+        assert!(result > 0.365 && result < 0.366);
+    }
+
+    #[test]
+    fn test_angle_cos_different_sizes() {
+        let vec1 = Vector::new(vec![1.0, 2.0, 3.0]);
+        let vec2 = Vector::new(vec![4.0, 5.0]);
+        let result = std::panic::catch_unwind(|| Vector::angle_cos(&vec1, &vec2));
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_angle_cos_with_zero_vector() {
+        let vec1 = Vector::new(vec![1.0, 2.0, 3.0]);
+        let vec2 = Vector::new(vec![0.0, 0.0, 0.0]);
+        let result = std::panic::catch_unwind(|| Vector::angle_cos(&vec1, &vec2));
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_angle_cos_with_integer_vectors() {
+        let vec1 = Vector::new(vec![1, 2, 3]);
+        let vec2 = Vector::new(vec![4, -5, 6]);
+        let result = Vector::angle_cos(&vec1, &vec2);
+        assert!(result > 0.365 && result < 0.366);
+    }
+
+    #[test]
+    fn test_angle_cos_with_large_vectors() {
+        let vec1 = Vector::new(vec![1000.0, 2000.0, 3000.0]);
+        let vec2 = Vector::new(vec![4000.0, -5000.0, 6000.0]);
+        let result = Vector::angle_cos(&vec1, &vec2);
+        assert!(result > 0.365 && result < 0.366);
+    }
+
+    #[test]
+    fn test_angle_cos_identical_vectors() {
+        let vec1 = Vector::new(vec![3.0, 4.0, 5.0]);
+        let vec2 = Vector::new(vec![3.0, 4.0, 5.0]);
+        assert_eq!(Vector::angle_cos(&vec1, &vec2), 1.0);
+    }
+
+    #[test]
+    fn test_angle_cos_zero_length_vectors() {
+        let vec1 = Vector::new(vec![0.0, 0.0, 0.0]);
+        let vec2 = Vector::new(vec![0.0, 0.0, 0.0]);
+        let result = std::panic::catch_unwind(|| Vector::angle_cos(&vec1, &vec2));
+        assert!(result.is_err());
     }
 }
