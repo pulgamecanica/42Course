@@ -109,6 +109,16 @@ impl<K: Scalar> Matrix<K> {
         (rows, cols)
     }
 
+    /// Returns the number of rows in the matrix
+    fn rows(&self) -> usize {
+        self.size().0
+    }
+
+    /// Returns the number of columns in the matrix
+    fn cols(&self) -> usize {
+        self.size().1
+    }
+
     /// Returns whether the matrix is square.
     ///
     /// A matrix is square if the number of rows equals the number of columns.
@@ -278,6 +288,160 @@ impl<K: Scalar> Matrix<K> {
                 *elem *= a;
             }
         }
+    }
+
+    /// Multiplies the matrix `self` by a vector `vec`, producing a new vector as the result.
+    ///
+    /// This function performs a matrix-vector multiplication, where `self` is an `(m x n)` matrix
+    /// and `vec` is a vector of size `(n)`. The resulting vector will have a size of `(m)`.
+    ///
+    /// Given a matrix `(A)` and a vector `(u)`, the product `(v = A x u)` is calculated as follows:
+    ///
+    /// ```text
+    /// v[i] = sum(A[i][j] * u[j] for j in 0..n)
+    /// ```
+    ///
+    /// where:
+    /// - `i` iterates over the rows of the matrix `A` (from `0` to `m-1`),
+    /// - `j` iterates over the columns of `A` and the elements of the vector `u` (from `0` to `n-1`).
+    ///
+    /// Each element `v[i]` in the resulting vector is the dot product of the `i`-th row of `A`
+    /// with the vector `u`.
+    ///
+    /// # Arguments
+    ///
+    /// * `vec` - A `Vector<K>` representing the vector to multiply with the matrix.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the number of columns in the matrix does not match the vector's size,
+    /// as the multiplication would be undefined in that case.
+    ///
+    /// # Returns
+    ///
+    /// A `Vector<K>` that is the result of the matrix-vector multiplication, with a length equal
+    /// to the number of rows in `self`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::{Matrix, Vector};
+    ///
+    /// // Define a 2x3 matrix
+    /// let mat = Matrix::new(vec![
+    ///     vec![1.0, 2.0, 3.0],
+    ///     vec![4.0, 5.0, 6.0],
+    /// ]);
+    ///
+    /// // Define a vector of size 3
+    /// let vec = Vector::new(vec![7.0, 8.0, 9.0]);
+    ///
+    /// // Multiply the matrix by the vector
+    /// let result = mat.mul_vec(&vec);
+    ///
+    /// // Expected result is a vector of size 2:
+    /// // [50.0, 122.0]
+    /// assert_eq!(result.data, vec![50.0, 122.0]);
+    /// ```
+    pub fn mul_vec(&self, vec: &Vector<K>) -> Vector<K> {
+        assert_eq!(self.cols(), vec.size(), "Incompatible dimensions for multiplication.");
+        
+        let mut result_data = vec![K::zero(); self.rows()];
+        
+        for i in 0..self.rows() {
+            for j in 0..self.cols() {
+                result_data[i] += self.data[i][j] * vec.data[j];
+            }
+        }
+        
+        Vector::new(result_data)
+    }
+
+    /// Multiplies `self` with another matrix `other`.
+    ///
+    /// This function performs matrix multiplication on two matrices, `self` and `other`, and returns a new matrix.
+    /// The resulting matrix will have dimensions `m x p`, where:
+    /// - `m` is the number of rows in `self`.
+    /// - `p` is the number of columns in `other`.
+    ///
+    /// Given two matrices, `A` and `B`, the product `C = A * B` is calculated as follows:
+    ///
+    /// ```text
+    /// C[i][j] = sum(A[i][k] * B[k][j] for k in 0..n)
+    /// ```
+    ///
+    /// where:
+    /// - `i` is the row index of `A` (from `0` to `m-1`)
+    /// - `j` is the column index of `B` (from `0` to `p-1`)
+    /// - `k` iterates over the shared dimension (from `0` to `n-1`).
+    ///
+    /// Each element `C[i][j]` in the resulting matrix is the dot product of the `i`-th row of `A`
+    /// and the `j`-th column of `B`.
+    ///
+    /// # Arguments
+    ///
+    /// * `other` - A reference to another `Matrix<K>` to multiply with `self`.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the number of columns in `self` does not match the number of rows in `other`,
+    /// as this makes matrix multiplication undefined.
+    ///
+    /// # Returns
+    ///
+    /// A new `Matrix<K>` containing the product of `self` and `other`, with dimensions `m x p`.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Matrix;
+    ///
+    /// // Define a 2x3 matrix
+    /// let mat1 = Matrix::new(vec![
+    ///     vec![1.0, 2.0, 3.0],
+    ///     vec![4.0, 5.0, 6.0],
+    /// ]);
+    ///
+    /// // Define a 3x2 matrix
+    /// let mat2 = Matrix::new(vec![
+    ///     vec![7.0, 8.0],
+    ///     vec![9.0, 10.0],
+    ///     vec![11.0, 12.0],
+    /// ]);
+    ///
+    /// // Multiply the matrices
+    /// let result = mat1.mul_mat(&mat2);
+    ///
+    /// // Expected result is a 2x2 matrix:
+    /// // [[58.0, 64.0],
+    /// //  [139.0, 154.0]]
+    /// assert_eq!(result.data, vec![
+    ///     vec![58.0, 64.0],
+    ///     vec![139.0, 154.0],
+    /// ]);
+    /// ```
+    pub fn mul_mat(&self, other: &Matrix<K>) -> Matrix<K> {
+        assert_eq!(self.cols(), other.rows(), "Incompatible dimensions for matrix multiplication.");
+
+        let m = self.rows();
+        let n = self.cols();
+        let p = other.cols();
+
+        // Initialize a matrix of zeros with dimensions (m, p)
+        let mut result_data = vec![vec![K::zero(); p]; m];
+
+        // Perform matrix multiplication
+        for i in 0..m {
+            for j in 0..p {
+                let mut sum = K::zero();
+                for k in 0..n {
+                    sum += self.data[i][k] * other.data[k][j];
+                }
+                result_data[i][j] = sum;
+            }
+        }
+
+        Matrix { data: result_data }
     }
 }
 
@@ -500,5 +664,160 @@ mod tests {
         mat.scl(5.0);
 
         assert_eq!(mat.data, vec![] as Vec<Vec<f32>>);
+    }
+
+    #[test]
+    fn test_mul_vec_f32() {
+        // Simple 2x3 matrix and 3-element vector multiplication
+        let mat = Matrix::new(vec![
+            vec![1.0_f32, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+        ]);
+        let vec = Vector::new(vec![7.0_f32, 8.0, 9.0]);
+
+        let result = mat.mul_vec(&vec);
+        assert_eq!(result.data, vec![50.0, 122.0]);
+    }
+
+    #[test]
+    fn test_mul_vec_f64() {
+        let mat: Matrix<f64> = Matrix::new(vec![
+            vec![1.0, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+        ]);
+        let vec = Vector::new(vec![7.0_f64, 8.0, 9.0]);
+
+        let result = mat.mul_vec(&vec);
+        assert_eq!(result.data, vec![50.0, 122.0]);
+    }
+
+    #[test]
+    fn test_mul_vec_i32() {
+        let mat: Matrix<i32> = Matrix::new(vec![
+            vec![1, 2, 3],
+            vec![4, 5, 6],
+        ]);
+        let vec: Vector<i32> = Vector::new(vec![7, 8, 9]);
+
+        let result = mat.mul_vec(&vec);
+        assert_eq!(result.data, vec![50, 122]);
+    }
+
+    #[test]
+    #[should_panic(expected = "Incompatible dimensions for multiplication.")]
+    fn test_mul_vec_panic_on_incompatible_dimensions() {
+        // Test with incompatible dimensions (2x2 matrix and 3-element vector)
+        let mat = Matrix::new(vec![
+            vec![1.0_f32, 2.0],
+            vec![3.0, 4.0],
+        ]);
+        let vec = Vector::new(vec![5.0_f32, 6.0, 7.0]);
+
+        mat.mul_vec(&vec);
+    }
+
+    #[test]
+    fn test_mul_vec_zero_vector() {
+        let mat = Matrix::new(vec![
+            vec![1.0_f32, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+        ]);
+        let vec = Vector::new(vec![0.0_f32, 0.0, 0.0]);
+
+        let result = mat.mul_vec(&vec);
+        assert_eq!(result.data, vec![0.0, 0.0]);
+    }
+
+    #[test]
+    fn test_mul_mat_f32() {
+        // Simple 2x3 * 3x2 matrix multiplication
+        let mat_a: Matrix<f32> = Matrix::new(vec![
+            vec![1.0, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+        ]);
+        let mat_b: Matrix<f32> = Matrix::new(vec![
+            vec![7.0, 8.0],
+            vec![9.0, 10.0],
+            vec![11.0, 12.0],
+        ]);
+
+        let result = mat_a.mul_mat(&mat_b);
+        assert_eq!(result.data, vec![
+            vec![58.0, 64.0],
+            vec![139.0, 154.0]
+        ]);
+    }
+
+    #[test]
+    fn test_mul_mat_f64() {
+        let mat_a: Matrix<f64> = Matrix::new(vec![
+            vec![1.0, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+        ]);
+        let mat_b: Matrix<f64> = Matrix::new(vec![
+            vec![7.0, 8.0],
+            vec![9.0, 10.0],
+            vec![11.0, 12.0],
+        ]);
+
+        let result: Matrix<f64> = mat_a.mul_mat(&mat_b);
+        assert_eq!(result.data, vec![
+            vec![58.0, 64.0],
+            vec![139.0, 154.0]
+        ]);
+    }
+
+    #[test]
+    fn test_mul_mat_i32() {
+        let mat_a = Matrix::new(vec![
+            vec![1, 2, 3],
+            vec![4, 5, 6],
+        ]);
+        let mat_b = Matrix::new(vec![
+            vec![7, 8],
+            vec![9, 10],
+            vec![11, 12],
+        ]);
+
+        let result: Matrix<i32> = mat_a.mul_mat(&mat_b);
+        assert_eq!(result.data, vec![
+            vec![58, 64],
+            vec![139, 154]
+        ]);
+    }
+
+    #[test]
+    #[should_panic(expected = "Incompatible dimensions for matrix multiplication.")]
+    fn test_mul_mat_panic_on_incompatible_dimensions() {
+        // (2x1 matrix and 2x3 matrix)
+        let mat_a: Matrix<f32> = Matrix::new(vec![
+            vec![1.0],
+            vec![3.0],
+        ]);
+        let mat_b: Matrix<f32> = Matrix::new(vec![
+            vec![5.0, 6.0, 7.0],
+            vec![8.0, 9.0, 10.0],
+        ]);
+
+        mat_a.mul_mat(&mat_b);
+    }
+
+    #[test]
+    fn test_mul_mat_zero_matrix() {
+        let mat_a = Matrix::new(vec![
+            vec![1.0_f32, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+        ]);
+        let mat_b = Matrix::new(vec![
+            vec![0.0_f32, 0.0],
+            vec![0.0, 0.0],
+            vec![0.0, 0.0],
+        ]);
+
+        let result = mat_a.mul_mat(&mat_b);
+        assert_eq!(result.data, vec![
+            vec![0.0, 0.0],
+            vec![0.0, 0.0]
+        ]);
     }
 }

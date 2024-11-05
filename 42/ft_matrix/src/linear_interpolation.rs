@@ -1,6 +1,6 @@
 use std::ops::{AddAssign, SubAssign, MulAssign};
 
-/// Compute the linear  interpolation (lerp), which takes two objects of type V and a scalar t of type f32.
+/// Compute the linear interpolation (lerp), which takes two objects of type V and a scalar t of type f32.
 /// V should be an object implementing the `Clone`, `MulAssign<f32>`, `AddAssign` & `SubAssign` traits
 ///
 /// Formula: `lerp(u,v,t) = u+t × (v−u)`

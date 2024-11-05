@@ -15,10 +15,18 @@ pub trait Scalar: Copy + Clone + Debug + Zero
     + SubAssign
     + MulAssign
     + DivAssign
+    + PartialOrd
+    + PartialEq
 {
     /// Fused Multiply-Add (FMA): Default implementation that computes `a * b + c`.
     fn fma(a: Self, b: Self, c: Self) -> Self {
         a * b + c
+    }
+
+
+    /// Fused Multiply-Sub (FMS): Default implementation that computes `a * b - c`.
+    fn fms(a: Self, b: Self, c: Self) -> Self {
+        a * b - c
     }
 
     fn abs(self) -> Self {
@@ -43,6 +51,17 @@ impl Scalar for f32 {
             let vec_a = _mm_set1_ps(a);
             let vec_b = _mm_set1_ps(b);
             let vec_c = _mm_set1_ps(c);
+            let result = _mm_fmadd_ps(vec_a, vec_b, vec_c);
+            _mm_cvtss_f32(result) // Return the first element of the SIMD result
+        }
+    }
+
+    fn fms(a: f32, b: f32, c: f32) -> f32 {
+        unsafe {
+            // Use SIMD registers to do FMA: a * b + c
+            let vec_a = _mm_set1_ps(a);
+            let vec_b = _mm_set1_ps(b);
+            let vec_c = _mm_set1_ps(-c);
             let result = _mm_fmadd_ps(vec_a, vec_b, vec_c);
             _mm_cvtss_f32(result) // Return the first element of the SIMD result
         }

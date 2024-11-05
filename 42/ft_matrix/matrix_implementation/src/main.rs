@@ -22,6 +22,7 @@ fn try_linear_combination() {
 }
 
 fn try_cos() {
+    println!("Cosine");
     let u = Vector::from([1., 0.]);
     let v = Vector::from([1., 0.]);
     println!("{}", Vector::angle_cos(&u, &v));
@@ -66,6 +67,7 @@ fn try_norms() {
 }
 
 fn try_linear_interpolation(factor: f32) {
+    println!("Linear Interpolation");
     let mat1 = Matrix::from([
         0.0, 12.5, 25.0,
         37.5, 50.0, 62.5,
@@ -121,6 +123,105 @@ fn try_add_sub_scale() {
     println!("(+)\n{}\n{}", mat2, mat1);
 }
 
+fn try_cross_prod() {
+    println!("Cross Product Tests");
+    let u = Vector::from([0., 0., 1.]);
+    let v = Vector::from([1., 0., 0.]);
+    println!("{}", Vector::cross_product(&u, &v));
+    // [0.]
+    // [1.]
+    // [0.]
+    let u = Vector::from([1., 2., 3.]);
+    let v = Vector::from([4., 5., 6.]);
+    println!("{}", Vector::cross_product(&u, &v));
+    // [-3.]
+    // [6.]
+    // [-3.]
+    let u = Vector::from([4., 2., -3.]);
+    let v = Vector::from([-2., -5., 16.]);
+    println!("{}", Vector::cross_product(&u, &v));
+    // [17.]
+    // [-58.]
+    // [-16.]
+}
+
+fn try_mat_vec_mul() {
+    println!("Matrix x Vector");
+    {
+        let u = Matrix::new(vec![
+        vec![1., 0.],
+        vec![0., 1.],
+        ]);
+        let v = Vector::new(vec![4., 2.]);
+        println!("{}", u.mul_vec(&v));
+        // [4.]
+        // [2.]
+    }
+    {
+        let u = Matrix::from([
+            2., 0.,
+            0., 2.,
+        ]);
+        let v = Vector::from([4., 2.]);
+        println!("{}", u.mul_vec(&v));
+        // [8.]
+        // [4.]
+    }
+    {
+        let u = Matrix::from([
+            2., -2.,
+            -2., 2.,
+        ]);
+        let v = Vector::from([4., 2.]);
+        println!("{}", u.mul_vec(&v));
+        // [4.]
+        // [-4.]
+    }
+}
+
+fn try_mat_mat_mul() {
+    println!("Matrix x Matrix");
+    {
+        let u = Matrix::from([
+        1., 0.,
+        0., 1.,
+        ]);
+        let v = Matrix::from([
+        1., 0.,
+        0., 1.,
+        ]);
+        println!("{}", u.mul_mat(&v));
+        // [1., 0.]
+        // [0., 1.]
+    }
+    {
+        let u = Matrix::from([
+            1., 0.,
+            0., 1.,
+        ]);
+        let v = Matrix::from([
+            2., 1.,
+            4., 2.,
+        ]);
+        println!("{}", u.mul_mat(&v));
+        // [2., 1.]
+        // [4., 2.]
+    }
+    {
+        let u = Matrix::from([
+            3., -5.,
+            6., 8.,
+        ]);
+        let v = Matrix::from([
+            2., 1.,
+            4., 2.,
+        ]);
+        println!("{}", u.mul_mat(&v));
+        // [-14., -7.]
+        // [44., 22.]
+    }
+}
+
 fn main() {
     try_add_sub_scale();
     try_linear_combination();
@@ -130,4 +231,7 @@ fn main() {
     try_dot_product();
     try_norms();
     try_cos();
+    try_cross_prod();
+    try_mat_vec_mul();
+    try_mat_mat_mul();
 }

@@ -1,3 +1,4 @@
+use std::cmp::PartialEq;
 use crate::scalar::Scalar;
 use crate::Matrix;
 use std::fmt;
@@ -13,16 +14,23 @@ pub struct Vector<K: Scalar> {
 }
 
 impl<K: Scalar, const N: usize> From<[K; N]> for Vector<K> {
-    /// The From trait is implemented to convert an array [K; N] to a `Vector<K>`.
-    /// Inside the function, we use `array.to_vec()` to convert the array into a `Vec<K>`,
-    /// which is then passed to the `Vector::new()` function to create a `Vector<K>`.
+    /// Converts an array of type `[K; N]` into a `Vector<K>`.
+    ///
+    /// # Parameters
+    /// - `array`: An array of type `[K; N]` to convert.
+    ///
+    /// # Returns
+    /// - A `Vector<K>` initialized with the elements of the input array.
+    ///
+    /// # Panics
+    /// - This function does not panic.
     ///
     /// # Example
-    ///
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
     ///
-    /// println!("{}", Vector::from([42.0, 42.0]));
+    /// let v = Vector::from([2.0, 3.0]);
+    /// println!("{}", v); // Outputs: [2.0, 3.0]
     /// ```
     fn from(array: [K; N]) -> Self {
         Vector::new(array.to_vec())
@@ -30,16 +38,23 @@ impl<K: Scalar, const N: usize> From<[K; N]> for Vector<K> {
 }
 
 impl<K: Scalar + fmt::Display> fmt::Display for Vector<K> {
-    /// Implement fmt to display a vector whenever you want
+    /// Formats the `Vector<K>` for display.
+    ///
+    /// # Parameters
+    /// - `f`: A mutable reference to a `fmt::Formatter` for formatting.
+    ///
+    /// # Returns
+    /// - `fmt::Result`: Indicates success or failure of the formatting.
+    ///
+    /// # Panics
+    /// - This function does not panic.
     ///
     /// # Example
-    ///
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
     ///
     /// let v = Vector::from([2., 3.]);
-    /// println!("{}", v);
-    /// // [2.0, 3.0]
+    /// println!("{}", v); // Outputs: [2.0, 3.0]
     /// ```
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "[")?;
@@ -58,13 +73,17 @@ impl<K: Scalar + fmt::Display> fmt::Display for Vector<K> {
 impl<K: Scalar> Vector<K> {
     /// Creates a new `Vector<K>` from a vector of `K` values.
     ///
-    /// # Arguments
+    /// # Parameters
+    /// - `data`: A `Vec<K>` representing the elements of the vector.
     ///
-    /// * `data` - A `Vec<K>` representing the elements of the vector.
+    /// # Returns
+    /// - A new `Vector<K>` initialized with the provided data.
+    ///
+    /// # Panics
+    /// - This function does not panic.
     ///
     /// # Example
-    ///
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
     ///
     /// let vec = Vector::new(vec![1.0, 2.0, 3.0]);
@@ -73,69 +92,64 @@ impl<K: Scalar> Vector<K> {
         Self { data }
     }
 
-    /// Returns the size (i.e., the number of elements) of the `Vector`.
+    /// Returns the number of elements in the `Vector`.
+    ///
+    /// # Returns
+    /// - The size of the `Vector<K>`.
+    ///
+    /// # Panics
+    /// - This function does not panic.
     ///
     /// # Example
-    ///
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
-    /// 
+    ///
     /// let vec = Vector::new(vec![1.0, 2.0, 3.0]);
     /// assert_eq!(vec.size(), 3);
     /// ```
-    ///
-    /// # Returns
-    ///
-    /// The size of the `Vector<K>`
     pub fn size(&self) -> usize {
         self.data.len()
     }
 
-    /// Prints the contents of the `Vector` to the standard output.
+    /// Prints the contents of the `Vector` to standard output.
     ///
-    /// The `Vector` will be printed in a single line format, like:
-    /// 
-    /// ```text
-    /// [1.0, 2.0, 3.0]
-    /// ```
+    /// # Returns
+    /// - No return value.
+    ///
+    /// # Panics
+    /// - This function does not panic.
     ///
     /// # Example
-    ///
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
     ///
     /// let vec = Vector::new(vec![1.0, 2.0, 3.0]);
-    /// vec.print();
+    /// vec.print(); // Outputs: [1.0, 2.0, 3.0]
     /// ```
     pub fn print(&self) {
         println!("{:?}", self.data);
     }
 
-    /// Reshapes the `Vector` into a matrix with the specified number of rows and columns.
+    /// Reshapes the `Vector` into a matrix with specified dimensions.
     ///
-    /// # Arguments
+    /// # Parameters
+    /// - `rows`: The number of rows in the resulting matrix.
+    /// - `cols`: The number of columns in the resulting matrix.
     ///
-    /// * `rows` - The number of rows in the resulting matrix.
-    /// * `cols` - The number of columns in the resulting matrix.
+    /// # Returns
+    /// - A `Matrix<K>` derived from the `Vector<K>`.
     ///
     /// # Panics
-    ///
-    /// This function will panic if the size of the `Vector` does not match the
-    /// requested dimensions (i.e., `rows * cols` must equal `self.size()`).
+    /// - Panics if the size of the `Vector` does not match the requested dimensions (`rows * cols` must equal `self.size()`).
     ///
     /// # Example
-    ///
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
     ///
     /// let vec = Vector::new(vec![1.0, 2.0, 3.0, 4.0]);
     /// let mat = vec.reshape(2, 2);
     /// assert_eq!(mat.size(), (2, 2));
     /// ```
-    ///
-    /// # Returns
-    ///
-    /// A `Matrix<K>` from the `Vector<K>`
     pub fn reshape(&self, rows: usize, cols: usize) -> Matrix<K> {
         assert_eq!(self.data.len(), rows * cols, "Vector size does not match the dimensions of the matrix.");
         assert!(rows * cols != 0, "Reshape invalid dimensions.");
@@ -150,21 +164,24 @@ impl<K: Scalar> Vector<K> {
 
     /// Computes the linear combination of a set of vectors using Fused Multiply-Add (FMA).
     ///
-    /// This implementation uses SIMD intrinsics for performance when the type `K` allows it.
-    ///
-    /// # Panics
-    ///
-    /// This function will panic if the length of `u` and `coefs` does not match,
-    /// or if the vectors in `u` are not all of the same size.
-    ///
-    /// # Arguments
-    ///
-    /// * `u` - A vector of `Vector`s of type `K` to be combined.
-    /// * `coefs` - A vector coefficients of type `K`, each corresponding to a vector in `u`.
+    /// # Parameters
+    /// - `u`: A slice of `Vector`s of type `K` to be combined.
+    /// - `coefs`: A slice of coefficients of type `K`, corresponding to the vectors in `u`.
     ///
     /// # Returns
+    /// - A `Vector<K>` containing the result of the linear combination.
     ///
-    /// A `Vector<K>` with all the linear combinations
+    /// # Panics
+    /// - Panics if the length of `u` and `coefs` do not match, or if the vectors in `u` are not the same size.
+    ///
+    /// # Example
+    /// ```rust
+    /// use ft_matrix::Vector;
+    ///
+    /// let u = vec![Vector::from([1.0, 2.0]), Vector::from([3.0, 4.0])];
+    /// let coefs = vec![0.5, 0.5];
+    /// let result = Vector::linear_combination(&u, &coefs);
+    /// ```
     pub fn linear_combination(u: &[Vector<K>], coefs: &[K]) -> Vector<K> {
         assert_eq!(u.len(), coefs.len(), "Vectors and coefficients must have the same length.");
         if u.is_empty() {
@@ -187,29 +204,25 @@ impl<K: Scalar> Vector<K> {
         result
     }
 
-    /// Computes the dot product with another `Vector<K>`
+    /// Computes the dot product with another `Vector<K>`.
     ///
-    /// # Arguments
+    /// # Parameters
+    /// - `v`: A reference to another `Vector<K>`.
     ///
-    /// * `v` - A reference to the other `Vector<K>`.
+    /// # Returns
+    /// - The result of the dot product of type `K`.
     ///
     /// # Panics
-    ///
-    /// This function will panic if the vectors are not of the same size.
+    /// - Panics if the vectors are not of the same size.
     ///
     /// # Example
-    ///
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
     ///
     /// let vec1 = Vector::new(vec![42.0, 4.2]);
     /// let vec2 = Vector::new(vec![-42.0, 4.2]);
     /// assert_eq!(vec1.dot(&vec2), -1746.36);
     /// ```
-    ///
-    /// # Returns
-    ///
-    /// The result of the dot product of type `K`
     pub fn dot(&self, v: &Vector::<K>) -> K {
         assert_eq!(self.size(), v.size());
         let mut result = K::zero();
@@ -221,57 +234,51 @@ impl<K: Scalar> Vector<K> {
     }
 
     /// Computes the 1-norm (Manhattan norm) of the vector.
-    /// 
-    /// The 1-norm is defined as the sum of the absolute values of each element in the vector.
-    /// 
+    ///
     /// <div>
     /// <h3> Formula </h3>
     /// <img src="https://github.com/user-attachments/assets/aa97364a-0260-41ea-a723-2250d156565a" alt="Manhattan norm"/>
     /// </div>
     /// <hr>
     ///
+    /// # Returns
+    /// - The computed 1-norm as type `K`.
+    ///
+    /// # Panics
+    /// - This function does not panic.
+    ///
     /// # Example
-    /// 
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
-    /// 
+    ///
     /// let vec = Vector::new(vec![3, -4, 5]);
     /// assert_eq!(vec.norm_1(), 12.0);
     /// ```
-    /// 
-    /// # Returns
-    /// 
-    /// The computed 1-norm as type `K`, where `K` implements `Scalar`.
     pub fn norm_1(&self) -> f32 {
         self.data.iter().map(|&x| x.to_f32().abs()).sum()
     }
 
     /// Computes the 2-norm (Euclidean norm) of the vector.
-    /// 
-    /// The 2-norm is defined as the square root of the sum of the squares of each element in the vector.
-    /// 
+    ///
     /// <div>
     /// <h3> Formula </h3>
     /// <img src="https://github.com/user-attachments/assets/4e796701-2c65-4ecb-b189-d041ce48551e" alt="Euclidean norm"/>
     /// </div>
     /// <hr>
     ///
+    /// # Returns
+    /// - The computed 2-norm as an `f32`.
+    ///
+    /// # Panics
+    /// - This function does not panic.
+    ///
     /// # Example
-    /// 
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
-    /// 
+    ///
     /// let vec = Vector::new(vec![3.0, -4.0, 5.0]);
     /// assert_eq!(vec.norm(), (3.0_f32.powi(2) + 4.0_f32.powi(2) + 5.0_f32.powi(2)).sqrt());
     /// ```
-    /// 
-    /// # Returns
-    /// 
-    /// The computed 2-norm as an `f32`.
-    /// 
-    /// # Notes
-    /// 
-    /// If available, this function uses `fma` (fused multiply-add) to improve numerical accuracy.
     pub fn norm(&self) -> f32 {
         let mut sum_of_squares = 0.0;
         for &x in &self.data {
@@ -280,45 +287,46 @@ impl<K: Scalar> Vector<K> {
         sum_of_squares.sqrt()
     }
 
+    
     /// Computes the ∞-norm (supremum or maximum norm) of the vector.
-    /// 
-    /// The ∞-norm is defined as the maximum absolute value of the elements in the vector.
-    /// 
+    ///
     /// <div>
     /// <h3> Formula </h3>
     /// <img src="https://github.com/user-attachments/assets/622e614c-e17e-4733-9352-31f4d65977de" alt="Supremum/maximum norm"/>
     /// </div>
     /// <hr>
     ///
+    /// # Returns
+    /// - The computed ∞-norm as an `f32`.
+    ///
+    /// # Panics
+    /// - This function does not panic.
+    ///
     /// # Example
-    /// 
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
-    /// 
+    ///
     /// let vec = Vector::new(vec![3.0, -4.0, 5.0]);
     /// assert_eq!(vec.norm_inf(), 5.0);
     /// ```
-    /// 
-    /// # Returns
-    /// 
-    /// The computed ∞-norm as an `f32`.
     pub fn norm_inf(&self) -> f32 {
         self.data.iter().map(|&x| x.to_f32().abs()).fold(0.0, f32::max)
     }
 
+    
     /// Adds another `Vector<K>` to the calling `Vector<K>`.
     ///
-    /// # Arguments
+    /// # Parameters
+    /// - `v`: A reference to the other `Vector<K>` to add.
     ///
-    /// * `v` - A reference to the other `Vector<K>` to add.
+    /// # Returns
+    /// - No return value; the calling vector is modified in place.
     ///
     /// # Panics
-    ///
-    /// This function will panic if the vectors are not of the same size.
+    /// - Panics if the vectors are not of the same size.
     ///
     /// # Example
-    ///
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
     ///
     /// let mut vec1 = Vector::new(vec![42.0, 4.2]);
@@ -334,19 +342,19 @@ impl<K: Scalar> Vector<K> {
         }
     }
 
-    /// Substracts another `Vector<K>` to the calling `Vector<K>`.
+    /// Subtracts another `Vector<K>` from the calling `Vector<K>`.
     ///
-    /// # Arguments
+    /// # Parameters
+    /// - `v`: A reference to the other `Vector<K>` to subtract.
     ///
-    /// * `v` - A reference to the other `Vector<K>` to subtract.
+    /// # Returns
+    /// - No return value; the calling vector is modified in place.
     ///
     /// # Panics
-    ///
-    /// This function will panic if the `Vector`s are not of the same size.
+    /// - Panics if the vectors are not of the same size.
     ///
     /// # Example
-    ///
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
     ///
     /// let mut vec1 = Vector::new(vec![42.0, 4.2]);
@@ -364,15 +372,14 @@ impl<K: Scalar> Vector<K> {
 
     /// Scales the calling `Vector<K>` by a factor `a`.
     ///
-    /// Each element in the `Vector` is multiplied by the scalar `a`.
+    /// # Parameters
+    /// - `a`: The scaling factor to multiply each element of the vector.
     ///
-    /// # Arguments
-    ///
-    /// * `a` - The scaling factor.
+    /// # Returns
+    /// - No return value; the calling vector is modified in place.
     ///
     /// # Example
-    ///
-    /// ```
+    /// ```rust
     /// use ft_matrix::Vector;
     ///
     /// let mut vec1 = Vector::new(vec![42.0, 4.2]);
@@ -387,28 +394,31 @@ impl<K: Scalar> Vector<K> {
 
     /// Calculates the cosine of the angle between two `Vector`s, `u` and `v`.
     ///
-    /// This function computes the cosine of the angle θ between two vectors `u` and `v`
-    /// using the formula:
+    /// This function computes the cosine of the angle θ using the formula:
     ///
     /// ```text
     /// cos(θ) = (u ⋅ v) / (‖u‖ * ‖v‖)
     /// ```
     ///
-    /// where `u ⋅ v` is the dot product of `u` and `v`, and `‖u‖` and `‖v‖` are the norms (magnitudes) of the vectors `u` and `v`.
+    /// where `u ⋅ v` is the dot product, and `‖u‖` and `‖v‖` are the magnitudes of the vectors.
     ///
-    /// The cosine value returned is between -1.0 and 1.0, where:
-    /// - 1.0 indicates that the vectors are parallel and pointing in the same direction,
-    /// - -1.0 indicates that the vectors are parallel and pointing in opposite directions,
-    /// - 0.0 indicates that the vectors are perpendicular.
+    /// The returned cosine value is between -1.0 and 1.0:
+    /// - 1.0 indicates the vectors are parallel and pointing in the same direction.
+    /// - -1.0 indicates they are parallel but pointing in opposite directions.
+    /// - 0.0 indicates the vectors are perpendicular.
     ///
-    /// # Arguments
+    /// # Parameters
     ///
     /// * `u` - The first `Vector`.
     /// * `v` - The second `Vector`.
     ///
+    /// # Returns
+    ///
+    /// A `f32` value between -1.0 and 1.0 representing the cosine of the angle between `u` and `v`.
+    ///
     /// # Panics
     ///
-    /// This function will panic if the `Vector`s are not the same size or if either vector has zero magnitude (norm).
+    /// This function will panic if the vectors are not the same size or if either has zero magnitude.
     ///
     /// # Example
     ///
@@ -419,10 +429,6 @@ impl<K: Scalar> Vector<K> {
     /// let vec2 = Vector::new(vec![0, -1]);
     /// assert_eq!(Vector::angle_cos(&vec1, &vec2), -1.0);
     /// ```
-    ///
-    /// # Returns
-    ///
-    /// Returns a `f32` value between -1.0 and 1.0, representing the cosine of the angle between `u` and `v`.
     pub fn angle_cos(u: &Vector<K>, v: &Vector<K>) -> f32 {
         assert_eq!(u.size(), v.size(), "Vectors must be the same size.");
 
@@ -437,6 +443,58 @@ impl<K: Scalar> Vector<K> {
         cos_theta.clamp(-1.0, 1.0)
     }
 
+    /// Computes the cross product of two 3-dimensional `Vector`s, `u` and `v`.
+    ///
+    /// # Description
+    ///
+    /// This function calculates the cross product of two 3D vectors using the formula:
+    ///
+    /// ```text
+    /// u × v =
+    /// [ u_y * v_z - u_z * v_y,
+    ///   u_z * v_x - u_x * v_z,
+    ///   u_x * v_y - u_y * v_x ]
+    /// ```
+    ///
+    /// where:
+    /// - `u_x`, `u_y`, and `u_z` are the components of vector `u`,
+    /// - `v_x`, `v_y`, and `v_z` are the components of vector `v`.
+    ///
+    /// The cross product of two vectors results in a third vector that is perpendicular to both `u` and `v`,
+    /// following the right-hand rule. The resulting vector lies in the plane perpendicular to both input vectors.
+    ///
+    /// # Parameters
+    ///
+    /// * `u` - The first 3-dimensional `Vector`.
+    /// * `v` - The second 3-dimensional `Vector`.
+    ///
+    /// # Returns
+    ///
+    /// Returns a `Vector<K>` that represents the cross product of `u` and `v`.
+    /// The result is perpendicular to both `u` and `v`.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if either `u` or `v` is not of size 3, as the cross product is only defined in 3D space.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Vector;
+    ///
+    /// let vec1 = Vector::new(vec![1.0, 0.0, 0.0]);
+    /// let vec2 = Vector::new(vec![0.0, 1.0, 0.0]);
+    /// assert_eq!(Vector::cross_product(&vec1, &vec2), Vector::new(vec![0.0, 0.0, 1.0]));
+    /// ```
+    pub fn cross_product(u: &Vector<K>, v: &Vector<K>) -> Vector<K> {
+        assert_eq!(u.size(), 3, "Vectors must be of size 3.");
+        assert_eq!(v.size(), 3, "Vectors must be of size 3.");
+        
+        let res_a: K = K::fms(u.data[1], v.data[2], v.data[1] * u.data[2]);
+        let res_b: K = K::fms(u.data[2], v.data[0], v.data[2] * u.data[0]);
+        let res_c: K = K::fms(u.data[0], v.data[1], v.data[0] * u.data[1]);
+        Vector::new(vec![res_a, res_b, res_c])
+    }
 }
 
 use std::ops::{AddAssign, SubAssign, MulAssign};
@@ -456,6 +514,18 @@ impl<K: Scalar> SubAssign for Vector<K> {
 impl<K: Scalar> MulAssign<K> for Vector<K> {
     fn mul_assign(&mut self, scalar: K) {
         self.scl(scalar)
+    }
+}
+
+
+impl<K: Scalar> PartialEq for Vector<K>
+{
+    fn eq(&self, other: &Self) -> bool {
+        if self.size() != other.size() {
+            return false;
+        }
+        
+        self.data.iter().zip(&other.data).all(|(a, b)| *a == *b)
     }
 }
 
@@ -885,5 +955,58 @@ mod tests {
         let vec2 = Vector::new(vec![0.0, 0.0, 0.0]);
         let result = std::panic::catch_unwind(|| Vector::angle_cos(&vec1, &vec2));
         assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_cross_product_orthogonal_vectors() {
+        let vec1 = Vector::new(vec![1.0, 0.0, 0.0]);
+        let vec2 = Vector::new(vec![0.0, 1.0, 0.0]);
+        let result = Vector::cross_product(&vec1, &vec2);
+        assert_eq!(result, Vector::new(vec![0.0, 0.0, 1.0]));
+    }
+
+    #[test]
+    fn test_cross_product_parallel_vectors() {
+        let vec1 = Vector::new(vec![1.0, 1.0, 1.0]);
+        let vec2 = Vector::new(vec![2.0, 2.0, 2.0]);
+        let result = Vector::cross_product(&vec1, &vec2);
+        assert_eq!(result, Vector::new(vec![0.0, 0.0, 0.0]));
+    }
+
+    #[test]
+    fn test_cross_product_with_negative_values() {
+        let vec1 = Vector::new(vec![3.0, -3.0, 1.0]);
+        let vec2 = Vector::new(vec![4.0, 9.0, 2.0]);
+        let result = Vector::cross_product(&vec1, &vec2);
+        assert_eq!(result, Vector::new(vec![-15.0, -2.0, 39.0]));
+    }
+
+    #[test]
+    #[should_panic(expected = "Vectors must be of size 3.")]
+    fn test_cross_product_non_3d_vector_u() {
+        let vec1 = Vector::new(vec![1.0, 2.0]);
+        let vec2 = Vector::new(vec![1.0, 2.0, 3.0]);
+        Vector::cross_product(&vec1, &vec2);
+    }
+
+    #[test]
+    #[should_panic(expected = "Vectors must be of size 3.")]
+    fn test_cross_product_non_3d_vector_v() {
+        let vec1 = Vector::new(vec![1.0, 2.0, 3.0]);
+        let vec2 = Vector::new(vec![1.0, 2.0]);
+        Vector::cross_product(&vec1, &vec2);
+    }
+
+    #[test]
+    fn test_cross_product_i32_and_f64() {
+        let vec1: Vector<i32> = Vector::new(vec![1, 0, 0]);
+        let vec2: Vector<i32> = Vector::new(vec![0, 1, 0]);
+        let result = Vector::cross_product(&vec1, &vec2);
+        assert_eq!(result, Vector::new(vec![0, 0, 1]));
+        
+        let vec3: Vector<f64> = Vector::new(vec![1.0, 0.0, 0.0]);
+        let vec4: Vector<f64> = Vector::new(vec![0.0, 1.0, 0.0]);
+        let result_f64 = Vector::cross_product(&vec3, &vec4);
+        assert_eq!(result_f64, Vector::new(vec![0.0, 0.0, 1.0]));
     }
 }

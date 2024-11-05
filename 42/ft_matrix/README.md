@@ -21,4 +21,4 @@ The project is divided in 16 modules.
 | 2 | Linear Interpolation | To compute the instance object defined between two objects (or beyond) |
 | 3 | Dot Product | Compute the dot product of two vectors, uses `fma` |
 | 4 | Norm | Compute the norm for the following kinds of norms: `Manhattan`, `Euclidean` & `Supremum/maximum` |
-| 4 | Cosine | Compute the cosine between two vectors |
+| 5 | Cosine | Compute the cosine between two vectors |
