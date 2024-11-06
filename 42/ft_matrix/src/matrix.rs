@@ -443,6 +443,53 @@ impl<K: Scalar> Matrix<K> {
 
         Matrix { data: result_data }
     }
+
+    /// Computes the trace of a square matrix, which is the sum of its diagonal elements.
+    ///
+    /// For a square matrix `A` of size `n x n`, the trace is defined as the sum of all elements
+    /// along the diagonal, where each diagonal element is represented as `A[i][i]`.
+    ///
+    /// For a matrix `A`:
+    ///
+    /// ```text
+    /// trace(A) = A[0][0] + A[1][1] + ... + A[n-1][n-1]
+    /// ```
+    ///
+    /// - Time Complexity: `O(n)`, where `n` is the number of rows (or columns) in the matrix.
+    ///   The function iterates only through the diagonal elements.
+    /// - Space Complexity: `O(1)`, since only a single accumulator variable is used.
+    ///
+    /// # Returns
+    ///
+    /// Returns a value of type `K`, representing the trace of the matrix.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the matrix is not square, i.e., if the number of rows does not
+    /// equal the number of columns. The trace is only defined for square matrices.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use ft_matrix::Matrix;
+    ///
+    /// let mat = Matrix::new(vec![
+    ///     vec![1.0_f32, 2.0, 3.0],
+    ///     vec![4.0, 5.0, 6.0],
+    ///     vec![7.0, 8.0, 9.0],
+    /// ]);
+    /// assert_eq!(mat.trace(), 15.0); // 1.0 + 5.0 + 9.0
+    /// ```
+    pub fn trace(&self) -> K {
+        assert_eq!(self.rows(), self.cols(), "Matrix must be square to compute trace.");
+
+        let mut sum = K::zero();
+        for i in 0..self.rows() {
+            sum += self.data[i][i];
+        }
+        sum
+    }
+
 }
 
 use std::ops::{AddAssign, SubAssign, MulAssign};
@@ -819,5 +866,75 @@ mod tests {
             vec![0.0, 0.0],
             vec![0.0, 0.0]
         ]);
+    }
+
+    #[test]
+    fn test_trace_2x2() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 2.0],
+            vec![3.0, 4.0],
+        ]);
+        assert_eq!(mat.trace(), 5.0);
+    }
+
+    #[test]
+    fn test_trace_3x3() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+            vec![7.0, 8.0, 9.0],
+        ]);
+        assert_eq!(mat.trace(), 15.0);
+    }
+
+    #[test]
+    fn test_trace_4x4_f64() {
+        let mat = Matrix::new(vec![
+            vec![1.0_f64, 2.0, 3.0, 4.0],
+            vec![5.0, 6.0, 7.0, 8.0],
+            vec![9.0, 10.0, 11.0, 12.0],
+            vec![13.0, 14.0, 15.0, 16.0],
+        ]);
+        assert_eq!(mat.trace(), 34.0);
+    }
+
+    #[test]
+    fn test_trace_1x1() {
+        let mat = Matrix::new(vec![
+            vec![7.0_f32],
+        ]);
+        assert_eq!(mat.trace(), 7.0);
+    }
+
+    #[test]
+    fn test_trace_large_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 0.0, 0.0, 0.0, 0.0],
+            vec![0.0, 2.0, 0.0, 0.0, 0.0],
+            vec![0.0, 0.0, 3.0, 0.0, 0.0],
+            vec![0.0, 0.0, 0.0, 4.0, 0.0],
+            vec![0.0, 0.0, 0.0, 0.0, 5.0],
+        ]);
+        assert_eq!(mat.trace(), 15.0);
+    }
+
+    #[test]
+    #[should_panic(expected = "Matrix must be square to compute trace.")]
+    fn test_trace_panic_non_square() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+        ]);
+        let result = mat.trace();
+        println!("{result}");
+    }
+
+    #[test]
+    fn test_trace_integer_elements() {
+        let mat = Matrix::new(vec![
+            vec![1, 2],
+            vec![3, 4],
+        ]);
+        assert_eq!(mat.trace(), 5);
     }
 }

@@ -222,6 +222,36 @@ fn try_mat_mat_mul() {
     }
 }
 
+fn try_trace() {
+    println!("Matrix Trace");
+    {
+        let u = Matrix::from([
+            1., 0.,
+            0., 1.,
+        ]);
+        println!("{}", u.trace());
+        // 2.0
+    }
+    {
+        let u = Matrix::from([
+            2., -5., 0.,
+            4., 3., 7.,
+            -2., 3., 4.,
+        ]);
+        println!("{}", u.trace());
+        // 9.0
+    }
+    {
+        let u = Matrix::from([
+            -2., -8., 4.,
+            1., -23., 4.,
+            0., 6., 4.,
+        ]);
+        println!("{}", u.trace());
+        // -21.0
+    }
+}
+
 fn main() {
     try_add_sub_scale();
     try_linear_combination();
@@ -234,4 +264,5 @@ fn main() {
     try_cross_prod();
     try_mat_vec_mul();
     try_mat_mat_mul();
+    try_trace();
 }

@@ -22,3 +22,6 @@ The project is divided in 16 modules.
 | 3 | Dot Product | Compute the dot product of two vectors, uses `fma` |
 | 4 | Norm | Compute the norm for the following kinds of norms: `Manhattan`, `Euclidean` & `Supremum/maximum` |
 | 5 | Cosine | Compute the cosine between two vectors |
+| 6 | Cross Product | Compute the cross product between two 3-dimentional vectors |
+| 7 | Linear map, Matrix multiplication | Multiply a Matrix by a Vector, and by another Matrix |
+| 8 | Trace | Calculate a sqare matrixe's trace |
