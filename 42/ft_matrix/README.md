@@ -25,3 +25,4 @@ The project is divided in 16 modules.
 | 6 | Cross Product | Compute the cross product between two 3-dimentional vectors |
 | 7 | Linear map, Matrix multiplication | Multiply a Matrix by a Vector, and by another Matrix |
 | 8 | Trace | Calculate a sqare matrixe's trace |
+| 9 | Transpose | Transpose a Matrix |

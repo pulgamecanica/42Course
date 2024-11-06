@@ -109,13 +109,54 @@ impl<K: Scalar> Matrix<K> {
         (rows, cols)
     }
 
-    /// Returns the number of rows in the matrix
-    fn rows(&self) -> usize {
+    /// Returns the number of rows in the matrix.
+    ///
+    /// This function provides the total count of rows in the matrix `data` structure.
+    /// Each row in the matrix corresponds to a nested vector within `self.data`, 
+    /// so the number of rows is determined by the length of `self.data`.
+    ///
+    /// # Example
+    /// ```
+    /// use ft_matrix::Matrix;
+    ///
+    /// let mat = Matrix::new(vec![
+    ///     vec![1, 2, 3],
+    ///     vec![4, 5, 6]
+    /// ]);
+    ///
+    /// assert_eq!(mat.rows(), 2);
+    /// ```
+    ///
+    /// # Returns
+    /// The number of rows in the matrix as `usize`.
+    pub fn rows(&self) -> usize {
         self.size().0
     }
 
-    /// Returns the number of columns in the matrix
-    fn cols(&self) -> usize {
+    /// Returns the number of columns in the matrix.
+    ///
+    /// This function provides the count of columns in the matrix `data` structure.
+    /// Each row in the matrix has the same number of elements, representing columns,
+    /// so the number of columns is derived from the length of any row within `self.data`.
+    ///
+    /// # Example
+    /// ```
+    /// use ft_matrix::Matrix;
+    ///
+    /// let mat = Matrix::new(vec![
+    ///     vec![1, 2, 3],
+    ///     vec![4, 5, 6]
+    /// ]);
+    ///
+    /// assert_eq!(mat.cols(), 3);
+    /// ```
+    ///
+    /// # Returns
+    /// The number of columns in the matrix as `usize`.
+    ///
+    /// # Panics
+    /// This function will panic if the matrix contains no rows.
+    pub fn cols(&self) -> usize {
         self.size().1
     }
 
@@ -490,7 +531,78 @@ impl<K: Scalar> Matrix<K> {
         sum
     }
 
+    /// Returns the transpose of the matrix.
+    ///
+    /// Given a matrix `A` with dimensions `m x n`, this function produces a matrix `B` with dimensions `n x m`,
+    /// where each element `B[j][i]` is equal to `A[i][j]`.
+    ///
+    /// # Formula
+    ///
+    /// For a matrix `A`:
+    /// ```text
+    /// B[j][i] = A[i][j]
+    /// ```
+    ///
+    /// # Example
+    /// ```
+    /// use ft_matrix::Matrix;
+    ///
+    /// let mat = Matrix::new(vec![
+    ///     vec![1.0, 2.0, 3.0],
+    ///     vec![4.0, 5.0, 6.0]
+    /// ]);
+    /// let transposed = mat.transpose();
+    ///
+    /// // Transposed matrix should be:
+    /// // [1.0, 4.0]
+    /// // [2.0, 5.0]
+    /// // [3.0, 6.0]
+    ///
+    /// assert_eq!(transposed, Matrix::new(vec![
+    ///     vec![1.0, 4.0],
+    ///     vec![2.0, 5.0],
+    ///     vec![3.0, 6.0],
+    /// ]));
+    /// ```
+    ///
+    /// # Returns
+    ///
+    /// A new `Matrix<K>` which is the transpose of the original matrix.
+    pub fn transpose(&self) -> Matrix<K> {
+        let rows = self.rows();
+        let cols = self.cols();
+        let mut result_data = vec![vec![K::zero(); rows]; cols];
+        
+        for i in 0..rows {
+            for j in 0..cols {
+                result_data[j][i] = self.data[i][j].clone();
+            }
+        }
+        
+        Matrix::new(result_data)
+    }
+
 }
+
+impl<K: Scalar> PartialEq for Matrix<K>
+{
+    fn eq(&self, other: &Self) -> bool {
+        if self.size() != other.size() {
+            return false;
+        }
+        
+        for i in 0..self.rows() {
+            for j in 0..self.cols() {
+                if other.data[i][j] != self.data[i][j] {
+                    return false;
+                }
+            }
+        }
+        true
+    }
+}
+
+
 
 use std::ops::{AddAssign, SubAssign, MulAssign};
 
@@ -936,5 +1048,83 @@ mod tests {
             vec![3, 4],
         ]);
         assert_eq!(mat.trace(), 5);
+    }
+
+    #[test]
+    fn test_transpose_2x3_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0_f32, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0]
+        ]);
+        let transposed = mat.transpose();
+        assert_eq!(transposed, Matrix::new(vec![
+            vec![1.0, 4.0],
+            vec![2.0, 5.0],
+            vec![3.0, 6.0]
+        ]));
+    }
+
+    #[test]
+    fn test_transpose_square_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0_f32, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+            vec![7.0, 8.0, 9.0]
+        ]);
+        let transposed = mat.transpose();
+        assert_eq!(transposed, Matrix::new(vec![
+            vec![1.0, 4.0, 7.0],
+            vec![2.0, 5.0, 8.0],
+            vec![3.0, 6.0, 9.0]
+        ]));
+    }
+
+    #[test]
+    fn test_transpose_1x4_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0_f32, 2.0, 3.0, 4.0]
+        ]);
+        let transposed = mat.transpose();
+        assert_eq!(transposed, Matrix::new(vec![
+            vec![1.0],
+            vec![2.0],
+            vec![3.0],
+            vec![4.0]
+        ]));
+    }
+
+    #[test]
+    fn test_transpose_4x1_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0_f32],
+            vec![2.0],
+            vec![3.0],
+            vec![4.0]
+        ]);
+        let transposed = mat.transpose();
+        assert_eq!(transposed, Matrix::new(vec![
+            vec![1.0, 2.0, 3.0, 4.0]
+        ]));
+    }
+
+    #[test]
+    fn test_transpose_empty_matrix() {
+        let mat: Matrix<f32> = Matrix::new(vec![]);
+        let transposed = mat.transpose();
+        assert_eq!(transposed, Matrix::new(vec![]));
+    }
+
+    #[test]
+    fn test_transpose_integer_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1, 2, 3],
+            vec![4, 5, 6]
+        ]);
+        let transposed = mat.transpose();
+        assert_eq!(transposed, Matrix::new(vec![
+            vec![1, 4],
+            vec![2, 5],
+            vec![3, 6]
+        ]));
     }
 }
