@@ -3,7 +3,6 @@
 //***************************//
 
 #include <mlx.h>
-#include "ft_game.inc"
 #include "utils.h"
 #include <stdlib.h>
 #include <string.h>

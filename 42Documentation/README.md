@@ -35,6 +35,8 @@ Greetings future 42Core conquerors! Here lies a treasure trove of exercises, tut
 | [mlx_animations_library](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/mlx_animations_library) | Library for handling animations in minilibx                                                        | ⭐️⭐️⭐️ | so_long, fdf, fract-ol, cub3d  |
 | [mlx_transparency](http://pulgamecanica.herokuapp.com/posts/mlx-transparency) | Tutorial on transparency in mlx                                                                     | ⭐️⭐️  | so_long, fdf, fract-ol, cub3d  |
 | [Templates](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/Templates) | Project automation and class generation tool                                                        | ⭐️⭐️⭐️⭐️ | C++ Projects                |
+| [transitions](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/transitions) | Implementation of frame transition | ⭐️⭐️ | C & mlx |
+
 * Note: The stars refer on how much I recommend you have a look at the docs when you are doing a project
 
 ***
@@ -120,6 +122,9 @@ Includes tutorials, testers, and challenges aimed at helping you prepare for the
 
 ### [Templates](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/Templates)
     An awesome project I developed which can automate your project creation and class generation, it includes many options, like adding constructors, assignment operators, overloaders, defaults, setting different versions of C++; etc
+
+### [transitions](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/transitions)
+    Implementation of the lerp principles, both for image interpolation and for linear progression of time.
 
 ### Good Luck and don't drown! Keep Swimming! ;D
 

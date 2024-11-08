@@ -1,7 +1,7 @@
 # Makefile created automatically from script
 # C++ ft_game [Sun Oct 13 10:36:16 AM CEST 2024]
 #MAKEFLAGS += --silent  # Silence makefile [Commented by default]
-NAME            =   ft_game
+NAME            =   transitions
 
 NAME_DEBUG      =   ${NAME}_debug
 
