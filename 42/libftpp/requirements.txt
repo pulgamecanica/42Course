@@ -1,0 +1,7 @@
+# Sphinx and extensions
+sphinx>=6.0,<7.0  # Ensures compatibility with your setup
+myst-parser>=0.18.0  # Enables Sphinx to parse and render Markdown files
+
+# Doxygen (for generating XML documentation from your C++ code)
+# Note: Doxygen is usually installed separately from Python, not via pip.
+# You need to install Doxygen using your system's package manager or from the Doxygen website.

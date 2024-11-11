@@ -14,7 +14,7 @@
 
 ---
 
-## Project Overview
+## About
 
 This project, `libftpp`, is designed with an emphasis on:
 - Clean code practices with C++17 standards.
@@ -27,6 +27,7 @@ To set up the environment, you will need to have the following dependencies inst
 - **Doxygen**: for generating XML documentation from source code.
 - **Sphinx**: for building documentation in various formats.
 - **Read the Docs (RTD)**: to enable a web-hosted documentation view using Sphinx.
+- **myst**: Modern markup support for sphinx
 
 Install Doxygen and Sphinx via your package manager or using `pip` for Sphinx:
 
@@ -43,6 +44,20 @@ brew install doxygen
 pip install sphinx
 pip install sphinx-rtd-theme  # Recommended for Read the Docs theme
 ```
+
+Install the Python dependencies
+
+Next, install all the Python dependencies listed in the `requirements.txt`:
+
+```bash
+pip install -r requirements.txt
+```
+
+This will install:
+
+- **Sphinx**: The tool used for generating the project's documentation.
+- **myst-parser**: Allows Sphinx to parse and render Markdown files.
+
 
 ## Compilation and Testing
 

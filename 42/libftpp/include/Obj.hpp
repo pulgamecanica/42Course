@@ -114,8 +114,15 @@ public:
     void displayInfo() const;
 
 private:
-    std::string name_;  ///< The name of the object.
-    int value_;         ///< The integer value associated with the object.
+    /**
+     * @brief String name for the object.
+     */
+    std::string name_;
+
+    /**
+     * @brief The integer value associated with the object.
+     */
+    int value_;
 };
 
 #endif // OBJ_HPP
