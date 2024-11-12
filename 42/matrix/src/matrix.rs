@@ -14,27 +14,40 @@ pub struct Matrix<K: Scalar> {
     pub data: Vec<Vec<K>>,
 }
 
-impl<K: Scalar, const N: usize> From<[K; N]> for Matrix<K> {
-    /// The From trait is implemented to convert an array [K; N] to a square `Matrix<K>`.
-    /// Inside the function, we use `array.to_vec()` to convert the array into a `Vec<K>`,
-    /// which is then passed to the `Matrix::new()` function to create a `Matrix<K>`.
-    ///
-    /// # Panics
-    ///
-    /// The function will panic if the matrix conversion makes no sense (no square)
+impl<K: Scalar, const N: usize, const M: usize> From<[[K; M]; N]> for Matrix<K> {
+    /// The From trait is implemented to convert a 2D array `[[K; M]; N]` into a `Matrix<K>`.
+    /// The function takes a 2D array (with N rows and M columns) and creates a `Matrix<K>`
+    /// by converting it into a `Vec<Vec<K>>`, where each row of the matrix is a `Vec<K>`.
     ///
     /// # Example
     ///
     /// ```
     /// use matrix::Matrix;
     ///
-    /// let v = Matrix::from([
-    /// 7., 4.,
-    /// -2., 2.
+    /// let u = Matrix::from([
+    ///     [8., 5., -2.],
+    ///     [4., 7., 20.],
+    ///     [7., 6., 1.],
     /// ]);
     /// ```
-    fn from(array: [K; N]) -> Self {
-        Vector::new(array.to_vec()).reshape(f32::sqrt(N as f32) as usize, f32::sqrt(N as f32) as usize)
+    ///
+    /// ```
+    /// use matrix::Matrix;
+    ///
+    /// let u = Matrix::from([
+    ///     [2., 0., 0.],
+    ///     [0., 2., 0.],
+    /// ]);
+    /// ```
+    fn from(array: [[K; M]; N]) -> Self {
+        // Convert the 2D array into a Vec<Vec<K>>
+        let vec_of_vecs: Vec<Vec<K>> = array
+            .iter()
+            .map(|&row| row.to_vec()) // Convert each row to a Vec<K>
+            .collect();
+
+        // Create the Matrix using the vector of vectors
+        Matrix::new(vec_of_vecs)
     }
 }
 
@@ -47,8 +60,8 @@ impl<K: Scalar + fmt::Display> fmt::Display for Matrix<K> {
     /// use matrix::Matrix;
     ///
     /// let m = Matrix::from([
-    ///     2., 3.,
-    ///     4., 5.
+    ///     [2., 3.],
+    ///     [4., 5.],
     /// ]);
     /// println!("{}", m);
     /// // [2.0, 3.0]
@@ -666,26 +679,328 @@ impl<K: Scalar> Matrix<K> {
         result
     }
 
-    /// Computes the determinant
+    /// Returns the minor matrix by removing the specified row and column.
+    ///
+    /// Given a square matrix, this function returns a new matrix that is one size smaller,
+    /// with the specified row and column removed.
+    ///
+    /// # Parameters
+    /// - `row`: The row index to remove.
+    /// - `col`: The column index to remove.
+    ///
+    /// # Panics
+    /// - Panics if the matrix is not square.
+    /// - Panics if the matrix is 0x0 or if `row` or `col` are out of bounds.
+    ///
+    /// # Returns
+    /// A new `Matrix<K>` that is the minor matrix of the original matrix.
+    fn minor(&self, row: usize, col: usize) -> Matrix<K> {
+        // Ensure the matrix is square
+        let size = self.data.len();
+        assert!(size > 0, "Cannot compute minor of a 0x0 matrix.");
+        assert!(self.is_square(), "Matrix must be square.");
+        assert!(row < size, "Row index out of bounds.");
+        assert!(col < size, "Column index out of bounds.");
+
+        if size == 1 {
+            return Matrix::new(vec![]);
+        }
+
+        let mut minor_data = Vec::with_capacity(size - 1);
+        for i in 0..size {
+            if i == row {
+                continue;
+            }
+            let mut minor_row = Vec::with_capacity(size - 1);
+            for j in 0..size {
+                if j == col {
+                    continue;
+                }
+                minor_row.push(self.data[i][j].clone());
+            }
+            minor_data.push(minor_row);
+        }
+
+        Matrix::new(minor_data)
+    }
+
+    /// Computes the determinant of a 2x2 matrix.
+    /// 
+    /// Given a 2x2 matrix `A`, the determinant is calculated as:
+    /// ```text
+    /// det(A) = A[0][0] * A[1][1] - A[0][1] * A[1][0]
+    /// ```
+    ///
+    /// # Returns
+    /// 
+    /// A value of type `K` representing the determinant of the matrix.
+    ///
+    /// # Example
+    /// ```
+    /// use matrix::Matrix;
+    ///
+    /// let mat = Matrix::new(vec![
+    ///     vec![3.0, 8.0],
+    ///     vec![4.0, 6.0]
+    /// ]);
+    /// assert_eq!(mat.determinant(), -14.0);
+    /// ```
+    fn determinant2x2(&self) -> K {
+        K::fms(
+            self.data[0][0],
+            self.data[1][1],
+            self.data[0][1] * self.data[1][0]
+            )
+    }
+
+    /// Computes the determinant of a 3x3 matrix using cofactor expansion along the first row.
+    ///
+    /// This function calculates the determinant of a 3x3 matrix by expanding along the first row
+    /// and using the generic `minor` function to obtain 2x2 submatrices (minors) dynamically.
+    /// This approach makes the code more consistent with larger determinant calculations (e.g., for 4x4 matrices),
+    /// and allows for easier extension to support matrices of other sizes.
+    ///
+    /// # Formula
+    /// Given a 3x3 matrix `A`:
+    /// ```text
+    /// A = | A_11 A_12 A_13 |
+    ///     | A_21 A_22 A_23 |
+    ///     | A_31 A_32 A_33 |
+    /// ```
+    /// the determinant is calculated as:
+    /// ```text
+    /// det(A) = A_11 * det(M_11) - A_12 * det(M_12) + A_13 * det(M_13)
+    /// ```
+    /// where:
+    /// - `M_11` is the minor obtained by removing the first row and first column of `A`,
+    /// - `M_12` is the minor obtained by removing the first row and second column of `A`,
+    /// - `M_13` is the minor obtained by removing the first row and third column of `A`,
+    /// and `det(M_ij)` represents the determinant of each 2x2 minor.
+    ///
+    /// # Example
+    /// ```
+    /// use matrix::Matrix;
+    ///
+    /// let mat = Matrix::new(vec![
+    ///     vec![3.0, 8.0, 4.0],
+    ///     vec![2.0, 1.0, 7.0],
+    ///     vec![6.0, 5.0, 9.0]
+    /// ]);
+    /// let determinant = mat.determinant();
+    ///
+    /// assert_eq!(determinant, 130.0);
+    /// ```
+    ///
+    /// # Panics
+    /// This function will panic if the matrix is not 3x3. Ensure that the matrix size is 3x3
+    /// before calling this function.
+    ///
+    /// # Returns
+    /// Returns the determinant of the 3x3 matrix as a scalar value of type `K`.
+    fn determinant3x3(&self) -> K {
+        let a11 = self.data[0][0].clone();
+        let a12 = self.data[0][1].clone();
+        let a13 = self.data[0][2].clone();
+
+        a11 * self.minor(0, 0).determinant2x2()
+            - a12 * self.minor(0, 1).determinant2x2()
+            + a13 * self.minor(0, 2).determinant2x2()
+    }
+
+    /// Computes the determinant of a 4x4 matrix using cofactor expansion along the first row.
+    ///
+    /// This function calculates the determinant of a 4x4 matrix by expanding along the first row
+    /// and using the generic `minor` function to obtain 3x3 submatrices (minors) dynamically.
+    /// This approach leverages the cofactor expansion, which recursively calls the `determinant3x3`
+    /// method on each minor.
+    ///
+    /// # Formula
+    /// Given a 4x4 matrix `A`:
+    /// ```text
+    /// A = | A_11 A_12 A_13 A_14 |
+    ///     | A_21 A_22 A_23 A_24 |
+    ///     | A_31 A_32 A_33 A_34 |
+    ///     | A_41 A_42 A_43 A_44 |
+    /// ```
+    /// the determinant is calculated as:
+    /// ```text
+    /// det(A) = A_11 * det(M_11) - A_12 * det(M_12) + A_13 * det(M_13) - A_14 * det(M_14)
+    /// ```
+    /// where:
+    /// - `M_11` is the minor obtained by removing the first row and first column of `A`,
+    /// - `M_12` is the minor obtained by removing the first row and second column of `A`,
+    /// - `M_13` is the minor obtained by removing the first row and third column of `A`,
+    /// - `M_14` is the minor obtained by removing the first row and fourth column of `A`,
+    /// and `det(M_ij)` represents the determinant of each 3x3 minor.
+    ///
+    /// # Example
+    /// ```
+    /// use matrix::Matrix;
+    ///
+    /// let mat = Matrix::new(vec![
+    ///     vec![1.0, 2.0, 3.0, 4.0],
+    ///     vec![5.0, 6.0, 7.0, 8.0],
+    ///     vec![9.0, 10.0, 11.0, 12.0],
+    ///     vec![13.0, 14.0, 15.0, 16.0]
+    /// ]);
+    /// let determinant = mat.determinant();
+    ///
+    /// assert_eq!(determinant, 0.0); // Example result; in this case, the matrix is singular
+    /// ```
+    ///
+    /// # Panics
+    /// This function will panic if the matrix is not 4x4. Ensure that the matrix size is 4x4
+    /// before calling this function.
+    ///
+    /// # Returns
+    /// Returns the determinant of the 4x4 matrix as a scalar value of type `K`.
+    fn determinant4x4(&self) -> K {
+        let a11 = self.data[0][0].clone();
+        let a12 = self.data[0][1].clone();
+        let a13 = self.data[0][2].clone();
+        let a14 = self.data[0][3].clone();
+
+        a11 * self.minor(0, 0).determinant3x3()
+            - a12 * self.minor(0, 1).determinant3x3()
+            + a13 * self.minor(0, 2).determinant3x3()
+            - a14 * self.minor(0, 3).determinant3x3()
+    }
+
+    /// Computes the determinant of the matrix, supporting dimensions from 1x1 to 4x4.
+    /// 
+    /// For matrices with dimensions 1x1 to 4x4, the determinant is computed based on the matrix size:
+    /// - 0: Returns zero.
+    /// - 1x1: Returns the single element as the determinant.
+    /// - 2x2: Uses the formula `A[0][0] * A[1][1] - A[0][1] * A[1][0]`.
+    /// - 3x3: Uses cofactor expansion on the 3x3 matrix.
+    /// - 4x4: Uses cofactor expansion along the first row on the 4x4 matrix.
+    ///
+    /// # Returns
+    /// 
+    /// A value of type `K` representing the determinant of the matrix.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the matrix is not square or if its dimensions exceed 4x4.
+    ///
+    /// # Example
+    /// ```
+    /// use matrix::Matrix;
+    ///
+    /// let mat = Matrix::new(vec![
+    ///     vec![1.0, 2.0],
+    ///     vec![3.0, 4.0]
+    /// ]);
+    /// assert_eq!(mat.determinant(), -2.0);
+    /// ```
+    ///
+    /// ***
+    ///
+    /// <details>
+    /// <summary><h3>Understanding the Determinant and it's Geometric Meaning</h3></summary>
+    /// 
+    /// # Understanding Determinants and it's Geometric Meaning
+    /// 
+    /// The determinant of a square matrix `A`, denoted as `det(A)`, is a scalar value that can tell us a lot about the matrix and its associated linear transformation.
+    /// To explain in detail, we need to break it down into two major concepts: **linear transformations** and **geometry**.
+    ///
+    /// ## Linear Transformations
+    /// 
+    /// A matrix `A` represents a **linear transformation** in a vector space. A linear transformation takes vectors from one vector space and maps them to another (or possibly the same) vector space, while preserving certain properties like vector addition and scalar multiplication.
+    /// 
+    /// Consider the matrix `A` acting on a vector `v` in a 2D or 3D space. When you multiply the matrix `A` by the vector `v`, you get a new vector `A * v`, which is the transformed version of `v`.
+    /// 
+    /// - In 2D space, for example, a linear transformation could rotate, scale, shear, or reflect a vector.
+    /// - In 3D space, it could also stretch or compress the space, or rotate and reflect it.
+    ///
+    /// ## The Determinant and What It Tells Us
+    /// 
+    /// Now, the **determinant** of the matrix gives us some very important information about this transformation:
+    /// 
+    /// 1. **Scaling Factor**: The determinant tells us **how much the linear transformation changes the volume** or area (in 2D) of the space. 
+    ///    - In 2D, the determinant tells us by how much the area of any shape (like a square or triangle) is scaled when the transformation is applied. If the determinant is 2, for example, the area of any shape is doubled.
+    ///    - In 3D, it tells us by how much the volume is scaled.
+    /// 
+    /// 2. **Invertibility**: The determinant also tells us whether the transformation is **invertible** (i.e., whether you can reverse the transformation). If `det(A) = 0`, the transformation is **not invertible**. This means that the transformation "collapses" the space in some way, making it impossible to reverse the process. The vectors get "squashed" into a lower-dimensional space.
+    ///    
+    ///    - In 2D, for instance, if the determinant is zero, a shape like a square could be transformed into a line or even a point (a collapse from 2D to 1D or 0D).
+    ///    - In 3D, if `det(A) = 0`, a solid object (like a cube) could be collapsed into a plane, a line, or even a point.
+    ///
+    /// 3. **Orientation**: The sign of the determinant tells us whether the transformation **preserves or reverses orientation**. If the determinant is positive, the transformation preserves orientation. If it’s negative, the transformation reverses orientation (for example, like flipping a shape over).
+    ///
+    /// ## What Happens When `det(A) = 0`?
+    ///
+    /// When `det(A) = 0`, we have a very special situation:
+    ///
+    /// - The linear transformation **collapses the space** into a lower-dimensional subspace. This means that if you apply this transformation to any set of vectors, the result will always lie in a smaller-dimensional subspace.
+    ///     - In 2D, for instance, if the determinant is zero, the transformation might map every vector to a line or even a single point. The area of any shape becomes zero because all the points are squeezed onto a lower-dimensional object.
+    ///     - In 3D, if `det(A) = 0`, the transformation could collapse a 3D object into a 2D plane, a 1D line, or a point. The volume becomes zero because the space has lost one or more dimensions.
+    ///
+    /// ## Geometric Explanation of `det(A) = 0` with Examples
+    ///
+    /// Let's take some simple examples to visualize what happens when the determinant is zero:
+    ///
+    /// ### 1. **2D Case:**
+    /// 
+    /// Suppose we have the following matrix `A` that represents a linear transformation in 2D:
+    /// 
+    /// ```text
+    /// A = [ 2  4 ]
+    ///     [ 1  2 ]
+    /// ```
+    /// 
+    /// The determinant of `A` is:
+    /// 
+    /// ```text
+    /// det(A) = (2 * 2) - (1 * 4) = 4 - 4 = 0
+    /// ```
+    ///
+    /// This means the transformation represented by `A` collapses the 2D plane into a line. If we apply this matrix to a square, it will become a degenerate shape (a line), and the area of the square will become zero. 
+    /// 
+    /// **Why is this?** Because the columns of the matrix are linearly dependent (the second column is just a multiple of the first column). So, the transformation doesn't preserve the 2D structure and squashes the space.
+    ///
+    /// ### 2. **3D Case:**
+    /// 
+    /// Now consider a 3D example:
+    /// 
+    /// ```text
+    /// A = [ 1  2  3 ]
+    ///     [ 0  0  0 ]
+    ///     [ 4  5  6 ]
+    /// ```
+    /// 
+    /// The determinant is zero:
+    /// 
+    /// ```text
+    /// det(A) = 1 * det([0 0] [5 6]) - 2 * det([0 0] [4 6]) + 3 * det([0 0] [4 5]) = 0
+    /// ```
+    ///
+    /// The second row of the matrix is all zeros, which means that this matrix represents a transformation that collapses all 3D space onto a plane (since we lose a degree of freedom by squashing one of the dimensions). As a result, the volume becomes zero.
+    ///
+    /// **Why is this?** The rows (or columns) of the matrix are not linearly independent, meaning the transformation maps the entire 3D space onto a lower-dimensional subspace, in this case, a 2D plane.
+    ///
+    /// ## Summary
+    ///
+    /// - The **determinant of a matrix** is a scalar value that represents how much a linear transformation scales the volume or area of objects.
+    /// - If `det(A) ≠ 0`, the transformation preserves the space’s dimensionality (it’s invertible).
+    /// - If `det(A) = 0`, the transformation collapses the space into a lower dimension, and the transformation is not invertible. This leads to a loss of volume or area, depending on the dimension.
+    /// - Geometrically, `det(A) = 0` means the linear transformation reduces the space’s dimensionality (e.g., from 3D to 2D, or from 2D to 1D).
+    ///
+    /// In conclusion, the determinant is a measure of how the transformation behaves geometrically, especially in terms of scaling, collapsing, and invertibility. A determinant of zero indicates a collapse of space, which makes the transformation non-reversible and non-invertible.
+    /// </details>
     pub fn determinant(&self) -> K {
         assert!(self.is_square(), "Matrix must be square to compute determinant.");
 
-        let dim: usize = self.rows();
-        assert!(dim > 0 && dim <= 4, "Matrix dimentions must be between 1 and 4.");
-
-        if dim == 1 {
-            todo!();
-        } else if dim == 2 {
-            todo!();
-        } else if dim == 3 {
-            todo!();
-        } else if dim == 4 {
-            todo!();
+        match self.rows() {
+            0 => K::zero(),
+            1 => self.data[0][0],
+            2 => self.determinant2x2(),
+            3 => self.determinant3x3(),
+            4 => self.determinant4x4(),
+            _ => panic!("Matrix dimensions must be between 1 and 4."),
         }
-        K::zero()
     }
 }
-
 
 impl<K: Scalar> PartialEq for Matrix<K>
 {
@@ -1276,5 +1591,131 @@ mod tests {
             vec![3.0, 4.0, 5.0], // invalid row length
         ]);
         mat.row_echelon();
+    }
+
+    #[test]
+    fn test_determinant_1x1() {
+        let mat = Matrix::new(vec![
+            vec![5.0],
+        ]);
+        assert_eq!(mat.determinant(), 5.0);
+    }
+
+    #[test]
+    fn test_determinant_2x2() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 2.0],
+            vec![3.0, 4.0],
+        ]);
+        assert_eq!(mat.determinant(), -2.0);
+
+        let singular_mat = Matrix::new(vec![
+            vec![2.0, 4.0],
+            vec![1.0, 2.0],
+        ]);
+        assert_eq!(singular_mat.determinant(), 0.0);
+    }
+
+    #[test]
+    fn test_determinant_3x3() {
+        let identity = Matrix::new(vec![
+            vec![1.0, 0.0, 0.0],
+            vec![0.0, 1.0, 0.0],
+            vec![0.0, 0.0, 1.0],
+        ]);
+        assert_eq!(identity.determinant(), 1.0);
+
+        let mat = Matrix::new(vec![
+            vec![6.0, 1.0, 1.0],
+            vec![4.0, -2.0, 5.0],
+            vec![2.0, 8.0, 7.0],
+        ]);
+        assert_eq!(mat.determinant(), -306.0);
+
+        let singular_mat = Matrix::new(vec![
+            vec![1.0, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+            vec![7.0, 8.0, 9.0],
+        ]);
+        assert_eq!(singular_mat.determinant(), 0.0);
+    }
+
+    #[test]
+    fn test_determinant_4x4() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 0.0, 4.0, 0.0],
+            vec![0.0, 1.0, 1.0, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+            vec![0.0, 0.0, 0.0, 0.0],
+        ]);
+        assert_eq!(mat.determinant(), 0.0);
+
+        let identity = Matrix::new(vec![
+            vec![1.0, 0.0, 0.0, 0.0],
+            vec![0.0, 1.0, 0.0, 0.0],
+            vec![0.0, 0.0, 1.0, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+        ]);
+        assert_eq!(identity.determinant(), 1.0);
+
+        let non_singular_mat = Matrix::new(vec![
+            vec![3.0, 2.0, 0.0, 1.0],
+            vec![4.0, 0.0, 1.0, 2.0],
+            vec![3.0, 0.0, 2.0, 1.0],
+            vec![9.0, 2.0, 3.0, 1.0],
+        ]);
+        assert_eq!(non_singular_mat.determinant(), 24.0);
+    }
+
+    #[test]
+    fn test_determinant_4x4_singular() {
+        let singular_mat = Matrix::new(vec![
+            vec![1.0, 2.0, 3.0, 4.0],
+            vec![2.0, 4.0, 6.0, 8.0],
+            vec![3.0, 6.0, 9.0, 12.0],
+            vec![4.0, 8.0, 12.0, 16.0],
+        ]);
+        assert_eq!(singular_mat.determinant(), 0.0);
+    }
+
+    #[test]
+    #[should_panic(expected = "Matrix must be square to compute determinant.")]
+    fn test_determinant_rectangular_3x2_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 2.0],
+            vec![5.0, 6.0],
+            vec![9.0, 10.0],
+        ]);
+        mat.determinant();
+    }
+
+    #[test]
+    #[should_panic(expected = "Matrix dimensions must be between 1 and 4.")]
+    fn test_determinant_large_square_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 0.0, 0.0, 0.0, 0.0],
+            vec![0.0, 1.0, 0.0, 0.0, 0.0],
+            vec![0.0, 0.0, 1.0, 0.0, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0, 0.0],
+            vec![0.0, 0.0, 0.0, 0.0, 1.0],
+        ]);
+        mat.determinant();
+    }
+
+
+    #[test]
+    #[should_panic(expected = "Matrix must be square to compute determinant.")]
+    fn test_determinant_rectangular_2x3_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+        ]);
+        mat.determinant();
+    }
+
+    #[test]
+    fn test_determinant_empty_matrix() {
+        let mat: Matrix<f32> = Matrix::new(vec![]);
+        assert_eq!(mat.determinant(), 0.0)
     }
 }

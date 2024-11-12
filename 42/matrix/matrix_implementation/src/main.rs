@@ -69,15 +69,15 @@ fn try_norms() {
 fn try_linear_interpolation(factor: f32) {
     println!("Linear Interpolation");
     let mat1 = Matrix::from([
-        0.0, 12.5, 25.0,
-        37.5, 50.0, 62.5,
-        75.0, 87.5, 100.0,
+        [0.0, 12.5, 25.0],
+        [37.5, 50.0, 62.5],
+        [75.0, 87.5, 100.0],
     ]);
 
     let mat2 = Matrix::from([
-        5.0, 20.0, 45.0,
-        30.0, 60.0, 80.0,
-        25.0, 70.0, 95.0,
+        [5.0, 20.0, 45.0],
+        [30.0, 60.0, 80.0],
+        [25.0, 70.0, 95.0],
     ]);
     println!("{}", "*".repeat(42));
     println!("Having the following matrixes:\n{mat1}\n{mat2}\nThe linear interpolation for {factor} results in:\n");
@@ -93,15 +93,15 @@ fn try_add_sub_scale() {
         3.0
     ]);
     let mut mat1 = Matrix::from([
-        0.0, 2.0, 42.0,
-        -3.0, 4.0, 0.0,
-        -10.0, -24.0, 44.0,
+        [0.0, 2.0, 42.0],
+        [-3.0, 4.0, 0.0],
+        [-10.0, -24.0, 44.0],
     ]);
 
     let mat2 = Matrix::from([
-        1.0, 2.0, 4.0,
-        3.0, 4.0, 5.0,
-        3.0, 4.0, 5.0,
+        [1.0, 2.0, 4.0],
+        [3.0, 4.0, 5.0],
+        [3.0, 4.0, 5.0],
     ]);
 
     println!("Vec1: {vec1}");
@@ -149,8 +149,8 @@ fn try_mat_vec_mul() {
     println!("Matrix x Vector");
     {
         let u = Matrix::new(vec![
-        vec![1., 0.],
-        vec![0., 1.],
+            vec![1., 0.],
+            vec![0., 1.],
         ]);
         let v = Vector::new(vec![4., 2.]);
         println!("{}", u.mul_vec(&v));
@@ -159,8 +159,8 @@ fn try_mat_vec_mul() {
     }
     {
         let u = Matrix::from([
-            2., 0.,
-            0., 2.,
+            [2., 0.],
+            [0., 2.],
         ]);
         let v = Vector::from([4., 2.]);
         println!("{}", u.mul_vec(&v));
@@ -169,8 +169,8 @@ fn try_mat_vec_mul() {
     }
     {
         let u = Matrix::from([
-            2., -2.,
-            -2., 2.,
+            [2., -2.],
+            [-2., 2.],
         ]);
         let v = Vector::from([4., 2.]);
         println!("{}", u.mul_vec(&v));
@@ -183,12 +183,12 @@ fn try_mat_mat_mul() {
     println!("Matrix x Matrix");
     {
         let u = Matrix::from([
-        1., 0.,
-        0., 1.,
+            [1., 0.],
+            [0., 1.],
         ]);
         let v = Matrix::from([
-        1., 0.,
-        0., 1.,
+            [1., 0.],
+            [0., 1.],
         ]);
         println!("{}", u.mul_mat(&v));
         // [1., 0.]
@@ -196,12 +196,12 @@ fn try_mat_mat_mul() {
     }
     {
         let u = Matrix::from([
-            1., 0.,
-            0., 1.,
+            [1., 0.],
+            [0., 1.],
         ]);
         let v = Matrix::from([
-            2., 1.,
-            4., 2.,
+            [2., 1.],
+            [4., 2.],
         ]);
         println!("{}", u.mul_mat(&v));
         // [2., 1.]
@@ -209,12 +209,12 @@ fn try_mat_mat_mul() {
     }
     {
         let u = Matrix::from([
-            3., -5.,
-            6., 8.,
+            [3., -5.],
+            [6., 8.],
         ]);
         let v = Matrix::from([
-            2., 1.,
-            4., 2.,
+            [2., 1.],
+            [4., 2.],
         ]);
         println!("{}", u.mul_mat(&v));
         // [-14., -7.]
@@ -226,26 +226,26 @@ fn try_trace() {
     println!("Matrix Trace");
     {
         let u = Matrix::from([
-            1., 0.,
-            0., 1.,
+            [1., 0.],
+            [0., 1.],
         ]);
         println!("{}", u.trace());
         // 2.0
     }
     {
         let u = Matrix::from([
-            2., -5., 0.,
-            4., 3., 7.,
-            -2., 3., 4.,
+            [2., -5., 0.],
+            [4., 3., 7.],
+            [-2., 3., 4.],
         ]);
         println!("{}", u.trace());
         // 9.0
     }
     {
         let u = Matrix::from([
-            -2., -8., 4.,
-            1., -23., 4.,
-            0., 6., 4.,
+            [-2., -8., 4.],
+            [1., -23., 4.],
+            [0., 6., 4.],
         ]);
         println!("{}", u.trace());
         // -21.0
@@ -288,6 +288,38 @@ fn try_row_echelon() {
     // [0.0, 0.0, 0.0, 1.0, 29.5 ]
 }
 
+fn try_determinant() {
+    println!("Determinant");
+    let u = Matrix::from([
+        [ 1., -1.],
+        [-1., 1.],
+    ]);
+    println!("{}", u.determinant());
+    // 0.0
+    let u = Matrix::from([
+        [2., 0., 0.],
+        [0., 2., 0.],
+        [0., 0., 2.],
+    ]);
+    println!("{}", u.determinant());
+    // 8.0
+    let u = Matrix::from([
+        [8., 5., -2.],
+        [4., 7., 20.],
+        [7., 6., 1.],
+    ]);
+    println!("{}", u.determinant());
+    // -174.0
+    let u = Matrix::from([
+        [ 8., 5., -2., 4.],
+        [ 4., 2.5, 20., 4.],
+        [ 8., 5., 1., 4.],
+        [28., -4., 17., 1.],
+    ]);
+    println!("{}", u.determinant());
+    // 1032
+}
+
 fn main() {
     try_add_sub_scale();
     try_linear_combination();
@@ -302,4 +334,5 @@ fn main() {
     try_mat_mat_mul();
     try_trace();
     try_row_echelon();
+    try_determinant();
 }
