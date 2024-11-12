@@ -1,5 +1,5 @@
-use ft_matrix::{Matrix, Vector};
-use ft_matrix::linear_interpolation::lerp;
+use matrix::{Matrix, Vector};
+use matrix::linear_interpolation::lerp;
 
 // Example from the subject
 fn try_linear_combination() {
@@ -252,6 +252,42 @@ fn try_trace() {
     }
 }
 
+fn try_row_echelon() {
+    println!("Row Echelon");
+    let u = Matrix::new(vec![
+        vec![1., 0., 0.],
+        vec![0., 1., 0.],
+        vec![0., 0., 1.],
+    ]);
+    println!("{}", u.row_echelon());
+    // [1.0, 0.0, 0.0]
+    // [0.0, 1.0, 0.0]
+    // [0.0, 0.0, 1.0]
+    let u = Matrix::new(vec![
+        vec![1., 2.],
+        vec![3., 4.],
+    ]);
+    println!("{}", u.row_echelon());
+    // [1.0, 0.0]
+    // [0.0, 1.0]
+    let u = Matrix::new(vec![
+        vec![1., 2.],
+        vec![2., 4.],
+    ]);
+    println!("{}", u.row_echelon());
+    // [1.0, 2.0]
+    // [0.0, 0.0]
+    let u = Matrix::new(vec![
+    vec![8., 5., -2., 4., 28.],
+    vec![4., 2.5, 20., 4., -4.],
+    vec![8., 5., 1., 4., 17.],
+    ]);
+    println!("{}", u.row_echelon());
+    // [1.0, 0.625, 0.0, 0.0, -12.1666667]
+    // [0.0, 0.0, 1.0, 0.0, -3.6666667]
+    // [0.0, 0.0, 0.0, 1.0, 29.5 ]
+}
+
 fn main() {
     try_add_sub_scale();
     try_linear_combination();
@@ -265,4 +301,5 @@ fn main() {
     try_mat_vec_mul();
     try_mat_mat_mul();
     try_trace();
+    try_row_echelon();
 }

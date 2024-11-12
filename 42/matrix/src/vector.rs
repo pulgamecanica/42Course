@@ -27,7 +27,7 @@ impl<K: Scalar, const N: usize> From<[K; N]> for Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let v = Vector::from([2.0, 3.0]);
     /// println!("{}", v); // Outputs: [2.0, 3.0]
@@ -51,7 +51,7 @@ impl<K: Scalar + fmt::Display> fmt::Display for Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let v = Vector::from([2., 3.]);
     /// println!("{}", v); // Outputs: [2.0, 3.0]
@@ -84,7 +84,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let vec = Vector::new(vec![1.0, 2.0, 3.0]);
     /// ```
@@ -102,7 +102,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let vec = Vector::new(vec![1.0, 2.0, 3.0]);
     /// assert_eq!(vec.size(), 3);
@@ -121,7 +121,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let vec = Vector::new(vec![1.0, 2.0, 3.0]);
     /// vec.print(); // Outputs: [1.0, 2.0, 3.0]
@@ -144,7 +144,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let vec = Vector::new(vec![1.0, 2.0, 3.0, 4.0]);
     /// let mat = vec.reshape(2, 2);
@@ -176,7 +176,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let u = vec![Vector::from([1.0, 2.0]), Vector::from([3.0, 4.0])];
     /// let coefs = vec![0.5, 0.5];
@@ -217,7 +217,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let vec1 = Vector::new(vec![42.0, 4.2]);
     /// let vec2 = Vector::new(vec![-42.0, 4.2]);
@@ -249,7 +249,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let vec = Vector::new(vec![3, -4, 5]);
     /// assert_eq!(vec.norm_1(), 12.0);
@@ -274,7 +274,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let vec = Vector::new(vec![3.0, -4.0, 5.0]);
     /// assert_eq!(vec.norm(), (3.0_f32.powi(2) + 4.0_f32.powi(2) + 5.0_f32.powi(2)).sqrt());
@@ -304,7 +304,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let vec = Vector::new(vec![3.0, -4.0, 5.0]);
     /// assert_eq!(vec.norm_inf(), 5.0);
@@ -327,7 +327,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let mut vec1 = Vector::new(vec![42.0, 4.2]);
     /// let vec2 = Vector::new(vec![-42.0, 4.2]);
@@ -355,7 +355,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let mut vec1 = Vector::new(vec![42.0, 4.2]);
     /// let vec2 = Vector::new(vec![-42.0, 4.2]);
@@ -380,7 +380,7 @@ impl<K: Scalar> Vector<K> {
     ///
     /// # Example
     /// ```rust
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let mut vec1 = Vector::new(vec![42.0, 4.2]);
     /// vec1.scl(2.0);
@@ -423,7 +423,7 @@ impl<K: Scalar> Vector<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let vec1 = Vector::new(vec![0, 1]);
     /// let vec2 = Vector::new(vec![0, -1]);
@@ -480,7 +480,7 @@ impl<K: Scalar> Vector<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Vector;
+    /// use matrix::Vector;
     ///
     /// let vec1 = Vector::new(vec![1.0, 0.0, 0.0]);
     /// let vec2 = Vector::new(vec![0.0, 1.0, 0.0]);

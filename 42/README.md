@@ -16,7 +16,7 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 7. [snow-crash](#snow-crash)
 8. [rainfall](#rainfall)
 9. [libasm](#libasm)
-10. [ft_matrix](#ft_matrix)
+10. [matrix](#matrix)
 
 ---
 
@@ -156,10 +156,10 @@ You will also learn how to load dynamically assigned objects (through the PLT [P
 
 ---
 
-## ft_matrix
+## matrix
 ![Rust](https://img.shields.io/badge/language-Rust-blue.svg)
 
 
-[ft_matrix](https://github.com/pulgamecanica/42Course/tree/main/42/ft_matrix) is a project that allows you to explore Vectors and Matrixes, after this project you should have no problems understanding linear algebra, and how useful are matrixes and vectors in programming.
+[matrix](https://github.com/pulgamecanica/42Course/tree/main/42/matrix) is a project that allows you to explore Vectors and Matrixes, after this project you should have no problems understanding linear algebra, and how useful are matrixes and vectors in programming.
 
 ---

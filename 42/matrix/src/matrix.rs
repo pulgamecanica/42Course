@@ -26,7 +26,7 @@ impl<K: Scalar, const N: usize> From<[K; N]> for Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let v = Matrix::from([
     /// 7., 4.,
@@ -44,7 +44,7 @@ impl<K: Scalar + fmt::Display> fmt::Display for Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let m = Matrix::from([
     ///     2., 3.,
@@ -81,7 +81,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mat = Matrix::new(vec![vec![1.0, 2.0], vec![3.0, 4.0]]);
     /// ```
@@ -98,7 +98,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mat = Matrix::new(vec![vec![1.0, 2.0], vec![3.0, 4.0]]);
     /// assert_eq!(mat.size(), (2, 2));
@@ -117,7 +117,7 @@ impl<K: Scalar> Matrix<K> {
     ///
     /// # Example
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mat = Matrix::new(vec![
     ///     vec![1, 2, 3],
@@ -141,7 +141,7 @@ impl<K: Scalar> Matrix<K> {
     ///
     /// # Example
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mat = Matrix::new(vec![
     ///     vec![1, 2, 3],
@@ -167,7 +167,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mat = Matrix::new(vec![vec![1.0, 2.0], vec![3.0, 4.0]]);
     /// assert!(mat.is_square());
@@ -189,7 +189,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mat = Matrix::new(vec![vec![1.0, 2.0], vec![3.0, 4.0]]);
     /// mat.print();
@@ -205,7 +205,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mat = Matrix::new(vec![vec![1.0, 2.0], vec![3.0, 4.0]]);
     /// let vec = mat.flatten();
@@ -229,7 +229,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mut mat1 = Matrix::new(vec![
     ///     vec![42.0, 4.2],
@@ -270,7 +270,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mut mat1 = Matrix::new(vec![
     ///     vec![42.0, 4.2],
@@ -309,7 +309,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mut mat = Matrix::new(vec![
     ///     vec![1.0, 2.0],
@@ -366,7 +366,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::{Matrix, Vector};
+    /// use matrix::{Matrix, Vector};
     ///
     /// // Define a 2x3 matrix
     /// let mat = Matrix::new(vec![
@@ -435,7 +435,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// // Define a 2x3 matrix
     /// let mat1 = Matrix::new(vec![
@@ -512,7 +512,7 @@ impl<K: Scalar> Matrix<K> {
     /// # Example
     ///
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mat = Matrix::new(vec![
     ///     vec![1.0_f32, 2.0, 3.0],
@@ -522,7 +522,7 @@ impl<K: Scalar> Matrix<K> {
     /// assert_eq!(mat.trace(), 15.0); // 1.0 + 5.0 + 9.0
     /// ```
     pub fn trace(&self) -> K {
-        assert_eq!(self.rows(), self.cols(), "Matrix must be square to compute trace.");
+        assert!(self.is_square(), "Matrix must be square to compute trace.");
 
         let mut sum = K::zero();
         for i in 0..self.rows() {
@@ -545,18 +545,13 @@ impl<K: Scalar> Matrix<K> {
     ///
     /// # Example
     /// ```
-    /// use ft_matrix::Matrix;
+    /// use matrix::Matrix;
     ///
     /// let mat = Matrix::new(vec![
     ///     vec![1.0, 2.0, 3.0],
     ///     vec![4.0, 5.0, 6.0]
     /// ]);
     /// let transposed = mat.transpose();
-    ///
-    /// // Transposed matrix should be:
-    /// // [1.0, 4.0]
-    /// // [2.0, 5.0]
-    /// // [3.0, 6.0]
     ///
     /// assert_eq!(transposed, Matrix::new(vec![
     ///     vec![1.0, 4.0],
@@ -582,7 +577,115 @@ impl<K: Scalar> Matrix<K> {
         Matrix::new(result_data)
     }
 
+    /// Converts the matrix to its reduced row-echelon form (RREF) using Gauss-Jordan elimination.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the matrix is empty or not rectangular.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use matrix::Matrix;
+    ///
+    /// let mut mat = Matrix::new(vec![
+    ///     vec![2.0, 1.0, -1.0],
+    ///     vec![-3.0, -1.0, 2.0],
+    ///     vec![-2.0, 1.0, 2.0],
+    /// ]);
+    /// let rref = mat.row_echelon();
+    /// ```
+    ///
+    /// # Returns
+    ///
+    /// A new matrix in reduced row-echelon form.
+    pub fn row_echelon(&self) -> Matrix<K> {
+        let rows = self.rows();
+        let cols = self.cols();
+
+        // Check if the matrix is empty
+        if rows == 0 || cols == 0 {
+            panic!("Matrix must have at least one row and one column.");
+        }
+
+        // Check if the matrix is rectangular
+        let row_length = self.data[0].len();
+        for row in &self.data {
+            if row.len() != row_length {
+                panic!("Matrix must be rectangular; all rows must have the same number of columns.");
+            }
+        }
+
+        let mut result = self.clone();
+        let mut row = 0;
+
+        for col in 0..cols {
+            if row >= rows {
+                break;
+            }
+            // Find the row with the largest pivot in the current column
+            let mut max_row = row;
+            for i in (row + 1)..rows {
+                if result.data[i][col].abs() > result.data[max_row][col].abs() {
+                    max_row = i;
+                }
+            }
+
+            // If the largest pivot is zero, skip this column
+            if result.data[max_row][col] == K::zero() {
+                continue;
+            }
+
+            // Swap to position the largest pivot at the top of the submatrix
+            result.data.swap(row, max_row);
+
+            // Normalize the pivot row to make the pivot element 1
+            let pivot = result.data[row][col];
+            for j in col..cols {
+                result.data[row][j] /= pivot;
+            }
+
+            // Use helper to avoid borrow issues
+            let pivot_row = result.data[row].clone();
+
+            // Make all rows above and below the pivot zero in this column
+            // by substracting from the pivot row and multiply from current selected col
+            for i in 0..rows {
+                if i != row {
+                    let factor = result.data[i][col];
+                    for j in col..cols {
+                        result.data[i][j] -= factor * pivot_row[j];
+                    }
+                }
+            }
+
+            // Move to the next row for the next pivot
+            row += 1;
+        }
+
+        result
+    }
+
+    /// Computes the determinant
+    pub fn determinant(&self) -> K {
+        assert!(self.is_square(), "Matrix must be square to compute determinant.");
+
+        let dim: usize = self.rows();
+        assert!(dim > 0 && dim <= 4, "Matrix dimentions must be between 1 and 4.");
+
+        if dim == 1 {
+            todo!();
+        } else if dim == 2 {
+            todo!();
+        } else if dim == 3 {
+            todo!();
+        } else if dim == 4 {
+            todo!();
+        }
+        K::zero()
+    }
 }
+
 
 impl<K: Scalar> PartialEq for Matrix<K>
 {
@@ -601,8 +704,6 @@ impl<K: Scalar> PartialEq for Matrix<K>
         true
     }
 }
-
-
 
 use std::ops::{AddAssign, SubAssign, MulAssign};
 
@@ -1126,5 +1227,54 @@ mod tests {
             vec![2, 5],
             vec![3, 6]
         ]));
+    }
+
+    #[test]
+    fn test_row_echelon_simple_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 0.0, 4.0, 2.0],
+            vec![1.0, 2.0, 6.0, 2.0],
+            vec![2.0, 0.0, 8.0, 8.0],
+            vec![2.0, 1.0, 9.0, 4.0],
+        ]);
+        let expected = Matrix::new(vec![
+            vec![1.0, 0.0, 4.0, 0.0],
+            vec![0.0, 1.0, 1.0, 0.0],
+            vec![0.0, 0.0, 0.0, 1.0],
+            vec![0.0, 0.0, 0.0, 0.0],
+        ]);
+        assert_eq!(mat.row_echelon(), expected);
+    }
+
+    #[test]
+    fn test_row_echelon_identity_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 0.0, 0.0],
+            vec![0.0, 1.0, 0.0],
+            vec![0.0, 0.0, 1.0],
+        ]);
+        let expected = mat.clone();
+        assert_eq!(mat.row_echelon(), expected);
+    }
+
+    #[test]
+    fn test_row_echelon_all_zero_matrix() {
+        let mat = Matrix::new(vec![
+            vec![0.0, 0.0, 0.0],
+            vec![0.0, 0.0, 0.0],
+            vec![0.0, 0.0, 0.0],
+        ]);
+        let expected = mat.clone();
+        assert_eq!(mat.row_echelon(), expected);
+    }
+
+    #[test]
+    #[should_panic(expected = "Matrix must be rectangular; all rows must have the same number of columns.")]
+    fn test_row_echelon_invalid_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 2.0],
+            vec![3.0, 4.0, 5.0], // invalid row length
+        ]);
+        mat.row_echelon();
     }
 }

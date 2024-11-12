@@ -1,4 +1,4 @@
-# ft_matrix [Rust Implementation]
+# matrix [Rust Implementation]
 
 ***
 
