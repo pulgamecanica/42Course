@@ -320,6 +320,87 @@ fn try_determinant() {
     // 1032
 }
 
+fn try_inverse() {
+    println!("Inverse");
+    let u = Matrix::from([
+        [1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.],
+    ]);
+    match u.inverse() {
+        Ok(inverse_mat) => {
+            println!("{}", inverse_mat);
+            // [1.0, 0.0, 0.0]
+            // [0.0, 1.0, 0.0]
+            // [0.0, 0.0, 1.0]
+        }
+        Err(e) => {
+            println!("{e}");
+        }
+
+    }
+    let u = Matrix::from([
+        [2., 0., 0.],
+        [0., 2., 0.],
+        [0., 0., 2.],
+    ]);
+    match u.inverse() {
+        Ok(inverse_mat) => {
+            println!("{}", inverse_mat);
+            // [0.5, 0.0, 0.0]
+            // [0.0, 0.5, 0.0]
+            // [0.0, 0.0, 0.5]
+        }
+        Err(e) => {
+            println!("{e}");
+        }
+
+    }
+    let u = Matrix::from([
+        [8., 5., -2.],
+        [4., 7., 20.],
+        [7., 6., 1.],
+    ]);
+    match u.inverse() {
+        Ok(inverse_mat) => {
+            println!("{}", inverse_mat);
+            // [0.649425287, 0.097701149, -0.655172414]
+            // [-0.781609195, -0.126436782, 0.965517241]
+            // [0.143678161, 0.074712644, -0.206896552]
+        }
+        Err(e) => {
+            println!("{e}");
+        }
+
+    }
+}
+
+fn try_rank() {
+    println!("rank");
+    let u = Matrix::from([
+        [1., 0., 0.],
+        [0., 1., 0.],
+        [0., 0., 1.],
+    ]);
+    println!("{}", u.rank());
+    // 3
+    let u = Matrix::from([
+        [ 1., 2., 0., 0.],
+        [ 2., 4., 0., 0.],
+        [-1., 2., 1., 1.],
+    ]);
+    println!("{}", u.rank());
+    // 2
+    let u = Matrix::from([
+        [ 8., 5., -2.],
+        [ 4., 7., 20.],
+        [ 7., 6., 1.],
+        [21., 18., 7.],
+    ]);
+    println!("{}", u.rank());
+    // 3
+}
+
 fn main() {
     try_add_sub_scale();
     try_linear_combination();
@@ -335,4 +416,6 @@ fn main() {
     try_trace();
     try_row_echelon();
     try_determinant();
+    try_inverse();
+    try_rank();
 }

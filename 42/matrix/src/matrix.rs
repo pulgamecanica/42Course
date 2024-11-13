@@ -868,6 +868,10 @@ impl<K: Scalar> Matrix<K> {
 
     /// Computes the determinant of the matrix, supporting dimensions from 1x1 to 4x4.
     /// 
+    /// # Formula
+    ///
+    /// <img src="https://github.com/user-attachments/assets/e8b02a9d-8cff-4c39-9e00-b664ba9412f6" alt="determinant formula"/>
+    ///
     /// For matrices with dimensions 1x1 to 4x4, the determinant is computed based on the matrix size:
     /// - 0: Returns zero.
     /// - 1x1: Returns the single element as the determinant.
@@ -999,6 +1003,146 @@ impl<K: Scalar> Matrix<K> {
             4 => self.determinant4x4(),
             _ => panic!("Matrix dimensions must be between 1 and 4."),
         }
+    }
+
+
+    /// Computes the inverse of a square matrix, if it exists.
+    ///
+    /// For a given square matrix `A`, the inverse matrix `A^-1` is defined such that:
+    ///
+    /// <img src="https://github.com/user-attachments/assets/cf619e7a-78a7-4b06-a5e6-22b2b519461e" alt="inverse property A * A^-1 = A^-1 * A = I"/>
+    /// 
+    /// where `I` is the identity matrix of the same dimension as `A`. The identity matrix `I`
+    /// has `1`s on the diagonal and `0`s elsewhere. Only non-singular matrices (matrices with
+    /// a non-zero determinant) have an inverse. If the matrix is singular (determinant is zero),
+    /// this function returns an error.
+    ///
+    /// # Formula
+    ///
+    /// For a matrix `A` of dimension `n x n`, the inverse matrix `A^-1` can be calculated using:
+    ///
+    /// <img src="https://github.com/user-attachments/assets/439db0d1-fb83-4e91-ad7a-2569b5014cb2" alt="inverse formula A^-1 = (1 / det(A)) * adj(A)"/>
+    ///
+    /// where:
+    /// - `det(A)` is the determinant of `A`.
+    /// - `adj(A)` is the adjugate (or adjoint) of `A`.
+    ///
+    /// ## Steps to Calculate the Adjugate `adj(A)`
+    ///
+    /// <img src="https://github.com/user-attachments/assets/98eb39bc-b4ab-4595-94d2-9371ebb349aa" alt="adjoint formula"/>
+    ///
+    /// The adjugate matrix `adj(A)` is obtained by:
+    /// 1. **Computing the Matrix of Minors**: Each element `M[i][j]` in the matrix of minors
+    ///    is the determinant of the `(n-1)x(n-1)` submatrix that remains after removing the `i`-th row
+    ///    and `j`-th column of `A`.
+    /// 2. **Applying Cofactor Signs**: For each element `M[i][j]`, we apply the cofactor sign:
+    ///
+    ///    <img src="https://github.com/user-attachments/assets/fa84bbd3-2749-47e4-abaf-be1f7050d819" alt="cofactor formula C[i][j] = (-1)^(i+j) * M[i][j]"/>
+    ///
+    ///    This results in the cofactor matrix `C`.
+    /// 3. **Taking the Transpose**: The adjugate `adj(A)` is the transpose of the cofactor matrix `C`,
+    ///    where each element `adj(A)[j][i]` is assigned the value `C[i][j]`.
+    ///
+    /// ## Complete Formula for Each Element of the Inverse
+    ///
+    /// Once the adjugate matrix `adj(A)` is calculated, we obtain the inverse `A^-1` by dividing
+    /// each element in `adj(A)` by `det(A)`. Thus:
+    /// ```text
+    /// A^-1[i][j] = adj(A)[i][j] / det(A)
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// - Returns `Err("Matrix is singular and cannot be inverted.")` if the matrix has a zero
+    ///   determinant, meaning it has no inverse.
+    ///
+    /// # Panics
+    ///
+    /// - Panics if the matrix is not square, as inversion is only defined for square matrices.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use matrix::Matrix;
+    ///
+    /// let mat = Matrix::new(vec![
+    ///     vec![4.0, 7.0],
+    ///     vec![2.0, 6.0],
+    /// ]);
+    ///
+    /// let inverse = mat.inverse().expect("Matrix is singular and cannot be inverted.");
+    ///
+    /// assert_eq!(inverse, Matrix::new(vec![
+    ///     vec![0.6, -0.7],
+    ///     vec![-0.2, 0.4],
+    /// ]));
+    /// ```
+    pub fn inverse(&self) -> Result<Matrix<K>, &'static str> {
+        assert!(self.is_square(), "Matrix must be square for inversion.");
+        
+        let n = self.rows();
+        let det = self.determinant();
+        if det == K::zero() {
+            return Err("Matrix is singular and cannot be inverted.");
+        }
+
+        let mut inverse_data = vec![vec![K::zero(); n]; n];
+
+        // Calculate each element of the adjugate matrix, divided by the determinant
+        for i in 0..n {
+            for j in 0..n {
+                // Get the minor matrix by excluding row `i` and column `j`
+                let minor = self.minor(i, j);
+
+                let cofactor = minor.determinant() * if (i + j) % 2 == 0 { K::from_f32(1.0) } else { K::from_f32(-1.0) };
+
+                inverse_data[j][i] = cofactor / det.clone();
+            }
+        }
+        Ok(Matrix::new(inverse_data))
+    }
+
+
+    /// Computes the rank of a matrix using row echlon method.
+    ///
+    /// The rank of a matrix is equal to the number of linearly independent rows in it. Hence, it cannot be more than its number of rows and columns.
+    /// The best rank a matrix can have is equal to the number of rows.
+    ///
+    /// ## Steps to Calculate the rank
+    ///
+    /// 1. **Compute the reduced row echlon** matrix.
+    /// 2. **Count all the linear independent rows** that is the non zero rows.
+    /// 3. The number of rows counted is the rank..
+    ///
+    /// # Panics
+    ///
+    /// - Panics if the matrix is not rectangular, cannot compute row echlon of non rectangular matrices.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use matrix::Matrix;
+    ///
+    /// let mat = Matrix::new(vec![
+    ///     vec![4.0, 7.0],
+    ///     vec![2.0, 6.0],
+    ///     vec![2.0, 6.0],
+    /// ]);
+    ///
+    /// assert_eq!(mat.rank(), 2);
+    /// ```
+    pub fn rank(&self) -> usize {
+        let echlon_mat = self.row_echelon();
+        let rows = echlon_mat.rows();
+        let cols = echlon_mat.cols();
+        let mut rank: usize = 0;
+
+        for i in 0..rows {
+            if echlon_mat.data[i] != vec![K::zero(); cols] {
+                rank += 1;
+            }
+        }
+        rank
     }
 }
 
@@ -1717,5 +1861,108 @@ mod tests {
     fn test_determinant_empty_matrix() {
         let mat: Matrix<f32> = Matrix::new(vec![]);
         assert_eq!(mat.determinant(), 0.0)
+    }
+
+    #[test]
+    fn test_inverse_of_2x2_matrix() {
+        let mat = Matrix::new(vec![
+            vec![4.0, 7.0],
+            vec![2.0, 6.0],
+        ]);
+
+        let expected_inverse = Matrix::new(vec![
+            vec![0.6, -0.7],
+            vec![-0.2, 0.4],
+        ]);
+
+        let inverse = mat.inverse().expect("Matrix is singular and cannot be inverted.");
+
+        assert_eq!(inverse, expected_inverse);
+    }
+
+    #[test]
+    fn test_inverse_of_3x3_matrix() {
+        let mat = Matrix::new(vec![
+            vec![1.0, 2.0, 3.0],
+            vec![0.0, 1.0, 4.0],
+            vec![5.0, 6.0, 0.0],
+        ]);
+
+        let expected_inverse = Matrix::new(vec![
+            vec![-24.0, 18.0, 5.0],
+            vec![20.0, -15.0, -4.0],
+            vec![-5.0, 4.0, 1.0],
+        ]);
+
+        let inverse = mat.inverse().expect("Matrix is singular and cannot be inverted.");
+
+        assert_eq!(inverse, expected_inverse);
+    }
+
+    #[test]
+    fn test_inverse_of_4x4_matrix() {
+        let mat = Matrix::new(vec![
+            vec![3.0, 2.0, -1.0, 1.0],
+            vec![1.0, 0.0, 1.0, 2.0],
+            vec![2.0, 1.0, 1.0, -1.0],
+            vec![1.0, 1.0, 1.0, 0.0],
+        ]);
+
+        let expected_inverse = Matrix::new(vec![
+            vec![0.09090909090909090909,  0.27272727272727272727,  0.63636363636363636364,  -0.81818181818181818182],
+            vec![0.18181818181818181818,  -0.45454545454545454546, -0.72727272727272727272, 1.3636363636363636363],
+            vec![-0.27272727272727272727, 0.18181818181818181819,  0.090909090909090909,    0.45454545454545454546],
+            vec![0.09090909090909090909,  0.27272727272727272727,  -0.36363636363636363636, 0.18181818181818181818],
+        ]);
+
+        let inverse = mat.inverse().expect("Matrix is singular and cannot be inverted.");
+
+        assert_eq!(inverse, expected_inverse);
+    }
+
+    #[test]
+    fn test_singular_matrix_inverse() {
+        // A matrix with a zero determinant is singular and should return an error
+        let singular_mat = Matrix::new(vec![
+            vec![1.0, 2.0],
+            vec![2.0, 4.0],
+        ]);
+
+        let result = singular_mat.inverse();
+        assert!(result.is_err(), "Expected an error for singular matrix");
+    }
+
+    #[test]
+    fn test_identity_matrix_inverse() {
+        let identity_matrix = Matrix::new(vec![
+            vec![1.0, 0.0, 0.0],
+            vec![0.0, 1.0, 0.0],
+            vec![0.0, 0.0, 1.0],
+        ]);
+
+        let inverse = identity_matrix.inverse().expect("Matrix is singular and cannot be inverted.");
+        assert_eq!(inverse, identity_matrix);
+    }
+
+    #[test]
+    #[should_panic(expected = "Matrix must be square for inversion.")]
+    fn test_non_square_matrix_inverse() {
+        let non_square_matrix = Matrix::new(vec![
+            vec![1.0, 2.0, 3.0],
+            vec![4.0, 5.0, 6.0],
+        ]);
+
+        non_square_matrix.inverse().unwrap();
+    }
+
+    #[test]
+    fn test_rank_4x2() {
+        let rectangular_mat = Matrix::new(vec![
+            vec![1, 2, 3],
+            vec![2, 3, 5],
+            vec![3, 4, 7],
+            vec![4, 5, 9],
+        ]);
+        assert_eq!(rectangular_mat.rank(), 2);
     }
 }
