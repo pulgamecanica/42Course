@@ -33,31 +33,6 @@
 4. Show the password
    `whoami // level1`
    `cat /home/user/level1/.pass`
-
-
-You will realize the last step (4.) it's repeated a lot throughout the whole project...
-
----
-
-## ![Disassemble the memory](https://img.shields.io/badge/Level-0-blue) Disassemble the memory
-
-![Disassemble the memory](https://img.shields.io/badge/Disassemble%20the%20memory-ASM-blue?style=for-the-badge&logo=lock)
-
-**Description:** In this level you have to dissasamble the memory where you will find that there is an execution which will allow you to see the password for the next level if the `cmp` is meet.
-
-**Steps:**
-1. **Execute the debugger**
-   `gdb level0`
-   `disas main`
-   `0x08048ed4 <+20>:   call   0x8049710 <atoi>`
-   `>0x08048ed9 <+25>:  cmp    $0x1a7,%eax`
-2. **Convert the number to see what you need to compare == true**
-   `echo $((16#1a7)) // 423`
-3. Execute with the answer
-   `./level0 423`
-4. Show the password
-   `whoami // level1`
-   `cat /home/user/level1/.pass`
    `exit`
 
 
@@ -95,10 +70,15 @@ You will realize the last step (4.) it's repeated a lot throughout the whole pro
 
 ---
 
-<!--
-## ![Name](https://img.shields.io/badge/Level-2-yellow) Name
+## ![Shell Script exploit](https://img.shields.io/badge/Level-2-yellow) Shell Script exploit
+
+Founded a buffer overflow vulnerability where we can inject a shell code which is going to execute `/bin/sh` to get access to the user.
+
+The exploit is founded after careful investigation by looking at the binary assembly code. 
+We detect the function gets, which is used to populate the pointer to the variable which has a memory limit of X, then we can overflow this address to reach eip and point to the address where we store the shell-script... Simple right!?
 
 ---
+<!--
 
 ## ![Name](https://img.shields.io/badge/Level-3-orange) Name
 

@@ -2,7 +2,17 @@
 
 ***
 
-The project consists on developing a Vector and Matrix with several operations
+The project consists on developing a Library for a Vector and Matrix with several operations
+
+***
+
+### Documentation 
+
+You can visit the documentation:
+
+- [Matrix](https://pulgamecanica.github.io/MatrixDoc/matrix/matrix/struct.Matrix.html)
+- [Vector](https://pulgamecanica.github.io/MatrixDoc/matrix/vector/struct.Vector.html)
+- [Scalar](https://pulgamecanica.github.io/MatrixDoc/matrix/scalar/trait.Scalar.html)
 
 ***
 
@@ -26,3 +36,8 @@ The project is divided in 16 modules.
 | 7 | Linear map, Matrix multiplication | Multiply a Matrix by a Vector, and by another Matrix |
 | 8 | Trace | Calculate a sqare matrixe's trace |
 | 9 | Transpose | Transpose a Matrix |
+| 10 | Row Echelon | Get the Gauss Jordan (row echelon) of a rectangular matrix |
+| 11 | Determinant | Compute the determinant of a square matrix |
+| 12 | Inverse | Compute the inverse of a square matrix |
+| 13 | Rank | Comp
+ute the rank of a rectangular matrix |

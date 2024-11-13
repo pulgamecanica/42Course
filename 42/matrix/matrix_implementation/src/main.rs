@@ -1,5 +1,6 @@
 use matrix::{Matrix, Vector};
 use matrix::linear_interpolation::lerp;
+use matrix::projection_matrix::projection;
 
 // Example from the subject
 fn try_linear_combination() {
@@ -401,6 +402,19 @@ fn try_rank() {
     // 3
 }
 
+
+fn try_projection_matrix() {
+    println!("Projection Matrix");
+    let fov = 1.57; // Example FOV in radians (~90 degrees)
+    let ratio = 16.0 / 9.0; // Widescreen aspect ratio
+    let near = 0.1; // Near clipping plane
+    let far = 100.0; // Far clipping plane
+
+    let projection_matrix: Matrix<f32> = projection(fov, ratio, near, far);
+
+    println!("Projection Matrix: {}", projection_matrix);
+}
+
 fn main() {
     try_add_sub_scale();
     try_linear_combination();
@@ -418,4 +432,5 @@ fn main() {
     try_determinant();
     try_inverse();
     try_rank();
+    try_projection_matrix();
 }
