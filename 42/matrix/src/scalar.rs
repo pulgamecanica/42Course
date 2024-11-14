@@ -29,10 +29,6 @@ pub trait Scalar: Copy + Clone + Debug + Zero
         a * b - c
     }
 
-    fn abs(self) -> Self {
-        self
-    }
-
     fn to_f32(self) -> f32;
 
     fn from_f32(value: f32) -> Self;

@@ -1,4 +1,4 @@
-use matrix::{Matrix, Vector};
+use matrix::{Matrix, Vector, Complex};
 use matrix::linear_interpolation::lerp;
 use matrix::projection_matrix::projection;
 
@@ -415,6 +415,21 @@ fn try_projection_matrix() {
     println!("Projection Matrix: {}", projection_matrix);
 }
 
+fn try_complex() {
+    println!("Complex");
+    let c1: Complex = Complex::new(1.0, 2.0);
+    let c2: Complex = Complex::new(0.0, 0.0);
+    let c3: Complex = Complex::new(3.0, -2.0);
+    let c4: Complex = Complex::new(-1.0, -1.0);
+
+    let mut v1: Vector<Complex> = Vector::new(vec![c1, c2]);
+    let v2: Vector<Complex> = Vector::new(vec![c3, c4]);
+
+    println!("V1:{} & V2:{}", v1, v2);
+    v1.add(&v2);
+    println!("V1 + V2: {}", v1);
+}
+
 fn main() {
     try_add_sub_scale();
     try_linear_combination();
@@ -433,4 +448,5 @@ fn main() {
     try_inverse();
     try_rank();
     try_projection_matrix();
+    try_complex();
 }

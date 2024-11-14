@@ -30,6 +30,8 @@ use crate::matrix::Matrix;
 ///
 /// # Projection Matrix Structure
 ///
+/// <img src="https://github.com/user-attachments/assets/51d0356c-6e45-47aa-8f71-f8189b03eb01" alt="image projection"/>
+///
 /// The perspective projection matrix generated has the form:
 ///
 /// <a href="https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/opengl-perspective-projection-matrix.html">See formula here</a>

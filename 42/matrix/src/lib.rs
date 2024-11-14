@@ -13,6 +13,9 @@ pub mod vector;
 /// The matrix module provides a generic `Matrix` struct and related methods.
 pub mod matrix;
 
+/// The complex module provides a representation of Complex Numbers which implements Scalar.
+pub mod complex;
+
 /// The linear interpolation module provides a generic function implementation to apply an interpolation.
 pub mod linear_interpolation;
 
@@ -23,6 +26,7 @@ pub mod projection_matrix;
 pub use vector::Vector;
 pub use matrix::Matrix;
 pub use scalar::Scalar;
+pub use complex::Complex;
 pub use linear_interpolation::lerp;
 pub use projection_matrix::projection;
 

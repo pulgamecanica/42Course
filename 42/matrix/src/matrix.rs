@@ -639,7 +639,7 @@ impl<K: Scalar> Matrix<K> {
             // Find the row with the largest pivot in the current column
             let mut max_row = row;
             for i in (row + 1)..rows {
-                if result.data[i][col].abs() > result.data[max_row][col].abs() {
+                if result.data[i][col].to_f32().abs() > result.data[max_row][col].to_f32().abs() {
                     max_row = i;
                 }
             }

@@ -39,5 +39,6 @@ The project is divided in 16 modules.
 | 10 | Row Echelon | Get the Gauss Jordan (row echelon) of a rectangular matrix |
 | 11 | Determinant | Compute the determinant of a square matrix |
 | 12 | Inverse | Compute the inverse of a square matrix |
-| 13 | Rank | Comp
-ute the rank of a rectangular matrix |
+| 13 | Rank | Compute the rank of a rectangular matrix |
+| 14 | Projection Matrix | Compute a projection Matrix |
+| 15 | Complex numbers | Develop a Complex number to use with your library |
