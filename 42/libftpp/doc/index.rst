@@ -16,4 +16,4 @@ documentation for details.
    :caption: Contents:
 
    readme
-   classes
+   data_structures

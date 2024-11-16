@@ -17,6 +17,7 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 8. [rainfall](#rainfall)
 9. [libasm](#libasm)
 10. [matrix](#matrix)
+10. [libftpp](#libftpp)
 
 ---
 
@@ -161,5 +162,13 @@ You will also learn how to load dynamically assigned objects (through the PLT [P
 
 
 [matrix](https://github.com/pulgamecanica/42Course/tree/main/42/matrix) is a project that allows you to explore Vectors and Matrixes, after this project you should have no problems understanding linear algebra, and how useful are matrixes and vectors in programming.
+
+---
+
+## libftpp
+![C++](https://img.shields.io/badge/language-c++-blue.svg)
+
+
+[libftpp](https://github.com/pulgamecanica/42Course/tree/main/42/libftpp) is your first real multiuse library developed with C++17.=
 
 ---

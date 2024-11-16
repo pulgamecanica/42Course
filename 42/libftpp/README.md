@@ -9,12 +9,21 @@
   - [Makefile Targets](#makefile-targets)
 - [Documentation Generation](#documentation-generation)
   - [Doxygen + Sphinx Setup](#doxygen--sphinx-setup)
+    - [Doxygen](#doxygen)
+    - [Sphinx with Breathe](#sphinx-with-breathe)
+  - [Revised Documentation Guidelines](#revised-documentation-guidelines)
+    - [Coding Guidelines](#coding-guidelines)
+    - [Documentation Structure](#documentation-structure)
+      - [File-Level Documentation](#file-level-documentation)
+      - [Class-Level Documentation](#class-level-documentation)
+      - [Method-Level Documentation](#method-level-documentation)
   - [Makefile Integration](#makefile-integration)
 - [Cleaning Up](#cleaning-up)
+- [Notes](#notes)
 
 ---
 
-## About
+## Project Overview
 
 This project, `libftpp`, is designed with an emphasis on:
 - Clean code practices with C++17 standards.
@@ -103,6 +112,114 @@ Sphinx is configured to read the XML output from Doxygen. The following importan
 - **Extensions**: Includes `breathe`, `sphinx.ext.autodoc`, and `sphinx_rtd_theme`.
 - **Breathe Configuration**: Specifies the project name and XML directory for Breathe to locate Doxygen files.
 
+### Revised Documentation Guidelines
+
+Here are the comprehensive **coding and documentation guidelines** you requested, including your specific points:
+
+---
+
+### Coding Guidelines
+
+1. **Indentation**:
+   - Use **2 spaces** for indentation consistently across the entire project. 
+
+2. **Naming Conventions**:
+   - **Classes**: Use **Snake_Case** for class names.
+   - **File Names**: Class header files should be named to match the class, in **snake_case**. For example, for a `TestClass`, the header file should be `test_class.hpp` or `test_class.h`, and the corresponding source file should be `test_class.cpp`.
+   - **Function and Variable Names**: Use **snake_case** for function and variable names, even in templated code.
+   - **Parameters**: Parameters should be named in **snake_case**, even when variadic templates are used.
+
+3. **Memory Management**:
+   - Use **RAII** (Resource Acquisition Is Initialization) where applicable, especially when managing resources (e.g., in the `Pool` class).
+   - Ensure that **smart pointers** (e.g., `std::unique_ptr`, `std::shared_ptr`) or manual management are used for memory handling.
+   - Avoid `new` and `delete` directly. Use smart pointers for automatic resource management where possible.
+
+4. **Output Guidelines**:
+   - All output must be directed to **standard output** using `std::cout`.
+   - Every output message must **end with a newline character** (`\n`).
+
+5. **Include Guards**:
+   - All header files must have include guards to prevent multiple inclusions.
+   - Example: 
+     ```cpp
+     #ifndef FILENAME_HPP
+     #define FILENAME_HPP
+     // content of the header file
+     #endif // FILENAME_HPP
+     ```
+
+6. **External Libraries**:
+   - Only **standard C++ libraries** are allowed, **no external libraries** (e.g., Boost, etc.).
+   - Do not use any `*alloc()` or `free()` functions. Use modern C++ features to manage memory and resources safely.
+
+7. **Documentation**:
+   - Use **Doxygen-style comments** for generating documentation.
+   - **Markdown syntax** should be used in documentation for better clarity (supported by Sphinx).
+   - Include detailed sections in function documentation for:
+     - **Parameters**: Description of the function parameters.
+     - **Return**: What the function returns.
+     - **Throws**: Exceptions that may be thrown.
+     - **Errors**: Any potential errors that can arise.
+     - **Description**: General description of the function.
+     - **Examples**: Provide examples demonstrating usage.
+   - Follow **Google C++ Style Guide** for consistent code formatting and documentation structure.
+
+---
+
+### Documentation Structure
+
+#### 1. **File-Level Documentation**:
+   - Every header file should have a brief description at the top outlining the file's purpose and the classes or functions it contains.
+
+   Example:
+   ```cpp
+   /**
+    * @file my_class.hpp
+    * @brief Contains the definition of the MyClass class.
+    *
+    * This file declares the `MyClass` class and its member functions.
+    */
+   ```
+
+#### 2. **Class-Level Documentation**:
+   - Document the class purpose, its members, and methods.
+   - Provide a list of important methods, their purposes, and usage examples.
+
+   Example:
+   ```cpp
+   /**
+    * @class MyClass
+    * @brief This class represents a simple example class.
+    *
+    * The `MyClass` class is an example of how to document a class with its constructor,
+    * member functions, and member variables.
+    */
+   ```
+
+#### 3. **Method-Level Documentation**:
+   - Each method should have detailed comments explaining its purpose, parameters, exceptions it throws, and its return value.
+
+   Example:
+   ```cpp
+   /**
+    * @brief A method that adds two numbers.
+    *
+    * This method takes two integers, adds them, and returns the result.
+    *
+    * @param a First number to add.
+    * @param b Second number to add.
+    * @return The sum of `a` and `b`.
+    *
+    * ## Example:
+    * ```cpp
+    * MyClass obj;
+    * int result = obj.add(2, 3);  // result = 5
+    * ```
+    */
+   ```
+
+---
+
 ### Makefile Integration
 
 The Makefile simplifies the documentation generation by integrating both the Doxygen and Sphinx steps:
@@ -129,7 +246,7 @@ To maintain a clean working directory, the Makefile offers the following cleanin
 
 ## Notes
 
-- **Valgrind Usage**: `make valgrind` allows you to run tests with Valgrind for memory analysis. You can pass arguments to `valgrind` by setting the `libftpp_ARGS` environment variable.
+- **Valgrind Usage**: `make valgrind-%` allows you to run tests with Valgrind for memory analysis. You can pass arguments to `valgrind` by setting the `%_ARGS` environment variable.
 - **Color-Coded Output**: The Makefile includes color-coded output for better readability in the terminal.
 
 This setup ensures a streamlined workflow for compiling, testing, and documenting `libftpp`. Documentation is fully automated with the integration of Doxygen and Sphinx, making it easy to maintain and distribute.
