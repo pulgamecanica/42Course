@@ -5,7 +5,7 @@ class MyClass {
 public:
 	MyClass(int value)
 	{
-		spk::cout << "MyClass constructor, with value [" << value << "]" << std::endl;
+		std::cout << "MyClass constructor, with value [" << value << "]" << std::endl;
 	}
 
     void printMessage() {

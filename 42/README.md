@@ -169,6 +169,6 @@ You will also learn how to load dynamically assigned objects (through the PLT [P
 ![C++](https://img.shields.io/badge/language-c++-blue.svg)
 
 
-[libftpp](https://github.com/pulgamecanica/42Course/tree/main/42/libftpp) is your first real multiuse library developed with C++17.=
+[libftpp](https://github.com/pulgamecanica/42Course/tree/main/42/libftpp) is your first real multiuse library developed with C++17.
 
 ---

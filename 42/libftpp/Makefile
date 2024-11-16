@@ -5,6 +5,7 @@ INC_PATH        =   include
 SRC_PATH        =   src
 
 SRC             =   src/data_buffer.cpp \
+					src/memento.cpp \
 
 CXXFLAGS          =   -Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address #-O3 -g -fsanitize=leak
 
@@ -50,15 +51,33 @@ ${NAME}:   ${OBJ}
 			${RL} ${NAME}
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
-test:	all test_pool test_data_buffer
+test:	all test_pool test_data_buffer test_memento test_observer test_singleton test_state_machine
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
+
 			@printf "\n$(C_BLUE)**********************Pool Test**********************$(C_END)\n"
 			-@./test_pool
-			@printf "\n$(C_BLUE)*****************************************************$(C_END)\n"
+			@printf "$(C_BLUE)*****************************************************$(C_END)\n"
 			
 			@printf "\n$(C_BLUE)**********************Data Buffer Test**********************$(C_END)\n"
 			-@./test_data_buffer
-			@printf "\n$(C_BLUE)************************************************************$(C_END)\n"
+			@printf "$(C_BLUE)************************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)**********************Data Memento **********************$(C_END)\n"
+			-@./test_memento
+			@printf "$(C_BLUE)*********************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)**********************Data Observer **********************$(C_END)\n"
+			-@./test_observer
+			@printf "$(C_BLUE)**********************************************************$(C_END)\n"
+			
+
+			@printf "\n$(C_BLUE)**********************Data Singleton **********************$(C_END)\n"
+			-@./test_singleton
+			@printf "$(C_BLUE)***********************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)**********************Data State Machine **********************$(C_END)\n"
+			-@./test_state_machine
+			@printf "$(C_BLUE)***************************************************************$(C_END)\n"
 			
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show --no-print-directory
@@ -68,6 +87,18 @@ test_pool: tests/main_pool.cpp
 
 test_data_buffer: tests/main_data_buffer.cpp
 	$(CXX) -o test_data_buffer -I include $< -L . -lftpp
+
+test_memento: tests/main_memento.cpp
+	$(CXX) -o test_memento -I include $< -L . -lftpp
+
+test_observer: tests/main_observer.cpp
+	$(CXX) -o test_observer -I include $< -L . -lftpp
+
+test_singleton: tests/main_singleton.cpp
+	$(CXX) -o test_singleton -I include $< -L . -lftpp
+
+test_state_machine: tests/main_state_machine.cpp
+	$(CXX) -o test_state_machine -I include $< -L . -lftpp
 
 valgrind-%:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=$(subst valgrind-,,$@)-valgrind-out.txt ./$(subst valgrind-,,$@) $(subst valgrind-,,$@)_ARGS
@@ -79,7 +110,7 @@ clean:
 			@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean:     clean
-			$(RM) $(NAME) *valgrind-out.txt doc/xml test_pool test_data_buffer
+			$(RM) $(NAME) *valgrind-out.txt doc/xml test_*
 			@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 re: fclean all
