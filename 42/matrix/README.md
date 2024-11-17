@@ -13,6 +13,7 @@ You can visit the documentation:
 - [Matrix](https://pulgamecanica.github.io/MatrixDoc/matrix/matrix/struct.Matrix.html)
 - [Vector](https://pulgamecanica.github.io/MatrixDoc/matrix/vector/struct.Vector.html)
 - [Scalar](https://pulgamecanica.github.io/MatrixDoc/matrix/scalar/trait.Scalar.html)
+- [Complex](https://pulgamecanica.github.io/MatrixDoc/matrix/complex/struct.Complex.html)
 
 ***
 

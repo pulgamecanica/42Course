@@ -3,6 +3,8 @@
 #include "thread.hpp"
 #include "thread_safe_iostream.hpp"
 
+ThreadSafeIOStream threadSafeCout;
+
 void myFunction1() {
     for (int i = 0; i < 5; ++i) {
         threadSafeCout << "Hello from Function1, iteration " << i << std::endl;

@@ -5,6 +5,9 @@ INC_PATH        =   include
 SRC_PATH        =   src
 
 SRC             =   src/data_buffer.cpp \
+		src/persistent_worker.cpp \
+		src/worker_pool.cpp \
+		src/thread.cpp \
 		src/thread_safe_iostream.cpp \
 		src/memento.cpp \
 
@@ -52,37 +55,53 @@ ${NAME}:   ${OBJ}
 			${RL} ${NAME}
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
-test:	all test_pool test_data_buffer test_memento test_observer test_singleton test_state_machine test_thread_safe_iostream
+test:	all test_pool test_data_buffer test_memento test_observer test_singleton test_state_machine test_thread_safe_iostream test_thread_safe_queue test_thread test_worker_pool test_persistant_worker
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 
-			@printf "\n$(C_BLUE)**********************Pool Test**********************$(C_END)\n"
+			@printf "\n$(C_BLUE)********************** Pool Test**********************$(C_END)\n"
 			-@./test_pool
 			@printf "$(C_BLUE)*****************************************************$(C_END)\n"
 			
-			@printf "\n$(C_BLUE)**********************Data Buffer Test**********************$(C_END)\n"
+			@printf "\n$(C_BLUE)********************** Data Buffer Test**********************$(C_END)\n"
 			-@./test_data_buffer
-			@printf "$(C_BLUE)************************************************************$(C_END)\n"
-			
-			@printf "\n$(C_BLUE)**********************Data Memento **********************$(C_END)\n"
-			-@./test_memento
-			@printf "$(C_BLUE)*********************************************************$(C_END)\n"
-			
-			@printf "\n$(C_BLUE)**********************Data Observer **********************$(C_END)\n"
-			-@./test_observer
-			@printf "$(C_BLUE)**********************************************************$(C_END)\n"
-			
-
-			@printf "\n$(C_BLUE)**********************Data Singleton **********************$(C_END)\n"
-			-@./test_singleton
-			@printf "$(C_BLUE)***********************************************************$(C_END)\n"
-			
-			@printf "\n$(C_BLUE)**********************Data State Machine **********************$(C_END)\n"
-			-@./test_state_machine
 			@printf "$(C_BLUE)***************************************************************$(C_END)\n"
 			
-			@printf "\n$(C_BLUE)**********************Data Thread Sage IOStream **********************$(C_END)\n"
+			@printf "\n$(C_BLUE)********************** Memento **********************$(C_END)\n"
+			-@./test_memento
+			@printf "$(C_BLUE)*******************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)********************** Observer **********************$(C_END)\n"
+			-@./test_observer
+			@printf "$(C_BLUE)********************************************************$(C_END)\n"
+			
+
+			@printf "\n$(C_BLUE)********************** Singleton **********************$(C_END)\n"
+			-@./test_singleton
+			@printf "$(C_BLUE)*********************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)********************** State Machine **********************$(C_END)\n"
+			-@./test_state_machine
+			@printf "$(C_BLUE)*************************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)********************** Thread Safe IOStream **********************$(C_END)\n"
 			-@echo "42" | ./test_thread_safe_iostream
-			@printf "$(C_BLUE)************************************************************************$(C_END)\n"
+			@printf "$(C_BLUE)********************************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)********************** Thread Safe Queue **********************$(C_END)\n"
+			-@./test_thread_safe_queue
+			@printf "$(C_BLUE)*****************************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)********************** Thread **********************$(C_END)\n"
+			-@./test_thread
+			@printf "$(C_BLUE)******************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)********************** Worker Pool **********************$(C_END)\n"
+			-@echo -n "Total : "; ./test_worker_pool | wc -l
+			@printf "$(C_BLUE)***********************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)********************** Persistant Worker **********************$(C_END)\n"
+			-@echo -n "Total : "; ./test_persistant_worker | wc -l
+			@printf "$(C_BLUE)*****************************************************************$(C_END)\n"
 			
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show --no-print-directory
@@ -107,6 +126,18 @@ test_state_machine: tests/main_state_machine.cpp
 
 test_thread_safe_iostream: tests/main_thread_safe_iostream.cpp
 	$(CXX) -o test_thread_safe_iostream -I include $< -L . -lftpp
+
+test_thread_safe_queue: tests/main_thread_safe_queue.cpp
+	$(CXX) -o test_thread_safe_queue -I include $< -L . -lftpp
+
+test_thread: tests/main_thread.cpp
+	$(CXX) -o test_thread -I include $< -L . -lftpp
+
+test_worker_pool: tests/main_worker_pool.cpp
+	$(CXX) -o test_worker_pool -I include $< -L . -lftpp
+
+test_persistant_worker: tests/main_persistant_worker.cpp
+	$(CXX) -o test_persistant_worker -I include $< -L . -lftpp
 
 valgrind-%:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=$(subst valgrind-,,$@)-valgrind-out.txt ./$(subst valgrind-,,$@) $(subst valgrind-,,$@)_ARGS

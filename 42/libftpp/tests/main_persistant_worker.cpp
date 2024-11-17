@@ -2,6 +2,8 @@
 #include "thread_safe_iostream.hpp"
 #include <iostream>
 
+ThreadSafeIOStream threadSafeCout;
+
 int main() {
     PersistentWorker worker;
 

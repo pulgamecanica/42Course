@@ -56,7 +56,6 @@ public:
   }
 
 private:
-  
   std::unordered_map<TEvent, std::vector<std::function<void()>>> event_map_; ////< A map that associates an event with a list of lambdas subscribed to that event.
 };
 

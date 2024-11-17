@@ -2,6 +2,8 @@
 #include <iostream>
 #include "thread_safe_iostream.hpp"
 
+ThreadSafeIOStream threadSafeCout;
+
 int main() {
     WorkerPool pool(4);
 

@@ -19,3 +19,4 @@ documentation for details.
    data_structures
    design_patterns
    iostream
+   thread
