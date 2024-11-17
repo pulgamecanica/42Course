@@ -67,6 +67,7 @@ public:
 
    private:
     TType* ptr_;   ///< Pointer to the managed object.
+    
     Pool& pool_;   ///< Reference to the parent pool, for returning the object on destruction.
   };
 
@@ -169,6 +170,7 @@ private:
   }
 
   std::stack<TType*> pool_; ///< Stack of available objects in the pool
+
   std::vector<std::unique_ptr<TType>> allocated_; ///< Storage for all allocated objects
 };
 

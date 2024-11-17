@@ -125,9 +125,13 @@ public:
 
 private:
     std::unordered_set<TState> states_;  ///< Registered states in the state machine.
+
     std::unordered_map<TState, std::function<void()>> actions_;  ///< Actions for each state (one action per state).
+
     std::unordered_map<TState, std::unordered_map<TState, std::function<void()>>> transitions_;  ///< Transitions between states.
+
     TState current_state;  ///< The current state of the state machine.
+    
     bool initialized_state_;
 };
 
