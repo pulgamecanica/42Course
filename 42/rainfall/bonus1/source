@@ -1,28 +1,17 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-
-int	main(int argc, char **argv)
+int32_t main(int32_t argc, char** argv, char** envp)
 {
-	int		num;
-	char	*args[2];
-	gid_t	gid;
-	uid_t	uid;
-	
-	num = atoi(argv[1]);
-	if (num != 423)
-	{
-		fwrite("No !\n", 5, 1, stderr);
-	}
-	else
-	{
-		args[0] = strdup("/bin/sh");
-		args[1] = NULL;
-		gid = getegid();
-		uid = geteuid();
-		setresgid(gid, gid, gid);
-		setresuid(uid, uid, uid);
-		execv("/bin/sh", args);
-	}
-	return (0);
+    unsigned eax_3 = atoi(argv[1]);
+    
+    if (eax_3 > 9)
+        return 1;
+    
+    void var_3c;
+    memcpy(&var_3c, argv[2], eax_3 * 4);
+    
+    if (eax_3 == 0x574f4c46)
+        execl("/bin/sh", "sh", 0);
+    
+    return 0;
 }
+
+

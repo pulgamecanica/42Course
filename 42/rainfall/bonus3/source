@@ -1,28 +1,23 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-
-int	main(int argc, char **argv)
+int32_t main(int32_t argc, char** argv, char** envp)
 {
-	int		num;
-	char	*args[2];
-	gid_t	gid;
-	uid_t	uid;
-	
-	num = atoi(argv[1]);
-	if (num != 423)
-	{
-		fwrite("No !\n", 5, 1, stderr);
-	}
-	else
-	{
-		args[0] = strdup("/bin/sh");
-		args[1] = NULL;
-		gid = getegid();
-		uid = geteuid();
-		setresgid(gid, gid, gid);
-		setresuid(uid, uid, uid);
-		execv("/bin/sh", args);
-	}
-	return (0);
+    FILE* fp = fopen("/home/user/end/.pass", &data_80486f0);
+    void var_98;
+    memset(&var_98, 0, 0x84);
+    
+    if ((fp == 0 || argc != 2))
+        return 0xffffffff;
+    
+    fread(&var_98, 1, 0x42, fp);
+    char var_57_1 = 0;
+    *(&var_98 + atoi(argv[1])) = 0;
+    void var_56;
+    fread(&var_56, 1, 0x41, fp);
+    fclose(fp);
+    
+    if (strcmp(&var_98, argv[1]) != 0)
+        puts(&var_56);
+    else
+        execl("/bin/sh", &data_8048707, 0);
+    
+    return 0;
 }

