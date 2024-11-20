@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+char* p()
+{
+    fflush(stdout);
+    gets(&buf);
+    
+    if ((__return_addr & 0xb0000000) != 0xb0000000)
+    {
+        puts(&buf);
+        return strdup(&buf);
+    }
+    
+    printf("(%p)\n", __return_addr);
+    _exit(1);
+}
+
+int32_t main(void)
+{
+    return p();
+}
