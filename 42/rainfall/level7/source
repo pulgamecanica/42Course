@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <sys/time.h>
+
+char c;
+
+typedef struct struct_0 {
+    unsigned int field_0;
+    char *field_4;
+} struct_0;
+
+int m()
+{
+    unsigned int v0;
+    unsigned int v1;
+
+    v1 = time(NULL);
+    v0 = &c;
+    return printf("%s - %d\n");
+}
+
+
+int main(int argc, char *argv[])
+{
+    struct_0 *v0;
+    struct_0 *v1;
+    char v3;
+
+    v1 = malloc(8);
+    v1->field_0 = 1;
+    v1->field_4 = malloc(8);
+    v0 = malloc(8);
+    v0->field_0 = 2;
+    v0->field_4 = malloc(8);
+    strcpy(v1->field_4, argv[1]);
+    strcpy(v0->field_4, argv[2]);
+    fgets(&c, 68, fopen("/home/user/level8/.pass", "r"));
+    puts("~~");
+    return 0;
+}

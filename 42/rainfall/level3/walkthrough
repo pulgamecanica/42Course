@@ -1,4 +1,4 @@
-### Walkthrough: Exploiting a Format String Vulnerability
+# Exploiting a Format String Vulnerability
 
 This exercise involves exploiting a format string vulnerability in the program. The vulnerability arises due to the unsafe use of `printf(buf)` without proper format string sanitization, allowing attackers to manipulate the behavior of the program.
 

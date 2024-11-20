@@ -1,0 +1,25 @@
+int32_t* N::N(int32_t* arg1, int32_t arg2)
+{
+    *arg1 = 0x8048848;
+    arg1[0x1a] = arg2;
+    return arg1;
+}
+
+int32_t N::setAnnotation(char* arg2)
+{
+    return memcpy((this + 4), arg2, strlen(arg2));
+}
+
+
+int32_t main(int32_t argc, char** argv, char** envp)
+{
+    if (argc <= 1)
+    {
+        _exit(1);
+    }
+    
+    N * obj1 = new N(5);
+    N * obj2 = new N(6);
+    obj1->setAnnotation(argv[1]);
+    return **eax_1(eax_1, eax);
+}
