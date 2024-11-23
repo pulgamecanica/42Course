@@ -74,6 +74,7 @@ use crate::matrix::Matrix;
 ///
 /// ```rust
 /// use matrix::Matrix;
+/// use matrix::projection_matrix::projection;
 /// 
 /// let fov = 1.57; // Field of view in radians (~90 degrees)
 /// let ratio = 16.0 / 9.0; // Aspect ratio of 16:9
