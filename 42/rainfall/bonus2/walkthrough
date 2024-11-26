@@ -1,0 +1,26 @@
+Overflow after strcat to overwrite the EIP
+
+Similar to Bonus 1
+
+
+
+# Buffer Overflow
+
+The provided code contains a buffer overflow vulnerability that can be exploited by overwriting the return address (EIP) with the address of a function, in this case, the address of execl("/bin/sh", "sh", 0) which will spawn a shell.
+
+---
+
+
+#### Buffer Overflow Target:
+We are interested in overwriting the saved return address (`EIP`) on the stack, which is typically 4 bytes in a 32-bit environment. After `strcat`, the saved return address will be overwritten, and when the function returns, control will be transferred to the address we set in `EIP`.
+
+We must find the address where the shellcode is, that we planted on the `env`
+
+### Exploit Command:
+
+```bash
+./bonus2 $(python -c 'print("A"*56)') $(python -c 'print("B"*18 + "\x49\xf8\xff\xbf")')
+```
+
+### Conclusion:
+The exploit works by overflowing the buffer with controlled input and redirecting the execution flow to an address that triggers the execution of `/bin/sh`, providing the attacker with a shell.

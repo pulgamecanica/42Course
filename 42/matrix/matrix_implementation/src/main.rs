@@ -405,9 +405,9 @@ fn try_rank() {
 
 fn try_projection_matrix() {
     println!("Projection Matrix");
-    let fov = 1.57; // Example FOV in radians (~90 degrees)
+    let fov = 1.0; // Example FOV in radians (~60 degrees)
     let ratio = 16.0 / 9.0; // Widescreen aspect ratio
-    let near = 0.1; // Near clipping plane
+    let near = 1.0; // Near clipping plane
     let far = 100.0; // Far clipping plane
 
     let projection_matrix: Matrix<f32> = projection(fov, ratio, near, far);

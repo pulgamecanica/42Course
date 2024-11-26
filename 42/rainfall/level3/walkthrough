@@ -1,0 +1,85 @@
+# Exploiting a Format String Vulnerability
+
+This exercise involves exploiting a format string vulnerability in the program. The vulnerability arises due to the unsafe use of `printf(buf)` without proper format string sanitization, allowing attackers to manipulate the behavior of the program.
+
+---
+
+### Understanding the Code
+1. **Key Observations**:
+   - The vulnerable function is `v()`, which reads input into a buffer (`buf`) using `fgets` and then passes it directly to `printf`.
+   - The global variable `m` must be set to `0x40` to execute the conditional block, which triggers a call to `system("/bin/sh")`.
+
+2. **Buffer Details**:
+   - `buf` is a **520-byte buffer** allocated on the stack.
+   - The function reduces the stack pointer by **0x218 (536 bytes)**, which accommodates `buf` and any additional local variables or saved registers.
+
+3. **Global Variable `m`**:
+   - The variable `m` is a **global variable** stored at address `0x0804988c`.
+
+4. **Vulnerability**:
+   - The `printf(buf)` call is unsafe because it directly prints user-controlled input (`buf`). If the input includes format specifiers (e.g., `%n`), it can be exploited to modify memory values.
+
+---
+
+### Exploitation
+To exploit this vulnerability, the goal is to:
+1. Write the value `0x40` to the memory address of `m` (`0x0804988c`).
+2. Use a **`%n` format specifier** to write the number of characters printed so far into the address of `m`.
+
+---
+
+### Exploit Breakdown
+
+#### 1. Memory Layout and Address Calculation:
+- The global variable `m` is located at `0x0804988c`.
+- The exploit needs to write the value `0x40` (decimal 64) to this address using the `%n` format string specifier.
+
+#### 2. Input Construction:
+- The input to `fgets` will be crafted as:
+  - The **address** of `m` (`0x0804988c`) as the starting bytes.
+  - Padding with dots (`.`) to ensure exactly 64 characters are printed before reaching `%n`.
+  - The `%4$n` format specifier to write to the 4th argument on the stack, which will be the address of `m`.
+
+#### 3. Crafting the Payload:
+```bash
+(python -c 'print(b"\x8c\x98\x04\x08" + b"." * (64 - 4) + b"%4$n")'; cat -) | ./level3
+```
+
+#### Payload Details:
+- **`b"\x8c\x98\x04\x08"`**:
+  The address of `m`, placed at the beginning of the input.
+
+- **`b"." * (64 - 4)`**:
+  Padding with dots (or any printable character) to ensure 64 characters are printed before reaching `%n`.
+
+- **`b"%4$n"`**:
+  The `%4$n` specifier writes the total number of printed characters (64) to the memory address specified by the 4th argument on the stack (i.e., `0x0804988c`).
+
+---
+
+### Execution Steps
+1. **Run the Exploit**:
+   ```bash
+   (python -c 'print(b"\x8c\x98\x04\x08" + b"." * (64 - 4) + b"%4$n")'; cat -) | ./level3
+   ```
+
+2. **Expected Outcome**:
+   - The global variable `m` is updated to `0x40`.
+   - The program prints:
+     ```
+     Wait what?!
+     ```
+   - A shell is spawned (`/bin/sh`), granting access to the user.
+
+3. **Verify the Exploit**:
+   - Run shell commands to confirm the exploit worked:
+     ```bash
+     whoami
+     cat /home/user/level4/.pass
+     exit
+     ```
+
+---
+
+### Summary of Exploit
+This exercise demonstrates the use of a **format string attack** to manipulate a global variable. By carefully crafting the input with an address and `%n` specifier, attackers can exploit unsafe use of `printf` to overwrite memory and gain control of the program. This type of vulnerability underscores the importance of validating and sanitizing user input to prevent such attacks.

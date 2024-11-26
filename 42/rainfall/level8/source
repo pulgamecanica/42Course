@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_INPUT_SIZE 128
+
+int32_t main(void) {
+    char input[MAX_INPUT_SIZE];
+    char *auth = NULL;
+    char *service = NULL;
+    char *login = NULL;
+
+    while (1) {
+        printf("%p, %p\n", auth, service);
+
+        // Read input from stdin
+        if (fgets(input, MAX_INPUT_SIZE, stdin) == NULL) {
+            break; // Exit on EOF
+        }
+
+        // Check if input matches "auth"
+        if (strncmp("auth ", input, 5) == 0) {
+            auth = malloc(4); // Allocate memory for auth
+            if (auth) {
+                *auth = 0;
+                char *userInput = input + 5; // Skip "auth" part
+                size_t len = strnlen(userInput, MAX_INPUT_SIZE - 5);
+                if (len < 32) {
+                    strcpy(auth, userInput); // Copy the remaining input to auth
+                }
+            }
+        }
+
+        // Check if input matches "reset"
+        if (strncmp("reset", input, 5) == 0) {
+            if (auth) {
+                free(auth); // Free auth memory on reset
+                auth = NULL;
+            }
+        }
+
+        // Check if input matches "service"
+        if (strncmp("service", input, 7) == 0) {
+            service = strdup(input + 7); // Copy the input after "service" to service
+        }
+
+        // Check if input matches "login"
+        if (strncmp("login", input, 5) == 0) {
+            if (auth == NULL) {
+                printf("Password:\n");
+                continue; // Prompt for password if not set
+            }
+            system("/bin/sh"); // Execute shell command
+        }
+    }
+    return 0;
+}

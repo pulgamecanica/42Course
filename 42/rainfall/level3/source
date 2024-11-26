@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void v(void)
+{
+  static char buf [520];
+  
+  fgets(buf,0x200,stdin);
+  printf(buf);
+  if (m == 0x40) {
+    fwrite("Wait what?!\n",1,0xc,stdout);
+    system("/bin/sh");
+  }
+  return;
+}
+
+void main(void)
+{
+  v();
+  return;
+}

@@ -1,0 +1,33 @@
+# Buffer Overflow
+
+The provided code contains a buffer overflow vulnerability that can be exploited by overwriting the return address (EIP) with the address of a function, in this case, the address of execl("/bin/sh", "sh", 0) which will spawn a shell.
+
+---
+
+#### Key Points:
+- `argv[1]` determines how many bytes will be copied into `var_3c` by `memcpy`. If `eax_3` is larger than 9, it will return early.
+- `eax_3 == 0x574f4c46` corresponds to the ASCII value for the string "WOLF". If the input is "WOLF", it triggers the `execl("/bin/sh", "sh", 0)` and spawns a shell.
+- The vulnerability is the buffer overflow, where `memcpy` copies data into `var_3c` without checking its size or bounds, allowing us to overwrite the return address (`EIP`).
+
+### Exploit Explanation:
+
+To exploit the buffer overflow:
+1. We will use `argv[1]` to control how much data is copied into `var_3c` (`eax_3 * 4` bytes).
+2. Since the program only allows copying up to 36 bytes (when `eax_3 = 9`), we need to carefully overflow the buffer and overwrite the return address (`EIP`).
+3. The goal is to overwrite `EIP` with the address of `execl("/bin/sh", "sh", 0)`, which will spawn a shell.
+
+#### Buffer Overflow Target:
+We are interested in overwriting the saved return address (`EIP`) on the stack, which is typically 4 bytes in a 32-bit environment. After `memcpy`, the saved return address will be overwritten, and when the function returns, control will be transferred to the address we set in `EIP`.
+
+#### Exploit Breakdown:
+1. `argv[1]`: `-2147483630` in decimal is `0x80000002` in hexadecimal, which is less than 9 and satisfies the `eax_3 > 9` check. However, we can focus on the actual bytes written to `var_3c`.
+2. The input for `argv[2]` will be the padding followed by the address of the shellcode to execute.
+
+### Exploit Command:
+
+```bash
+./bonus1 -2147483630 $(python -c 'print("B"*56 + "\x82\x84\x04\x08")')
+```
+
+### Conclusion:
+The exploit works by overflowing the buffer with controlled input and redirecting the execution flow to an address that triggers the execution of `/bin/sh`, providing the attacker with a shell.

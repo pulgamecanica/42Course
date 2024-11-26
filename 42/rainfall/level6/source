@@ -1,0 +1,28 @@
+#include <stdlib.h>
+
+int n()
+{
+    system("/bin/cat /home/user/level7/.pass");
+    return;
+}
+
+int m()
+{
+    int var_1;
+    var_1 = puts(/* str */ "Nope");
+    return var_1;
+}
+
+
+int main(int argc, char ** argv, char ** envp)
+{
+    int() ** v0;
+    char *v1;
+    char v3;
+
+    v1 = malloc(64);
+    v0 = malloc(4);
+    *(v0) = &m;
+    strcpy(v1, *((int *)(*((int *)&v3) + 4)));
+    return *(v0)(v1);
+}

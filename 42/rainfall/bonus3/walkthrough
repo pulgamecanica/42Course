@@ -1,0 +1,21 @@
+If we have something + nothing, we have something
+its different than having someting + '\0'
+
+
+The exploit relies on the last lines, we must evaluate to `else` in order to execute the system call
+
+```c
+if (strcmp(&var_98, argv[1]) != 0)
+```
+
+We want argv[1] to be equal to the var_98 which is read from 0x42. Then it's modified and they add the atoi value of argv[1]
+
+```
+*(&var_98 + atoi(argv[1])) = 0;
+```
+
+This seams impossible to evaluate to false... how could they possibly be the same? they are always different making the comparison != 0 true.
+
+Unless both are empty! Both are zero! (not zero terminated)
+
+So all you must do is to provide an empty argument.
