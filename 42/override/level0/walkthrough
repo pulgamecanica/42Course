@@ -1,0 +1,7 @@
+This line lol:
+
+0x080484e7 <+83>:	cmp    $0x149c,%eax
+
+```bash
+(echo $((16#149c)); cat) | ./level00
+```
