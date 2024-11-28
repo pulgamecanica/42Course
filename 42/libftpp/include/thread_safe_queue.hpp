@@ -13,6 +13,7 @@
 #include <deque>
 #include <mutex>
 #include <stdexcept>
+#include <memory>
 
 /**
 * @class ThreadSafeQueue

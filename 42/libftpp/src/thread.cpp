@@ -6,22 +6,20 @@ Thread::Thread(const std::string& name, std::function<void()> func_to_execute)
     is_running_(false) {}
 
 void Thread::start() {
-  if (is_running_) {
-    throw std::runtime_error("Thread has already started.");
+  if (!is_running_) {
+    is_running_ = true;
+    thread_ = std::thread([this] {
+      threadSafeCout.setPrefix("[" + thread_name_ + "] ");
+      func_();
+    });
   }
-  is_running_ = true;
-  thread_ = std::thread([this] {
-    threadSafeCout.setPrefix("[" + thread_name_ + "] ");
-    func_();
-  });
 }
 
 void Thread::stop() {
-  if (!is_running_) {
-    throw std::runtime_error("Thread is not running.");
+  if (is_running_) {
+    thread_.join();
+    is_running_ = false;
   }
-  thread_.join();
-  is_running_ = false;
 }
 
 Thread::~Thread() {

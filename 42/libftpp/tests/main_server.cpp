@@ -2,6 +2,8 @@
 #include "thread_safe_iostream.hpp"
 #include <string>
 
+ThreadSafeIOStream threadSafeCout;
+
 int main() {
     Server server;
 

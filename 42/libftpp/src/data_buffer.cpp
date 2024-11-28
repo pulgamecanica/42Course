@@ -4,6 +4,8 @@ DataBuffer::DataBuffer(): buffer_() {
     // Initializes an empty buffer
 }
 
+DataBuffer::DataBuffer(const std::vector<uint8_t>& buffer): buffer_(buffer_) {}
+
 const std::vector<uint8_t>& DataBuffer::getData() const {
     return buffer_;
 }

@@ -69,106 +69,113 @@
  */
 class DataBuffer {
 public:
-    /**
-     * @brief Default constructor for `DataBuffer`.
-     * 
-     * Initializes an empty internal buffer to hold the serialized data.
-     */
-    DataBuffer();
+  /**
+   * @brief Default constructor for `DataBuffer`.
+   * 
+   * Initializes an empty internal buffer to hold the serialized data.
+   */
+  DataBuffer();
 
-    /**
-     * @brief Serialize a `std::string` object and store it in the buffer.
-     * 
-     * This operator serializes the `std::string` object `str` by first storing its length
-     * followed by the characters of the string.
-     * 
-     * @param str The `std::string` to be serialized and stored in the buffer.
-     * @return A reference to the current `DataBuffer` object for method chaining.
-     */
-    DataBuffer& operator<<(const std::string& str);
+  /**
+   * @brief Constructor for `DataBuffer`.
+   * 
+   * Initializes a DataBuffer with the given data.
+   */
+  DataBuffer(const std::vector<uint8_t>& buffer);
 
-    /**
-     * @brief Serialize an object and store it in the buffer.
-     * 
-     * This operator appends the serialized representation of the object `obj` to the internal buffer.
-     * The object is first converted into a byte format and then inserted into the buffer.
-     * 
-     * @tparam T The type of the object being serialized.
-     * @param obj The object to be serialized and stored in the buffer.
-     * @return A reference to the current `DataBuffer` object for method chaining.
-     * 
-     * @note The type `T` must be **trivially copyable**. This is enforced via a static assertion
-     * that will cause a compile-time error if the type `T` is not trivially copyable. A trivially 
-     * copyable type is one that can be safely copied byte-by-byte (such as primitive types or simple
-     * structs without virtual functions or non-trivial destructors).
-     * https://en.cppreference.com/w/cpp/types/is_trivially_copyable
-     */
-    template <typename T>
-    DataBuffer& operator<<(const T& obj) {
-      static_assert(std::is_trivially_copyable<T>::value, "Type must be trivially copyable.");
-      const uint8_t* data = reinterpret_cast<const uint8_t*>(&obj);
-      buffer_.insert(buffer_.end(), data, data + sizeof(T));
-      return *this;
+  /**
+   * @brief Serialize a `std::string` object and store it in the buffer.
+   * 
+   * This operator serializes the `std::string` object `str` by first storing its length
+   * followed by the characters of the string.
+   * 
+   * @param str The `std::string` to be serialized and stored in the buffer.
+   * @return A reference to the current `DataBuffer` object for method chaining.
+   */
+  DataBuffer& operator<<(const std::string& str);
+
+  /**
+   * @brief Serialize an object and store it in the buffer.
+   * 
+   * This operator appends the serialized representation of the object `obj` to the internal buffer.
+   * The object is first converted into a byte format and then inserted into the buffer.
+   * 
+   * @tparam T The type of the object being serialized.
+   * @param obj The object to be serialized and stored in the buffer.
+   * @return A reference to the current `DataBuffer` object for method chaining.
+   * 
+   * @note The type `T` must be **trivially copyable**. This is enforced via a static assertion
+   * that will cause a compile-time error if the type `T` is not trivially copyable. A trivially 
+   * copyable type is one that can be safely copied byte-by-byte (such as primitive types or simple
+   * structs without virtual functions or non-trivial destructors).
+   * https://en.cppreference.com/w/cpp/types/is_trivially_copyable
+   */
+  template <typename T>
+  DataBuffer& operator<<(const T& obj) {
+    static_assert(std::is_trivially_copyable<T>::value, "Type must be trivially copyable.");
+    const uint8_t* data = reinterpret_cast<const uint8_t*>(&obj);
+    buffer_.insert(buffer_.end(), data, data + sizeof(T));
+    return *this;
+  }
+
+  /**
+   * @brief Serialize a `std::string` object and store it in the buffer.
+   * 
+   * This operator serializes the `std::string` object `str` by first storing its length
+   * followed by the characters of the string.
+   * 
+   * @param str The `std::string` to be serialized and stored in the buffer.
+   * @return A reference to the current `DataBuffer` object for method chaining.
+   */
+  DataBuffer& operator>>(std::string& str);
+
+  /**
+   * @brief Deserialize an object from the buffer.
+   * 
+   * This operator retrieves data from the internal buffer and deserializes it into the object `obj`.
+   * If the buffer contains insufficient data for the requested object, an exception is thrown.
+   * 
+   * @tparam T The type of the object being deserialized.
+   * @param obj The object to be deserialized and populated with data from the buffer.
+   * @return A reference to the current `DataBuffer` object for method chaining.
+   * 
+   * @throws std::out_of_range If the buffer does not contain enough data for the object.
+   * 
+   * @note The type `T` must be **trivially copyable**. This is enforced via a static assertion
+   * that will cause a compile-time error if the type `T` is not trivially copyable. A trivially 
+   * copyable type is one that can be safely copied byte-by-byte (such as primitive types or simple
+   * structs without virtual functions or non-trivial destructors).
+   * https://en.cppreference.com/w/cpp/types/is_trivially_copyable
+   */
+  template <typename T>
+  DataBuffer& operator>>(T& obj) {
+    static_assert(std::is_trivially_copyable<T>::value, "Type must be trivially copyable.");
+    if (buffer_.empty()) {
+        throw std::out_of_range("Buffer is empty.");
     }
 
-    /**
-     * @brief Serialize a `std::string` object and store it in the buffer.
-     * 
-     * This operator serializes the `std::string` object `str` by first storing its length
-     * followed by the characters of the string.
-     * 
-     * @param str The `std::string` to be serialized and stored in the buffer.
-     * @return A reference to the current `DataBuffer` object for method chaining.
-     */
-    DataBuffer& operator>>(std::string& str);
-
-    /**
-     * @brief Deserialize an object from the buffer.
-     * 
-     * This operator retrieves data from the internal buffer and deserializes it into the object `obj`.
-     * If the buffer contains insufficient data for the requested object, an exception is thrown.
-     * 
-     * @tparam T The type of the object being deserialized.
-     * @param obj The object to be deserialized and populated with data from the buffer.
-     * @return A reference to the current `DataBuffer` object for method chaining.
-     * 
-     * @throws std::out_of_range If the buffer does not contain enough data for the object.
-     * 
-     * @note The type `T` must be **trivially copyable**. This is enforced via a static assertion
-     * that will cause a compile-time error if the type `T` is not trivially copyable. A trivially 
-     * copyable type is one that can be safely copied byte-by-byte (such as primitive types or simple
-     * structs without virtual functions or non-trivial destructors).
-     * https://en.cppreference.com/w/cpp/types/is_trivially_copyable
-     */
-    template <typename T>
-    DataBuffer& operator>>(T& obj) {
-      static_assert(std::is_trivially_copyable<T>::value, "Type must be trivially copyable.");
-      if (buffer_.empty()) {
-          throw std::out_of_range("Buffer is empty.");
-      }
-
-      size_t dataSize = sizeof(T);
-      if (buffer_.size() < dataSize) {
-          throw std::out_of_range("Buffer does not contain enough data.");
-      }
-
-      std::memcpy(&obj, buffer_.data(), dataSize);
-      buffer_.erase(buffer_.begin(), buffer_.begin() + dataSize); // Remove the data from the buffer
-      return *this;
+    size_t dataSize = sizeof(T);
+    if (buffer_.size() < dataSize) {
+        throw std::out_of_range("Buffer does not contain enough data.");
     }
 
+    std::memcpy(&obj, buffer_.data(), dataSize);
+    buffer_.erase(buffer_.begin(), buffer_.begin() + dataSize); // Remove the data from the buffer
+    return *this;
+  }
 
-    /**
-     * @brief Retrieve the raw byte data stored in the buffer.
-     * 
-     * This method returns a reference to the internal byte buffer containing the serialized data.
-     * 
-     * @return A constant reference to the internal buffer.
-     */
-    const std::vector<uint8_t>& getData() const;
+
+  /**
+   * @brief Retrieve the raw byte data stored in the buffer.
+   * 
+   * This method returns a reference to the internal byte buffer containing the serialized data.
+   * 
+   * @return A constant reference to the internal buffer.
+   */
+  const std::vector<uint8_t>& getData() const;
 
 private:
-    std::vector<uint8_t> buffer_; ///< The internal buffer holding the serialized data.
+  std::vector<uint8_t> buffer_; ///< The internal buffer holding the serialized data.
 };
 
 #endif // DATA_BUFFER_HPP

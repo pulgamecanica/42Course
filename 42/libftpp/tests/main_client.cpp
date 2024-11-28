@@ -1,6 +1,9 @@
 #include "client.hpp"
 #include "thread_safe_iostream.hpp"
 #include <string>
+#include <algorithm>
+
+ThreadSafeIOStream threadSafeCout;
 
 int main() {
     Client client;
