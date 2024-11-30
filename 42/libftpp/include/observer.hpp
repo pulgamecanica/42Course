@@ -13,8 +13,6 @@
 #include <functional>
 #include <unordered_map>
 #include <vector>
-#include <iostream>
-#include <stdexcept>
 
 /**
  * @class Observer
@@ -24,8 +22,9 @@
  * with lambda functions, and it notifies all subscribers when an event is triggered.
  * 
  * @tparam TEvent The type of event that will be observed.
+ * @tparam TArgs Variadic template for the types of arguments passed to the callbacks.
  */
-template <typename TEvent>
+template <typename TEvent, typename... TArgs>
 class Observer {
 public:
   /**
@@ -37,7 +36,7 @@ public:
    * @param event The event to subscribe to.
    * @param lambda The lambda function to be called when the event is triggered.
    */
-  void subscribe(const TEvent& event, const std::function<void()>& lambda) {
+  void subscribe(const TEvent& event, const std::function<void(TArgs...)>& lambda) {
     event_map_[event].push_back(lambda);
   }
 
@@ -49,14 +48,19 @@ public:
    *
    * @param event The event to notify subscribers about.
    */
-  void notify(const TEvent& event) {
-    for (auto& lambda : event_map_[event]) {
-      lambda();  // Call all subscribed lambdas
+  void notify(const TEvent& event, TArgs... args) {
+    // for (auto& lambda : event_map_[event]) {
+    //   lambda(args...);
+    auto it = event_map_.find(event);
+    if (it != event_map_.end()) {
+      for (auto& lambda : it->second) {
+        lambda(args...); // Call all subscribed lambdas with parameters
+      }
     }
   }
 
 private:
-  std::unordered_map<TEvent, std::vector<std::function<void()>>> event_map_; ////< A map that associates an event with a list of lambdas subscribed to that event.
+  std::unordered_map<TEvent, std::vector<std::function<void(TArgs...)>>> event_map_; ///< Map of events to lambdas
 };
 
 #endif // OBSERVER_HPP

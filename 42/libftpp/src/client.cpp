@@ -1,5 +1,4 @@
 #include "client.hpp"
-
 #include <cstring>
 #include <iostream>
 #include <netdb.h>
@@ -56,8 +55,7 @@ void Client::connect(const std::string& address, const size_t& port) {
       sock_fd_ = -1;
       continue;  // Try the next address
     }
-    // Successfully connected
-    break;
+    break; // Successfully connected
   }
 
   if (p == nullptr) {  // No valid addresses found
@@ -92,8 +90,7 @@ void Client::disconnect() {
 
 void Client::defineAction(const Message::Type& messageType,
                           const std::function<void(const Message&)>& action) {
-  std::lock_guard<std::mutex> lock(action_mutex_);
-  actions_[messageType] = action;
+  message_observer_.subscribe(messageType, action);
 }
 
 void Client::defineAction(const int messageType,
@@ -121,16 +118,13 @@ void Client::update() {
   ssize_t bytes_received = 0;
 
   // Non-blocking receive loop
-  if ((bytes_received = recv(sock_fd_, temp_buffer.data(), temp_buffer.size(), 0)) > 0) {
-    incoming_buffer_.insert(incoming_buffer_.end(), temp_buffer.begin(), temp_buffer.begin() + bytes_received);
-  }
+  bytes_received = recv(sock_fd_, temp_buffer.data(), buffer_size, 0);
 
   // If recv returns -1 and the error is not EAGAIN or EWOULDBLOCK, it indicates a failure
   if (bytes_received < 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
     throw std::runtime_error("Failed to receive data from server.");
   }
 
-  // If 0, the server disconnected
   if (bytes_received == 0) {
     disconnect();
     throw std::runtime_error("Server disconnected from client.");
@@ -140,23 +134,12 @@ void Client::update() {
     return ;
   }
 
-  // Process accumulated data into Messages
   try {
-    std::vector<Message> messages = Message::deserializeMessages(incoming_buffer_);
-
-    for (const auto msg: messages) {
-      std::lock_guard<std::mutex> lock(action_mutex_);
-      auto it = actions_.find(static_cast<Message::Type>(msg.type()));
-      if (it != actions_.end()) {
-        it->second(msg);
-      } else {
-        std::cerr << "No action defined for message type: " << msg.type() << "\n";
-      }
+    std::vector<Message> messages = Message::deserializeMessages(temp_buffer);
+    for (const auto& msg: messages) {
+      message_observer_.notify(static_cast<Message::Type>(msg.type()), msg);
     }
   } catch (const std::exception& ex) {
-    std::cerr << "Error processing message: " << ex.what() << "\n";
+    std::cerr << "Error processing message: " << ex.what() << std::endl;
   }
-  incoming_buffer_.erase(incoming_buffer_.begin(), incoming_buffer_.end());
-  incoming_buffer_.clear();
 }
-

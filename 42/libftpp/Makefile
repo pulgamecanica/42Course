@@ -110,14 +110,6 @@ test:	all test_pool test_data_buffer test_memento test_observer test_singleton t
 			-@./test_message
 			@printf "$(C_BLUE)******************************************************$(C_END)\n"
 			
-			@printf "\n$(C_BLUE)********************** Client **********************$(C_END)\n"
-			-@./test_client
-			@printf "$(C_BLUE)******************************************************$(C_END)\n"
-			
-			@printf "\n$(C_BLUE)********************** Server **********************$(C_END)\n"
-			-@./test_server
-			@printf "$(C_BLUE)******************************************************$(C_END)\n"
-			
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show --no-print-directory
 

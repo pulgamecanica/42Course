@@ -6,6 +6,7 @@
 #define CLIENT_HPP
 
 #include "message.hpp"
+#include "observer.hpp"
 #include <functional>
 #include <unordered_map>
 #include <vector>
@@ -68,11 +69,7 @@ class Client {
  private:
   int sock_fd_;        // Socket file descriptor
   bool is_connected_;  // Connection status
-
-  std::unordered_map<Message::Type, std::function<void(const Message&)>> actions_;
-  std::mutex action_mutex_;  ///< Protects access to the actions map.
-
-  std::vector<uint8_t> incoming_buffer_;  ///< Buffer for receiving data.
+  Observer<Message::Type, const Message&> message_observer_; ///< Observer for message type actions
 };
 
 #endif  // CLIENT_HPP

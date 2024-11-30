@@ -1,6 +1,9 @@
 #ifndef SERVER_HPP
 #define SERVER_HPP
 
+#include "message.hpp"
+#include "persistent_worker.hpp"
+#include "observer.hpp"
 #include <unordered_map>
 #include <functional>
 #include <vector>
@@ -9,8 +12,6 @@
 #include <mutex>
 #include <queue>
 #include <set>
-#include "message.hpp"
-#include "thread_safe_iostream.hpp"
 
 /**
  * @class Server
@@ -77,15 +78,12 @@ class Server {
   void _removeClient(long long clientID);  ///< Thread function for removing existing clients.
 
   int server_fd_;  ///< Server's listening socket file descriptor.
-  std::unordered_map<Message::Type, std::function<void(long long&, const Message&)>> actions_;
-  std::mutex action_mutex_;  ///< Protects access to the actions map.
-
-  std::unordered_map<long long, int> client_sockets_;  ///< Mapping of client IDs to their socket descriptors.
   std::mutex client_mutex_;  ///< Protects access to the client_sockets_ map.
-
-  std::atomic<bool> stop_;  ///< Atomic flag to stop the server.
-  std::vector<std::thread> worker_threads_;  ///< Threads handling clients and accepting connections.
+  std::unordered_map<long long, int> client_sockets_;  ///< Mapping of client IDs to their socket descriptors.
   std::set<long long> connected_clients_;  ///< List of active clients.
+  Observer<Message::Type, long long&, const Message&> message_observer_; ///< Observer for message type actions
+  PersistentWorker worker_; ///< Worker for accepting connections
+  long long id_count_; ///< ID count
 };
 
 #endif // SERVER_HPP
