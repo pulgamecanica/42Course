@@ -140,41 +140,20 @@ void Client::update() {
     return ;
   }
 
-  std::cout << "Received [" << bytes_received << "] bytes" << std::endl;
-  std::cout << "********************************************" << std::endl;
-  std::cout << "Message:" << std::endl;
-  for (auto byte: temp_buffer) {
-    std::cout << byte;
-  }
-  std::cout << "********************************************" << std::endl;
-  std::cout << "Total:" << std::endl;
-  for (auto byte: incoming_buffer_) {
-    std::cout << byte;
-  }
-  std::cout << "********************************************" << std::endl;
-
   // Process accumulated data into Messages
   try {
-    if (incoming_buffer_.size() < sizeof(size_t)) {
-        throw std::runtime_error("Buffer is too small to extract the type!");
+    std::vector<Message> messages = Message::deserializeMessages(incoming_buffer_);
+
+    for (const auto msg: messages) {
+      std::lock_guard<std::mutex> lock(action_mutex_);
+      auto it = actions_.find(static_cast<Message::Type>(msg.type()));
+      if (it != actions_.end()) {
+        it->second(msg);
+      } else {
+        std::cerr << "No action defined for message type: " << msg.type() << "\n";
+      }
     }
-    int type;
-    std::memcpy(&type, incoming_buffer_.data(), sizeof(int));
-    Message message(type);
-    std::cout << "Successfully created a message of type: " << type << std::endl;
-    message << incoming_buffer_; // Load Message content
-    
-    // // Find the action associated with the message type
-    // std::lock_guard<std::mutex> lock(action_mutex_);
-    // auto it = actions_.find(static_cast<Message::Type>(message.type()));
-    // if (it != actions_.end()) {
-    //   // Execute the action
-    //   it->second(message);
-    // } else {
-    //   std::cerr << "No action defined for message type: " << static_cast<int>(message.type()) << "\n";
-    // }
   } catch (const std::exception& ex) {
-    // Handle any unexpected exceptions
     std::cerr << "Error processing message: " << ex.what() << "\n";
   }
   incoming_buffer_.erase(incoming_buffer_.begin(), incoming_buffer_.end());

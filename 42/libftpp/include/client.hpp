@@ -73,7 +73,6 @@ class Client {
   std::mutex action_mutex_;  ///< Protects access to the actions map.
 
   std::vector<uint8_t> incoming_buffer_;  ///< Buffer for receiving data.
-  // std::mutex incoming_mutex_;  ///< Protects access to the incoming buffer.
 };
 
 #endif  // CLIENT_HPP

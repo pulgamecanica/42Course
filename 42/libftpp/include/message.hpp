@@ -33,18 +33,27 @@ public:
    * @return Reference to the current message for chaining.
    */
   Message& operator<<(const std::string& str);
-
-  Message& operator<<(const std::vector<uint8_t>& data);
   
   template <typename T>
   Message& operator<<(const T& data) {
-    if constexpr (std::is_same_v<T, int>) {
-      if (message_type_ != Type::Int) {
+    switch (message_type_) {
+      case Type::Int: {
+        if constexpr (std::is_same_v<T, int>)
+          break ;
         throw std::runtime_error("Message type mismatch: expected Int");
       }
-    } else if constexpr (std::is_same_v<T, float> || std::is_same_v<T, double>) {
-      if (message_type_ != Type::Double) {
-        throw std::runtime_error("Message type mismatch: expected Double");
+      case Type::String: {
+        if constexpr (std::is_same_v<T, size_t> || std::is_same_v<T, std::string> || std::is_same_v<T, char>)
+          break ;
+        throw std::runtime_error("Message type mismatch: expected std::string");
+      }
+      case Type::Double: {
+        if constexpr (std::is_same_v<T, float> || std::is_same_v<T, double>)
+          break ;
+        throw std::runtime_error("Message type mismatch: expected double | float");
+      }
+      default: {
+        throw std::runtime_error("Message type mismatch: invalid type");
       }
     }
     buffer_ << data;
@@ -71,6 +80,8 @@ public:
         throw std::runtime_error("Message type mismatch: expected Double");
       }
     }
+    int type;
+    buffer_ >> type;
     buffer_ >> data;
     return *this;
   }
@@ -86,6 +97,15 @@ public:
    * @return The serialized data.
    */
   std::vector<uint8_t> getSerializedData() const;
+
+  /**
+   * @brief Deserialize a buffer into multiple `Message` objects.
+   * @param data The raw data buffer containing one or more serialized messages.
+   * @return A vector of deserialized `Message` objects.
+   * @throw std::runtime_error if the data is invalid or incomplete.
+   */
+  static std::vector<Message> deserializeMessages(const std::vector<uint8_t>& data);
+
 private:
   Type message_type_;        ///< The type of the message.
   mutable DataBuffer buffer_;        ///< The data buffer for serialization.

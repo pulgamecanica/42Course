@@ -58,7 +58,7 @@ ${NAME}:   ${OBJ}
 			${RL} ${NAME}
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
-test:	all test_pool test_data_buffer test_memento test_observer test_singleton test_state_machine test_thread_safe_iostream test_thread_safe_queue test_thread test_worker_pool test_persistant_worker test_message test_client
+test:	all test_pool test_data_buffer test_memento test_observer test_singleton test_state_machine test_thread_safe_iostream test_thread_safe_queue test_thread test_worker_pool test_persistant_worker test_message test_client test_server
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 
 			@printf "\n$(C_BLUE)********************** Pool Test**********************$(C_END)\n"
@@ -106,12 +106,16 @@ test:	all test_pool test_data_buffer test_memento test_observer test_singleton t
 			-@echo -n "Total : "; ./test_persistant_worker | wc -l
 			@printf "$(C_BLUE)*****************************************************************$(C_END)\n"
 			
+			@printf "\n$(C_BLUE)********************** Message **********************$(C_END)\n"
+			-@./test_message
+			@printf "$(C_BLUE)******************************************************$(C_END)\n"
+			
 			@printf "\n$(C_BLUE)********************** Client **********************$(C_END)\n"
 			-@./test_client
 			@printf "$(C_BLUE)******************************************************$(C_END)\n"
 			
-			@printf "\n$(C_BLUE)********************** Client **********************$(C_END)\n"
-			-@./test_message
+			@printf "\n$(C_BLUE)********************** Server **********************$(C_END)\n"
+			-@./test_server
 			@printf "$(C_BLUE)******************************************************$(C_END)\n"
 			
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
@@ -150,11 +154,15 @@ test_worker_pool: tests/main_worker_pool.cpp
 test_persistant_worker: tests/main_persistant_worker.cpp
 	$(CXX) -o test_persistant_worker -I include $< -L . -lftpp
 
+test_message: tests/main_message.cpp
+	$(CXX) -o test_message -g -fsanitize=address -I include $< -L . -lftpp
+
 test_client: tests/main_client.cpp
 	$(CXX) -o test_client -g -fsanitize=address -I include $< -L . -lftpp
 
-test_message: tests/main_message.cpp
-	$(CXX) -o test_message -g -fsanitize=address -I include $< -L . -lftpp
+test_server: tests/main_server.cpp
+	$(CXX) -o test_server -g -fsanitize=address -I include $< -L . -lftpp
+
 
 valgrind-%:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=$(subst valgrind-,,$@)-valgrind-out.txt ./$(subst valgrind-,,$@) $(subst valgrind-,,$@)_ARGS

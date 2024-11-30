@@ -9,9 +9,21 @@ int main() {
     Client client;
 
 	client.defineAction(3, [](const Message& msg){
-        int doubledValue;
+        double doubledValue;
         msg >> doubledValue;
         threadSafeCout << "Received a doubled value: " << doubledValue << std::endl;
+    });
+
+    client.defineAction(2, [](const Message& msg){
+        std::string strVal;
+        msg >> strVal;
+        threadSafeCout << "Received a string value: " << strVal << std::endl;
+    });
+
+    client.defineAction(1, [](const Message& msg){
+        int val;
+        msg >> val;
+        threadSafeCout << "Received an int value: " << val << std::endl;
     });
 
     // Connect to the server
