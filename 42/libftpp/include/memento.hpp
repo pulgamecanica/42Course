@@ -20,7 +20,7 @@
 * It achieves this by exposing `save()` and `load()` methods that internally call the private `_saveToSnapshot()` 
 * and `_loadFromSnapshot()` methods of the derived class. These private methods are accessed using the `friend` 
 * mechanism, allowing `Memento` to interact directly with the internals of derived classes.
-*
+* 
 * ## Usage:
 * - Derive your class from `Memento`.
 * - Implement the private `_saveToSnapshot()` and `_loadFromSnapshot()` methods to define what state should 

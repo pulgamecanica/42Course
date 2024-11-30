@@ -58,7 +58,7 @@ ${NAME}:   ${OBJ}
 			${RL} ${NAME}
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
-test:	all test_pool test_data_buffer test_memento test_observer test_singleton test_state_machine test_thread_safe_iostream test_thread_safe_queue test_thread test_worker_pool test_persistant_worker test_message test_client test_server
+test:	all test_pool test_data_buffer test_memento test_observer test_singleton test_state_machine test_thread_safe_iostream test_thread_safe_queue test_thread test_worker_pool test_persistant_worker test_message test_client test_server test_vector_2 test_vector_3
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 
 			@printf "\n$(C_BLUE)********************** Pool Test**********************$(C_END)\n"
@@ -110,6 +110,14 @@ test:	all test_pool test_data_buffer test_memento test_observer test_singleton t
 			-@./test_message
 			@printf "$(C_BLUE)******************************************************$(C_END)\n"
 			
+			@printf "\n$(C_BLUE)********************** IVector2 **********************$(C_END)\n"
+			-@./test_vector_2
+			@printf "$(C_BLUE)******************************************************$(C_END)\n"
+			
+			@printf "\n$(C_BLUE)********************** IVector3 **********************$(C_END)\n"
+			-@./test_vector_3
+			@printf "$(C_BLUE)******************************************************$(C_END)\n"
+
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show --no-print-directory
 
@@ -155,6 +163,11 @@ test_client: tests/main_client.cpp
 test_server: tests/main_server.cpp
 	$(CXX) -o test_server -g -fsanitize=address -I include $< -L . -lftpp
 
+test_vector_2: tests/main_vector_2.cpp
+	$(CXX) -o test_vector_2 -g -fsanitize=address -I include $< -L . -lftpp
+
+test_vector_3: tests/main_vector_3.cpp
+	$(CXX) -o test_vector_3 -g -fsanitize=address -I include $< -L . -lftpp
 
 valgrind-%:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=$(subst valgrind-,,$@)-valgrind-out.txt ./$(subst valgrind-,,$@) $(subst valgrind-,,$@)_ARGS
