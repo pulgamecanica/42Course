@@ -8,13 +8,6 @@ Design Patterns
    :protected-members:
    :undoc-members:
 
-.. doxygenclass:: Observer
-   :project: libftpp
-   :members:
-   :private-members:
-   :protected-members:
-   :undoc-members:
-
 .. doxygenclass:: Singleton
    :project: libftpp
    :members:
@@ -29,6 +22,16 @@ Design Patterns
    :protected-members:
    :undoc-members:
 
-.. .. toctree::
-..    pool.md
-..    data_buffer.md
+.. doxygenclass:: Observer
+   :project: libftpp
+   :members:
+   :private-members:
+   :protected-members:
+   :undoc-members:
+
+.. doxygenclass:: ObservableValue
+   :project: libftpp
+   :members:
+   :private-members:
+   :protected-members:
+   :undoc-members:

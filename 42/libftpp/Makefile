@@ -5,6 +5,9 @@ INC_PATH        =   include
 SRC_PATH        =   src
 
 SRC             =   src/data_buffer.cpp \
+		src/scheduler.cpp \
+		src/timer.cpp \
+		src/chronometer.cpp \
 		src/perlin_noise_2D.cpp \
 		src/random_2D_coordinate_generator.cpp \
 		src/client.cpp \
@@ -60,7 +63,15 @@ ${NAME}:   ${OBJ}
 			${RL} ${NAME}
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
-test:	all test_pool test_data_buffer test_memento test_observer test_singleton test_state_machine test_thread_safe_iostream test_thread_safe_queue test_thread test_worker_pool test_persistant_worker test_message test_client test_server test_vector_2 test_vector_3 test_random_2D_coordinate_generator test_perlin_noise_2D
+test:	all test_pool test_data_buffer \
+		test_memento test_observer test_singleton \
+		test_state_machine test_thread_safe_iostream \
+		test_thread_safe_queue test_thread test_worker_pool \
+		test_persistant_worker test_message test_client \
+		test_server test_vector_2 test_vector_3 \
+		test_random_2D_coordinate_generator test_perlin_noise_2D \
+		test_timer test_chronometer test_scheduler \
+		test_observable_value
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 
 			@printf "\n$(C_BLUE)********************** Pool Test**********************$(C_END)\n"
@@ -79,7 +90,6 @@ test:	all test_pool test_data_buffer test_memento test_observer test_singleton t
 			-@./test_observer
 			@printf "$(C_BLUE)********************************************************$(C_END)\n"
 			
-
 			@printf "\n$(C_BLUE)********************** Singleton **********************$(C_END)\n"
 			-@./test_singleton
 			@printf "$(C_BLUE)*********************************************************$(C_END)\n"
@@ -127,6 +137,22 @@ test:	all test_pool test_data_buffer test_memento test_observer test_singleton t
 			@printf "\n$(C_BLUE)***************** Perlin Noise 2D ******************$(C_END)\n"
 			-@./test_perlin_noise_2D
 			@printf "$(C_BLUE)******************************************************$(C_END)\n"
+
+			@printf "\n$(C_BLUE)*********************** Timer ************************$(C_END)\n"
+			-@./test_timer
+			@printf "$(C_BLUE)*******************************************************$(C_END)\n"
+
+			@printf "\n$(C_BLUE)********************* Chronometer **********************$(C_END)\n"
+			-@./test_chronometer
+			@printf "$(C_BLUE)**********************************************************$(C_END)\n"
+
+			@printf "\n$(C_BLUE)***************** Observable Value ******************$(C_END)\n"
+			-@./test_observable_value
+			@printf "$(C_BLUE)*******************************************************$(C_END)\n"
+
+			@printf "\n$(C_BLUE)********************* Scheduler **********************$(C_END)\n"
+			-@./test_scheduler
+			@printf "$(C_BLUE)********************************************************$(C_END)\n"
 
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show --no-print-directory
@@ -185,10 +211,23 @@ test_random_2D_coordinate_generator: tests/main_random_2D_coordinate_generator.c
 test_perlin_noise_2D: tests/main_perlin_2D.cpp
 	$(CXX) -o test_perlin_noise_2D -g -fsanitize=address -I include $< -L . -lftpp
 
+test_timer: tests/main_timer.cpp
+	$(CXX) -o test_timer -g -fsanitize=address -I include $< -L . -lftpp
+
+test_chronometer: tests/main_chronometer.cpp
+	$(CXX) -o test_chronometer -g -fsanitize=address -I include $< -L . -lftpp
+
+test_scheduler: tests/main_scheduler.cpp
+	$(CXX) -o test_scheduler -g -fsanitize=address -I include $< -L . -lftpp
+
+test_observable_value: tests/main_observable_value.cpp
+	$(CXX) -o test_observable_value -g -fsanitize=address -I include $< -L . -lftpp
+
 valgrind-%:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=$(subst valgrind-,,$@)-valgrind-out.txt ./$(subst valgrind-,,$@) $(subst valgrind-,,$@)_ARGS
 	@echo "[MAKEFILE] You can setup test arguments by setting up the env $(NAME)_ARGS"
 	@echo "[MAKEFILE] Ex: export $(NAME)_ARGS=\"-a --recursive ..\""
+
 clean:
 			$(RM) $(OBJ_D)
 			@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

@@ -1,3 +1,8 @@
+/**
+ * @file server.hpp
+ * @brief Header file for the `Server` class, using tcp protocol.
+ */
+
 #ifndef SERVER_HPP
 #define SERVER_HPP
 

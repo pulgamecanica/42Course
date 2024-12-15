@@ -1,3 +1,8 @@
+/**
+ * @file network.hpp
+ * @brief Header file for the network module.
+ */
+
 #ifndef NETWORK_HPP
 #define NETWORK_HPP
 

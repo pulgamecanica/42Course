@@ -2,6 +2,7 @@
  * @file client.hpp
  * @brief Header file for the `Client` class, a container for clients.
  */
+
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 

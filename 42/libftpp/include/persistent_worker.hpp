@@ -1,3 +1,8 @@
+/**
+ * @file persistent_worker.hpp
+ * @brief Header file for the persistent worker.
+ */
+
 #ifndef PERSISTENT_WORKER_HPP
 #define PERSISTENT_WORKER_HPP
 

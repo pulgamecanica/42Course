@@ -1,3 +1,8 @@
+/**
+ * @file threading.hpp
+ * @brief Header file for the Threading module.
+ */
+
 #ifndef THREADING_HPP
 #define THREADING_HPP
 

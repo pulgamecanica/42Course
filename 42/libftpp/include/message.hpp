@@ -1,3 +1,8 @@
+/**
+* @file message.hpp
+* @brief Provides the message implementation between `Server` & `Client`
+*/
+
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
 
