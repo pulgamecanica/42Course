@@ -11,7 +11,7 @@ This library provides 7 core components:
 | **`IOStream`** | `thread_safe_iostream.hpp` & `logger.hpp` | `thread_safe_iostream.hpp` & `logger.hpp` | Defines a structure to deal with output and input for programs using threads, and a logger. |
 | **`Thread`** | `threading.hpp` | `thread_safe_queue.hpp` & `thread.hpp`, `worker_pool .hpp` & `persistent_worker.hpp` |  Which contain a set of utils to handle threads. |
 | **`Network`** | `network.hpp` | `message.hpp`, `server.hpp` & `client.hpp` | A set of utils to generate a server and a client which can comunicate via the `Message` class. |
-| **`Mathematics`** | `IVector2.hpp` | `IVector2.hpp` | Implementation of a 2D and 3D vecotor with utils and operators. |
+| **`Mathematics`** | `IVector2.hpp` | `IVector2.hpp`, `IVector3.hpp`, `random_2D_coordinate_generator.hpp`, `perlin_noise_2D.hpp` | Implementation of a 2D and 3D vecotor with utils and operators. Implementation of random generator and perlinnoise 2D coordinates generator. |
 | **`Time`** | `Time.hpp` | `chronometer.hpp`, `timer.hpp` & `scheduler.hpp` | Time related utils. |
 
 
