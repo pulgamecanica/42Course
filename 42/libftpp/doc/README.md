@@ -2,16 +2,17 @@
 
 ## Overview
 
-This library provides 6 core components:
+This library provides 7 core components:
 
 | Component | All-in-one Header | Dependencies | Description |
 | --------- | ----------------- | ------------ | ----------- |
 | **`Data Structures`** | `data_structures.hpp` | `pool.hpp` & `data_buffer.hpp` | This structures will help you manage and serialize data. |
-| **`Design Patterns`** | `design_patterns.hpp` | `memento.hpp`, `observer.hpp`, `singleton.hpp` & `state_machine.hpp` | Contains a set of utils to handle different scenarios in your programs. |
-| **`IOStream`** | `thread_safe_iostream.hpp` | `thread_safe_iostream.hpp` | Defines a structure to deal with output and input for programs using threads. |
+| **`Design Patterns`** | `design_patterns.hpp` | `memento.hpp`, `observer.hpp`, `observable_value.hpp` `singleton.hpp` & `state_machine.hpp` | Contains a set of utils to handle different scenarios in your programs. |
+| **`IOStream`** | `thread_safe_iostream.hpp` & `logger.hpp` | `thread_safe_iostream.hpp` & `logger.hpp` | Defines a structure to deal with output and input for programs using threads, and a logger. |
 | **`Thread`** | `threading.hpp` | `thread_safe_queue.hpp` & `thread.hpp`, `worker_pool .hpp` & `persistent_worker.hpp` |  Which contain a set of utils to handle threads. |
 | **`Network`** | `network.hpp` | `message.hpp`, `server.hpp` & `client.hpp` | A set of utils to generate a server and a client which can comunicate via the `Message` class. |
 | **`Mathematics`** | `IVector2.hpp` | `IVector2.hpp` | Implementation of a 2D and 3D vecotor with utils and operators. |
+| **`Time`** | `Time.hpp` | `chronometer.hpp`, `timer.hpp` & `scheduler.hpp` | Time related utils. |
 
 
 - *Note*: `Server` & `Client` use the `Observer` design pattern.  

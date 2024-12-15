@@ -29,7 +29,7 @@ public:
    * @brief Checks if the timer has timed out.
    * @return True if the timer has timed out, false otherwise.
    */
-  bool has_timed_out() const;
+  bool hasTimedOut() const;
 
 private:
   int64_t duration_ms_; ///< The duration in milliseconds.

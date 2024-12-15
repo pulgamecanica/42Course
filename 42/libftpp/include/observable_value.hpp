@@ -21,7 +21,7 @@ public:
    * @brief Constructs an ObservableValue with an initial value.
    * @param initial_value The initial value.
    */
-  explicit ObservableValue(const T& initial_value): value_(initial_value) {}
+  ObservableValue(const T& initial_value): value_(initial_value) {}
 
   /**
    * @brief Gets the current value.

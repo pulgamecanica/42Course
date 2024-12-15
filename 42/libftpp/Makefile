@@ -5,6 +5,7 @@ INC_PATH        =   include
 SRC_PATH        =   src
 
 SRC             =   src/data_buffer.cpp \
+		src/logger.cpp \
 		src/scheduler.cpp \
 		src/timer.cpp \
 		src/chronometer.cpp \
@@ -63,6 +64,14 @@ ${NAME}:   ${OBJ}
 			${RL} ${NAME}
 			@printf "$(C_GREEN)DONE$(C_END)\n"
 
+test_test: tests/main_test.cpp
+	$(CXX) -o test_test -I include $< -L . -lftpp
+
+main_test: test_test
+	@printf "\n$(C_BLUE)********************** Main Test **********************$(C_END)\n"
+	-@./test_test
+	@printf "$(C_BLUE)*****************************************************$(C_END)\n"		
+
 test:	all test_pool test_data_buffer \
 		test_memento test_observer test_singleton \
 		test_state_machine test_thread_safe_iostream \
@@ -71,14 +80,15 @@ test:	all test_pool test_data_buffer \
 		test_server test_vector_2 test_vector_3 \
 		test_random_2D_coordinate_generator test_perlin_noise_2D \
 		test_timer test_chronometer test_scheduler \
-		test_observable_value
+		test_observable_value \
+		test_logger
 			@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
 
-			@printf "\n$(C_BLUE)********************** Pool Test**********************$(C_END)\n"
+			@printf "\n$(C_BLUE)********************** Pool Test **********************$(C_END)\n"
 			-@./test_pool
 			@printf "$(C_BLUE)*****************************************************$(C_END)\n"
 			
-			@printf "\n$(C_BLUE)********************** Data Buffer Test**********************$(C_END)\n"
+			@printf "\n$(C_BLUE)********************** Data Buffer Test **********************$(C_END)\n"
 			-@./test_data_buffer
 			@printf "$(C_BLUE)***************************************************************$(C_END)\n"
 			
@@ -154,6 +164,10 @@ test:	all test_pool test_data_buffer \
 			-@./test_scheduler
 			@printf "$(C_BLUE)********************************************************$(C_END)\n"
 
+			@printf "\n$(C_BLUE)********************* Logger **********************$(C_END)\n"
+			-@./test_logger
+			@printf "$(C_BLUE)*****************************************************$(C_END)\n"
+
 			@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
 			@$(MAKE) show --no-print-directory
 
@@ -223,19 +237,22 @@ test_scheduler: tests/main_scheduler.cpp
 test_observable_value: tests/main_observable_value.cpp
 	$(CXX) -o test_observable_value -g -fsanitize=address -I include $< -L . -lftpp
 
+test_logger: tests/main_logger.cpp
+	$(CXX) -o test_logger -g -fsanitize=address -I include $< -L . -lftpp
+
 valgrind-%:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=$(subst valgrind-,,$@)-valgrind-out.txt ./$(subst valgrind-,,$@) $(subst valgrind-,,$@)_ARGS
 	@echo "[MAKEFILE] You can setup test arguments by setting up the env $(NAME)_ARGS"
 	@echo "[MAKEFILE] Ex: export $(NAME)_ARGS=\"-a --recursive ..\""
 
 clean:
-			$(RM) $(OBJ_D)
-			@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-			@printf "$(C_RED)Cleaning objs$(C_END)\n"
+	$(RM) $(OBJ_D)
+	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean:     clean
-			$(RM) $(NAME) *valgrind-out.txt doc/xml test_*
-			@printf "$(C_RED)Deleted Everything$(C_END)\n"
+	$(RM) $(NAME) *valgrind-out.txt doc/xml test_*
+	@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 re: fclean all
 

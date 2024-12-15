@@ -5,7 +5,7 @@ int main() {
   Timer timer(2000);
   std::cout << "Timer started. Waiting..." << std::endl;
 
-  while (!timer.has_timed_out()) {
+  while (!timer.hasTimedOut()) {
     ;
   }
 

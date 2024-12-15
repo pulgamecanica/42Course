@@ -17,5 +17,6 @@ libftpp documentation
    thread
    network
    mathematics
+   time
 
 More detailed project features and explanation to follow here.

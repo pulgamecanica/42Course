@@ -8,7 +8,7 @@ void Timer::reset() {
   start_time_ = std::chrono::steady_clock::now();
 }
 
-bool Timer::has_timed_out() const {
+bool Timer::hasTimedOut() const {
   auto now = std::chrono::steady_clock::now();
   int64_t elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - start_time_).count();
   return elapsed >= duration_ms_;
