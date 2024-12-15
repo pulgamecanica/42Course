@@ -8,10 +8,10 @@ This library provides 7 core components:
 | --------- | ----------------- | ------------ | ----------- |
 | **`Data Structures`** | `data_structures.hpp` | `pool.hpp` & `data_buffer.hpp` | This structures will help you manage and serialize data. |
 | **`Design Patterns`** | `design_patterns.hpp` | `memento.hpp`, `observer.hpp`, `observable_value.hpp` `singleton.hpp` & `state_machine.hpp` | Contains a set of utils to handle different scenarios in your programs. |
-| **`IOStream`** | `thread_safe_iostream.hpp` & `logger.hpp` | `thread_safe_iostream.hpp` & `logger.hpp` | Defines a structure to deal with output and input for programs using threads, and a logger. |
+| **`IOStream`** | `thread_safe_iostream.hpp`, `logger.hpp` | `thread_safe_iostream.hpp` & `logger.hpp` | Defines a structure to deal with output and input for programs using threads, and a logger. |
 | **`Thread`** | `threading.hpp` | `thread_safe_queue.hpp` & `thread.hpp`, `worker_pool .hpp` & `persistent_worker.hpp` |  Which contain a set of utils to handle threads. |
 | **`Network`** | `network.hpp` | `message.hpp`, `server.hpp` & `client.hpp` | A set of utils to generate a server and a client which can comunicate via the `Message` class. |
-| **`Mathematics`** | `IVector2.hpp` | `IVector2.hpp`, `IVector3.hpp`, `random_2D_coordinate_generator.hpp`, `perlin_noise_2D.hpp` | Implementation of a 2D and 3D vecotor with utils and operators. Implementation of random generator and perlinnoise 2D coordinates generator. |
+| **`Mathematics`** | `IVector2.hpp` | `IVector2.hpp`, `IVector3.hpp`, `random_2D_coordinate_generator.hpp` & `perlin_noise_2D.hpp` | Implementation of a 2D and 3D vecotor with utils and operators. Implementation of random generator and perlinnoise 2D coordinates generator. |
 | **`Time`** | `Time.hpp` | `chronometer.hpp`, `timer.hpp` & `scheduler.hpp` | Time related utils. |
 
 
