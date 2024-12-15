@@ -3,7 +3,7 @@
 #include "perlin_noise_2D.hpp"
 
 int main() {
-    PerlinNoise2D perlin;
+    PerlinNoise2D perlin(42);
 
     const int gridSize = 10;
     char visualChars[] = {' ', '.', ':', '-', '=', '+', '*', '#', '%', '@'};

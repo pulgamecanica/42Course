@@ -14,3 +14,18 @@ Mathematics
    :private-members:
    :protected-members:
    :undoc-members:
+
+.. doxygenclass:: Random2DCoordinateGenerator
+   :project: libftpp
+   :members:
+   :private-members:
+   :protected-members:
+   :undoc-members:
+
+.. doxygenclass:: PerlinNoise2D
+   :project: libftpp
+   :members:
+   :private-members:
+   :protected-members:
+   :undoc-members:
+
