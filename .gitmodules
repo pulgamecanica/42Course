@@ -28,3 +28,6 @@
 [submodule "42/Piscine Object/Module 05 - Pratical work/raygui"]
 	path = 42/Piscine Object/Module 05 - Pratical work/raygui
 	url = https://github.com/raysan5/raygui
+[submodule "42/ft_linear_regression"]
+	path = 42/ft_linear_regression
+	url = https://github.com/42-Course/ft_linear_regression
