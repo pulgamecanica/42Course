@@ -1,0 +1,38 @@
+require "json"
+
+# we use symbolize_names to convert strings to :value (symbolized names)
+boxes = JSON.parse(File.read("boxes.json"), symbolize_names: true)
+
+Vagrant.configure("2") do |config|
+  # Define the base box to use
+  config.vm.box = "ubuntu/jammy64"  # Latest stable Ubuntu version
+  # Loop for all boxes
+  boxes.each do |conf|
+  # Define the node
+  config.vm.define conf[:hostname] do |node|  # Define the node
+    node.vm.hostname = conf[:hostname]
+    # private network for accessing only from the same network
+    # adapter (adapter 2) is dedicated to the private network.
+    # adapter 1 would be for internet NAT for example
+    node.vm.network "private_network", ip: conf[:ip], adapter: 2  # eth1 interface
+    
+    node.vm.provider "virtualbox" do |vb|
+      vb.memory = conf[:memory]  # 1 GB RAM
+      vb.cpus = conf[:cpus]        # 1 CPU
+    end
+
+    node.vm.synced_folder ".", "/vagrant"
+    # provision for moving the .sh file to the vm.
+    node.vm.provision "file", source:conf[:script], destination: "/vagrant/#{conf[:script]}"
+   
+    if conf.key?(:env) && conf[:env] # Check if :env key exists and is not nil
+      node.vm.provision "file", source: conf[:env], destination: "/vagrant/#{conf[:env]}"
+    end
+    # provision to install the script to the vm
+    node.vm.provision "shell", inline: <<-SHELL
+      chmod +x /vagrant/#{conf[:script]}
+      /vagrant/#{conf[:script]}
+    SHELL
+    end
+  end
+end

@@ -1,0 +1,30 @@
+require "json"
+
+boxes = JSON.parse(File.read("boxes.json"), symbolize_names: true)
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/jammy64"
+
+  boxes.each do |conf|
+    config.vm.define conf[:hostname] do |node|
+      node.vm.hostname = conf[:hostname]
+      node.vm.network "private_network", ip: conf[:ip], adapter: 2
+      
+      node.vm.provider "virtualbox" do |vb|
+        vb.memory = conf[:memory]
+        vb.cpus = conf[:cpus]
+      end
+
+      node.vm.synced_folder ".", "/vagrant"
+
+      if conf.key?(:env) && conf[:env] # Check if :env key exists and is not nil
+        node.vm.provision "file", source: conf[:env], destination: "/vagrant/#{conf[:env]}"
+      end
+      # Use Ansible for provisioning
+      node.vm.provision "ansible_local" do |ansible|
+        ansible.playbook = "ansible/playbook.yml"
+        ansible.inventory_path = "ansible/inventory.ini"
+      end
+    end
+  end
+end

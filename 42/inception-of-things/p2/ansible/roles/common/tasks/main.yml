@@ -1,0 +1,78 @@
+---
+- name: Update and install dependencies
+  apt:
+    name:
+      - curl
+      - net-tools
+      - make
+    state: present
+    update_cache: yes
+
+- name: Load environment variables
+  shell: export $(grep -v '^#' /vagrant/.env | xargs)
+
+- name: Install K3s server without Traefik
+  shell: |
+    curl -sfL https://get.k3s.io | sh -s - server \
+      --write-kubeconfig=/vagrant/k3s.yaml \
+      --flannel-iface=enp0s8 \
+      --bind-address=192.168.56.110 \
+      --disable traefik 
+
+- name: Wait for K3s to be ready
+  shell: |
+    while ! sudo systemctl is-active --quiet k3s; do
+      echo "K3s is not active yet. Retrying in 5 seconds..."
+      sleep 5
+    done
+  register: k3s_status
+  changed_when: false
+
+- name: Copy K3s token for agents
+  fetch:
+    src: /var/lib/rancher/k3s/server/node-token
+    dest: /vagrant/k3s_token
+    flat: yes
+
+- name: Install nginx-ingress controller
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/baremetal/deploy.yaml
+
+- name: Wait for nginx ingress controller to be ready
+  shell: |
+    kubectl wait deployment ingress-nginx-controller \
+      -n ingress-nginx \
+      --for=condition=Available \
+      --timeout=120s
+
+- name: Wait for nginx admission webhook service to be ready
+  shell: |
+    until kubectl get endpoints ingress-nginx-controller-admission -n ingress-nginx -o jsonpath='{.subsets[*].addresses[*].ip}' | grep -q '[0-9]'; do
+      echo "Waiting for admission webhook service to be ready..."
+      sleep 1
+    done
+
+- name: Create Apps (Service+Deployment)
+  shell: |
+    kubectl apply -f /vagrant/apps.yaml
+
+- name: Setup ingress
+  shell: |
+    kubectl apply -f /vagrant/ingress.yaml
+
+- name: Patch nginx ingress controller to bind hostPort 80 and 443
+  shell: |
+    kubectl patch deployment ingress-nginx-controller -n ingress-nginx \
+      --type='json' \
+      -p='[
+        {
+          "op": "add",
+          "path": "/spec/template/spec/containers/0/ports/0/hostPort",
+          "value": 80
+        },
+        {
+          "op": "add",
+          "path": "/spec/template/spec/containers/0/ports/1/hostPort",
+          "value": 443
+        }
+      ]'

@@ -1,0 +1,6 @@
+---
+- name: Setup K3s Server
+  hosts: k3s_master
+  become: yes
+  roles:
+    - common

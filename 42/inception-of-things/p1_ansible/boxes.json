@@ -1,0 +1,17 @@
+[
+    {
+      "hostname": "JsardaS",
+      "ip": "192.168.56.110",
+      "memory": "1024",
+      "cpus": "1",
+      "script": "install_k3s_server.sh",
+      "env": ".env"
+    },
+    {
+      "hostname": "JcervoniSW",
+      "ip": "192.168.56.111",
+      "memory": "1024",
+      "cpus": "1",
+      "script": "install_k3s_agent.sh"
+    }
+]

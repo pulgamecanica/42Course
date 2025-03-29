@@ -1,0 +1,22 @@
+---
+- name: Wait for K3s token
+  wait_for:
+    path: /vagrant/k3s_token
+    timeout: 60
+
+- name: Read K3s token
+  set_fact:
+    k3s_token: "{{ lookup('file', '/vagrant/k3s_token') }}"
+
+- name: Install K3s agent
+  shell: curl -sfL https://get.k3s.io | K3S_URL="https://192.168.56.110:6443" sh -s - agent --token "{{ k3s_token }}" --node-ip=192.168.56.111
+
+- name: Copy K3s YAML to rancher directory
+  shell: |
+    sudo mkdir -p /etc/rancher/k3s
+    sudo cp /vagrant/k3s.yaml /etc/rancher/k3s
+    sudo chown vagrant /etc/rancher/k3s/k3s.yaml
+
+- name: Output K3s server setup status
+  debug:
+    msg: "K3s server setup completed successfully!"

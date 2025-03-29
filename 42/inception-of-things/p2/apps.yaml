@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-one
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-one
+  template:
+    metadata:
+      labels:
+        app: app-one
+    spec:
+      containers:
+      - name: hello
+        image: paulbouwer/hello-kubernetes:1.10
+        ports:
+        - containerPort: 8080
+        env:
+          - name: MESSAGE
+            value: "Hello from app one"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-one
+spec:
+  selector:
+    app: app-one
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-two
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-two
+  template:
+    metadata:
+      labels:
+        app: app-two
+    spec:
+      containers:
+      - name: hello
+        image: paulbouwer/hello-kubernetes:1.10
+        ports:
+        - containerPort: 8080
+        env:
+          - name: MESSAGE
+            value: "Hello from app two"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-two
+spec:
+  selector:
+    app: app-two
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-three
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-three
+  template:
+    metadata:
+      labels:
+        app: app-three
+    spec:
+      containers:
+      - name: hello
+        image: paulbouwer/hello-kubernetes:1.10
+        ports:
+        - containerPort: 8080
+        env:
+          - name: MESSAGE
+            value: "Hello from app three"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-three
+spec:
+  selector:
+    app: app-three
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP

@@ -1,0 +1,21 @@
+---
+- name: Load environment variables
+  shell: export $(grep -v '^#' /vagrant/.env | xargs)
+
+- name: Install K3s server
+  shell: curl -sfL https://get.k3s.io | K3S_TOKEN="{{ lookup('file', '/vagrant/.env') }}" sh -s - server --write-kubeconfig=/vagrant/k3s.yaml --flannel-iface=enp0s8 --bind-address=192.168.56.110
+
+- name: Wait for K3s to be ready
+  shell: |
+    while ! sudo systemctl is-active --quiet k3s; do
+      echo "K3s is not active yet. Retrying in 5 seconds..."
+      sleep 5
+    done
+  register: k3s_status
+  changed_when: false
+
+- name: Copy K3s token for agents
+  fetch:
+    src: /var/lib/rancher/k3s/server/node-token
+    dest: /vagrant/k3s_token
+    flat: yes

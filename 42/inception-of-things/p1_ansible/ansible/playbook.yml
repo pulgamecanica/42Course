@@ -1,0 +1,14 @@
+---
+- name: Setup K3s Server
+  hosts: k3s_master
+  become: yes
+  roles:
+    - common
+    - k3s_server
+
+- name: Setup K3s Agent
+  hosts: k3s_agents
+  become: yes
+  roles:
+    - common
+    - k3s_agent

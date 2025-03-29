@@ -1,0 +1,8 @@
+lib*
+lib*/**
+bin
+bin/**
+venv
+venv/**
+**/.vagrant
+**/.env
