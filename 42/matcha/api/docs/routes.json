@@ -1,0 +1,2172 @@
+[
+  {
+    "method": "POST",
+    "path": "/me/block",
+    "description": "Block a user by username",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Block"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The username of the user to block"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "User blocked",
+        "example": {
+          "message": "User blocked",
+          "data": {
+            "username": "janedoe"
+          }
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User not found",
+        "example": {
+          "error": "User not found"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Cannot block yourself",
+        "example": {
+          "error": "You cannot block yourself"
+        }
+      }
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/me/block",
+    "description": "Unblock a user by username",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Block"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The username of the user to unblock"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "User unblocked",
+        "example": {
+          "message": "User unblocked",
+          "data": {
+            "username": "janedoe"
+          }
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User not found",
+        "example": {
+          "error": "User not found"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/blocked",
+    "description": "List users you've blocked",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Block"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Returns a list of blocked users",
+        "example": {
+          "data": [
+            {
+              "username": "janedoe"
+            },
+            {
+              "username": "bobsmith"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/blocked_by",
+    "description": "List users who have blocked you",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Block"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Returns a list of users who blocked you",
+        "example": {
+          "data": [
+            {
+              "username": "alicewonder"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/auth/register",
+    "description": "Register a new user",
+    "auth_required": false,
+    "tags": [
+      "Auth"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "Unique username (max 20 characters)"
+      },
+      {
+        "name": "email",
+        "type": "String",
+        "required": true,
+        "desc": "User email address used for login and verification"
+      },
+      {
+        "name": "password",
+        "type": "String",
+        "required": true,
+        "desc": "User password (will be securely hashed)"
+      },
+      {
+        "name": "first_name",
+        "type": "String",
+        "required": true,
+        "desc": "User's first name"
+      },
+      {
+        "name": "last_name",
+        "type": "String",
+        "required": true,
+        "desc": "User's last name"
+      }
+    ],
+    "responses": [
+      {
+        "code": 201,
+        "desc": "User created",
+        "example": {
+          "message": "User created!"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Validation error",
+        "example": {
+          "error": "Validation failed",
+          "details": {
+            "username": [
+              "is required"
+            ],
+            "email": [
+              "is invalid"
+            ]
+          }
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Username or email taken",
+        "example": {
+          "error": "Username or email already taken"
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/auth/login",
+    "description": "Authenticate an existing user using username and password",
+    "auth_required": false,
+    "tags": [
+      "Auth"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "User's unique username"
+      },
+      {
+        "name": "password",
+        "type": "String",
+        "required": true,
+        "desc": "User's account password"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Login successful",
+        "example": {
+          "token": "jwt.token.here"
+        }
+      },
+      {
+        "code": 401,
+        "desc": "Invalid credentials",
+        "example": {
+          "error": "Invalid credentials"
+        }
+      },
+      {
+        "code": 403,
+        "desc": "Email not confirmed",
+        "example": {
+          "error": "Please confirm your email first."
+        }
+      },
+      {
+        "code": 403,
+        "desc": "User banned",
+        "example": {
+          "error": "User is banned."
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/auth/social",
+    "description": "Authenticate or register a user via social login (OAuth provider)",
+    "auth_required": false,
+    "tags": [
+      "Auth"
+    ],
+    "params": [
+      {
+        "name": "provider",
+        "type": "String",
+        "required": true,
+        "desc": "OAuth provider (e.g., 'google', 'github', 'intra')"
+      },
+      {
+        "name": "provider_user_id",
+        "type": "String",
+        "required": true,
+        "desc": "Unique ID returned by the provider for this user"
+      },
+      {
+        "name": "first_name",
+        "type": "String",
+        "required": false,
+        "desc": "User's first name (optional if new user)"
+      },
+      {
+        "name": "last_name",
+        "type": "String",
+        "required": false,
+        "desc": "User's last name (optional if new user)"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "User authenticated",
+        "example": {
+          "token": "jwt.token.here"
+        }
+      },
+      {
+        "code": 201,
+        "desc": "User created via social login",
+        "example": {
+          "token": "jwt.token.here"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Missing required social login fields",
+        "example": {
+          "error": "Missing provider or UID"
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/email/reset-password",
+    "description": "Send password reset email",
+    "auth_required": false,
+    "tags": [
+      "User",
+      "Email"
+    ],
+    "params": [
+      {
+        "name": "email",
+        "type": "String",
+        "required": true,
+        "desc": "Your account email"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Email sent",
+        "example": {
+          "message": "Password reset email sent"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/email/confirm/:code",
+    "description": "Validate confirmation code and confrim account",
+    "auth_required": false,
+    "tags": [
+      "User",
+      "Email"
+    ],
+    "params": [
+      {
+        "name": "code",
+        "type": "String",
+        "required": true,
+        "desc": "Confirmation code"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Account confirmed",
+        "example": {
+          "message": "Account confirmed"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "Invalid or expired code",
+        "example": {
+          "error": "Invalid or expired code"
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/email/reset-password/:code",
+    "description": "Reset your password using a valid reset code",
+    "auth_required": false,
+    "tags": [
+      "User",
+      "Email"
+    ],
+    "params": [
+      {
+        "name": "code",
+        "type": "String",
+        "required": true,
+        "desc": "Reset password code received by email"
+      },
+      {
+        "name": "new_password",
+        "type": "String",
+        "required": true,
+        "desc": "Your new password"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Password reset successfully",
+        "example": {
+          "message": "Password reset successfully"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "Invalid or expired code",
+        "example": {
+          "error": "Invalid or expired code"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Missing or invalid input",
+        "example": {
+          "error": "Invalid password"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/pictures",
+    "description": "List all pictures uploaded by the current user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Picture"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Returns list of pictures",
+        "example": {
+          "data": [
+            {
+              "id": 1,
+              "url": "https://cdn.example.com/pic1.jpg",
+              "is_profile": false
+            },
+            {
+              "id": 2,
+              "url": "https://cdn.example.com/pic2.jpg",
+              "is_profile": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/me/pictures",
+    "description": "Upload a new picture",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Picture"
+    ],
+    "params": [
+      {
+        "name": "url",
+        "type": "String",
+        "required": true,
+        "desc": "URL of the picture"
+      },
+      {
+        "name": "is_profile",
+        "type": "TrueClass",
+        "required": false,
+        "desc": "Set as profile picture"
+      }
+    ],
+    "responses": [
+      {
+        "code": 201,
+        "desc": "Picture created",
+        "example": {
+          "message": "Picture uploaded!",
+          "data": {
+            "id": 3,
+            "url": "https://cdn.example.com/pic3.jpg",
+            "is_profile": false
+          }
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Invalid data",
+        "example": {
+          "error": "Validation failed",
+          "details": [
+            "is not a valid URL"
+          ]
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Too many pictures",
+        "example": {
+          "error": "Too many pictures",
+          "details": [
+            "<= 5"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "PATCH",
+    "path": "/me/pictures/:id",
+    "description": "Edit a picture (e.g., set as profile)",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Picture"
+    ],
+    "params": [
+      {
+        "name": "id",
+        "type": "Integer",
+        "required": true,
+        "desc": null
+      },
+      {
+        "name": "is_profile",
+        "type": "TrueClass",
+        "required": false,
+        "desc": null
+      },
+      {
+        "name": "url",
+        "type": "String",
+        "required": false,
+        "desc": null
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Picture updated",
+        "example": {
+          "message": "Picture updated!",
+          "data": {
+            "id": 2,
+            "url": "https://cdn.example.com/updated.jpg",
+            "is_profile": true
+          }
+        }
+      },
+      {
+        "code": 404,
+        "desc": "Picture not found",
+        "example": {
+          "error": "Picture not found"
+        }
+      },
+      {
+        "code": 403,
+        "desc": "Not your picture",
+        "example": {
+          "error": "Unauthorized"
+        }
+      }
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/me/pictures/:id",
+    "description": "Delete a picture",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Picture"
+    ],
+    "params": [
+      {
+        "name": "id",
+        "type": "Integer",
+        "required": true,
+        "desc": null
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Picture deleted",
+        "example": {
+          "message": "Picture deleted"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "Not found",
+        "example": {
+          "error": "Picture not found"
+        }
+      },
+      {
+        "code": 403,
+        "desc": "Unauthorized",
+        "example": {
+          "error": "Unauthorized"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/users/:username/pictures",
+    "description": "Fetch the pictures of a user by their username",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "PublicProfile",
+      "Picture"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The unique username of the user"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Public user data",
+        "example": {
+          "data": [
+            {
+              "id": 217,
+              "user_id": 2248,
+              "url": "https://robohash.org/wallace.png?size=300x300&set=set1",
+              "is_profile": "t",
+              "created_at": "2025-04-15 07:49:41",
+              "updated_at": "2025-04-15 07:49:41"
+            }
+          ]
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User not found or banned",
+        "example": {
+          "error": "User not found"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User blocked you",
+        "example": {
+          "error": "User blocked you"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User is blocked",
+        "example": {
+          "error": "User is blocked"
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/me/dates",
+    "description": "Schedule a date with a connected user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Date"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The other user's username"
+      },
+      {
+        "name": "scheduled_at",
+        "type": "String",
+        "required": true,
+        "desc": "Scheduled time for the date (ISO 8601)"
+      },
+      {
+        "name": "location",
+        "type": "String",
+        "required": true,
+        "desc": "Optional location for the date"
+      },
+      {
+        "name": "note",
+        "type": "String",
+        "required": false,
+        "desc": "Oprional note for the date"
+      }
+    ],
+    "responses": [
+      {
+        "code": 201,
+        "desc": "Date scheduled",
+        "example": {
+          "message": "Date scheduled",
+          "data": {
+            "id": "42",
+            "connection_id": "99",
+            "scheduled_at": "2025-04-12T20:00:00Z",
+            "location": "Café Luna",
+            "created_at": "2025-04-12T18:22:00Z"
+          }
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User or connection not found",
+        "example": {
+          "error": "No connection found with this user"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Validation error",
+        "example": {
+          "error": "Invalid date creation",
+          "details": [
+            "scheduled_at must be a valid datetime string"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/dates",
+    "description": "List all scheduled dates for the current user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Date"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Array of scheduled dates",
+        "example": {
+          "data": [
+            {
+              "id": "42",
+              "connection_id": "99",
+              "scheduled_at": "2025-04-12T20:00:00Z",
+              "location": "Café Luna",
+              "created_at": "2025-04-12T18:22:00Z",
+              "username": "bob",
+              "first_name": "Bob",
+              "last_name": "Smith"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/me/dates/:id",
+    "description": "Cancel or delete a date request",
+    "auth_required": true,
+    "tags": [
+      "Date"
+    ],
+    "params": [
+      {
+        "name": "id",
+        "type": "Integer",
+        "required": true,
+        "desc": "ID of the date request"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Date request deleted",
+        "example": {
+          "message": "Date deleted"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "Date not found",
+        "example": {
+          "error": "Date not found"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "Connection not found",
+        "example": {
+          "error": "Connection not found"
+        }
+      },
+      {
+        "code": 403,
+        "desc": "Not authorized to delete this date",
+        "example": {
+          "error": "Unauthorized"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/connections",
+    "description": "Get all users you are connected with",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Connection"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "List of connected users",
+        "example": {
+          "data": [
+            {
+              "username": "janedoe",
+              "first_name": "Jane",
+              "last_name": "Doe"
+            },
+            {
+              "username": "bobsmith",
+              "first_name": "Bob",
+              "last_name": "Smith"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/me/connect",
+    "description": "Create a connection with a matched user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Connection"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The username of the user to connect with"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Connection created",
+        "example": {
+          "message": "Connected with janedoe",
+          "data": {
+            "id": 42,
+            "user_a_id": 1,
+            "user_b_id": 2,
+            "created_at": "2025-04-12T10:00:00Z",
+            "updated_at": "2025-04-12T10:00:00Z"
+          }
+        }
+      },
+      {
+        "code": 403,
+        "desc": "User is not matched with you",
+        "example": {
+          "error": "User is not matched with you"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User not found",
+        "example": {
+          "error": "User not found"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Invalid request",
+        "example": {
+          "error": "Validation failed",
+          "details": [
+            "username is required"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/me/connect",
+    "description": "Remove an existing connection",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Connection"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The username of the user to disconnect from"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Connection removed",
+        "example": {
+          "message": "Disconnected from janedoe"
+        }
+      },
+      {
+        "code": 403,
+        "desc": "You and username are not connected",
+        "example": {
+          "error": "You and janedoe are not connected"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User not found",
+        "example": {
+          "error": "User not found"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/visits",
+    "description": "See who has viewed your profile",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "ProfileView"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "List of users who viewed you",
+        "example": {
+          "data": [
+            {
+              "username": "janedoe",
+              "first_name": "Jane",
+              "last_name": "Doe",
+              "viewed_at": "2025-04-12T10:00:00Z"
+            },
+            {
+              "username": "bobsmith",
+              "first_name": "Bob",
+              "last_name": "Smith",
+              "viewed_at": "2025-04-11T16:40:00Z"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/views",
+    "description": "See which users you have viewed",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "ProfileView"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "List of profiles you viewed",
+        "example": {
+          "data": [
+            {
+              "username": "alicewonder",
+              "first_name": "Alice",
+              "last_name": "Wonder",
+              "viewed_at": "2025-04-12T09:00:00Z"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/notifications",
+    "description": "List notifications for the current user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Notifications"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "List of notifications",
+        "example": {
+          "data": [
+            {
+              "id": 1,
+              "message": "You have a new like!",
+              "read": false,
+              "from_username": "bob",
+              "created_at": "2025-04-13T10:00:00Z"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "PATCH",
+    "path": "/me/notifications/:id",
+    "description": "Mark a notification as read",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Notifications"
+    ],
+    "params": [
+      {
+        "name": "id",
+        "type": "Integer",
+        "required": true,
+        "desc": "Notification ID"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Notification marked as read",
+        "example": {
+          "message": "Notification marked as read"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "Notification not found",
+        "example": {
+          "error": "Notification not found"
+        }
+      }
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/me/notifications/:id",
+    "description": "Delete a notification",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Notifications"
+    ],
+    "params": [
+      {
+        "name": "id",
+        "type": "Integer",
+        "required": true,
+        "desc": "Notification ID"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Notification deleted",
+        "example": {
+          "message": "Notification deleted"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "Notification not found",
+        "example": {
+          "error": "Notification not found"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me",
+    "description": "Get the currently authenticated user",
+    "auth_required": true,
+    "tags": [
+      "User"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "User object",
+        "example": {
+          "data": {
+            "id": 1,
+            "username": "johndoe",
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "john@example.com",
+            "gender": "male",
+            "sexual_preferences": "everyone",
+            "biography": "Just a regular person.",
+            "latitude": 48.8566,
+            "longitude": 2.3522
+          }
+        }
+      },
+      {
+        "code": 403,
+        "desc": "User not confirmed or banned",
+        "example": {
+          "error": "Access forbidden"
+        }
+      }
+    ]
+  },
+  {
+    "method": "PATCH",
+    "path": "/me",
+    "description": "Update profile fields for the current authenticated user",
+    "auth_required": true,
+    "tags": [
+      "User"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": false,
+        "desc": "New username (must be unique)"
+      },
+      {
+        "name": "first_name",
+        "type": "String",
+        "required": false,
+        "desc": null
+      },
+      {
+        "name": "last_name",
+        "type": "String",
+        "required": false,
+        "desc": null
+      },
+      {
+        "name": "gender",
+        "type": "String",
+        "required": false,
+        "desc": "One of: male, female, other"
+      },
+      {
+        "name": "sexual_preferences",
+        "type": "String",
+        "required": false,
+        "desc": "One of: male, female, non_binary, everyone"
+      },
+      {
+        "name": "biography",
+        "type": "String",
+        "required": false,
+        "desc": null
+      },
+      {
+        "name": "birth_year",
+        "type": "Integer",
+        "required": false,
+        "desc": null
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Profile updated & user object",
+        "example": {
+          "message": "Profile updated!",
+          "data": {
+            "id": 1,
+            "username": "newname",
+            "biography": "Updated bio."
+          }
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Validation failed",
+        "example": {
+          "error": "Validation failed",
+          "details": {
+            "username": [
+              "has already been taken"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/users/:username",
+    "description": "Fetch the public profile of a user by their username",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "PublicProfile"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The unique username of the user"
+      },
+      {
+        "name": "count_view",
+        "type": "bool",
+        "required": false,
+        "desc": "Whether to record the view and send notification (default: true)"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Public user data",
+        "example": {
+          "data": {
+            "username": "janedoe",
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "biography": "Hi there!",
+            "gender": "female",
+            "sexual_preferences": "male",
+            "birth_year": "2000",
+            "profile_picture_id": 42,
+            "online_status": true,
+            "last_seen_at": "2025-04-11T14:53:00Z",
+            "tags": [
+              "yoga",
+              "hiking",
+              "coding"
+            ],
+            "pictures": [
+              "https://yourdomain.com/uploads/pictures/12.jpg",
+              "https://yourdomain.com/uploads/pictures/13.jpg"
+            ],
+            "views": 18,
+            "visitors": [
+              {
+                "id": 2,
+                "username": "johnsmith",
+                "profile_picture_url": "https://yourdomain.com/uploads/pictures/99.jpg",
+                "viewed_at": "2025-04-11T14:53:00Z"
+              }
+            ],
+            "total_likes_sent": 7,
+            "total_likes_received": 8
+          }
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User not found or banned",
+        "example": {
+          "error": "User not found"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User blocked you",
+        "example": {
+          "error": "User blocked you"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User is blocked",
+        "example": {
+          "error": "User is blocked"
+        }
+      }
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/me",
+    "description": "Delete the current authenticated user account and all related data",
+    "auth_required": true,
+    "tags": [
+      "User"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 204,
+        "desc": "User deleted",
+        "example": null
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/me/discover",
+    "description": "Discover users based on preferences (location, age, fame, tags)",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Discover"
+    ],
+    "params": [
+      {
+        "name": "location",
+        "type": "Hash",
+        "required": false,
+        "desc": "Latitude, longitude and max_distance_km"
+      },
+      {
+        "name": "min_age",
+        "type": "Integer",
+        "required": false,
+        "desc": "Minimum age filter"
+      },
+      {
+        "name": "max_distance_km",
+        "type": "Integer",
+        "required": false,
+        "desc": "Maximum distance in km"
+      },
+      {
+        "name": "max_age",
+        "type": "Integer",
+        "required": false,
+        "desc": "Maximum age filter"
+      },
+      {
+        "name": "min_fame",
+        "type": "Float",
+        "required": false,
+        "desc": "Minimum fame rating filter"
+      },
+      {
+        "name": "tags",
+        "type": "Array",
+        "required": false,
+        "desc": "Filter by shared tags"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Returns list of recommended users",
+        "example": {
+          "data": [
+            {
+              "user": {
+                "id": "247",
+                "username": "marquerite",
+                "first_name": "Savannah",
+                "last_name": "Anderson",
+                "biography": "null",
+                "gender": "female",
+                "sexual_preferences": "everyone",
+                "birth_year": "2003",
+                "fame_rating": "3.75",
+                "profile_picture_id": "null",
+                "online_status": false,
+                "last_seen_at": "null",
+                "tags": [
+                  {
+                    "id": "33",
+                    "name": "yoga"
+                  },
+                  {
+                    "id": "37",
+                    "name": "dogs"
+                  },
+                  {
+                    "id": "40",
+                    "name": "dancing"
+                  }
+                ],
+                "pictures": [
+                  {
+                    "id": "28",
+                    "user_id": "247",
+                    "url": "https://robohash.org/marquerite.png?size=300x300&set=set1",
+                    "is_profile": "t",
+                    "created_at": "2025-04-15 19:03:26",
+                    "updated_at": "2025-04-15 19:03:26"
+                  }
+                ],
+                "views_count": 5,
+                "likes_count": 4
+              },
+              "score": {
+                "location_score": 100.0,
+                "tag_score": 100.0,
+                "fame_score": 3.75,
+                "total": 67.92
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/me/messages",
+    "description": "Send a message to a user (requires existing connection)",
+    "auth_required": true,
+    "tags": [
+      "Message"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "Recipient's username"
+      },
+      {
+        "name": "content",
+        "type": "String",
+        "required": true,
+        "desc": "Message content"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Message sent",
+        "example": {
+          "message": "Message sent",
+          "data": {
+            "id": 40,
+            "connection_id": 42,
+            "sender_id": 121,
+            "content": "Hey there!",
+            "created_at": "2025-04-12 18:07:25.031215"
+          }
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User or connection not found",
+        "example": {
+          "error": "No connection found with janedoe"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Validation error",
+        "example": {
+          "error": "Invalid request",
+          "details": [
+            "content must not be empty"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/messages/:username",
+    "description": "Get all messages exchanged with a given user",
+    "auth_required": true,
+    "tags": [
+      "Message"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "Other user's username"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Message thread",
+        "example": {
+          "data": {
+            "user": {
+              "id": 127,
+              "username": "bob",
+              "email": "bob@example.com",
+              "first_name": "Bob",
+              "last_name": "B",
+              "gender": "male",
+              "sexual_preferences": "female",
+              "biography": null,
+              "is_email_verified": true,
+              "is_banned": false,
+              "fame_rating": 0,
+              "latitude": null,
+              "longitude": null,
+              "online_status": false,
+              "last_seen_at": null,
+              "created_at": "2025-04-12 18:08:00.699235",
+              "updated_at": "2025-04-12 18:08:00.702444",
+              "profile_picture_id": null
+            },
+            "messages": [
+              {
+                "id": 41,
+                "connection_id": 44,
+                "sender_id": 127,
+                "content": "Hi Bob!",
+                "created_at": "2025-04-12 18:08:00.704577",
+                "sender_username": "bob"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User or connection not found",
+        "example": {
+          "error": "No connection found with bob"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/messages",
+    "description": "Get all conversations grouped by user",
+    "auth_required": true,
+    "tags": [
+      "Message"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "List of message threads",
+        "example": {
+          "data": [
+            {
+              "user": {
+                "id": 129,
+                "username": "bob",
+                "first_name": "Bob",
+                "last_name": "B",
+                "biography": null,
+                "gender": "male",
+                "sexual_preferences": "female",
+                "profile_picture_id": null,
+                "online_status": false,
+                "last_seen_at": null
+              },
+              "messages": [
+                {
+                  "id": 42,
+                  "connection_id": 45,
+                  "sender_id": 128,
+                  "content": "Hey again!",
+                  "created_at": "2025-04-12 18:08:09.476871",
+                  "sender_username": "alice"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/tags",
+    "description": "List all tags",
+    "auth_required": true,
+    "tags": [
+      "Tag"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Returns a list of available tags",
+        "example": {
+          "data": [
+            {
+              "id": 1,
+              "name": "travel"
+            },
+            {
+              "id": 2,
+              "name": "music"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/tags",
+    "description": "Create a new tag",
+    "auth_required": true,
+    "tags": [
+      "Tag"
+    ],
+    "params": [
+      {
+        "name": "name",
+        "type": "String",
+        "required": true,
+        "desc": "The name of the tag"
+      }
+    ],
+    "responses": [
+      {
+        "code": 201,
+        "desc": "Tag created",
+        "example": {
+          "message": "Tag created",
+          "data": {
+            "id": 3,
+            "name": "photography"
+          }
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Missing or invalid name",
+        "example": {
+          "error": "Validation failed",
+          "details": {
+            "name": [
+              "is too short"
+            ]
+          }
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Tag name already taken",
+        "example": {
+          "error": "Tag name already taken"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/tags",
+    "description": "List all tags for the current user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Tag"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Returns user’s tags",
+        "example": {
+          "data": [
+            {
+              "id": 1,
+              "name": "travel"
+            },
+            {
+              "id": 3,
+              "name": "photography"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/me/tags",
+    "description": "Add a tag to the current user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Tag"
+    ],
+    "params": [
+      {
+        "name": "name",
+        "type": "String",
+        "required": true,
+        "desc": "The name of the tag to add, if tag doesn't exist it's created"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Tag added to user",
+        "example": {
+          "message": "Tag added",
+          "data": {
+            "id": 4,
+            "name": "sports"
+          }
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Tag name missing or invalid",
+        "example": {
+          "error": "Missing tag name"
+        }
+      }
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/me/tags",
+    "description": "Remove a tag from the current user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Tag"
+    ],
+    "params": [
+      {
+        "name": "name",
+        "type": "String",
+        "required": true,
+        "desc": "The name of the tag to remove"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Tag removed",
+        "example": {
+          "message": "Tag removed"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Missing or invalid tag",
+        "example": {
+          "error": "Tag not found"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/users/:username/tags",
+    "description": "Fetch the tags of a user by their username",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "PublicProfile",
+      "Tag"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The unique username of the user"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Public user data",
+        "example": {
+          "data": [
+            {
+              "id": 4,
+              "name": "sports"
+            },
+            {
+              "id": 5,
+              "name": "cycling"
+            }
+          ]
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User not found or banned",
+        "example": {
+          "error": "User not found"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User blocked you",
+        "example": {
+          "error": "User blocked you"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User is blocked",
+        "example": {
+          "error": "User is blocked"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/location",
+    "description": "Returns the last known latitude and longitude of the current user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Location"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Returns current location of the user",
+        "example": {
+          "data": {
+            "latitude": 48.8566,
+            "longitude": 2.3522,
+            "city": "Paris",
+            "country": "France",
+            "recorded_at": "2025-04-12T08:30:00Z"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/me/location",
+    "description": "Record the current user's location (estimated from IP), or provided manually by the user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Location"
+    ],
+    "params": [
+      {
+        "name": "latitude",
+        "type": "Integer",
+        "required": false,
+        "desc": null
+      },
+      {
+        "name": "longitude",
+        "type": "Integer",
+        "required": false,
+        "desc": null
+      },
+      {
+        "name": "city",
+        "type": "String",
+        "required": false,
+        "desc": null
+      },
+      {
+        "name": "country",
+        "type": "String",
+        "required": false,
+        "desc": null
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Location saved",
+        "example": {
+          "message": "Location recorded",
+          "data": {
+            "latitude": 48.8566,
+            "longitude": 2.3522,
+            "city": "Paris",
+            "country": "France",
+            "ip_address": "192.0.2.1",
+            "recorded_at": "2025-04-12T08:30:00Z"
+          }
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Geolocation service failed",
+        "example": {
+          "error": "Geolocation service failed"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/location/history",
+    "description": "Get your full location history",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Location"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "List of location records",
+        "example": {
+          "data": [
+            {
+              "latitude": 48.8566,
+              "longitude": 2.3522,
+              "city": "Paris",
+              "country": "France",
+              "ip_address": "192.0.2.1",
+              "recorded_at": "2025-04-12T08:30:00Z"
+            },
+            {
+              "latitude": 52.52,
+              "longitude": 13.405,
+              "city": "Berlin",
+              "country": "Germany",
+              "ip_address": "192.0.2.2",
+              "recorded_at": "2025-04-10T16:45:00Z"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/me/report",
+    "description": "Report a user for inappropriate behavior",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Report"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The username of the user to report"
+      },
+      {
+        "name": "reason",
+        "type": "String",
+        "required": true,
+        "desc": "enum: [fake_account scam sexual_harassment]"
+      },
+      {
+        "name": "description",
+        "type": "String",
+        "required": false,
+        "desc": "Optional description for the report"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "User reported successfully",
+        "example": {
+          "message": "User reported successfully",
+          "data": {
+            "username": "fakeuser"
+          }
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User not found",
+        "example": {
+          "error": "User not found"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Cannot report yourself",
+        "example": {
+          "error": "You cannot report yourself"
+        }
+      }
+    ]
+  },
+  {
+    "method": "POST",
+    "path": "/me/like",
+    "description": "Like another user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Like"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The username of the user to like"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "User liked",
+        "example": {
+          "message": "You liked janedoe"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User not found or unavailable",
+        "example": {
+          "error": "User not found"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Invalid request",
+        "example": {
+          "error": "You cannot like yourself"
+        }
+      }
+    ]
+  },
+  {
+    "method": "DELETE",
+    "path": "/me/like",
+    "description": "Unlike a user",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Like"
+    ],
+    "params": [
+      {
+        "name": "username",
+        "type": "String",
+        "required": true,
+        "desc": "The username of the user to unlike"
+      }
+    ],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "User unliked",
+        "example": {
+          "message": "janedoe has been unliked"
+        }
+      },
+      {
+        "code": 404,
+        "desc": "User not found",
+        "example": {
+          "error": "User not found"
+        }
+      },
+      {
+        "code": 422,
+        "desc": "Like does not exist",
+        "example": {
+          "error": "You haven't liked this user yet"
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/likes",
+    "description": "Get list of users you have liked",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Like"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Array of liked user objects",
+        "example": {
+          "data": [
+            {
+              "username": "janedoe",
+              "first_name": "Jane",
+              "last_name": "Doe"
+            },
+            {
+              "username": "bobsmith",
+              "first_name": "Bob",
+              "last_name": "Smith"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/liked_by",
+    "description": "Get list of users who liked you",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Like"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Array of users who liked you",
+        "example": {
+          "data": [
+            {
+              "username": "alicewonder",
+              "first_name": "Alice",
+              "last_name": "Wonder"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "method": "GET",
+    "path": "/me/matches",
+    "description": "Get list of users who liked you back (matches)",
+    "auth_required": true,
+    "tags": [
+      "User",
+      "Like"
+    ],
+    "params": [],
+    "responses": [
+      {
+        "code": 200,
+        "desc": "Array of matched user objects",
+        "example": {
+          "data": [
+            {
+              "username": "janedoe",
+              "first_name": "Jane",
+              "last_name": "Doe"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,28 @@
+# fly.toml app configuration file generated for matcha42 on 2025-05-01T10:50:55+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'matcha42'
+primary_region = 'cdg'
+
+[build]
+  dockerfile = "./Dockerfile"
+
+
+[http_service]
+  internal_port = 9292
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[experimental]
+auto_stop_machines = false
+auto_start_machines = true
