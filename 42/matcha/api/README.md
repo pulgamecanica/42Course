@@ -185,9 +185,9 @@ end
 - [X] Notification when "matching" for the other user
 - [X] Add city and country to the user
 - [X] Email acitons (confirm register / reset password)
-- [ ] VideoCalls
+- [X] VideoCalls
 - [X] Report account as fake
-- [ ] Deploy with NGINX
+- [X] Deploy with fly.io
 
 ---
 
@@ -195,7 +195,7 @@ end
 
 > 📜 Everything documented  
 > 🧪 Everything tested  
-> 🚫 No unhandled JSON  
+> 🚫 No unhandled JSON
 > 💥 No silent failures  
 > 💎 Code should read like Ruby poetry  
 

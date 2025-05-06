@@ -19,6 +19,8 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 10. [matrix](#matrix)
 11. [libftpp](#libftpp)
 12. [override](#override)
+13. [inception-of-things](#iot)
+14. [matcha](#matcha)
 
 ---
 
@@ -174,6 +176,20 @@ You will also learn how to load dynamically assigned objects (through the PLT [P
 
 
 [matrix](https://github.com/pulgamecanica/42Course/tree/main/42/matrix) is a project that allows you to explore Vectors and Matrixes, after this project you should have no problems understanding linear algebra, and how useful are matrixes and vectors in programming.
+
+---
+
+## iot
+![Kubernetes](https://img.shields.io/badge/kubernetes-326CE5?&style=plastic&logo=kubernetes&logoColor=white)
+
+[inception-of-things](https://github.com/pulgamecanica/42Course/tree/main/42/inception-of-things] is a project to learn how to manage VM's and large deployments with vagrant, ansible and Kubernetes.
+
+---
+
+## matcha
+
+
+[matcha](https://github.com/pulgamecanica/42Course/tree/main/42/matcha] is a project to learn web development from it's core, by developing a dating website.
 
 ---
 
