@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dining Philosophers Visualizer</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <script type="module" src="main.js" defer></script>
+</head>
+<body>
+  <!-- ▼ TOASTER -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- ▼ CONFIG PANEL -->
+  <div id="configPanel" class="config-panel">
+    <div class="container">
+      <h1 class="title">🧠 DINING PHILOSOPHERS VISUALIZER</h1>
+
+      <details>
+        <summary style="text-align: center; margin-bottom: 1rem;">Metadata</summary>
+        <section class="param-inputs">
+          <div class="input-wrapper">
+            <label class="arrow-label" for="timeToDie">time to die</label>
+            <input type="number" id="timeToDie" placeholder="die (ms)">
+          </div>
+          <div class="input-wrapper">
+            <label class="arrow-label" for="timeToEat">time to eat</label>
+            <input type="number" id="timeToEat" placeholder="eat (ms)">
+          </div>
+          <div class="input-wrapper">
+            <label class="arrow-label" for="timeToSleep">time to sleep</label>
+            <input type="number" id="timeToSleep" placeholder="sleep (ms)">
+          </div>
+        </section>
+      </details>
+
+      <section class="log-input">
+        <textarea id="logText" placeholder="Paste your philosophers log here..."></textarea>
+
+        <div class="divider">— or —</div>
+
+        <input type="file" id="logFile" accept=".txt" />
+        <div class="divider">— bonus —</div>
+
+        <label style="margin-top: 1rem; display: block; text-align: center;">
+          <input type="checkbox" id="bonusToggle" />
+          Center Forks
+        </label>
+      </section>
+
+      <button id="backToVis" class="toggle-btn hidden" style="margin-top: 2rem;">⬇ back to viz</button>
+    </div>
+  </div>
+
+  <!-- ▼ TOGGLE BUTTON -->
+
+  <!-- ▼ VISUALIZER -->
+  <section id="visualizerPanel" class="visualizer">
+    <button id="clearStorage" class="toggle-btn">🧹 reset</button>
+    <button id="togglePanel" class="toggle-btn hidden">⬆ config</button>
+    <svg id="philosopherCanvas" width="100%" height="400"></svg>
+
+    <div class="timeline-wrapper">
+      <div style="margin: 10px 0;">
+        <label for="zoomSlider">Zoom</label>
+        <input id="zoomSlider" type="range" min="0.2" max="5" value="1" step="0.1">
+      </div>
+      <div id="timeChart" class="time-chart">
+        <svg id="timelineCanvas" width="100%" height="200"></svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▼ PLAYER -->
+  <div id="playerContainer" class="player-container hidden">
+    <div id="seekBar" class="seek-bar">
+      <div id="seekProgress" class="seek-progress"></div>
+      <div id="seekHoverLabel" class="seek-hover-label">0 ms</div>
+    </div>
+
+    <div class="controls-row">
+      <div class="controls">
+        <button id="btnToStart">⏮️</button>
+        <button id="btnPrev">◀️</button>
+        <button id="btnPlayPause">▶️</button>
+        <button id="btnNext">▶️</button>
+        <button id="btnToEnd">⏭️</button>
+
+        <label for="speedSelect">Speed:</label>
+        <select id="speedSelect">
+          <option value="0.25">0.25x</option>
+          <option value="0.5">0.5x</option>
+          <option value="1" selected>1x</option>
+          <option value="2">2x</option>
+          <option value="4">4x</option>
+          <option value="8">8x</option>
+        </select>
+
+        <span id="currentTimeLabel">0 ms</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
