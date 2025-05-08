@@ -320,3 +320,35 @@ svg {
   padding: 4px 8px;
   cursor: pointer;
 }
+
+.github-float {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0d1117;
+  color: #c9d1d9;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-family: 'Courier New', Courier, monospace;
+  text-decoration: none;
+  font-size: 12px;
+  box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3);
+  border: 1px solid #30363d;
+  z-index: 9999;
+  transition: all 0.2s ease-in-out;
+}
+.github-float:hover {
+  background: #161b22;
+  box-shadow: 0 0 12px #58a6ff;
+  transform: scale(1.05);
+}
+
+.github-icon {
+  width: 20px;
+  height: 20px;
+  filter: invert(1);
+}
+

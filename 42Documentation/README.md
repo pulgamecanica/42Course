@@ -36,6 +36,7 @@ Greetings future 42Core conquerors! Here lies a treasure trove of exercises, tut
 | [mlx_transparency](http://pulgamecanica.herokuapp.com/posts/mlx-transparency) | Tutorial on transparency in mlx                                                                     | ⭐️⭐️  | so_long, fdf, fract-ol, cub3d  |
 | [Templates](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/Templates) | Project automation and class generation tool                                                        | ⭐️⭐️⭐️⭐️ | C++ Projects                |
 | [transitions](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/transitions) | Implementation of frame transition | ⭐️⭐️ | C & mlx |
+| [philosophers visualizer](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/philosophers_visualizer) | D3 Visualizer for dunning philosophers | ⭐️ | D3 & JS |
 
 * Note: The stars refer on how much I recommend you have a look at the docs when you are doing a project
 
@@ -125,6 +126,9 @@ Includes tutorials, testers, and challenges aimed at helping you prepare for the
 
 ### [transitions](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/transitions)
     Implementation of the lerp principles, both for image interpolation and for linear progression of time.
+
+### [philosophers visualizer](https://github.com/pulgamecanica/42Course/tree/main/42Documentation/philosophers_visualizer)
+    This tool helps you visualize and generate a visualization for your philosophers output. It works with bonus as well
 
 ### Good Luck and don't drown! Keep Swimming! ;D
 
