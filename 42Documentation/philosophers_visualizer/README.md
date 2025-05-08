@@ -5,9 +5,15 @@
 [![Play It](https://img.shields.io/badge/Playback-ms%20by%20ms-green?style=flat-square)]()
 [![No License](https://img.shields.io/badge/license-none-red?style=flat-square)]()
 
+---
+
+#### Try it: https://42-course.github.io/philosophers_visualizer/
+
+---
+
 Welcome to a **cyberpunk-infused, pastel-powered, nerd-approved** visualization of the legendary **Dining Philosophers Problem**. This project takes logs from a philosophers simulation and brings them to life — with motion, style, and lots of 🍴.
 
-## 🔍 Features
+### 🔍 Features
 
 - 🎞️ **Millisecond-by-millisecond** animation
 - 🍝 **Interactive timeline** with zoom, pan & scrub
