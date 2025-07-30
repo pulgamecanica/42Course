@@ -155,6 +155,95 @@ But when you're *defining* the iterator class itself — **don't use `iterator_t
 
 ---
 
+# `deque_random_access_iterator`
+
+A custom random access iterator for a segmented deque container, compatible with C++98 standards. This iterator supports full random access behavior (arithmetic, comparisons, dereferencing), while navigating a non-contiguous memory structure.
+
+## 📦 Overview
+
+Unlike `std::vector`, which stores elements in contiguous memory, a `std::deque` (and this implementation) uses a segmented structure:
+
+- The **map** is an array of pointers to memory blocks (`T*`).
+- Each **block** stores a fixed number of elements (`BLOCK_SIZE`).
+- Elements are stored sequentially across blocks.
+
+This iterator allows seamless iteration and random access by maintaining:
+- `pointer* _map` — a pointer to the block map (array of `T*`).
+- `std::size_t _map_index` — the index of the current block in the map.
+- `std::size_t _block_offset` — the index within the current block.
+
+## 🧠 Example
+
+Assume a deque with 3 blocks of size 4, holding 12 elements from 0 to 11:
+
+
 ```
+  Map:      +--------+--------+--------+
+            | blk[0] | blk[1] | blk[2] |
+            +--------+--------+--------+
+               |        |        |
+               v        v        v
+            +----+    +----+    +----+
+```
+
+```
+blk[0]    blk[1]    blk[2]
++----+    +----+    +----+
+| 0  |    | 4  |    | 8  |
+| 1  |    | 5  |    | 9  |
+| 2  |    | 6  |    |10  |
+| 3  |    | 7  |    |11  |
++----+    +----+    +----+
+
+```
+
+An iterator pointing to element `6` would have:
+- `_map_index = 1`
+- `_block_offset = 2`
+- `_map[1][2] == 6`
+
+## 🧮 Mermaid Diagram
+
+```mermaid
+graph TD
+  A0["map[0] → block 0"] --> B0["block 0"]
+  A1["map[1] → block 1"] --> B1["block 1"]
+  A2["map[2] → block 2"] --> B2["block 2"]
+
+  B0 --> C0["0"]
+  B0 --> C1["1"]
+  B0 --> C2["2"]
+  B0 --> C3["3"]
+
+  B1 --> C4["4"]
+  B1 --> C5["5"]
+  B1 --> C6["6 ← _map[1][2]"]
+  B1 --> C7["7"]
+
+  B2 --> C8["8"]
+  B2 --> C9["9"]
+  B2 --> C10["10"]
+  B2 --> C11["11"]
+```
+
+## ⚙️ Operations Supported
+
+| Operation            | Behavior                                                  |
+| -------------------- | --------------------------------------------------------- |
+| `++`, `--`           | Moves across blocks automatically                         |
+| `+`, `-`, `+=`, `-=` | Jumps across blocks logically                             |
+| `*`, `->`, `[]`      | Accesses correct element from `_map[_map_index][_offset]` |
+| Comparisons          | Based on logical position across blocks                   |
+
+## 🚫 Notable Constraints
+
+* `BLOCK_SIZE` must match the underlying deque block size.
+* Assumes the block map (`pointer* _map`) and block contents are valid.
+* This iterator **cannot be reused** for `vector` or other containers.
+
+## ✅ Use Case
+
+This iterator is meant to be used internally in a `ft::deque<T>` implementation, enabling STL-compatible iteration while hiding the segmented layout from the user.
+
 
 ---
