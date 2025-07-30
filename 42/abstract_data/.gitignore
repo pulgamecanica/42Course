@@ -1,0 +1,9 @@
+/obj
+/*.o
+/*.out
+*.log
+*.dSYM
+.venv
+monkey_tester/
+static_tester/
+plots/*
