@@ -247,3 +247,10 @@ This iterator is meant to be used internally in a `ft::deque<T>` implementation,
 
 
 ---
+
+| Vector                          | Deque                            |
+| ------------------------------- | -------------------------------- |
+| Grows at one end                | Grows at both ends               |
+| Double capacity on reallocation | Double map size and **recenter** |
+| Uses single contiguous array    | Uses segmented block map         |
+| Can't `push_front()`            | Supports both front/back ops     |
