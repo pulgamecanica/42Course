@@ -5,6 +5,7 @@
 #include <ctime>
 
 void run_vector_compliance_tests();
+void run_deque_compliance_tests();
 
 void print_header(const std::string& container_name) {
     std::cout << "\n==========================" << std::endl;
@@ -15,5 +16,7 @@ void print_header(const std::string& container_name) {
 int main() {
     print_header("Vector");
     run_vector_compliance_tests();
+    print_header("Deque");
+    run_deque_compliance_tests();
     return 0;
 }

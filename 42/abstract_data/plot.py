@@ -34,48 +34,51 @@ df["SizeLabel"] = df["Size"].apply(lambda x: f"{int(x):,}")
 output_dir = "plots"
 os.makedirs(output_dir, exist_ok=True)
 
-# Generate one image per function with subplots per type
+# Generate one image per function per container with subplots per type
 plot_files = []
 unique_functions = df["Function"].unique()
 unique_types = df["Type"].unique()
+unique_containers = df["Container"].unique()  # <-- FIXED
 
-for func in unique_functions:
-    safe_func = func.replace(':', '_').replace('/', '_')
-    func_dir = os.path.join(output_dir, safe_func)
-    os.makedirs(func_dir, exist_ok=True)
+for container in unique_containers:  # <-- FIXED
+    df_container = df[df["Container"] == container]  # <-- FIXED
+    for func in df_container["Function"].unique():  # <-- FIXED
+        safe_func = func.replace(':', '_').replace('/', '_')
+        func_dir = os.path.join(output_dir, container, safe_func)  # <-- FIXED
+        os.makedirs(func_dir, exist_ok=True)
 
-    fig, axes = plt.subplots(1, len(unique_types), figsize=(6 * len(unique_types), 5), sharey=True)
-    if len(unique_types) == 1:
-        axes = [axes]
+        fig, axes = plt.subplots(1, len(unique_types), figsize=(6 * len(unique_types), 5), sharey=True)
+        if len(unique_types) == 1:
+            axes = [axes]
 
-    for ax, typ in zip(axes, unique_types):
-        subset = df[(df["Function"] == func) & (df["Type"] == typ)]
-        sns.lineplot(
-            data=subset,
-            x="SizeLabel",
-            y="Time",
-            hue="Namespace",
-            style="Namespace",
-            markers=True,
-            dashes=False,
-            ax=ax
-        )
-        ax.set_title(typ)
-        ax.set_xlabel("Size")
-        if ax == axes[0]:
-            ax.set_ylabel("Time (s)")
-        else:
-            ax.set_ylabel("")
-        ax.legend(title="Namespace")
+        for ax, typ in zip(axes, unique_types):
+            subset = df_container[(df_container["Function"] == func) & (df_container["Type"] == typ)]  # <-- FIXED
+            sns.lineplot(
+                data=subset,
+                x="SizeLabel",
+                y="Time",
+                hue="Namespace",
+                style="Namespace",
+                markers=True,
+                dashes=False,
+                ax=ax
+            )
+            ax.set_title(typ)
+            ax.set_xlabel("Size")
+            if ax == axes[0]:
+                ax.set_ylabel("Time (s)")
+            else:
+                ax.set_ylabel("")
+            ax.legend(title="Namespace")
 
-    fig.suptitle(f"vector::{func}()", fontsize=16)
-    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    fname = os.path.join(func_dir, f"{safe_func}.png")
-    plt.savefig(fname)
-    plot_files.append(fname)
-    plt.close()
+        fig.suptitle(f"{container}::{func}()", fontsize=16)  # <-- FIXED
+        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+        fname = os.path.join(func_dir, f"{safe_func}.png")
+        plt.savefig(fname)
+        plot_files.append(fname)
+        plt.close()
 
-print("✅ Function benchmark plots saved as one image per function in 'plots/<function>/<function>.png'")
+print("✅ Function benchmark plots saved as one image per function in 'plots/<container>/<function>/<function>.png'")
 
 # ============ Interactive Slideshow of Combined Function Images ============
 import matplotlib.image as mpimg
@@ -85,7 +88,6 @@ fig, ax = plt.subplots(figsize=(12, 7))
 plt.axis("off")
 
 index = [0]
-
 
 def show_image(i):
     ax.clear()
@@ -99,7 +101,6 @@ def show_image(i):
         print(f"❌ Error loading image: {plot_files[i]}\n{e}")
         plt.close()
 
-
 def on_key(event):
     if event.key == "right":
         index[0] = (index[0] + 1) % len(plot_files)
@@ -109,7 +110,6 @@ def on_key(event):
         show_image(index[0])
     elif event.key == "escape":
         plt.close()
-
 
 fig.canvas.mpl_connect("key_press_event", on_key)
 show_image(index[0])

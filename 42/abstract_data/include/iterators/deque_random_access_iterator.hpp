@@ -20,9 +20,9 @@ public:
   typedef std::random_access_iterator_tag iterator_category;
 
 private:
-  static const size_type  BLOCK_SIZE = 64; // Must match deque impl
+  static const size_type BLOCK_BYTES = 2048;
+  static const size_type BLOCK_SIZE = BLOCK_BYTES / sizeof(T) > 0 ? BLOCK_BYTES / sizeof(T) : 1;
   typename ft::remove_const<T>::type** _map;
-  // T**  _map;           // pointer to array of block pointers
   size_type _map_index;     // index into map
   size_type _block_offset;  // offset within current block
 

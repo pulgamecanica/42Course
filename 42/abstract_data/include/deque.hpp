@@ -28,7 +28,8 @@ public:
   typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 private:
-  static const size_type BLOCK_SIZE = 64;
+  static const size_type BLOCK_BYTES = 2048;
+  static const size_type BLOCK_SIZE = BLOCK_BYTES / sizeof(T) > 0 ? BLOCK_BYTES / sizeof(T) : 1;
   static const size_type INITIAL_MAP_SIZE = 8;
 
   pointer* _map;
@@ -47,7 +48,7 @@ private:
     size_type new_start_block = (new_map_size - used_blocks) / 2;
 
     for (size_type i = 0; i < new_map_size; ++i)
-        new_map[i] = _alloc.allocate(BLOCK_SIZE);
+      new_map[i] = 0;
 
     for (size_type i = 0; i < used_blocks; ++i) {
       size_type from_idx = _start_block + i;
@@ -56,7 +57,13 @@ private:
       _alloc.deallocate(new_map[to_idx], BLOCK_SIZE);
       new_map[to_idx] = _map[from_idx];
     }
-    _map_alloc.deallocate(_map, _map_size);
+
+    // Must deallocate the old map un-used blocks as well [important!]
+    for (size_type i = 0; i < old_size; ++i)
+      if (i < _start_block || i > _end_block)
+        _alloc.deallocate(_map[i], BLOCK_SIZE);
+
+    _map_alloc.deallocate(_map, old_size);
     _map = new_map;
     _map_size = new_map_size;
     _end_block = new_start_block + used_blocks - 1;
@@ -109,14 +116,15 @@ private:
   }
 
   template <class InputIterator>
-  deque(InputIterator first, InputIterator last, const Alloc& alloc = Alloc())
-    : _map(0), _map_size(INITIAL_MAP_SIZE), _start_block(0), _start_offset(0),
-      _end_block(0), _end_offset(0), _alloc(alloc), _map_alloc() {
-    _map = _map_alloc.allocate(_map_size);
-    for (size_type i = 0; i < _map_size; ++i)
-      _map[i] = _alloc.allocate(BLOCK_SIZE);
-    for (; first != last; ++first)
-      push_back(*first);
+  deque(InputIterator first, InputIterator last, const Alloc& alloc = Alloc(),
+        typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0)
+      : _map(0), _map_size(INITIAL_MAP_SIZE), _start_block(0), _start_offset(0),
+        _end_block(0), _end_offset(0), _alloc(alloc), _map_alloc() {
+      _map = _map_alloc.allocate(_map_size);
+      for (size_type i = 0; i < _map_size; ++i)
+          _map[i] = _alloc.allocate(BLOCK_SIZE);
+      for (; first != last; ++first)
+          push_back(*first);
   }
   
   deque(const deque<T, Alloc>& x)
@@ -289,7 +297,6 @@ private:
       ensure_front_capacity();
     --_start_offset;
     _alloc.construct(&_map[_start_block][_start_offset], x);
-    ensure_back_capacity();
   }
 
   void push_back(const T& value) {

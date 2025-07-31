@@ -65,7 +65,7 @@ public:
   template <typename InputIterator>
   vector(InputIterator first, InputIterator last,
        const allocator_type& alloc = allocator_type(),
-       typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0)
+       typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0)
     : _alloc(alloc), _data(NULL), _size(0), _capacity(0) {
     for (; first != last; ++first)
       push_back(*first);
@@ -155,7 +155,7 @@ public:
   // Modifiers
   template <class InputIterator>
   void assign(InputIterator first, InputIterator last,
-              typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+              typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
     clear();
     for (; first != last; ++first)
       push_back(*first);
@@ -195,7 +195,7 @@ public:
 
   template <class InputIterator>
   void insert(iterator position, InputIterator first, InputIterator last,
-              typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+              typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
       size_type index = position - begin();
 
       vector temp(first, last);

@@ -14,12 +14,12 @@ INCLUDES        := -Iinclude
 BIN_FT          := ft_containers.out
 BIN_STD         := std_containers.out
 BIN_DEBUG       := debug.out
-BIN_BENCH       := vector_benchmark.out
+BIN_BENCH       := benchmark.out
 
 # Directories and sources
 SRC_DIR         := src
-SRC_COMMON      := $(SRC_DIR)/main.cpp $(SRC_DIR)/test_vector.cpp
-SRC_BENCH       := $(SRC_DIR)/benchmark_vector.cpp
+SRC_COMMON      := $(SRC_DIR)/main.cpp $(SRC_DIR)/test_vector.cpp $(SRC_DIR)/test_deque.cpp
+SRC_BENCH       := $(SRC_DIR)/benchmark.cpp
 
 # Python setup
 VENV_DIR := .venv
