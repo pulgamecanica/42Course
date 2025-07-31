@@ -1,11 +1,17 @@
 #ifndef FT_DEQUE_HPP
 #define FT_DEQUE_HPP
 
+#include <limits>
+
 #include "exception.hpp"
 #include "utils/swap.hpp"
 #include "utils/enable_if.hpp"
 #include "iterators/deque_random_access_iterator.hpp"
 #include "iterators/reverse_iterator.hpp"
+
+
+#include <iostream>
+
 
 namespace ft {
 
@@ -37,6 +43,22 @@ private:
   allocator_type _alloc;
   std::allocator<pointer> _map_alloc;
 
+  void debug_state(const char* tag = "") const {
+    // std::cout << "[DEBUG " << tag << "] "
+    //           << "map=" << _map
+    //           << ", _map_size=" << _map_size
+    //           << ", _start_block=" << _start_block
+    //           << ", _start_offset=" << _start_offset
+    //           << ", _end_block=" << _end_block
+    //           << ", _end_offset=" << _end_offset
+    //           << std::endl;
+
+    // for (size_type i = 0; i < _map_size; ++i) {
+    //   std::cout << "  block[" << i << "] = " << _map[i] << '\n';
+    // }
+    // std::cout << "[******************************]" << '\n';
+  }
+
   void reallocate_and_recenter() {
     size_type old_size = _map_size;
     size_type new_map_size = old_size * 2;
@@ -45,9 +67,18 @@ private:
     size_type used_blocks = _end_block - _start_block + 1;
     size_type new_start_block = (new_map_size - used_blocks) / 2;
 
-    for (size_type i = 0; i < used_blocks; ++i)
-      new_map[new_start_block + i] = _map[_start_block + i];
+    for (size_type i = 0; i < new_map_size; ++i)
+        new_map[i] = _alloc.allocate(BLOCK_SIZE);
 
+    for (size_type i = 0; i < used_blocks; ++i) {
+      size_type from_idx = _start_block + i;
+      size_type to_idx = new_start_block + i;
+
+      // Move the pointer (we’re not moving contents, just ownership)
+      _alloc.deallocate(new_map[to_idx], BLOCK_SIZE); // Free what we just allocated
+      new_map[to_idx] = _map[from_idx];
+      // new_map[new_start_block + i] = _map[_start_block + i];
+    }
     _map_alloc.deallocate(_map, _map_size);
     _map = new_map;
     _map_size = new_map_size;
@@ -56,13 +87,27 @@ private:
   }
 
   void ensure_back_capacity() {
-    if (_end_block + 1 >= _map_size)
+    if (_end_block + 1 >= _map_size) {
       reallocate_and_recenter();
+    }
+    if (_end_offset == BLOCK_SIZE) {
+      ++_end_block;
+      if (_map[_end_block] == 0)
+        _map[_end_block] = _alloc.allocate(BLOCK_SIZE);
+      _end_offset = 0;
+    }
   }
 
   void ensure_front_capacity() {
-    if (_start_block <= 0)
+    if (_start_block == 0 && _start_offset == 0) {
       reallocate_and_recenter();
+    }
+    if (_start_offset == 0) {
+      --_start_block;
+      if (_map[_start_block] == 0)
+        _map[_start_block] = _alloc.allocate(BLOCK_SIZE);
+      _start_offset = BLOCK_SIZE;
+    }
   }
 
   public:
@@ -74,6 +119,7 @@ private:
       _map = _map_alloc.allocate(_map_size);
       for (size_type i = 0; i < _map_size; ++i)
         _map[i] = _alloc.allocate(BLOCK_SIZE);
+    debug_state("[CONST 1] Initial");
   }
   
   explicit deque(size_type n, const T& value = T(), const Alloc& alloc = Alloc())
@@ -84,6 +130,7 @@ private:
       _map[i] = _alloc.allocate(BLOCK_SIZE);
     for (size_type i = 0; i < n; ++i)
       push_back(value);
+    debug_state("[CONST 2] Initial");
   }
 
   template <class InputIterator>
@@ -95,6 +142,7 @@ private:
       _map[i] = _alloc.allocate(BLOCK_SIZE);
     for (; first != last; ++first)
       push_back(*first);
+    debug_state("[CONST 3] Initial");
   }
   
   deque(const deque<T, Alloc>& x)
@@ -105,6 +153,7 @@ private:
       _map[i] = _alloc.allocate(BLOCK_SIZE);
     for (const_iterator it = x.begin(); it != x.end(); ++it)
       push_back(*it);
+    debug_state("[CONST 4] Initial");
   }
   
   ~deque() {
@@ -114,26 +163,33 @@ private:
     _map_alloc.deallocate(_map, _map_size);
   }
   
-  deque& operator=(const deque<T,Alloc>& x) {
-    if (this != x) {
+  deque& operator=(const deque& x) {
+    debug_state("[operator=] Initial");
+    if (this != &x) {
       clear();
       for (const_iterator it = x.begin(); it != x.end(); ++it)
         push_back(*it);
     }
+    debug_state("[operator=] After");
     return *this;
   }
   
   template <class InputIterator>
-  void assign(InputIterator first, InputIterator last) {
+  void assign(InputIterator first, InputIterator last,
+              typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+    debug_state("[assign 1] Initial");
     clear();
-      for (; first != last; ++first)
-        push_back(*first);
+    for (; first != last; ++first)
+      push_back(*first);
+    debug_state("[assign 2] After");
   }
-  
+
   void assign(size_type n, const T& t) {
+    debug_state("[assign 2] Initial");
     clear();
     for (size_type i = 0; i < n; i++)
       push_back(t);
+    debug_state("[assign 1] After");
   }
   
   allocator_type get_allocator() const {
@@ -207,6 +263,11 @@ private:
       for (size_type i = 0; i < sz - current; ++i)
         push_back(c);
     }
+    // if (sz == 0) {
+    //     _start_block = _map_size / 2;
+    //     _end_block = _start_block;
+    //     _start_offset = _end_offset = 0;
+    // }
   }
   
   bool empty() const {
@@ -262,32 +323,63 @@ private:
   
   // 23.2.1.3 modifiers:
   void push_front(const T& x) {
-    if (_start_offset == 0) {
+    debug_state("Before push_front");
+    if (_start_offset == 0)
       ensure_front_capacity();
-      --_start_block;
-      _start_offset = BLOCK_SIZE;
-    }
     --_start_offset;
     _alloc.construct(&_map[_start_block][_start_offset], x);
+    ensure_back_capacity();
+    debug_state("After push_front");
   }
-  
-  void push_back(const T& x) {
-    if (_end_offset == BLOCK_SIZE) {
-      ensure_back_capacity();  // <- make sure _map[_end_block + 1] exists
-      ++_end_block;
-      _end_offset = 0;
-    }
-    _alloc.construct(&_map[_end_block][_end_offset], x);
+
+  void push_back(const T& value) {
+    debug_state("[PUSH_BACK] Initial");
+    ensure_back_capacity();
+    _alloc.construct(&_map[_end_block][_end_offset], value);
     ++_end_offset;
+    ensure_back_capacity();
+    debug_state("[PUSH_BACK] After");
   }
   
-  iterator insert(iterator position, const T& x);
-  
-  void insert(iterator position, size_type n, const T& x);
-  
+  iterator insert(iterator position, const T& x) {
+    debug_state("[INSERT1 ] Initial");
+    size_type index = position - begin();
+    push_back(x);  // Insert at end to expand size
+    for (size_type i = size() - 1; i > index; --i)
+      (*this)[i] = (*this)[i - 1];
+    (*this)[index] = x;
+    debug_state("[INSERT 1] After");
+    return begin() + index;
+  }
+
+  void insert(iterator position, size_type n, const T& x) {
+    debug_state("[INSERT 2] Initial");
+
+    if (n == 0) return;
+    size_type index = position - begin();
+    for (size_type i = 0; i < n; ++i)
+      push_back(x);
+    for (size_type i = size() - 1; i >= index + n; --i)
+      (*this)[i] = (*this)[i - n];
+    for (size_type i = 0; i < n; ++i)
+      (*this)[index + i] = x;
+    debug_state("[INSERT 2] After");
+
+  }
+
   template <class InputIterator>
-  void insert (iterator position,
-    InputIterator first, InputIterator last);
+  void insert(iterator position, InputIterator first, InputIterator last,
+              typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+    debug_state("[INSERT 3] Initial");
+
+    if (first == last)
+        return;
+
+    for (; first != last; ++first)
+        insert(position++, *first);
+    debug_state("[INSERT 3] After");
+
+  }
   
   void pop_front() {
     if (empty()) return;

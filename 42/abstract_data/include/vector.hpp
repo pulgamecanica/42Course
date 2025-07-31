@@ -1,10 +1,6 @@
 #ifndef FT_VECTOR_HPP
 #define FT_VECTOR_HPP
 
-#include <memory>
-#include <stdexcept>
-#include <cstddef>
-#include <iterator>
 #include <limits>
 #include "exception.hpp"
 #include "utils/swap.hpp"
@@ -159,7 +155,7 @@ public:
   // Modifiers
   template <class InputIterator>
   void assign(InputIterator first, InputIterator last,
-            typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
+              typename enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
     clear();
     for (; first != last; ++first)
       push_back(*first);

@@ -4,6 +4,7 @@
 # include <iterator>
 # include <cstddef>
 # include "utils/enable_if.hpp"
+# include "utils/remove_const.hpp"
 # include "utils/is_convertible.hpp"
 
 namespace ft {
@@ -20,7 +21,8 @@ public:
 
 private:
   static const size_type  BLOCK_SIZE = 64; // Must match deque impl
-  void**  _map;           // pointer to array of block pointers (avoids the double pointer constness issue using a void)
+  typename ft::remove_const<T>::type** _map;
+  // T**  _map;           // pointer to array of block pointers
   size_type _map_index;     // index into map
   size_type _block_offset;  // offset within current block
 
@@ -29,27 +31,24 @@ public:
   deque_random_access_iterator()
     : _map(0), _map_index(0), _block_offset(0) {}
 
-  deque_random_access_iterator(pointer* map, size_type index, size_type offset)
-    : _map(map), _map_index(index), _block_offset(offset) {}
-
   template <typename U>
   deque_random_access_iterator(U** map, size_type index, size_type offset,
-    typename ft::enable_if<ft::is_convertible<U*, T*>::value>::type* = 0)
-    : _map(reinterpret_cast<void**>(map)), _map_index(index), _block_offset(offset) {}
+      typename ft::enable_if<ft::is_convertible<U*, T*>::value>::type* = 0)
+    : _map(map), _map_index(index), _block_offset(offset) {}
 
 
   template <typename U>
   deque_random_access_iterator(const deque_random_access_iterator<U>& other,
     typename ft::enable_if<ft::is_convertible<U*, T*>::value>::type* = 0)
-    : _map(other._map), _map_index(other._map_index), _block_offset(other._block_offset) {}
+    : _map(other.map()), _map_index(other.map_index()), _block_offset(other.block_offset()) {}
 
   // Dereference
   reference operator*() const {
-    return *(reinterpret_cast<pointer>(_map[_map_index]) + _block_offset);
+    return _map[_map_index][_block_offset];
   }
 
   pointer operator->() const {
-    return reinterpret_cast<pointer>(_map[_map_index]) + _block_offset;
+    return &_map[_map_index][_block_offset];
   }
 
   reference operator[](difference_type n) const {
@@ -116,9 +115,9 @@ public:
   // Comparison operators
   template <typename U>
   bool operator==(const deque_random_access_iterator<U>& rhs) const {
-    return _map == rhs._map &&
-           _map_index == rhs._map_index &&
-           _block_offset == rhs._block_offset;
+    return this->map() == rhs.map()
+      && this->map_index() == rhs.map_index()
+      && this->block_offset() == rhs.block_offset();
   }
 
   template <typename U>
@@ -147,7 +146,8 @@ public:
   }
 
   // Access to raw state (optional)
-  pointer* map() const { return _map; }
+  typename ft::remove_const<T>::type** raw_map() const { return _map; }
+  T** map() const { return const_cast<T**>(raw_map()); }
   size_type map_index() const { return _map_index; }
   size_type block_offset() const { return _block_offset; }
 };
