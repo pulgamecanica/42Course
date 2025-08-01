@@ -2,10 +2,10 @@
 #define FT_VECTOR_HPP
 
 #include <limits>
-#include "exception.hpp"
+#include "utils/exception.hpp"
 #include "utils/swap.hpp"
 #include "utils/enable_if.hpp"
-#include "iterators/random_access_iterator.hpp"
+#include "iterators/vector_random_access_iterator.hpp"
 #include "iterators/reverse_iterator.hpp"
 
 namespace ft {
@@ -22,8 +22,8 @@ public:
   typedef std::size_t                               size_type;
   typedef std::ptrdiff_t                            difference_type;
 
-  typedef ft::random_access_iterator<T>             iterator;
-  typedef ft::random_access_iterator<const T>       const_iterator;
+  typedef ft::vector_random_access_iterator<T>             iterator;
+  typedef ft::vector_random_access_iterator<const T>       const_iterator;
   typedef ft::reverse_iterator<iterator>            reverse_iterator;
   typedef ft::reverse_iterator<const_iterator>      const_reverse_iterator;
 

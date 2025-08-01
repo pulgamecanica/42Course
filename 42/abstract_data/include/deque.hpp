@@ -2,7 +2,7 @@
 #define FT_DEQUE_HPP
 
 #include <limits>
-#include "exception.hpp"
+#include "utils/exception.hpp"
 #include "utils/swap.hpp"
 #include "utils/enable_if.hpp"
 #include "iterators/deque_random_access_iterator.hpp"
@@ -22,10 +22,10 @@ public:
   typedef std::size_t                               size_type;            // See 23.1
   typedef std::ptrdiff_t                            difference_type;      // See 23.1
 
-  typedef ft::deque_random_access_iterator<T>             iterator;       // See 23.1
-  typedef  ft::deque_random_access_iterator<const T>      const_iterator; // See 23.1
+  typedef ft::deque_random_access_iterator<T>       iterator;       // See 23.1
+  typedef ft::deque_random_access_iterator<const T> const_iterator; // See 23.1
   typedef ft::reverse_iterator<iterator>            reverse_iterator;
-  typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+  typedef ft::reverse_iterator<const_iterator>      const_reverse_iterator;
 
 private:
   static const size_type BLOCK_BYTES = 2048;
