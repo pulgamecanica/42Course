@@ -333,86 +333,102 @@ void benchmark_cpp98_deque(const std::string& ns_label, const std::string& type_
 template <typename Vec, typename T>
 void benchmark_cpp98_vector(const std::string& ns_label, const std::string& type_label, std::size_t count, std::ofstream& out) {
     std::vector<T> data = generate_data<T>(count);
-    std::string benchmark_prefix = "vector," + type_label;
+    std::string prefix = "vector," + type_label;
 
-    double t_default_ctor = measure_time([&]() {
-        Vec v;
-    });
-    out << benchmark_prefix << ",constructor_default," << count << "," << ns_label << "," << t_default_ctor << "\n";
+    auto bench = [&](const std::string& name, const std::function<void()>& func) {
+        double t = measure_time(func);
+        out << prefix << "," << name << "," << count << "," << ns_label << "," << t << "\n";
+    };
 
-    double t_fill_ctor = measure_time([&]() {
-        Vec v(count, T());
-    });
-    out << benchmark_prefix << ",constructor_fill," << count << "," << ns_label << "," << t_fill_ctor << "\n";
+    // Construct/copy/assign
+    bench("constructor_default", std::function<void()>([&]() { Vec v; }));
+    bench("constructor_fill", std::function<void()>([&]() { Vec v(count, T()); }));
+    bench("constructor_range", std::function<void()>([&]() { Vec v(data.begin(), data.end()); }));
+    bench("constructor_copy", std::function<void()>([&]() { Vec v1(data.begin(), data.end()); Vec v2(v1); }));
+    bench("operator_assign", std::function<void()>([&]() { Vec v1(data.begin(), data.end()); Vec v2; v2 = v1; }));
 
-    double t_range_ctor = measure_time([&]() {
+    bench("assign_range", std::function<void()>([&]() { Vec v; v.assign(data.begin(), data.end()); }));
+    bench("assign_fill", std::function<void()>([&]() { Vec v; v.assign(count, T()); }));
+
+    bench("get_allocator", std::function<void()>([&]() { Vec v; typename Vec::allocator_type a = v.get_allocator(); (void)a; }));
+
+    // Iterators
+    bench("begin_end_iter", std::function<void()>([&]() {
         Vec v(data.begin(), data.end());
-    });
-    out << benchmark_prefix << ",constructor_range," << count << "," << ns_label << "," << t_range_ctor << "\n";
+        for (typename Vec::iterator it = v.begin(); it != v.end(); ++it) { volatile T x = *it; (void)x; }
+    }));
+    bench("rbegin_rend_iter", std::function<void()>([&]() {
+        Vec v(data.begin(), data.end());
+        for (typename Vec::reverse_iterator it = v.rbegin(); it != v.rend(); ++it) { volatile T x = *it; (void)x; }
+    }));
 
-    double t_copy_ctor = measure_time([&]() {
-        Vec v1(data.begin(), data.end());
-        Vec v2(v1);
-    });
-    out << benchmark_prefix << ",constructor_copy," << count << "," << ns_label << "," << t_copy_ctor << "\n";
+    // Capacity
+    bench("size", std::function<void()>([&]() { Vec v(data.begin(), data.end()); volatile std::size_t s = v.size(); (void)s; }));
+    bench("max_size", std::function<void()>([&]() { Vec v; volatile std::size_t m = v.max_size(); (void)m; }));
+    bench("capacity", std::function<void()>([&]() { Vec v(data.begin(), data.end()); volatile std::size_t c = v.capacity(); (void)c; }));
+    bench("reserve", std::function<void()>([&]() { Vec v; v.reserve(count); }));
+    bench("resize_down", std::function<void()>([&]() { Vec v(data.begin(), data.end()); v.resize(count / 2); }));
+    bench("resize_up", std::function<void()>([&]() { Vec v(data.begin(), data.end()); v.resize(count * 2, T()); }));
+    bench("empty", std::function<void()>([&]() { Vec v; volatile bool e = v.empty(); (void)e; }));
 
-    double t_assignment = measure_time([&]() {
-        Vec v1(count, T());
-        Vec v2;
-        v2 = v1;
-    });
-    out << benchmark_prefix << ",operator_assign," << count << "," << ns_label << "," << t_assignment << "\n";
+    // Element access
+    bench("element_access_operator", std::function<void()>([&]() {
+        Vec v(data.begin(), data.end());
+        for (std::size_t i = 0; i < v.size(); ++i) { volatile T x = v[i]; (void)x; }
+    }));
+    bench("element_access_at", std::function<void()>([&]() {
+        Vec v(data.begin(), data.end());
+        for (std::size_t i = 0; i < v.size(); ++i) { volatile T x = v.at(i); (void)x; }
+    }));
+    bench("front_back", std::function<void()>([&]() {
+        Vec v(data.begin(), data.end());
+        volatile T f = v.front(); (void)f;
+        volatile T b = v.back(); (void)b;
+    }));
 
-    double t_push_back = measure_time([&]() {
+    // Modifiers
+    bench("push_back", std::function<void()>([&]() {
         Vec v;
         for (std::size_t i = 0; i < count; ++i) v.push_back(data[i]);
-    });
-    out << benchmark_prefix << ",push_back," << count << "," << ns_label << "," << t_push_back << "\n";
-
-    double t_insert = measure_time([&]() {
+    }));
+    bench("pop_back", std::function<void()>([&]() {
         Vec v(data.begin(), data.end());
-        v.insert(v.begin() + count / 2, T());
-    });
-    out << benchmark_prefix << ",insert_middle," << count << "," << ns_label << "," << t_insert << "\n";
+        for (std::size_t i = 0; i < count; ++i) v.pop_back();
+    }));
 
-    double t_resize = measure_time([&]() {
+    bench("insert_single", std::function<void()>([&]() {
         Vec v(data.begin(), data.end());
-        v.resize(count / 2);
-    });
-    out << benchmark_prefix << ",resize_down," << count << "," << ns_label << "," << t_resize << "\n";
-
-    double t_reserve = measure_time([&]() {
-        Vec v;
-        v.reserve(count);
-    });
-    out << benchmark_prefix << ",reserve," << count << "," << ns_label << "," << t_reserve << "\n";
-
-    double t_assign_range = measure_time([&]() {
-        Vec v;
-        v.assign(data.begin(), data.end());
-    });
-    out << benchmark_prefix << ",assign_range," << count << "," << ns_label << "," << t_assign_range << "\n";
-
-    double t_clear = measure_time([&]() {
+        v.insert(v.begin() + v.size() / 2, T());
+    }));
+    bench("insert_fill", std::function<void()>([&]() {
         Vec v(data.begin(), data.end());
-        v.clear();
-    });
-    out << benchmark_prefix << ",clear," << count << "," << ns_label << "," << t_clear << "\n";
-
-    double t_erase_range = measure_time([&]() {
+        v.insert(v.begin() + v.size() / 2, 10, T());
+    }));
+    bench("insert_range", std::function<void()>([&]() {
         Vec v(data.begin(), data.end());
-        v.erase(v.begin(), v.begin() + v.size() / 2);
-    });
-    out << benchmark_prefix << ",erase_range," << count << "," << ns_label << "," << t_erase_range << "\n";
+        v.insert(v.begin() + v.size() / 2, data.begin(), data.begin() + std::min(count, std::size_t(10)));
+    }));
 
-    double t_swap = measure_time([&]() {
+    bench("erase_single", std::function<void()>([&]() {
+        Vec v(data.begin(), data.end());
+        v.erase(v.begin() + v.size() / 2);
+    }));
+    bench("erase_range", std::function<void()>([&]() {
+        Vec v(data.begin(), data.end());
+        v.erase(v.begin() + v.size() / 4, v.begin() + v.size() / 2);
+    }));
+
+    bench("swap", std::function<void()>([&]() {
         Vec v1(data.begin(), data.end());
         Vec v2(count, T());
         v1.swap(v2);
-    });
-    out << benchmark_prefix << ",swap," << count << "," << ns_label << "," << t_swap << "\n";
-}
+    }));
 
+    bench("clear", std::function<void()>([&]() {
+        Vec v(data.begin(), data.end());
+        v.clear();
+    }));
+}
 
 } // namespace benchmark
 
