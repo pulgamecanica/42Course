@@ -1,31 +1,54 @@
 #include <iostream>
 #include <string>
-// #include <list>
 #include "list.hpp"
 
+template <typename List>
+void debug_reverse_print(const List& lst) {
+    typename List::const_reverse_iterator rit = lst.rbegin();
+    typename List::const_reverse_iterator rend = lst.rend();
+    std::size_t count = 0;
+
+    std::cout << "=== REVERSE ITERATION ===\n";
+    while (rit != rend) {
+        std::cout << "[" << *rit << "]\n";
+        ++rit;
+        if (++count > lst.size() + 5) {
+            std::cerr << "ERROR: reverse iteration may be infinite!\n";
+            break;
+        }
+    }
+    std::cout << "=== END REVERSE ===\n";
+}
+
+template <typename List>
+void debug_forward_print(const List& lst) {
+    std::cout << "=== FORWARD ITERATION ===\n";
+    for (typename List::const_iterator it = lst.begin(); it != lst.end(); ++it) {
+        std::cout << "[" << *it << "]\n";
+    }
+    std::cout << "=== END FORWARD ===\n";
+}
+
 int main() {
-    int i;
     ft::list<std::string> a;
-    // ft::list<std::string> b;
 
     std::string values[] = {
         "AAA", "BBB", "CCC", "DDD", "EEE",
         "atencion", "etoky", "amigo de pepito", "achwd",
         "mxxrd", "amigo de la tornada"
     };
-    for (i = 0; i < 11; ++i)
+
+    for (int i = 0; i < 11; ++i)
         a.push_front(values[i]);
 
-    i = 0;
-    for (ft::list<std::string>::iterator it = a.begin(); i < 16; i++, it++)
-    {
-        std::cout << "ELEM: [" << *it << "]\n";
-    }
+    std::cout << "List size: " << a.size() << "\n";
+    std::cout << "List empty? " << (a.empty() ? "yes" : "no") << "\n";
 
-    std::cout << "[******************************]\n";
+    debug_forward_print(a);
+    debug_reverse_print(a);
 
+    return 0;
 }
-
 
 
 // #include <iostream>

@@ -9,6 +9,8 @@
 #include "iterators/list_bidirectional_iterator.hpp"
 #include "iterators/reverse_iterator.hpp"
 
+#include <iostream>
+
 namespace ft {
 
 template <class T, class Alloc = std::allocator<T> >
@@ -82,33 +84,32 @@ private:
     return node;
   }
 
-  void _transfer_range(Node* first, Node* last, Node* position) {
-    if (first == last) return; // empty range
+  void _transfer_range(Node* first, Node* last, Node* pos) {
+    if (first == last) return;
 
-    // Disconnect [first, last)
-    Node* before_first = first->prev;
-    Node* after_last = last;
+    // Disconnect [first, last) from source list
+    Node* before = first->prev;
+    Node* after  = last->prev;
 
-    before_first->next = after_last;
-    after_last->prev = before_first;
+    before->next = last;
+    last->prev   = before;
 
-    // Connect [first, last) before position
-    Node* before_pos = position->prev;
+    // Connect [first, after] before pos
+    Node* pos_prev = pos->prev;
 
-    before_pos->next = first;
-    first->prev = before_pos;
+    pos_prev->next = first;
+    first->prev    = pos_prev;
 
-    last->prev->next = position;
-    position->prev = last->prev;
+    after->next    = pos;
+    pos->prev      = after;
   }
-
 
   void _init_empty_list() {
     _head = _create_node(); // sentinel node
     _head->next = _head;
     _head->prev = _head;
   }
-
+  
 public:
   // 23.2.2.1 construct/copy/destroy:
   explicit list(const Alloc& alloc = Alloc())
@@ -132,7 +133,7 @@ public:
     : _head(NULL), _size(0), _alloc(alloc), _node_alloc(node_allocator_type()) {
     _init_empty_list();
     for (; first != last; ++first)
-      push_back(*first); 
+      push_back(*first);
   }
 
   list(const list& x)
@@ -205,7 +206,9 @@ public:
   const_reference back() const { return *(--end()); }
 
   // 23.2.2.3 modifiers:
-  void push_front(const T& x) { _insert_after(_head, x); }
+  void push_front(const T& x) {
+    _insert_after(_head, x);
+  }
 
   void pop_front() {
     if (empty()) return;
@@ -213,7 +216,9 @@ public:
     --_size;
   }
 
-  void push_back(const T& x) { _insert_before(_head, x); }
+  void push_back(const T& x) {
+    _insert_before(_head, x);
+  }
 
   void pop_back() {
     if (empty()) return;
@@ -272,6 +277,7 @@ public:
   }
 
   // 23.2.2.4 list operations:
+  // splice <===> JOIN or CONNECT
   void splice(iterator position, list& x) {
     if (x.empty()) return;
 
