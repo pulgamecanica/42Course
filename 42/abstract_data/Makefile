@@ -72,7 +72,7 @@ install: venv
 
 plot: $(BIN_BENCH)
 	@echo "Generating benchmark graphs..."
-	$(PYTHON) plot.py
+	$(PYTHON) plot.py &> /dev/null
 
 show:
 	@echo "Project: Abstract Data - C++ Containers"
