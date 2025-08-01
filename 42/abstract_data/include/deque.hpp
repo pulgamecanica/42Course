@@ -100,14 +100,16 @@ private:
   explicit deque(const Alloc& alloc = Alloc())
     : _map(0), _map_size(INITIAL_MAP_SIZE), _start_block(0), _start_offset(0),
         _end_block(0), _end_offset(0), _alloc(alloc), _map_alloc() {
-      _map = _map_alloc.allocate(_map_size);
-      for (size_type i = 0; i < _map_size; ++i)
-        _map[i] = _alloc.allocate(BLOCK_SIZE);
+    _map = _map_alloc.allocate(_map_size);
+    for (size_type i = 0; i < _map_size; ++i)
+      _map[i] = _alloc.allocate(BLOCK_SIZE);
   }
   
   explicit deque(size_type n, const T& value = T(), const Alloc& alloc = Alloc())
     : _map(0), _map_size(INITIAL_MAP_SIZE), _start_block(0), _start_offset(0),
       _end_block(0), _end_offset(0), _alloc(alloc), _map_alloc() {
+    if (n > max_size())
+      throw std::length_error("deque: n exceeds max_size");
     _map = _map_alloc.allocate(_map_size);
     for (size_type i = 0; i < _map_size; ++i)
       _map[i] = _alloc.allocate(BLOCK_SIZE);
@@ -117,17 +119,17 @@ private:
 
   template <class InputIterator>
   deque(InputIterator first, InputIterator last, const Alloc& alloc = Alloc(),
-        typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0)
-      : _map(0), _map_size(INITIAL_MAP_SIZE), _start_block(0), _start_offset(0),
-        _end_block(0), _end_offset(0), _alloc(alloc), _map_alloc() {
-      _map = _map_alloc.allocate(_map_size);
-      for (size_type i = 0; i < _map_size; ++i)
-          _map[i] = _alloc.allocate(BLOCK_SIZE);
-      for (; first != last; ++first)
-          push_back(*first);
+      typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0)
+    : _map(0), _map_size(INITIAL_MAP_SIZE), _start_block(0), _start_offset(0),
+      _end_block(0), _end_offset(0), _alloc(alloc), _map_alloc() {
+    _map = _map_alloc.allocate(_map_size);
+    for (size_type i = 0; i < _map_size; ++i)
+        _map[i] = _alloc.allocate(BLOCK_SIZE);
+    for (; first != last; ++first)
+        push_back(*first);
   }
   
-  deque(const deque<T, Alloc>& x)
+  deque(const deque& x)
     : _map(0), _map_size(INITIAL_MAP_SIZE), _start_block(0), _start_offset(0),
       _end_block(0), _end_offset(0), _alloc(x._alloc), _map_alloc() {
     _map = _map_alloc.allocate(_map_size);

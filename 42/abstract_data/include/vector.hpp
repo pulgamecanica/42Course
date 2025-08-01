@@ -53,7 +53,7 @@ public:
     : _alloc(alloc), _data(NULL), _size(0), _capacity(0) {}
 
   vector(size_type n, const value_type& val = value_type(),
-       const allocator_type& alloc = allocator_type())
+          const allocator_type& alloc = allocator_type())
     : _alloc(alloc), _data(NULL), _size(n), _capacity(n) {
     if (n > max_size())
       throw std::length_error("vector: n exceeds max_size");
@@ -64,8 +64,8 @@ public:
 
   template <typename InputIterator>
   vector(InputIterator first, InputIterator last,
-       const allocator_type& alloc = allocator_type(),
-       typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0)
+          const allocator_type& alloc = allocator_type(),
+          typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0)
     : _alloc(alloc), _data(NULL), _size(0), _capacity(0) {
     for (; first != last; ++first)
       push_back(*first);

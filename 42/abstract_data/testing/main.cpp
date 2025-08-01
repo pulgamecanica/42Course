@@ -1,3 +1,33 @@
+#include <iostream>
+#include <string>
+// #include <list>
+#include "list.hpp"
+
+int main() {
+    int i;
+    ft::list<std::string> a;
+    // ft::list<std::string> b;
+
+    std::string values[] = {
+        "AAA", "BBB", "CCC", "DDD", "EEE",
+        "atencion", "etoky", "amigo de pepito", "achwd",
+        "mxxrd", "amigo de la tornada"
+    };
+    for (i = 0; i < 11; ++i)
+        a.push_front(values[i]);
+
+    i = 0;
+    for (ft::list<std::string>::iterator it = a.begin(); i < 16; i++, it++)
+    {
+        std::cout << "ELEM: [" << *it << "]\n";
+    }
+
+    std::cout << "[******************************]\n";
+
+}
+
+
+
 // #include <iostream>
 // #include <string>
 // #include <sstream>
@@ -187,42 +217,42 @@
 // }
 
 // // Test to trigger push_front seg fault
-#include <iostream>
-#include <string>
-#include "deque.hpp"  // or your path
+// #include <iostream>
+// #include <string>
+// #include "deque.hpp"  // or your path
 
-int main() {
-    ft::deque<std::string> a;
-    ft::deque<std::string> b;
+// int main() {
+//     ft::deque<std::string> a;
+//     ft::deque<std::string> b;
 
-    std::string values[] = {
-        "fgdwd", "gwpbt", "wblns", "deugu", "moqcd",
-        "atencion", "etoky", "amigo de pepito", "achwd",
-        "mxxrd", "amigo de la tornada"
-    };
-    a = b;
-    for (int i = 0; i < 11; ++i)
-        a.push_front(values[i]);
+//     std::string values[] = {
+//         "fgdwd", "gwpbt", "wblns", "deugu", "moqcd",
+//         "atencion", "etoky", "amigo de pepito", "achwd",
+//         "mxxrd", "amigo de la tornada"
+//     };
+//     a = b;
+//     for (int i = 0; i < 11; ++i)
+//         a.push_front(values[i]);
 
-    std::cout << "==================================== BEFORE ====================================\n";
-    std::cout << "a: \nsize: " << a.size() << "\ncontent:\n";
-    for (size_t i = 0; i < a.size(); ++i)
-        std::cout << "-> [" << a[i] << "]\n";
-    std::cout << "b: \nsize: " << b.size() << "\ncontent:\n";
-    for (size_t i = 0; i < b.size(); ++i)
-        std::cout << "-> [" << b[i] << "]\n";
+//     std::cout << "==================================== BEFORE ====================================\n";
+//     std::cout << "a: \nsize: " << a.size() << "\ncontent:\n";
+//     for (size_t i = 0; i < a.size(); ++i)
+//         std::cout << "-> [" << a[i] << "]\n";
+//     std::cout << "b: \nsize: " << b.size() << "\ncontent:\n";
+//     for (size_t i = 0; i < b.size(); ++i)
+//         std::cout << "-> [" << b[i] << "]\n";
 
-    std::cout << "================================== PUSH FRONT ==================================\n";
-    std::cout << "a.push_front(value) with value = [wcibx]\n";
-    a.push_front("wcibx");
+//     std::cout << "================================== PUSH FRONT ==================================\n";
+//     std::cout << "a.push_front(value) with value = [wcibx]\n";
+//     a.push_front("wcibx");
 
-    std::cout << "a: \nsize: " << a.size() << "\ncontent:\n";
-    for (size_t i = 0; i < a.size(); ++i)
-        std::cout << "-> [" << a[i] << "]\n";
-    std::cout << "b: \nsize: " << b.size() << "\ncontent:\n";
-    for (size_t i = 0; i < b.size(); ++i)
-        std::cout << "-> [" << b[i] << "]\n";
+//     std::cout << "a: \nsize: " << a.size() << "\ncontent:\n";
+//     for (size_t i = 0; i < a.size(); ++i)
+//         std::cout << "-> [" << a[i] << "]\n";
+//     std::cout << "b: \nsize: " << b.size() << "\ncontent:\n";
+//     for (size_t i = 0; i < b.size(); ++i)
+//         std::cout << "-> [" << b[i] << "]\n";
 
-    std::cout << "[******************************]\n";
+//     std::cout << "[******************************]\n";
 
-}
+// }
