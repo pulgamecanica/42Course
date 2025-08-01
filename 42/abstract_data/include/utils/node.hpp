@@ -9,7 +9,7 @@ struct Node {
   Node* prev;
   Node* next;
   
-  Node(const T& val = T()) : value(val), prev(NULL), next(NULL) {}
+  Node(const T& val = T()) : value(val), prev(0), next(0) {}
 };
 
 template <typename T>
@@ -17,7 +17,7 @@ struct SimpleNode {
   T value;
   SimpleNode* next;
 
-  SimpleNode(const T& val = T()) : value(val), next(NULL) {}
+  SimpleNode(const T& val = T()) : value(val), next(0) {}
 };
 
 } // namespace ft

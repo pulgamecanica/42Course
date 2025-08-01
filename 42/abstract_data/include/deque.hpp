@@ -169,45 +169,19 @@ private:
       push_back(t);
   }
   
-  allocator_type get_allocator() const {
-    return _alloc;
-  }
+  allocator_type get_allocator() const { return _alloc; }
   
   // iterators:
-  iterator begin() {
-    return iterator(_map, _start_block, _start_offset);
-  }
-  
-  const_iterator begin() const {
-    return const_iterator(_map, _start_block, _start_offset);
-  }
-  
-  iterator end() {
-    return iterator(_map, _end_block, _end_offset);
-  }
-  
-  const_iterator end() const {
-    return const_iterator(_map, _end_block, _end_offset);
-  }
-  
-  reverse_iterator rbegin() {
-    return reverse_iterator(end());
-  }
-
-  const_reverse_iterator rbegin() const {
-    return const_reverse_iterator(end());
-  }
-
-  reverse_iterator rend() {
-    return reverse_iterator(begin());
-  }
-
-  const_reverse_iterator rend() const {
-    return const_reverse_iterator(begin());
-  }
+  iterator begin() { return iterator(_map, _start_block, _start_offset); }
+  const_iterator begin() const { return const_iterator(_map, _start_block, _start_offset); }
+  iterator end() { return iterator(_map, _end_block, _end_offset); }
+  const_iterator end() const { return const_iterator(_map, _end_block, _end_offset); }
+  reverse_iterator rbegin() { return reverse_iterator(end()); }
+  const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+  reverse_iterator rend() { return reverse_iterator(begin()); }
+  const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
   
   // 23.2.1.2 capacity:
-
   /**
    * Computes the number of elements in the deque.
    * 
@@ -273,13 +247,8 @@ private:
       return (*this)[n];
   }
 
-  reference front() {
-    return *begin();
-  }
-
-  const_reference front() const {
-    return *begin();
-  }
+  reference front() { return *begin(); }
+  const_reference front() const { return *begin(); }
 
   reference back() {
     iterator tmp = end();
@@ -318,7 +287,6 @@ private:
   }
 
   void insert(iterator position, size_type n, const T& x) {
-
     if (n == 0) return;
     size_type index = position - begin();
     for (size_type i = 0; i < n; ++i)
@@ -402,6 +370,7 @@ private:
   }
 };
 
+// Relational operators
 template <typename T, typename Alloc>
 bool operator==(const deque<T, Alloc>& x, const deque<T, Alloc>& y) {
   if (x.size() != y.size()) return false;

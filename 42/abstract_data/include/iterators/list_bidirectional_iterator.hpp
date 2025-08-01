@@ -3,12 +3,11 @@
 
 # include "utils/enable_if.hpp"
 # include "utils/is_convertible.hpp"
-# include "utils/node.hpp"
 # include <iterator>
 
 namespace ft {
 
-template <typename T>
+template <typename T, typename Node>
 class list_bidirectional_iterator {
 public:
   typedef T                                value_type;
@@ -18,8 +17,6 @@ public:
   typedef std::bidirectional_iterator_tag  iterator_category;
 
 private:
-  typedef ft::Node<T> Node;
-
   Node* _node;
 
 public:
@@ -27,8 +24,8 @@ public:
   explicit list_bidirectional_iterator(Node* node) : _node(node) {}
 
   // Allow conversion from iterator<T> to const_iterator<T>
-  template <typename U, typename = typename ft::enable_if<ft::is_convertible<U*, T*>::value>::type>
-  list_bidirectional_iterator(const list_bidirectional_iterator<U>& other) : _node(other.base()) {}
+  template <typename U, typename ft::enable_if<ft::is_convertible<U*, T*>::value>::type>
+  list_bidirectional_iterator(const list_bidirectional_iterator& other) : _node(other.base()) {}
 
   reference operator*() const { return _node->value; }
   pointer operator->() const { return &(_node->value); }
@@ -41,20 +38,20 @@ public:
 
   Node* base() const { return _node; }
 
-  template <typename T1, typename T2>
-  friend bool operator==(const list_bidirectional_iterator<T1>& lhs, const list_bidirectional_iterator<T2>& rhs);
+  template <typename T1, typename T2, typename N>
+  friend bool operator==(const list_bidirectional_iterator<T1, N>& lhs, const list_bidirectional_iterator<T2, N>& rhs);
 
-  template <typename T1, typename T2>
-  friend bool operator!=(const list_bidirectional_iterator<T1>& lhs, const list_bidirectional_iterator<T2>& rhs);
+  template <typename T1, typename T2, typename N>
+  friend bool operator!=(const list_bidirectional_iterator<T1, N>& lhs, const list_bidirectional_iterator<T2, N>& rhs);
 };
 
-template <typename T1, typename T2>
-bool operator==(const list_bidirectional_iterator<T1>& lhs, const list_bidirectional_iterator<T2>& rhs) {
+template <typename T1, typename T2, typename Node>
+bool operator==(const list_bidirectional_iterator<T1, Node>& lhs, const list_bidirectional_iterator<T2, Node>& rhs) {
   return lhs.base() == rhs.base();
 }
 
-template <typename T1, typename T2>
-bool operator!=(const list_bidirectional_iterator<T1>& lhs, const list_bidirectional_iterator<T2>& rhs) {
+template <typename T1, typename T2, typename Node>
+bool operator!=(const list_bidirectional_iterator<T1, Node>& lhs, const list_bidirectional_iterator<T2, Node>& rhs) {
   return lhs.base() != rhs.base();
 }
 
