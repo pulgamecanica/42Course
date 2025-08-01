@@ -121,7 +121,7 @@ public:
     : _head(NULL), _size(0), _alloc(alloc), _node_alloc(node_allocator_type()) {
     _init_empty_list();
     if (n > max_size())
-      throw std::length_error("list: n exceeds max_size");
+      throw ft::out_of_range("list: n exceeds max_size");
     for (size_type i = 0; i < n; ++i)
       push_back(value);
   }

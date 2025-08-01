@@ -57,7 +57,7 @@ public:
           const allocator_type& alloc = allocator_type())
     : _alloc(alloc), _data(NULL), _size(n), _capacity(n) {
     if (n > max_size())
-      throw std::length_error("vector: n exceeds max_size");
+      throw ft::out_of_range("vector: n exceeds max_size");
     _data = _alloc.allocate(n);
     for (size_type i = 0; i < n; ++i)
       _alloc.construct(_data + i, val);

@@ -110,7 +110,7 @@ private:
     : _map(0), _map_size(INITIAL_MAP_SIZE), _start_block(0), _start_offset(0),
       _end_block(0), _end_offset(0), _alloc(alloc), _map_alloc() {
     if (n > max_size())
-      throw std::length_error("deque: n exceeds max_size");
+      throw ft::out_of_range("deque: n exceeds max_size");
     _map = _map_alloc.allocate(_map_size);
     for (size_type i = 0; i < _map_size; ++i)
       _map[i] = _alloc.allocate(BLOCK_SIZE);
