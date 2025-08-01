@@ -5,6 +5,7 @@
 #include "utils/exception.hpp"
 #include "utils/swap.hpp"
 #include "utils/enable_if.hpp"
+#include "utils/lexicographical_compare.hpp"
 #include "iterators/deque_random_access_iterator.hpp"
 #include "iterators/reverse_iterator.hpp"
 
@@ -387,7 +388,7 @@ bool operator!=(const deque<T, Alloc>& x, const deque<T, Alloc>& y) {
 
 template <typename T, typename Alloc>
 bool operator<(const deque<T, Alloc>& x, const deque<T, Alloc>& y) {
-  return std::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
+  return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 }
 
 template <typename T, typename Alloc>

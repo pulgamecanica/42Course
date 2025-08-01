@@ -5,6 +5,7 @@
 #include "utils/exception.hpp"
 #include "utils/swap.hpp"
 #include "utils/enable_if.hpp"
+#include "utils/lexicographical_compare.hpp"
 #include "iterators/vector_random_access_iterator.hpp"
 #include "iterators/reverse_iterator.hpp"
 
@@ -296,7 +297,7 @@ bool operator!=(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
 
 template <typename T, typename Alloc>
 bool operator<(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
-  return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+  return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 template <typename T, typename Alloc>
