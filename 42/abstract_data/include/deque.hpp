@@ -55,7 +55,6 @@ private:
       size_type from_idx = _start_block + i;
       size_type to_idx = new_start_block + i;
 
-      _alloc.deallocate(new_map[to_idx], BLOCK_SIZE);
       new_map[to_idx] = _map[from_idx];
     }
 

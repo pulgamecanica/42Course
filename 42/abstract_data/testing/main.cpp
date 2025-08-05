@@ -1,54 +1,66 @@
 #include <iostream>
 #include <string>
-#include "list.hpp"
+#include "map.hpp"
 
-template <typename List>
-void debug_reverse_print(const List& lst) {
-    typename List::const_reverse_iterator rit = lst.rbegin();
-    typename List::const_reverse_iterator rend = lst.rend();
-    std::size_t count = 0;
+int main(void) {
+    std::cout << "Map tests" << std::endl;
+    ft::map<int, std::string> m1;
 
-    std::cout << "=== REVERSE ITERATION ===\n";
-    while (rit != rend) {
-        std::cout << "[" << *rit << "]\n";
-        ++rit;
-        if (++count > lst.size() + 5) {
-            std::cerr << "ERROR: reverse iteration may be infinite!\n";
-            break;
-        }
-    }
-    std::cout << "=== END REVERSE ===\n";
+    m1[2] = std::string("hello world");
+    std::cout << "[===================]" << std::endl;
 }
 
-template <typename List>
-void debug_forward_print(const List& lst) {
-    std::cout << "=== FORWARD ITERATION ===\n";
-    for (typename List::const_iterator it = lst.begin(); it != lst.end(); ++it) {
-        std::cout << "[" << *it << "]\n";
-    }
-    std::cout << "=== END FORWARD ===\n";
-}
+// #include <iostream>
+// #include <string>
+// #include "list.hpp"
 
-int main() {
-    ft::list<std::string> a;
+// template <typename List>
+// void debug_reverse_print(const List& lst) {
+//     typename List::const_reverse_iterator rit = lst.rbegin();
+//     typename List::const_reverse_iterator rend = lst.rend();
+//     std::size_t count = 0;
 
-    std::string values[] = {
-        "AAA", "BBB", "CCC", "DDD", "EEE",
-        "atencion", "etoky", "amigo de pepito", "achwd",
-        "mxxrd", "amigo de la tornada"
-    };
+//     std::cout << "=== REVERSE ITERATION ===\n";
+//     while (rit != rend) {
+//         std::cout << "[" << *rit << "]\n";
+//         ++rit;
+//         if (++count > lst.size() + 5) {
+//             std::cerr << "ERROR: reverse iteration may be infinite!\n";
+//             break;
+//         }
+//     }
+//     std::cout << "=== END REVERSE ===\n";
+// }
 
-    for (int i = 0; i < 11; ++i)
-        a.push_front(values[i]);
+// template <typename List>
+// void debug_forward_print(const List& lst) {
+//     std::cout << "=== FORWARD ITERATION ===\n";
+//     for (typename List::const_iterator it = lst.begin(); it != lst.end(); ++it) {
+//         std::cout << "[" << *it << "]\n";
+//     }
+//     std::cout << "=== END FORWARD ===\n";
+// }
 
-    std::cout << "List size: " << a.size() << "\n";
-    std::cout << "List empty? " << (a.empty() ? "yes" : "no") << "\n";
+// int main() {
+//     ft::list<std::string> a;
 
-    debug_forward_print(a);
-    debug_reverse_print(a);
+//     std::string values[] = {
+//         "AAA", "BBB", "CCC", "DDD", "EEE",
+//         "atencion", "etoky", "amigo de pepito", "achwd",
+//         "mxxrd", "amigo de la tornada"
+//     };
 
-    return 0;
-}
+//     for (int i = 0; i < 11; ++i)
+//         a.push_front(values[i]);
+
+//     std::cout << "List size: " << a.size() << "\n";
+//     std::cout << "List empty? " << (a.empty() ? "yes" : "no") << "\n";
+
+//     debug_forward_print(a);
+//     debug_reverse_print(a);
+
+//     return 0;
+// }
 
 
 // #include <iostream>

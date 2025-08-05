@@ -23,10 +23,10 @@ public:
   typedef std::size_t                               size_type;
   typedef std::ptrdiff_t                            difference_type;
 
-  typedef ft::vector_random_access_iterator<T>             iterator;
-  typedef ft::vector_random_access_iterator<const T>       const_iterator;
-  typedef ft::reverse_iterator<iterator>            reverse_iterator;
-  typedef ft::reverse_iterator<const_iterator>      const_reverse_iterator;
+  typedef ft::vector_random_access_iterator<T>        iterator;
+  typedef ft::vector_random_access_iterator<const T>  const_iterator;
+  typedef ft::reverse_iterator<iterator>              reverse_iterator;
+  typedef ft::reverse_iterator<const_iterator>        const_reverse_iterator;
 
 private:
   allocator_type _alloc;

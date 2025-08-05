@@ -11,34 +11,15 @@
 
 # include <memory>
 # include <functional>
-# include "reverse_iterator.hpp"
-// # include "bt_iterator.hpp"
+# include "../iterators/bt_iterator.hpp"
+# include "../iterators/reverse_iterator.hpp"
+# include "../utility.hpp"
 # include "node.hpp"
-# include "pair.hpp"
 # include "swap.hpp"
 
 namespace ft {
 template < class Key, class Value, class NodeContents, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key,Value> > >
 class RedBlackTree {
-
-private:
-  typedef Node<value_type, key_compare>       btnode;
-  typedef btnode*                             node_pointer;
-
-  /*
-    * value compare Class took from: https://cplusplus.com/reference/map/map/value_comp/
-    * "in C++98, it is required to inherit binary_function<value_type,value_type,bool>"
-    */
-  class value_compare {
-    friend class RedBlackTree;
-  protected:
-    Compare comp;
-      explicit value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
-  public:
-    bool operator() (const value_type& tmp, const value_type& y) const {
-      return comp(tmp.first, y.first);
-    }
-  };
 
 public:
   typedef Key                                 key_type;
@@ -55,16 +36,34 @@ public:
 
   typedef BTIterator<value_type, pointer, reference, Compare >              iterator;
   typedef BTIterator<value_type, const_pointer, const_reference, Compare >  const_iterator;
-  typedef ReverseBI<iterator>                                               reverse_iterator;
-  typedef ReverseBI<const_iterator>                                         const_reverse_iterator;
+  typedef ft::reverse_iterator<iterator>                                    reverse_iterator;
+  typedef ft::reverse_iterator<const_iterator>                              const_reverse_iterator;
 
-private:
-      allocator_type  _alloc;
-      key_compare    _cmp;
-      node_pointer    _root;
-      node_pointer    _last;
-      node_pointer    _first;
-      size_type       _size;
+  typedef BTNode<value_type, key_compare> btnode;
+  typedef btnode*                         node_pointer;
+public:
+  /*
+    * value compare Class took from: https://cplusplus.com/reference/map/map/value_comp/
+    * "in C++98, it is required to inherit binary_function<value_type,value_type,bool>"
+    */
+  class value_compare {
+    friend class RedBlackTree;
+  protected:
+    Compare comp;
+    explicit value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+  public:
+    bool operator() (const value_type& tmp, const value_type& y) const {
+      return comp(tmp.first, y.first);
+    }
+  };
+
+protected:
+  allocator_type  _alloc;
+  key_compare     _cmp;
+  node_pointer    _root;
+  node_pointer    _last;
+  node_pointer    _first;
+  size_type       _size;
 
 public:
   explicit RedBlackTree(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
@@ -72,7 +71,7 @@ public:
     _initialize();
   }
   
-  RedBlackTree (const RedBlackTree& tmp)
+  RedBlackTree(const RedBlackTree& tmp)
     : _alloc(tmp._alloc), _cmp(tmp._cmp), _root(NULL), _last(NULL), _first(NULL), _size(0) {
     _initialize();
   }
@@ -84,7 +83,8 @@ public:
     if (_last)
       delete _last;
   }
-  RedBlackTree& operator= (const RedBlackTree& rbt) {
+
+  RedBlackTree& operator=(const RedBlackTree& rbt) {
       if (this != &rbt) {
           clear();
           _alloc = rbt._alloc;
@@ -93,6 +93,7 @@ public:
       }
       return (*this);
   }
+
   /* Capacity */
   bool                empty()const    { return (_size == 0); }
   size_type           size()const     { return (_size); }
@@ -115,9 +116,8 @@ public:
   reverse_iterator        rend()          { return reverse_iterator(_first); }
   const_reverse_iterator  rend()const     { return const_reverse_iterator(_first); }
 
-
   /* Modifiers */
-  virtual void        erase(iterator position) {
+  virtual void erase(iterator position) {
       node_pointer erase = findbyiterator(position);
       if (erase == _last)
           return ;
@@ -125,13 +125,15 @@ public:
       delete(erase);
       --_size;
   }
-  virtual size_type   erase(const key_type& k) {
+
+  virtual size_type erase(const key_type& k) {
       iterator it = find(k);
       if (it == end())
           return 0;
       erase(it);
       return 1;
   }
+
   virtual void erase(iterator first, iterator last) {
       iterator tmp = first;
       while (tmp != last) {
@@ -150,8 +152,8 @@ public:
   }
 
   /* Observers */
-  key_compare     key_cmp() const { return _cmp; }
-  value_compare   value_cmp() const { return value_compare(_cmp); }
+  key_compare     key_comp() const { return _cmp; }
+  value_compare   value_comp() const { return value_compare(_cmp); }
 
   /* Operations */
   virtual iterator find(const key_type& k) {
@@ -165,6 +167,7 @@ public:
       }
       return end();
   }
+
   virtual const_iterator find(const key_type& k) const {
       btnode *it(_root);
       while (it && it != _first && it != _last) {
@@ -176,7 +179,8 @@ public:
       }
       return end();
   }
-  virtual size_type   count(const key_type& k) const {
+
+  virtual size_type count(const key_type& k) const {
       const_iterator  it = begin();
       size_type       count = 0;
 
@@ -187,7 +191,8 @@ public:
       }
       return count;
   }
-  virtual iterator            lower_bound(const key_type& k) {
+
+  virtual iterator lower_bound(const key_type& k) {
       iterator    it = begin(), ite = end();
       while (it != ite) {
           if (itemcompare(*it, k) == false)
@@ -196,7 +201,8 @@ public:
       }
       return it;
   }
-  virtual const_iterator  lower_bound(const key_type& k) const {
+
+  virtual const_iterator lower_bound(const key_type& k) const {
       const_iterator  it = begin(), ite = end();
       while (it != ite) {
           if (itemcompare(*it, k) == false)
@@ -205,7 +211,8 @@ public:
       }
       return it;
   }
-  virtual iterator            upper_bound(const key_type& k) {
+
+  virtual iterator upper_bound(const key_type& k) {
       iterator    it = begin(), ite = end();
       while (it != ite) {
           if (itemcompare(k, *it))
@@ -214,7 +221,8 @@ public:
       }
       return it;
   }
-  virtual const_iterator          upper_bound(const key_type& k) const {
+
+  virtual const_iterator upper_bound(const key_type& k) const {
       const_iterator it = begin(), ite = end();
       while (it != ite) {
           if (itemcompare(k, *it))
@@ -223,36 +231,41 @@ public:
       }
       return it;
   }
+  
   virtual ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
       return ft::make_pair(const_iterator(lower_bound(k)), const_iterator(upper_bound(k)));
   }
-  virtual ft::pair<iterator,iterator>             equal_range (const key_type& k) {
+
+  virtual ft::pair<iterator,iterator> equal_range (const key_type& k) {
       return ft::make_pair(iterator(lower_bound(k)), iterator(upper_bound(k)));
   }
 
   void displayRBT() {
-      if (!empty()) {
-          std::cout << "Size: " << _root->size() << " | Height: " << _root->height() << " | BHeight: " << _root->bheight() << std::endl;
-          std::cout << "Min: " <<  _root->min()->getData() << " | Max: " << _root->max()->getData() << std::endl;
-          _root->display();
-      }
+      // if (!empty()) {
+      //     std::cout << "Size: " << _root->size() << " | Height: " << _root->height() << " | BHeight: " << _root->bheight() << std::endl;
+      //     std::cout << "Min: " <<  _root->min()->getData() << " | Max: " << _root->max()->getData() << std::endl;
+      //     _root->display();
+      // }
   }
 // Miscelaneous
   protected:
-      
       inline bool itemcompare(const key_type& k, const ft::pair<Key, Value>& p) const {
-          return key_cmp()(k, p.first);
+          return key_comp()(k, p.first);
       }
+      
       inline bool itemcompare(const ft::pair<Key, Value>& p, const key_type& k) const {
-          return key_cmp()(p.first, k);
+          return key_comp()(p.first, k);
       }
+      
       inline bool itemcompare(const key_type& k1, const key_type& k2) const {
-          return key_cmp()(k1, k2);
+          return key_comp()(k1, k2);
       }
+      
       inline bool itemcompare(const ft::pair<Key, Value>& p1, const ft::pair<Key, Value>& p2) const {
-          return key_cmp()(p1.first, p2.first);
+          return key_comp()(p1.first, p2.first);
       }
-      virtual btnode         *findbyiterator(iterator position) {
+      
+      virtual btnode *findbyiterator(iterator position) {
           btnode *it(_root);
           while (it && it != _first && it != _last) {
               if (itemcompare(*position, it->data))
@@ -264,12 +277,13 @@ public:
           return _last;
       }
       
-      void    initmap() {
+      void initmap() {
           _first = new btnode();
           _last = new btnode();
           link_outer();
           _size = 0;
       }
+
       btnode *insert_root(const value_type& val) {
           _root = new btnode(val, B_BLACK);
           ++_size;
@@ -278,13 +292,15 @@ public:
           _root->right = _last;
           return _root;
       }
-      void    erase_root() {
+
+      void erase_root() {
           if (_size == 1) {
               delete _root;
               link_outer();
               return ;
           }       
       }
+
       btnode *insert_left(btnode *it, const value_type& val = value_type()) {
           btnode *insert = new btnode(val);
           insert->parent = it;
@@ -296,6 +312,7 @@ public:
             fixRedBlackViolations(insert);
           return insert;
       }
+
       btnode *insert_right(btnode *it, const value_type& val = value_type()) {
           btnode *insert = new btnode(val);
           insert->parent = it;
@@ -308,11 +325,12 @@ public:
           return insert;
       }
       
-      void    link_outer() {
+      void link_outer() {
           _first->parent = _last;
           _last->parent = _first;
       }
-      void    left_rotation(btnode *x) {
+
+      void left_rotation(btnode *x) {
           btnode *y = x->right;
           x->right = y->left;
           if (x->right)
@@ -327,7 +345,8 @@ public:
           y->left = x;
           x->parent = y;
       }
-      void    right_rotation(btnode *x) {
+
+      void right_rotation(btnode *x) {
           btnode *y = x->left;
           x->left = y->right;
           if (x->left)
@@ -342,10 +361,10 @@ public:
           y->right = x;
           x->parent = y;
       }
-      bool    is_validnode(btnode *check) {
+      bool is_validnode(btnode *check) {
           return (check && check != _first && check != _last);
       }
-      void    fixRedBlackViolations(btnode *z) {
+      void fixRedBlackViolations(btnode *z) {
           while (z != _root && z->color == B_RED && z->parent->color == B_RED) {
               btnode *parent = z->parent;
               btnode *grandpa = parent->parent;
@@ -390,7 +409,8 @@ public:
           }
           _root->color = B_BLACK;
       }
-      void    RedBlackTrspl(btnode *u, btnode *v) {
+
+      void RedBlackTrspl(btnode *u, btnode *v) {
           if (u && u->parent == 0)
               _root = v;
           else if (u == u->parent->left)
@@ -405,7 +425,7 @@ public:
               x = x->left;
           return x;
       }
-      void    RedBlackDelete(btnode *z) {
+      void RedBlackDelete(btnode *z) {
           btnode *y(z);
           btnode *x;
           bool  y_orignal_color = y->color;
@@ -440,7 +460,7 @@ public:
               RedBlackDeleteFixup(x);
           }
       }
-      void    RedBlackDeleteFixup(btnode *x) {
+      void RedBlackDeleteFixup(btnode *x) {
           if (x == 0)
               return ;
           while (x != _root && x->color == B_BLACK) {
@@ -509,10 +529,12 @@ public:
           _last = new btnode();
           _link_first_last();
       }
+
       void _link_first_last() {
           _first->parent = _last;
           _last->parent = _first;
       }
+
       void _clear(node_pointer pos) {
           if (!pos)
               return ;
@@ -526,6 +548,7 @@ public:
       }
 
 };
+
 template <typename T, typename Compare, typename Alloc>
 void swap(RedBlackTree<T, Compare, Alloc>& lhs, RedBlackTree<T, Compare, Alloc>& rhs) {
   lhs.swap(rhs);

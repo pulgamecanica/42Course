@@ -1,5 +1,5 @@
-#ifndef FT_PAIR_HPP
-# define FT_PAIR_HPP
+#ifndef FT_UTILITY_HPP
+# define FT_UTILITY_HPP
 
 namespace ft {
   
@@ -8,14 +8,21 @@ struct pair {
 public:
   pair(): first(), second() {}
 
-  template<typename U, typename V>
-  pair(const pair<U, V>& p): first(p.first), second(p.second) {}
+  pair(const pair& p): first(p.first), second(p.second) {}
 
   pair(const type_1& x, const type_2& y): first(x), second(y) {}
 
-  type_1 first;
-  type_2 second;
+  template<typename U, typename V>
+  pair(const pair<U, V>& p): first(p.first), second(p.second) {}
+
+  type_1  first;
+  type_2  second;
 };
+
+template<typename type_1, typename type_2>
+pair<type_1, type_2> make_pair(type_1 x, type_2 y) {
+  return (pair<type_1, type_2>(x, y));
+}
 
 template <typename type_1, typename type_2>
 bool operator==(const pair<type_1, type_2>& lhs, const pair<type_1, type_2>& rhs) {
@@ -47,16 +54,6 @@ bool operator>=(const pair<type_1, type_2>& lhs, const pair<type_1, type_2>& rhs
   return (!(lhs < rhs));
 }
 
-template<typename type_1, typename type_2>
-pair<type_1, type_2> make_pair(type_1 x, type_2 y) {
-  return (pair<type_1, type_2>(x, y));
-}
-
-template<typename type_1, typename type_2>
-pair<type_1, type_2> make_pair(const type_1 x, const type_2 y) {
-  return (pair<type_1, type_2>(x, y));
-}
-
 } // namespace ft
 
-#endif // FT_PAIR_HPP
+#endif // FT_UTILITY_HPP

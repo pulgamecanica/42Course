@@ -96,116 +96,7 @@ public:
     height = ft::max(height, this->right->bheight());
     return (height);
   }
-
-
-  /*  * * * * * * * * * * * * * * * * * * * *
-  *              /
-  *            (p)
-  *           /   \     (x) <- New
-  * Left -> (l)   (r)
-  *        /   \
-  * * * * * * * * * * * * * * * * * * * * * *
-  *               (p)
-  *              /   \
-  *            (l)   (r)  
-  *           /   \
-  *  New -> (x)
-  *        /   \
-  * * * * * * * * * * * * * * * * * * * * * */
-  void put_left(BTNode *node) {
-    this->left = node;
-    node->parent = this;
-  }
-  /*  * * * * * * * * * * * * * * * * * * * *
-  *            \
-  *            (p)           (x) <- New
-  *           /   \     
-  *         (l)   (r) <- Rigth
-  *              /   \
-  * * * * * * * * * * * * * * * * * * * * * *
-  *               (p)
-  *              /   \
-  *            (l)   (r)
-  *                 /   \
-  *                     (x) <- New
-  *                    /   \
-  * * * * * * * * * * * * * * * * * * * * * */
-  void put_right(BTNode *node) {
-    this->right = node;
-    node->parent = this;
-  }
-  /*
-    * Get the next smaller number
-    * - If the node is a red black tree child, then:
-    *   - For the right node, the successor is the first parent.
-    *   - For the middle node, the the successor is the second parent.
-    *   - For the left node, the successor is the next min node.
-    * - If the node is not a red black tree the next successor is just the next min.
-    */
-  BTNode *successor() {
-    BTNode* node = this;
-
-    if (node && node->right && node->right->parent)
-      return (node->right->min());
-    while (node && node->parent && node->parent->parent && node == node->parent->right)
-      node = node->parent;
-    return (node->parent);
-  }
-  /*
-    * Get the next bigger number
-    * - If the node is a red black tree child, then:
-    *   - For the left node, the successor is the first parent.
-    *   - For the middle node, the the successor is the second parent.
-    *   - For the right node, the successor is the next max node.
-    * - If the node is not a red black tree the next successor is just the next max.
-    */
-  BTNode *predecessor() {
-      BTNode* node = this;
-
-      if (node && node->left && node->left->parent)
-          return (node->left->max());
-      while (node && node->parent && node->parent->parent && node == node->parent->left)
-          node = node->parent;
-      return (node->parent);
-  }
   
-  void display() {
-      display(this);
-  }
-
-  void display(BTNode *p){
-      if(p!=NULL) {
-          p->print_node_info();
-          if(p->left) {
-              std::cout << "\n\nLeft:\n";
-              display(p->left);
-          }
-          if(p->right) {
-              std::cout << "\n\nRight:\n";
-              display(p->right);
-          }
-      }
-  }
-
-  void print_node_info() {
-      std::cout << "\n\t NODE: ";
-      std::cout << "\n Key: "<<data;
-      std::cout << "\n Color: " << ((color) ? "Black" : "Red");
-      if(parent != NULL)
-          std::cout << "\n Parent: " << parent->data;
-      else
-          std::cout << "\n There is no parent of the node.  ";
-      if(right != NULL)
-          std::cout << "\n Right Child: " << right->data;
-      else
-          std::cout << "\n There is no right child of the node.  ";
-      if(left != NULL)
-          std::cout << "\n Left Child: " << left->data;
-      else
-          std::cout << "\n There is no left child of the node.  ";
-      std::cout << std::endl;
-  }
-
   /* Travell left */
   BTNode *min() {
       BTNode *node = this;
@@ -224,17 +115,45 @@ public:
       return (node);
   }
 
+  /*
+  * Get the next smaller number
+  * - If the node is a red black tree child, then:
+  *   - For the right node, the successor is the first parent.
+  *   - For the middle node, the the successor is the second parent.
+  *   - For the left node, the successor is the next min node.
+  * - If the node is not a red black tree the next successor is just the next min.
+  */
+  BTNode *successor() {
+    BTNode* node = this;
+
+    if (node && node->right && node->right->parent)
+      return (node->right->min());
+    while (node && node->parent && node->parent->parent && node == node->parent->right)
+      node = node->parent;
+    return (node->parent);
+  }
+  /*
+  * Get the next bigger number
+  * - If the node is a red black tree child, then:
+  *   - For the left node, the successor is the first parent.
+  *   - For the middle node, the the successor is the second parent.
+  *   - For the right node, the successor is the next max node.
+  * - If the node is not a red black tree the next successor is just the next max.
+  */
+  BTNode *predecessor() {
+    BTNode* node = this;
+
+    if (node && node->left && node->left->parent)
+      return (node->left->max());
+    while (node && node->parent && node->parent->parent && node == node->parent->left)
+      node = node->parent;
+    return (node->parent);
+  }
+
   T data;
   BTNode *parent, *left, *right;
   bool color;
 };
-
-template <typename T, class C>
-std::ostream&   operator<<(std::ostream& s, const BTNode<T, C>& node) {
-  return (s << node.data);
-}
-
-
 
 } // namespace ft
 

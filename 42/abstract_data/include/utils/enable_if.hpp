@@ -15,6 +15,9 @@ struct enable_if<true, T> {
     typedef T type;
 };
 
+template <class>
+struct check_type { typedef void type; };
+
 } // namespace ft
 
 #endif // FT_ENABLE_IF_HPP
