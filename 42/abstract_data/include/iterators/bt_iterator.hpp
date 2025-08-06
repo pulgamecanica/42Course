@@ -1,75 +1,58 @@
-#ifndef BT_ITERATOR_HPP
-# define BT_ITERATOR_HPP
+#ifndef FT_BT_ITERATOR_HPP
+#define FT_BT_ITERATOR_HPP
 
-# include <memory>
-# include <cstddef>
-# include "../utils/node.hpp"
+#include "../utils/node.hpp"
+#include <cstddef>
 
 namespace ft {
-template < typename T, typename Pointer, typename Reference, class C >
+
+template <typename T, typename Pointer, typename Reference, class Compare>
 class BTIterator {
 public:
-  typedef BTIterator<T, Pointer, Reference, C > type;
-  typedef BTIterator<T,       T*,       T&, C > iterator;
-  typedef BTIterator<T, const T*, const T&, C > const_iterator;
-  typedef size_t                                size_type;
-  typedef ptrdiff_t                             difference_type;
-  typedef T                                     value_type;
-  typedef Pointer                               pointer;
-  typedef Reference                             reference;
-  typedef BTNode<T, C>*                         node_pointer;
-  typedef std::bidirectional_iterator_tag       iterator_category;
+    typedef BTIterator<T, Pointer, Reference, Compare>              self_type;
+    typedef BTIterator<T, T*, T&, Compare>                          iterator;
+    typedef BTIterator<T, const T*, const T&, Compare>              const_iterator;
+    typedef T                                                       value_type;
+    typedef Pointer                                                 pointer;
+    typedef Reference                                               reference;
+    typedef ptrdiff_t                                               difference_type;
+    typedef std::bidirectional_iterator_tag                         iterator_category;
+    typedef BTNode<T>*                                              node_pointer;
 
-  BTIterator() : ptr(NULL) { }
-  BTIterator(const node_pointer ptr_) : ptr(ptr_) {}
-  BTIterator(const iterator& it) : ptr(const_cast<node_pointer>(it.ptr)) { }
+    node_pointer ptr;
 
-  type&  operator=(const const_iterator& it) {
-    this->ptr = it.ptr;
-    return *this;
-  }
+    BTIterator() : ptr(NULL) {}
+    explicit BTIterator(node_pointer p) : ptr(p) {}
 
-  virtual ~BTIterator() {}
+    // Allow const_iterator = iterator
+    BTIterator(const iterator& it) : ptr(it.ptr) {}
 
-  BTIterator operator++(int) {
-    BTIterator tmp(*this);
-    this->ptr = ptr->successor();
-    return tmp;
-  }
+    // Dereference
+    reference operator*() const { return ptr->getData(); }
+    pointer operator->() const { return &ptr->getData(); }
 
-  BTIterator&    operator++() {
-    this->ptr = ptr->successor();
-    return *this;
-  }
+    // Increment
+    self_type operator++(int) { self_type tmp = *this; ptr = ptr->successor(); return tmp; }
+    self_type& operator++()   { ptr = ptr->successor(); return *this; }
 
-  BTIterator operator--(int) {
-    BTIterator tmp(*this);
-    this->ptr = ptr->predecessor();
-    return tmp;
-  }
+    // Decrement
+    self_type operator--(int) { self_type tmp = *this; ptr = ptr->predecessor(); return tmp; }
+    self_type& operator--()   { ptr = ptr->predecessor(); return *this; }
 
-  BTIterator&    operator--() {
-    this->ptr = ptr->predecessor();
-    return *this;
-  }
+    // Comparison
+    template<typename T1, typename P1, typename R1, typename C1,
+             typename T2, typename P2, typename R2, typename C2>
+    friend bool operator==(const BTIterator<T1, P1, R1, C1>& lhs,
+                           const BTIterator<T2, P2, R2, C2>& rhs) {
+        return lhs.ptr == rhs.ptr;
+    }
 
-  reference   operator*() {
-    return this->ptr->getData(); // CHECK IF THIS WORKS!
-  }
-
-  pointer     operator->() {
-    return (&(this->ptr->getData()));
-  }
-
-  template<typename T2, typename P, typename R, class C2>
-  friend inline bool operator==(const type& lhs, const BTIterator<T2, P, R, C2>& rhs) {
-    return (lhs.ptr == rhs.ptr);
-  }
-
-  template<typename T2, typename P, typename R, class C2>
-  friend inline bool operator!=(const type& lhs, const BTIterator<T2, P, R, C2>& rhs) { return !(lhs == rhs); }
-
-  node_pointer    ptr;
+    template<typename T1, typename P1, typename R1, typename C1,
+             typename T2, typename P2, typename R2, typename C2>
+    friend bool operator!=(const BTIterator<T1, P1, R1, C1>& lhs,
+                           const BTIterator<T2, P2, R2, C2>& rhs) {
+        return !(lhs == rhs);
+    }
 };
 
 }

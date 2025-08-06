@@ -6,6 +6,9 @@ namespace ft {
 template <typename type_1, typename type_2>
 struct pair {
 public:
+  typedef type_1 first_type;
+  typedef type_2 second_type;
+
   pair(): first(), second() {}
 
   pair(const pair& p): first(p.first), second(p.second) {}
