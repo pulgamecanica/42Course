@@ -6,6 +6,7 @@ int main(void) {
     std::cout << "Map tests" << std::endl;
     ft::map<int, std::string> m1;
 
+    // m1[2] = "hello world";
     // m1[2] = std::string("hello world");
     std::cout << "[===================]" << std::endl;
 }

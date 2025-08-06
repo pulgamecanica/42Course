@@ -1,3 +1,5 @@
+NAME = ft_test
+
 CC = c++
 
 CPPFLAGS = -g -O3 --std=c++98
@@ -6,9 +8,20 @@ SRC = main.cpp
 
 INCLUDES = ../include
 
-all: test
+RM = rm -rf
 
-test:
+all: ${NAME}
+
+${NAME}: ${SRC}
 	${CC} -o $@ ${CPPFLAGS} ${SRC} -I ${INCLUDES}
+	@echo 'Created `${@}` executable'
 
-.PHONY: test
+test: re
+	@./${NAME}
+
+fclean:
+	@-${RM} ${NAME}
+
+re: fclean all
+
+.PHONY: re all clean fclean test
