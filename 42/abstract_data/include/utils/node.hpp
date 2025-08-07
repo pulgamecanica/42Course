@@ -39,7 +39,7 @@ public:
   bool color;
 
   explicit BTNode(const value_type& val = value_type(), bool c = B_RED)
-    : parent(NULL), left(NULL), right(NULL), data(val), color(c) {}
+    : parent(0), left(0), right(0), data(val), color(c) {}
 
   reference getData() { return data; }
   const_reference getData() const { return data; }

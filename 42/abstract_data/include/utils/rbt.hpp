@@ -6,9 +6,11 @@
 #include "node.hpp"
 #include "../iterators/bt_iterator.hpp"
 #include "../iterators/reverse_iterator.hpp"
+#include "../utils/swap.hpp"
 #include "../utils/less.hpp"
 #include "../utility.hpp"
 
+#include <iostream>
 #include <sstream>
 #include <iomanip> // for std::setw
 #include <vector>
@@ -75,7 +77,6 @@ public:
     : _alloc(alloc), _node_alloc(), _comp(comp), _key_of_value(), _size(0),
       _super_root(), _first(&_super_root), _last(&_super_root) {
     debug("`comp`, `alloc` Constructor");
-
   }
 
   template<class InputIt>
@@ -94,16 +95,28 @@ public:
   }
 
   RedBlackTree& operator=(const RedBlackTree& other) {
-    if (this != &other) {
-      clear();
-      _alloc = other._alloc;
-      _node_alloc = other._node_alloc;
-      _comp = other._comp;
-      _key_of_value = other._key_of_value;
+    if (this == &other)
+      return *this;
+    clear();
+    _alloc = other._alloc;
+    _node_alloc = other._node_alloc;
+    _comp = other._comp;
+    _key_of_value = other._key_of_value;
+    
+    // Copy super root setup
+    _super_root.left = _super_root.right = _super_root.parent = NULL;
+    _super_root.color = B_BLACK;
+
+    if (other._super_root.left) {
+      node_pointer copied_root = _copy(other._super_root.left, &_super_root);
+      _super_root.left = copied_root;
+
+      _first = _minimum(copied_root);
+      _last = _maximum(copied_root)->successor();
       _size = other._size;
-      _super_root = other._super_root;
-      _first = &_super_root;
-      _last = &_super_root;
+    } else {
+      _first = _last = &_super_root;
+      _size = 0;
     }
     debug("Assignment Operator");
     return *this;
@@ -118,7 +131,7 @@ public:
   iterator begin() { return iterator(_first); }
   const_iterator begin() const { return const_iterator(_first); }
   iterator end() { return iterator(&_super_root); }
-  const_iterator end() const { return const_iterator(&_super_root); }
+  const_iterator end() const { return const_iterator(const_cast<node_pointer>(&_super_root)); }
   reverse_iterator rbegin() { return reverse_iterator(end()); }
   const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
   reverse_iterator rend() { return reverse_iterator(begin()); }
@@ -169,13 +182,10 @@ public:
     if (_first == &_super_root || _less_keys(_key_of_value(new_node->data), _key_of_value(_first->data)))
       _first = new_node;
     if (_last == &_super_root || _less_keys(_key_of_value(_last->data), _key_of_value(new_node->data))) {
-      node_pointer succ = new_node->successor();
-      _last = succ ? succ : &_super_root; // ← this line is the fix
+      _last = new_node->successor();
+      // node_pointer succ = new_node->successor();
+      // _last = succ ? succ : &_super_root; // ← this line is the fix
     }
-
-    // if (_last == &_super_root || _less_keys(_key_of_value(_last->data), _key_of_value(new_node->data)))
-    //   _last = new_node->successor();
-
     return ft::make_pair(iterator(new_node), true);
   }
 
@@ -197,32 +207,237 @@ public:
 
   template<class InputIt>
 	void insert(InputIt first, InputIt last) {
+    debug("insert(first, last)");
 		iterator tmp = begin();
 		while (first != last) {
 			tmp = insert(tmp, (value_type)*first);
 			first++;
 		}
 	}
+
+  size_type erase(const key_type& key) {
+    size_type count = 0;
+    iterator it = lower_bound(key);
+    while (it != end() && !_comp(key, _key_of_value(*it))) {
+      iterator next = it;
+      ++next;
+      erase(it);
+      ++count;
+      it = next;
+    }
+    return count;
+  }
+
+  void erase(iterator pos) {
+    if (pos == end())
+      return;
+
+    node_pointer z = pos._ptr;
+    node_pointer y = z;
+    node_pointer x = NULL;
+    node_pointer x_parent = NULL;
+    bool y_original_color = y->color;
+
+    if (z->left == NULL) {
+      x = z->right;
+      x_parent = z->parent;
+      _transplant(z, z->right);
+    } else if (z->right == NULL) {
+      x = z->left;
+      x_parent = z->parent;
+      _transplant(z, z->left);
+    } else {
+      y = _minimum(z->right);
+      y_original_color = y->color;
+      x = y->right;
+      if (y->parent == z)
+        x_parent = y;
+      else {
+        _transplant(y, y->right);
+        y->right = z->right;
+        if (y->right)
+          y->right->parent = y;
+      }
+
+      _transplant(z, y);
+      y->left = z->left;
+      if (y->left)
+        y->left->parent = y;
+      y->color = z->color;
+    }
+
+    if (y_original_color == B_BLACK)
+      _delete_fixup(x, x_parent);
+
+    _destroy_node(z);
+    --_size;
+
+    if (_size == 0) {
+      _first = &_super_root;
+      _last = &_super_root;
+    } else {
+      _first = _minimum(_super_root.left);
+      _last = _maximum(_super_root.left)->successor();
+    }
+  }
   
-  size_type erase(const key_type& key);
-  void erase(iterator pos);
-  void erase(iterator first, iterator last);
-  void swap(RedBlackTree& other);
+  void erase(iterator first, iterator last) {
+    while (first != last) 
+      erase(first++);
+  }
+
+  void swap(RedBlackTree& other) {
+    if (this == &other)
+      return;
+
+    ft::swap(_comp, other._comp);
+    ft::swap(_key_of_value, other._key_of_value);
+    ft::swap(_alloc, other._alloc);
+    ft::swap(_node_alloc, other._node_alloc);
+    ft::swap(_first, other._first);
+    ft::swap(_last, other._last);
+
+    // Swap the actual trees by reassigning their roots (left child of super_root)
+    node_pointer this_tree = _super_root.left;
+    node_pointer other_tree = other._super_root.left;
+
+    // Assign other's tree to this
+    _super_root.left = other_tree;
+    if (other_tree)
+      other_tree->parent = &_super_root;
+
+    // Assign this's tree to other
+    other._super_root.left = this_tree;
+    if (this_tree)
+      this_tree->parent = &other._super_root;
+
+    // Swap the sizes
+    ft::swap(_size, other._size);
+  }
+
 
   // Lookup
-  iterator find(const key_type& key);
-  const_iterator find(const key_type& key) const;
-  size_type count(const key_type& key) const;
-  iterator lower_bound(const key_type& key);
-  const_iterator lower_bound(const key_type& key) const;
-  iterator upper_bound(const key_type& key);
-  const_iterator upper_bound(const key_type& key) const;
-  ft::pair<iterator, iterator> equal_range(const key_type& key);
-  ft::pair<const_iterator, const_iterator> equal_range(const key_type& key) const;
+  iterator find(const key_type& key) {
+    node_pointer node = _super_root.left; // Real root is on the left of the super root
+
+    while (node) {
+      if (_comp(key, _key_of_value(node->data))) {
+        node = node->left;
+      } else if (_comp(_key_of_value(node->data), key)) {
+        node = node->right;
+      } else {
+        return iterator(node); // Key matches
+      }
+    }
+
+    return end(); // Not found
+  }
+
+  const_iterator find(const key_type& key) const {
+    node_pointer node = _super_root.left;
+
+    while (node) {
+      if (_comp(key, _key_of_value(node->data))) {
+        node = node->left;
+      } else if (_comp(_key_of_value(node->data), key)) {
+        node = node->right;
+      } else {
+        return const_iterator(node);
+      }
+    }
+
+    return end();
+  }
+
+
+  size_type count(const key_type& key) const {
+    if (Multi) {
+      size_type cnt = 0;
+      const_iterator it = lower_bound(key);
+      while (it != end() && !_comp(key, _key_of_value(*it))) {
+        ++cnt;
+        ++it;
+      }
+      return cnt;
+    } else {
+      return find(key) != end();
+    }
+  }
+
+  iterator lower_bound(const key_type& key) {
+    node_pointer current = _super_root.left; // real root
+    node_pointer result = &_super_root;
+
+    while (current) {
+      if (!_comp(_key_of_value(current->data), key)) {
+        result = current;
+        current = current->left;
+      } else {
+        current = current->right;
+      }
+    }
+    return iterator(result);
+  }
+
+  const_iterator lower_bound(const key_type& key) const {
+    node_pointer current = _super_root.left;
+    node_pointer result = const_cast<node_pointer>(&_super_root);
+
+    while (current) {
+      if (!_comp(_key_of_value(current->data), key)) {
+        result = current;
+        current = current->left;
+      } else {
+        current = current->right;
+      }
+    }
+    return const_iterator(result);
+  }
+
+  iterator upper_bound(const key_type& key) {
+    node_pointer current = _super_root.left;
+    node_pointer result = &_super_root;
+
+    while (current) {
+      if (_comp(key, _key_of_value(current->data))) {
+        result = current;
+        current = current->left;
+      } else {
+        current = current->right;
+      }
+    }
+    return iterator(result);
+  }
+
+  const_iterator upper_bound(const key_type& key) const {
+    node_pointer current = _super_root.left;
+    node_pointer result = const_cast<node_pointer>(&_super_root);
+
+    while (current) {
+      if (_comp(key, _key_of_value(current->data))) {
+        result = current;
+        current = current->left;
+      } else {
+        current = current->right;
+      }
+    }
+    return const_iterator(result);
+  }
+
+  ft::pair<iterator, iterator> equal_range(const key_type& key) {
+    return ft::make_pair(lower_bound(key), upper_bound(key));
+  }
+
+  ft::pair<const_iterator, const_iterator> equal_range(const key_type& key) const {
+    return ft::make_pair(lower_bound(key), upper_bound(key));
+  }
 
   // Observers
-  key_compare key_comp() const;
-  value_compare value_comp() const;
+  key_compare key_comp() const { return _comp; }
+  value_compare value_comp() const { return value_compare(_comp); }
+
+  // Allocator
+  allocator_type get_allocator() const { return _alloc; }
 
 private:
   node_pointer _create_node(const value_type& val) {
@@ -332,10 +547,134 @@ private:
     x->parent = y;
   }
 
-  void _delete_fixup(node_pointer x);
-  void _transplant(node_pointer u, node_pointer v);
-  node_pointer _minimum(node_pointer x) const;
-  node_pointer _maximum(node_pointer x) const;
+  // Fixes red-black violations after deletion.
+  // `x` may be null (e.g., if the deleted node had no children).
+  // `x_parent` must always be valid and points to x's former parent.
+  void _delete_fixup(node_pointer x, node_pointer x_parent) {
+    if (!x)
+      return;
+    while (x != _super_root.left && (!x || x->color == B_BLACK)) {
+      if (x == x_parent->left) {
+        // Case: x is a left child
+        node_pointer w = x_parent->right;
+
+        if (w && w->color == B_RED) {
+          // Case 1: sibling is red
+          w->color = B_BLACK;
+          x_parent->color = B_RED;
+          _rotate_left(x_parent);
+          w = x_parent->right;
+        }
+
+        if ((!w->left || w->left->color == B_BLACK) &&
+            (!w->right || w->right->color == B_BLACK)) {
+          // Case 2: sibling and its children are black
+          if (w)
+            w->color = B_RED;
+          x = x_parent;
+          x_parent = x->parent;
+        } else {
+          if (!w->right || w->right->color == B_BLACK) {
+            // Case 3: sibling's right is black, left is red
+            if (w->left)
+              w->left->color = B_BLACK;
+            if (w)
+              w->color = B_RED;
+            _rotate_right(w);
+            w = x_parent->right;
+          }
+          // Case 4: sibling's right is red
+          if (w)
+            w->color = x_parent->color;
+          x_parent->color = B_BLACK;
+          if (w && w->right)
+            w->right->color = B_BLACK;
+          _rotate_left(x_parent);
+          x = _super_root.left;
+          break;
+        }
+
+      } else {
+        // Symmetric: x is right child
+        node_pointer w = x_parent->left;
+
+        if (w && w->color == B_RED) {
+          // Case 1: sibling is red
+          w->color = B_BLACK;
+          x_parent->color = B_RED;
+          _rotate_right(x_parent);
+          w = x_parent->left;
+        }
+
+        if ((!w->left || w->left->color == B_BLACK) &&
+            (!w->right || w->right->color == B_BLACK)) {
+          // Case 2: sibling and its children are black
+          if (w)
+            w->color = B_RED;
+          x = x_parent;
+          x_parent = x->parent;
+        } else {
+          if (!w->left || w->left->color == B_BLACK) {
+            // Case 3: sibling's left is black, right is red
+            if (w->right)
+              w->right->color = B_BLACK;
+            if (w)
+              w->color = B_RED;
+            _rotate_left(w);
+            w = x_parent->left;
+          }
+          // Case 4: sibling's left is red
+          if (w)
+            w->color = x_parent->color;
+          x_parent->color = B_BLACK;
+          if (w && w->left)
+            w->left->color = B_BLACK;
+          _rotate_right(x_parent);
+          x = _super_root.left;
+          break;
+        }
+      }
+    }
+
+    if (x)
+      x->color = B_BLACK;
+  }
+
+  // Replaces one subtree (u) with another (v) in the tree structure.
+  // This is used during deletion to "move" a subtree into another's place.
+  void _transplant(node_pointer u, node_pointer v) {
+    if (u->parent == &_super_root) {
+      // u is the root → update super root's left child
+      _super_root.left = v;
+    } else if (u == u->parent->left) {
+      // u is left child → update parent's left
+      u->parent->left = v;
+    } else {
+      // u is right child → update parent's right
+      u->parent->right = v;
+    }
+
+    // Update v's parent (if not null)
+    if (v)
+      v->parent = u->parent;
+  }
+
+
+  // Finds the node with the smallest key in the subtree rooted at `node`.
+  // This is the leftmost node.
+  node_pointer _minimum(node_pointer node) const {
+    while (node->left)
+      node = node->left;
+    return node;
+  }
+
+  // Finds the node with the largest key in the subtree rooted at `node`.
+  // This is the rightmost node.
+  node_pointer _maximum(node_pointer node) const {
+    while (node->right)
+      node = node->right;
+    return node;
+  }
   
   // Clear recursive
   void _clear(node_pointer node) {
@@ -346,7 +685,23 @@ private:
     _destroy_node(node);
   }
 
-  node_pointer _copy(node_pointer x, node_pointer parent);
+  // Recursively copies the subtree rooted at `x`, assigning `parent` as the parent of the new node.
+  // This is used during copy-construction or assignment of the tree.
+  node_pointer _copy(node_pointer x, node_pointer parent) {
+    if (!x)
+      return NULL;
+
+    // Allocate and copy the current node
+    node_pointer new_node = _create_node(x->getData());
+    new_node->color = x->color;
+    new_node->parent = parent;
+
+    // Recursively copy the left and right subtrees
+    new_node->left = _copy(x->left, new_node);
+    new_node->right = _copy(x->right, new_node);
+
+    return new_node;
+  }
 
   // Internal key comparison helpers
   bool _equal_keys(const key_type& a, const key_type& b) const {
