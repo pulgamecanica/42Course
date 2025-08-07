@@ -2,7 +2,7 @@ NAME = ft_test
 
 CC = c++
 
-CPPFLAGS = -g -O3 --std=c++98
+CPPFLAGS = -g -O3 --std=c++11
 
 SRC = main.cpp
 

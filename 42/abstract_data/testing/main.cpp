@@ -1,25 +1,89 @@
 #include <iostream>
 #include <string>
+#include <cstdlib>  // for std::rand, std::srand
+#include <ctime>    // for std::time
 #include "map.hpp"
+#include <map>
 
-int main(void) {
-    std::cout << "Map tests" << std::endl;
+#define ns ft
 
-    ft::map<int, std::string> m1;
+int main() {
+  std::srand(static_cast<unsigned int>(std::time(NULL))); // Seed randomness
+  { // insert with iterator
+    // std::cout << "Map Insert Test (Range)" << std::endl;
 
-    m1.insert(ft::make_pair(3, "three"));
-    m1.insert(ft::make_pair(1, "one"));
-    m1.insert(ft::make_pair(4, "four"));
-    m1.insert(ft::make_pair(2, "two"));
+    // std::vector<ns::pair<int, std::string> > vec;
+    // vec.push_back(ns::make_pair(10, "ten"));
+    // vec.push_back(ns::make_pair(20, "twenty"));
+    // vec.push_back(ns::make_pair(15, "fifteen"));
+    // vec.push_back(ns::make_pair(25, "twenty-five"));
+    // vec.push_back(ns::make_pair(5, "five"));
 
-    std::cout << "Inserted elements:" << std::endl;
-    for (ft::map<int, std::string>::iterator it = m1.begin(); it != m1.end(); ++it) {
-        std::cout << it->first << " => " << it->second << std::endl;
-    }
+    // ns::map<int, std::string> m1;
+    // m1.insert(vec.begin(), vec.end());
 
-    std::cout << "[===================]" << std::endl;
-    return 0;
+    // std::cout << "Inserted " << vec.size() << " entries using range insert." << std::endl;
+    // std::cout << "Map size: " << m1.size() << std::endl;
+
+    // std::cout << "Iterating over sorted keys:" << std::endl;
+    // for (ns::map<int, std::string>::iterator it = m1.begin(); it != m1.end(); ++it) {
+    //     std::cout << it->first << " => " << it->second << std::endl;
+    // }
+
+    // // m1.print(); // optional: visualize structure if available
+    // return 0;
+  }
+  { // insert with hint
+    // std::cout << "\nMap Hint Insert Test (Ascending Keys)\n" << std::endl;
+    // ns::map<int, std::string> m2;
+
+    // const int N = 50;
+    // ns::map<int, std::string>::iterator hint = m2.begin();
+
+    // for (int i = 0; i < N; ++i) {
+    //   int key = i * 2; // strictly ascending
+    //   std::string value = "hinted_" + std::to_string(key);
+    //   hint = m2.insert(hint, ns::make_pair(key, value)); // insert with hint
+    // }
+
+    // std::cout << "Inserted " << N << " entries using iterator hint." << std::endl;
+    // std::cout << "Map size: " << m2.size() << std::endl;
+
+    // for (ns::map<int, std::string>::iterator it = m2.begin(); it != m2.end(); ++it)
+    //   std::cout << it->first << " => " << it->second << std::endl;
+    // m2.print();
+  }
+
+  // { // Test insert(val)
+  //   ns::map<int, std::string> m1;
+
+  //   std::cout << "Map Insert Test (Randomized)" << std::endl;
+
+  //   const int N = 10; // Number of nodes to insert
+
+  //   for (int i = 0; i < N; ++i) {
+  //       int key = std::rand() % (N * 10); // Allow some duplicates if multi
+  //       std::string value = "val_" + std::to_string(key);
+  //       m1.insert(ns::make_pair(key, value));
+  //   }
+
+  //   std::cout << "Inserted " << N << " random entries." << std::endl;
+  //   std::cout << "Map size: " << m1.size() << std::endl;
+
+  //   std::cout << "Iterating over sorted keys:" << std::endl;
+  //   int count = 0;
+  //   for (ns::map<int, std::string>::iterator it = m1.begin(); it != m1.end(); ++it) {
+  //       if (count++ < 20)  // Print only the first 20 to avoid clutter
+  //           std::cout << it->first << " => " << it->second << std::endl;
+  //       else if (count == 21)
+  //           std::cout << "... (remaining " << m1.size() - 20 << " entries not shown)" << std::endl;
+  //   }
+
+  //   m1.print();
+  // }
+  return 0;
 }
+
 
 // #include <iostream>
 // #include <string>

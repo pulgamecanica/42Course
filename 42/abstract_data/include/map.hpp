@@ -9,8 +9,6 @@
 #include "iterators/reverse_iterator.hpp"
 #include "iterators/bt_iterator.hpp"
 
-#include <iostream>
-
 namespace ft {
 
 template <typename Pair>
@@ -62,10 +60,10 @@ public:
   class value_compare;
 
 public:
+  map() {}
+  
   // Constructors
-  explicit map(const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {
-    std::cout << "[map] Default Constructor" << std::endl;
-  }
+  explicit map(const key_compare& comp, const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {}
   
   template <class InputIt>
   map(InputIt first, InputIt last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
@@ -76,7 +74,6 @@ public:
 
   ~map() {
     clear();
-    std::cout << "[map] Destructor" << std::endl;
   }
 
   // Element access
@@ -95,9 +92,9 @@ public:
   const_reverse_iterator rend() const { return _tree.rend(); }
 
   // Capacity
-  bool empty() const;
-  size_type size() const;
-  size_type max_size() const;
+  bool empty() const { return _tree.empty(); }
+  size_type size() const { return _tree.size(); };
+  size_type max_size() const { return _tree.max_size(); };
 
   // Modifiers
   void clear() {
@@ -108,9 +105,15 @@ public:
     return _tree.insert(val);
   }
 
-  iterator insert(iterator hint, const value_type& val);
+  iterator insert(iterator hint, const value_type& val) {
+    return _tree.insert(hint, val);
+  }
+
   template <class InputIt>
-  void insert(InputIt first, InputIt last);
+  void insert(InputIt first, InputIt last) {
+    _tree.insert(first, last);
+  }
+
   void erase(iterator pos);
   size_type erase(const key_type& key);
   void erase(iterator first, iterator last);
@@ -133,6 +136,12 @@ public:
 
   // Allocator
   allocator_type get_allocator() const;
+
+  // Extra
+  void print() {
+    _tree.print_metadata();
+    _tree.print_tree_top_down();
+  }
 };
 
 // value_compare nested class

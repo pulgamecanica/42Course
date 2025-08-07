@@ -10,7 +10,7 @@ struct Node {
   T value;
   Node* prev;
   Node* next;
-  
+
   Node(const T& val = T()) : value(val), prev(0), next(0) {}
 };
 
@@ -28,65 +28,65 @@ struct SimpleNode {
 template <typename T>
 class BTNode {
 public:
-    typedef T         value_type;
-    typedef T&        reference;
-    typedef const T&  const_reference;
+  typedef T         value_type;
+  typedef T&        reference;
+  typedef const T&  const_reference;
 
-    BTNode* parent;
-    BTNode* left;
-    BTNode* right;
-    value_type data;
-    bool color;
+  BTNode* parent;
+  BTNode* left;
+  BTNode* right;
+  value_type data;
+  bool color;
 
-    explicit BTNode(const value_type& val = value_type(), bool c = B_RED)
-        : parent(NULL), left(NULL), right(NULL), data(val), color(c) {}
+  explicit BTNode(const value_type& val = value_type(), bool c = B_RED)
+    : parent(NULL), left(NULL), right(NULL), data(val), color(c) {}
 
-    reference getData() { return data; }
-    const_reference getData() const { return data; }
+  reference getData() { return data; }
+  const_reference getData() const { return data; }
 
-    static bool isRed(const BTNode* node) {
-        return node && node->color == B_RED;
+  static bool isRed(const BTNode* node) {
+    return node && node->color == B_RED;
+  }
+
+  BTNode* min() {
+    BTNode* node = this;
+    while (node->left)
+      node = node->left;
+    return node;
+  }
+
+  BTNode* max() {
+    BTNode* node = this;
+    while (node->right)
+      node = node->right;
+    return node;
+  }
+
+  BTNode* successor() {
+    BTNode* node = this;
+    if (node->right) {
+      node = node->right;
+      while (node->left)
+        node = node->left;
+      return node;
     }
+    while (node->parent && node == node->parent->right)
+      node = node->parent;
+    return node->parent;
+  }
 
-    BTNode* min() {
-        BTNode* node = this;
-        while (node->left)
-            node = node->left;
-        return node;
+  BTNode* predecessor() {
+    BTNode* node = this;
+    if (node->left) {
+      node = node->left;
+      while (node->right)
+        node = node->right;
+      return node;
     }
-
-    BTNode* max() {
-        BTNode* node = this;
-        while (node->right)
-            node = node->right;
-        return node;
-    }
-
-    BTNode* successor() {
-        BTNode* node = this;
-        if (node->right) {
-            node = node->right;
-            while (node->left)
-                node = node->left;
-            return node;
-        }
-        while (node->parent && node == node->parent->right)
-            node = node->parent;
-        return node->parent;
-    }
-
-    BTNode* predecessor() {
-        BTNode* node = this;
-        if (node->left) {
-            node = node->left;
-            while (node->right)
-                node = node->right;
-            return node;
-        }
-        while (node->parent && node == node->parent->left)
-            node = node->parent;
-        return node->parent;
-    }
+    while (node->parent && node == node->parent->left)
+      node = node->parent;
+    return node->parent;
+  }
 };
 
 } // namespace ft

@@ -9,7 +9,9 @@
 #include "../utils/less.hpp"
 #include "../utility.hpp"
 
-#include <iostream>
+#include <sstream>
+#include <iomanip> // for std::setw
+#include <vector>
 
 namespace ft {
 
@@ -58,7 +60,8 @@ private:
   node_pointer        _last;
 
   void debug(std::string msg) {
-    std::cout << "[rbt] " << msg << std::endl;
+    (void)msg;
+    // std::cout << "[rbt] " << msg << std::endl;
   }
 
 public:
@@ -114,8 +117,8 @@ public:
   // Iterators
   iterator begin() { return iterator(_first); }
   const_iterator begin() const { return const_iterator(_first); }
-  iterator end() { return iterator(_last); }
-  const_iterator end() const { return const_iterator(_last); }
+  iterator end() { return iterator(&_super_root); }
+  const_iterator end() const { return const_iterator(&_super_root); }
   reverse_iterator rbegin() { return reverse_iterator(end()); }
   const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
   reverse_iterator rend() { return reverse_iterator(begin()); }
@@ -137,7 +140,7 @@ public:
   }
 
   ft::pair<iterator, bool> insert(const value_type& val) {
-    debug("START insert(val)");
+    debug("insert(val)");
     key_type key = _key_of_value(val);
     node_pointer parent = &_super_root;
     node_pointer* link = &_super_root.left;
@@ -165,25 +168,42 @@ public:
 
     if (_first == &_super_root || _less_keys(_key_of_value(new_node->data), _key_of_value(_first->data)))
       _first = new_node;
-    if (_last == &_super_root || _less_keys(_key_of_value(_last->data), _key_of_value(new_node->data)))
-      _last = new_node;
+    if (_last == &_super_root || _less_keys(_key_of_value(_last->data), _key_of_value(new_node->data))) {
+      node_pointer succ = new_node->successor();
+      _last = succ ? succ : &_super_root; // ← this line is the fix
+    }
+
+    // if (_last == &_super_root || _less_keys(_key_of_value(_last->data), _key_of_value(new_node->data)))
+    //   _last = new_node->successor();
 
     return ft::make_pair(iterator(new_node), true);
-    debug("END insert(val)");
   }
-  
+
   iterator insert(iterator hint, const value_type& val) {
     debug("insert(hint, val)");
-    (void)hint;
+    if (hint == end()) return insert(val).first;
+
+    node_pointer current = hint._ptr;
+    node_pointer next = current ? current->successor() : NULL;
+
+    if (_less_keys(_key_of_value(current->getData()), _key_of_value(val)) &&
+      (!next || _less_keys(_key_of_value(val), _key_of_value(next->getData())))) {
+      // val fits between current and next
+      node_pointer inserted = _insert_node_near(current, val);
+      return iterator(inserted);
+    }
     return insert(val).first;
   }
 
   template<class InputIt>
-  void insert(InputIt first, InputIt last) {
-    for (; first != last; ++first)
-      insert(*first);
-  }
-
+	void insert(InputIt first, InputIt last) {
+		iterator tmp = begin();
+		while (first != last) {
+			tmp = insert(tmp, (value_type)*first);
+			first++;
+		}
+	}
+  
   size_type erase(const key_type& key);
   void erase(iterator pos);
   void erase(iterator first, iterator last);
@@ -215,6 +235,49 @@ private:
   void _destroy_node(node_pointer node) {
     _node_alloc.destroy(node);
     _node_alloc.deallocate(node, 1);
+  }
+
+  /**
+   * Inserts a new node with the given value near a known node (hint).
+   * This is used by insert(hint, value) to optimize insertion when the
+   * position is known or approximately known. The function places the new
+   * node as a leftmost or rightmost child relative to `near`, while
+   * maintaining red-black tree invariants.
+   *
+   * Assumes `near` is not null and the key comparison has already been validated
+   * by the caller (i.e., this does not check if insertion is valid).
+   *
+   * After linking, the tree is rebalanced via _insert_fixup.
+   */
+  node_pointer _insert_node_near(node_pointer near, const value_type& val) {
+    node_pointer z = _create_node(val);
+    node_pointer parent = near;
+    bool go_left = _less_keys(_key_of_value(val), _key_of_value(near->getData()));
+
+    // Go left or right depending on key
+    if (go_left) {
+      while (parent->left)
+        parent = parent->left;
+      parent->left = z;
+    } else {
+      while (parent->right)
+        parent = parent->right;
+      parent->right = z;
+    }
+
+    z->parent = parent;
+
+    // Fix tree structure
+    _insert_fixup(z);
+    _size++;
+
+    // Update _first and _last
+    if (_first == &_super_root || _less_keys(_key_of_value(z->getData()), _key_of_value(_first->getData())))
+      _first = z;
+    if (_last == &_super_root || _less_keys(_key_of_value(_last->getData()), _key_of_value(z->getData())))
+      _last = z->successor();
+
+    return z;
   }
 
   /**
@@ -356,6 +419,75 @@ private:
     _super_root.left->color = B_BLACK; // Root is always black
   }
 
+public:
+  int _compute_tree_width(node_pointer node) const {
+    if (!node) return 0;
+    return std::max(1, _compute_tree_width(node->left) + _compute_tree_width(node->right));
+  }
+
+  int _build_tree_display(node_pointer node, int depth, int x, std::vector<std::string>& canvas, int spacing) const {
+    if (!node) return 0;
+
+    std::ostringstream label;
+    label << (node->color == B_RED ? "R:" : "B:") << _key_of_value(node->getData());
+    std::string lbl = label.str();
+
+    if ((int)canvas.size() <= depth)
+      canvas.resize(depth + 1, std::string(512, ' '));
+
+    int curr_x = x;
+    if (curr_x + (int)lbl.size() >= (int)canvas[depth].size())
+      canvas[depth].resize(curr_x + lbl.size() + 1, ' ');
+
+    // Write label
+    for (size_t i = 0; i < lbl.size(); ++i)
+      canvas[depth][curr_x + i] = lbl[i];
+
+    int left_size = _build_tree_display(node->left, depth + 2, x - spacing, canvas, spacing / 2);
+    int right_size = _build_tree_display(node->right, depth + 2, x + spacing, canvas, spacing / 2);
+
+    // Draw branches
+    if (node->left) {
+      canvas[depth + 1][x - spacing / 2] = '/';
+    }
+    if (node->right) {
+      canvas[depth + 1][x + spacing / 2] = '\\';
+    }
+
+    return 1;
+  }
+
+  void print_tree_top_down() const {
+    std::vector<std::string> canvas;
+    int spacing = 42;
+    int root_x = 140;
+
+    _build_tree_display(_super_root.left, 0, root_x, canvas, spacing);
+
+    std::cout << "\n[ Tree Top-Down View ]\n";
+    for (size_t i = 0; i < canvas.size(); ++i) {
+      std::cout << canvas[i] << '\n';
+    }
+    std::cout << std::endl;
+  }
+
+  void print_metadata() {
+    std::cout << "First: ";
+    if (_first && _first != &_super_root) std::cout << _first->data.first;
+    else std::cout << "null";
+
+    std::cout << ", Last: ";
+    if (_last && _last != &_super_root) std::cout << _last->data.first;
+    else std::cout << "end()";
+
+    std::cout << ", _last->predecessor(): ";
+    if (_last != &_super_root && _last->predecessor())
+        std::cout << _last->predecessor()->data.first;
+    else
+        std::cout << "none";
+
+    std::cout << std::endl;
+  }
 };
 
 // value_compare nested class
