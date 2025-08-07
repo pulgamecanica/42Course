@@ -52,14 +52,14 @@ template<typename T, typename P1, typename R1, typename C1,
          typename P2, typename R2, typename C2>
 bool operator==(const BTIterator<T, P1, R1, C1>& lhs,
                 const BTIterator<T, P2, R2, C2>& rhs) {
-    return lhs._ptr == rhs._ptr;
+  return lhs._ptr == rhs._ptr;
 }
 
 template<typename T, typename P1, typename R1, typename C1,
          typename P2, typename R2, typename C2>
 bool operator!=(const BTIterator<T, P1, R1, C1>& lhs,
                 const BTIterator<T, P2, R2, C2>& rhs) {
-    return !(lhs == rhs);
+  return !(lhs == rhs);
 }
 
 }

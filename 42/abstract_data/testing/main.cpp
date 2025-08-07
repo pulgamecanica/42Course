@@ -4,11 +4,21 @@
 
 int main(void) {
     std::cout << "Map tests" << std::endl;
+
     ft::map<int, std::string> m1;
 
-    // m1[2] = "hello world";
-    // m1[2] = std::string("hello world");
+    m1.insert(ft::make_pair(3, "three"));
+    m1.insert(ft::make_pair(1, "one"));
+    m1.insert(ft::make_pair(4, "four"));
+    m1.insert(ft::make_pair(2, "two"));
+
+    std::cout << "Inserted elements:" << std::endl;
+    for (ft::map<int, std::string>::iterator it = m1.begin(); it != m1.end(); ++it) {
+        std::cout << it->first << " => " << it->second << std::endl;
+    }
+
     std::cout << "[===================]" << std::endl;
+    return 0;
 }
 
 // #include <iostream>
