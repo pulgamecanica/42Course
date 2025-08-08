@@ -8,6 +8,7 @@
 #include "../iterators/reverse_iterator.hpp"
 #include "../utils/swap.hpp"
 #include "../utils/less.hpp"
+#include "../utils/exception.hpp"
 #include "../utility.hpp"
 
 #include <iostream>
@@ -80,7 +81,7 @@ public:
   }
 
   template<class InputIt>
-  RedBlackTree(InputIt first, InputIt last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+  RedBlackTree(InputIt first, InputIt last, const key_compare& comp, const allocator_type& alloc)
     : _alloc(alloc), _node_alloc(), _comp(comp), _key_of_value(), _size(0),
       _super_root(), _first(&_super_root), _last(&_super_root) {
     insert(first, last);
@@ -191,25 +192,24 @@ public:
 
   iterator insert(iterator hint, const value_type& val) {
     debug("insert(hint, val)");
+
     if (hint == end()) return insert(val).first;
 
-    node_pointer current = hint._ptr;
-    node_pointer next = current ? current->successor() : NULL;
-
-    if (_less_keys(_key_of_value(current->getData()), _key_of_value(val)) &&
-      (!next || _less_keys(_key_of_value(val), _key_of_value(next->getData())))) {
-      // val fits between current and next
-      node_pointer inserted = _insert_node_near(current, val);
-      return iterator(inserted);
+    if ((hint == begin() || _less_keys((--iterator(hint))->first, val.first)) &&
+        _less_keys(val.first, hint->first)) {
+      return iterator(_insert_node_near(hint._ptr, val));
     }
+
     return insert(val).first;
-  }
+}
+
 
   template<class InputIt>
 	void insert(InputIt first, InputIt last) {
     debug("insert(first, last)");
 		iterator tmp = begin();
 		while (first != last) {
+      // insert((value_type)*first);
 			tmp = insert(tmp, (value_type)*first);
 			first++;
 		}
@@ -281,40 +281,55 @@ public:
     }
   }
   
+  bool is_valid_iterator(const iterator& it) const {
+    // For now, check against end() range. You can improve this if your tree tracks valid nodes.
+    return (it == end()) || (find(it->first) != end());
+  }
+
   void erase(iterator first, iterator last) {
-    while (first != last) 
-      erase(first++);
+    debug("Begin erase(iterator)");
+		while (first != last) {
+      iterator next = first;
+      ++next;              // advance before erase
+      erase(first);        // erase current
+      first = next;        // move on
+    }
+    debug("End erase(iterator)");
   }
 
   void swap(RedBlackTree& other) {
+    debug("swap");
     if (this == &other)
-      return;
+        return;
 
-    ft::swap(_comp, other._comp);
-    ft::swap(_key_of_value, other._key_of_value);
     ft::swap(_alloc, other._alloc);
     ft::swap(_node_alloc, other._node_alloc);
-    ft::swap(_first, other._first);
-    ft::swap(_last, other._last);
-
-    // Swap the actual trees by reassigning their roots (left child of super_root)
-    node_pointer this_tree = _super_root.left;
-    node_pointer other_tree = other._super_root.left;
-
-    // Assign other's tree to this
-    _super_root.left = other_tree;
-    if (other_tree)
-      other_tree->parent = &_super_root;
-
-    // Assign this's tree to other
-    other._super_root.left = this_tree;
-    if (this_tree)
-      this_tree->parent = &other._super_root;
-
-    // Swap the sizes
+    ft::swap(_comp, other._comp);
+    ft::swap(_key_of_value, other._key_of_value);
     ft::swap(_size, other._size);
-  }
 
+    // Swap super_root pointers
+    ft::swap(_super_root.left, other._super_root.left);
+    ft::swap(_super_root.right, other._super_root.right);
+
+    if (_super_root.left)
+        _super_root.left->parent = &_super_root;
+    if (_super_root.right)
+        _super_root.right->parent = &_super_root;
+
+    if (other._super_root.left)
+        other._super_root.left->parent = &other._super_root;
+    if (other._super_root.right)
+        other._super_root.right->parent = &other._super_root;
+
+    // Recalculate first/last
+    _first = (_super_root.left) ? _super_root.left->min() : &_super_root;
+    _last  = (_super_root.left) ? _super_root.left->max() : &_super_root;
+
+    other._first = (other._super_root.left) ? other._super_root.left->min() : &other._super_root;
+    other._last  = (other._super_root.left) ? other._super_root.left->max() : &other._super_root;
+    debug("swap end");
+  }
 
   // Lookup
   iterator find(const key_type& key) {
@@ -466,34 +481,34 @@ private:
    */
   node_pointer _insert_node_near(node_pointer near, const value_type& val) {
     node_pointer z = _create_node(val);
-    node_pointer parent = near;
     bool go_left = _less_keys(_key_of_value(val), _key_of_value(near->getData()));
 
-    // Go left or right depending on key
-    if (go_left) {
-      while (parent->left)
-        parent = parent->left;
-      parent->left = z;
+    // Insert directly as left or right child if that position is free,
+    // otherwise fallback to regular insert logic via insert(val)
+    if (go_left && near->left == NULL) {
+        near->left = z;
+        z->parent = near;
+    } else if (!go_left && near->right == NULL) {
+        near->right = z;
+        z->parent = near;
     } else {
-      while (parent->right)
-        parent = parent->right;
-      parent->right = z;
+        // Fallback: treat it like a normal insert (walk from root)
+        return insert(val).first._ptr;
     }
 
-    z->parent = parent;
-
-    // Fix tree structure
     _insert_fixup(z);
-    _size++;
+    ++_size;
 
-    // Update _first and _last
+    // Update _first and _last tracking pointers
     if (_first == &_super_root || _less_keys(_key_of_value(z->getData()), _key_of_value(_first->getData())))
-      _first = z;
+        _first = z;
     if (_last == &_super_root || _less_keys(_key_of_value(_last->getData()), _key_of_value(z->getData())))
-      _last = z->successor();
+        _last = z->successor();
 
     return z;
   }
+
+
 
   /**
    * Performs a left rotation around node x.
@@ -551,7 +566,7 @@ private:
   // `x` may be null (e.g., if the deleted node had no children).
   // `x_parent` must always be valid and points to x's former parent.
   void _delete_fixup(node_pointer x, node_pointer x_parent) {
-    if (!x)
+    if (!x || !x_parent)
       return;
     while (x != _super_root.left && (!x || x->color == B_BLACK)) {
       if (x == x_parent->left) {

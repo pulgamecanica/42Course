@@ -1,88 +1,351 @@
 #include <iostream>
 #include <string>
-#include <cstdlib>
-#include <ctime>
-#include "map.hpp"
-// #include <map>
+#include <vector>
+#include "map.hpp" // or wherever your ft::map is defined
+#include <map>
 
-#define ns ft
+#define ns std
 
-void print_result(const std::string& label, bool passed) {
-    std::cout << (passed ? "[PASS] " : "[FAIL] ") << label << std::endl;
+// this class compare two string after applying a rotation on it
+class stateful_comparator
+{
+private:
+	int	key;
+public:
+	stateful_comparator() : key(rand()) {} // hehe
+	stateful_comparator(const stateful_comparator &other) : key(other.key) {}
+	stateful_comparator &operator=(const stateful_comparator &other) {
+		this->key = other.key;
+		return *this;
+	}
+	bool	operator()(const std::string &l, const std::string &r) const
+	{
+		return rotate(l) < rotate(r);
+	}
+	std::string rotate(std::string s) const
+	{
+		if (s.empty())
+			return s;
+		int shift = key % s.size();
+		return s.substr(shift) + s.substr(0, shift);
+	}
+	friend bool operator==(const stateful_comparator &l, const stateful_comparator &r) {return l.key == r.key;}
+	friend bool operator!=(const stateful_comparator &l, const stateful_comparator &r) {return l.key != r.key;}
+};
+
+
+template <typename Map>
+void print_map(const Map& m, const std::string& name) {
+    std::cout << name << ":\n";
+    for (typename Map::const_iterator it = m.begin(); it != m.end(); ++it) {
+        std::cout << "-> [{" << it->first << ", " << it->second << "}]\n";
+    }
 }
 
 int main() {
-    std::srand(static_cast<unsigned int>(std::time(NULL)));
+    typedef ns::map<std::string, std::string, stateful_comparator> map_type;
+    map_type a;
+    a["un dos tres quatro"] = "";
+    a["nzlgd"] = "";
 
-    // ======================================
-    // [Scope 1] Test erase by key
-    // ======================================
-    {
-        ns::map<int, std::string> m;
-        m.insert(ns::make_pair(1, "one"));
-        m.insert(ns::make_pair(2, "two"));
-        m.insert(ns::make_pair(3, "three"));
+    std::vector<map_type::value_type> range;
+    range.push_back(map_type::value_type("atencion", ""));
+    range.push_back(map_type::value_type("sadeu", ""));
+    range.push_back(map_type::value_type("uumoq", ""));
+    range.push_back(map_type::value_type("un", ""));
+    range.push_back(map_type::value_type("atencion", "")); // duplicate
+    range.push_back(map_type::value_type("etoky", ""));
+    range.push_back(map_type::value_type("amigo de pepito", ""));
+    range.push_back(map_type::value_type("achwd", ""));
+    range.push_back(map_type::value_type("mxxrd", ""));
+    range.push_back(map_type::value_type("amigo de la tornada", ""));
+    range.push_back(map_type::value_type("lmndq", ""));
+    range.push_back(map_type::value_type("ukwag", ""));
+    range.push_back(map_type::value_type("lejuu", ""));
+    range.push_back(map_type::value_type("wcibx", ""));
+    range.push_back(map_type::value_type("bumen", ""));
+    range.push_back(map_type::value_type("eyatd", ""));
 
-        size_t removed = m.erase(2);
-        print_result("Erase key=2 returns 1", removed == 1);
-        print_result("Find key=2 returns end", m.find(2) == m.end());
-        print_result("Map size is now 2", m.size() == 2);
-    }
+    map_type b;
 
-    // ======================================
-    // [Scope 2] Test erase by iterator
-    // ======================================
-    {
-        ns::map<int, std::string> m;
-        m.insert(ns::make_pair(10, "ten"));
-        m.insert(ns::make_pair(20, "twenty"));
-        m.insert(ns::make_pair(30, "thirty"));
+    std::cout << "==== BEFORE ====\n";
+    print_map(a, "a");
+    print_map(b, "b");
 
-        ns::map<int, std::string>::iterator it = m.find(20);
-        if (it != m.end())
-            m.erase(it);
+    std::cout << "==== INSERT RANGE ====\n";
+    b.insert(range.begin(), range.end());
 
-        print_result("After erase(it), find(20) returns end", m.find(20) == m.end());
-        print_result("Map size is now 2", m.size() == 2);
-    }
-
-    // ======================================
-    // [Scope 3] Test erase range
-    // ======================================
-    {
-        ns::map<int, std::string> m;
-        for (int i = 0; i < 10; ++i)
-            m.insert(ns::make_pair(i, "val_" + std::to_string(i)));
-
-        ns::map<int, std::string>::iterator it1 = m.find(3);
-        ns::map<int, std::string>::iterator it2 = m.find(7);
-        m.erase(it1, it2); // should erase keys 3 to 6
-
-        print_result("Key 3 no longer exists", m.find(3) == m.end());
-        print_result("Key 6 no longer exists", m.find(6) == m.end());
-        print_result("Key 7 still exists", m.find(7) != m.end());
-    }
-
-    // ======================================
-    // [Scope 4] Test find and const_find
-    // ======================================
-    {
-        ns::map<int, std::string> m;
-        m.insert(ns::make_pair(100, "hundred"));
-        m.insert(ns::make_pair(200, "two_hundred"));
-
-        ns::map<int, std::string>::iterator it = m.find(100);
-        print_result("Find key=100 yields correct value", it != m.end() && it->second == "hundred");
-
-        const ns::map<int, std::string>& cm = m;
-        ns::map<int, std::string>::const_iterator cit = cm.find(200);
-        print_result("Const find key=200 yields correct value", cit != cm.end() && cit->second == "two_hundred");
-
-        print_result("Const find for missing key=300 returns end", cm.find(300) == cm.end());
-    }
+    std::cout << "==== AFTER ====\n";
+    print_map(a, "a");
+    print_map(b, "b");
 
     return 0;
 }
+
+
+// #include <iostream>
+// #include <string>
+// #include "../include/map.hpp"  // use your ft::map here
+// #include <map>
+
+// #define ns ft
+
+// int main() {
+//     ns::map<std::string, std::string> m;
+
+//     m["alpha"] = "1";
+//     m["beta"] = "2";
+//     m["gamma"] = "3";
+//     m["delta"] = "4";
+
+//     std::cout << "Initial contents:\n";
+//     for (ns::map<std::string, std::string>::iterator it = m.begin(); it != m.end(); ++it)
+//         std::cout << it->first << " => " << it->second << "\n";
+
+//     std::cout << "\nErasing entire map using erase(begin(), end())...\n";
+//     m.erase(m.find("alpha"), m.find("delta"));
+
+//     std::cout << "\nMap is now empty? " << (m.empty() ? "Yes" : "No") << "\n";
+
+//     return 0;
+// }
+
+
+// #include <iostream>
+// #include <string>
+// #include "../include/map.hpp"  // use your ft::map here
+
+// int main() {
+//     ft::map<std::string, std::string> m;
+
+//     m["alpha"] = "1";
+//     m["beta"] = "2";
+//     m["gamma"] = "3";
+//     m["delta"] = "4";
+
+//     std::cout << "Initial contents:\n";
+//     for (ft::map<std::string, std::string>::iterator it = m.begin(); it != m.end(); ++it)
+//         std::cout << it->first << " => " << it->second << "\n";
+
+//     // Erase first
+//     ft::map<std::string, std::string>::iterator it = m.begin();
+//     std::cout << "\nErasing first: " << it->first << "\n";
+//     m.erase(it);
+
+//     // Erase last
+//     it = m.end();
+//     --it;
+//     std::cout << "Erasing last: " << it->first << "\n";
+//     m.erase(it);
+
+//     // Erase middle
+//     it = m.begin();
+//     ++it;
+//     std::cout << "Erasing middle: " << it->first << "\n";
+//     m.erase(it);
+
+//     // Now only one left
+//     std::cout << "\nRemaining contents:\n";
+//     for (it = m.begin(); it != m.end(); ++it)
+//         std::cout << it->first << " => " << it->second << "\n";
+
+//     // Final erase
+//     it = m.begin();
+//     if (it != m.end()) {
+//         std::cout << "Erasing last remaining: " << it->first << "\n";
+//         m.erase(it);
+//     }
+
+//     std::cout << "\nMap is now empty? " << (m.empty() ? "Yes" : "No") << "\n";
+
+//     return 0;
+// }
+
+
+// #include <iostream>
+// #include <string>
+// #include "map.hpp" // adjust the path if necessary
+// #include <map>
+
+// #define ns std
+
+// int main() {
+//     typedef ns::map<std::string, int> map_type;
+
+//     map_type a, b;
+
+//     // Fill 'a' with a fixed set of strings
+//     std::string a_keys[] = {
+//         "amigo de la tornada", "gbjat", "nbujf", "atencion", "sdnwg",
+//         "xegag", "ufarf", "efmpq", "wgthc", "jjufp",
+//         "hnzvd", "hpftg", "sqnwk", "mqpcs", "un dos tres quatro",
+//         "zsusn", "un", "wwteu", "vxxpr"
+//     };
+
+//     for (size_t i = 0; i < sizeof(a_keys) / sizeof(a_keys[0]); ++i)
+//         a[a_keys[i]] = i;
+
+//     // Fill 'b' with more/different keys, including some from 'a'
+//     std::string b_keys[] = {
+//         "amigo de la tornada", "gbjat", "nbujf", "atencion", "mcopx",
+//         "qdafp", "sdnwg", "rcwgz", "webvn", "xegag",
+//         "teipq", "ufarf", "efmpq", "rfumg", "uglva",
+//         "wgthc", "mhtan", "pilgl", "akzmm", "tliqf",
+//         "flont", "jlzjo", "amigo de pepito", "hola amigo", "dos",
+//         "mqpcs", "mrlka", "un dos tres quatro", "zsusn", "la pantera",
+//         "ttshm", "un", "wwteu", "vxxpr", "yywbi"
+//     };
+
+//     for (size_t i = 0; i < sizeof(b_keys) / sizeof(b_keys[0]); ++i)
+//         b[b_keys[i]] = i;
+
+//     std::cout << "Before erase:\na size: " << a.size() << "\nb size: " << b.size() << "\n";
+
+//     // Simulate a.erase(it1, it2)
+//     map_type::iterator it1 = b.find("uglva");
+//     map_type::iterator it2 = b.find("ttshm");
+
+//     std::cout << "Founded:\n" << "\tit1:" << it1->first << std::endl << "\tit2:" << it2->first << std::endl;
+//     if (it1 != b.end() && it2 != b.end() && it1 != it2) {
+//         std::cout << "Erasing range: [" << it1->first << ", " << it2->first << ")\n";
+//         b.erase(it1, it2);
+//     } else {
+//         std::cout << "Could not find valid iterator range.\n";
+//     }
+
+//     std::cout << "After erase:\nb size: " << b.size() << "\n";
+//     for (map_type::iterator it = b.begin(); it != b.end(); ++it)
+//         std::cout << " -> [" << it->first << ", " << it->second << "]\n";
+
+//     return 0;
+// }
+
+
+
+// #include <iostream>
+// #include <string>
+// #include "map.hpp"  // your ft::map
+
+// int main() {
+//     typedef std::string S;
+//     typedef ft::map<S, S> Map;
+
+//     Map a;
+//     Map b;
+
+//     std::cout << "Before swap:" << std::endl;
+//     std::cout << "a.size(): " << a.size() << std::endl;
+//     std::cout << "b.size(): " << b.size() << std::endl;
+
+//     std::cout << "\nPerforming swap..." << std::endl;
+//     a.swap(b);
+
+//     std::cout << "\nAfter swap:" << std::endl;
+//     std::cout << "a.size(): " << a.size() << std::endl;
+//     std::cout << "b.size(): " << b.size() << std::endl;
+
+//     std::cout << "\nInserting and iterating..." << std::endl;
+//     a["key1"] = "value1";
+//     b["key2"] = "value2";
+
+//     std::cout << "a contents:" << std::endl;
+//     for (Map::iterator it = a.begin(); it != a.end(); ++it)
+//         std::cout << it->first << " -> " << it->second << std::endl;
+
+//     std::cout << "b contents:" << std::endl;
+//     for (Map::iterator it = b.begin(); it != b.end(); ++it)
+//         std::cout << it->first << " -> " << it->second << std::endl;
+
+//     return 0;
+// }
+
+
+
+// #include <iostream>
+// #include <string>
+// #include <cstdlib>
+// #include <ctime>
+// #include "map.hpp"
+// // #include <map>
+
+// #define ns ft
+
+// void print_result(const std::string& label, bool passed) {
+//     std::cout << (passed ? "[PASS] " : "[FAIL] ") << label << std::endl;
+// }
+
+// int main() {
+//     std::srand(static_cast<unsigned int>(std::time(NULL)));
+
+//     // ======================================
+//     // [Scope 1] Test erase by key
+//     // ======================================
+//     {
+//         ns::map<int, std::string> m;
+//         m.insert(ns::make_pair(1, "one"));
+//         m.insert(ns::make_pair(2, "two"));
+//         m.insert(ns::make_pair(3, "three"));
+
+//         size_t removed = m.erase(2);
+//         print_result("Erase key=2 returns 1", removed == 1);
+//         print_result("Find key=2 returns end", m.find(2) == m.end());
+//         print_result("Map size is now 2", m.size() == 2);
+//     }
+
+//     // ======================================
+//     // [Scope 2] Test erase by iterator
+//     // ======================================
+//     {
+//         ns::map<int, std::string> m;
+//         m.insert(ns::make_pair(10, "ten"));
+//         m.insert(ns::make_pair(20, "twenty"));
+//         m.insert(ns::make_pair(30, "thirty"));
+
+//         ns::map<int, std::string>::iterator it = m.find(20);
+//         if (it != m.end())
+//             m.erase(it);
+
+//         print_result("After erase(it), find(20) returns end", m.find(20) == m.end());
+//         print_result("Map size is now 2", m.size() == 2);
+//     }
+
+//     // ======================================
+//     // [Scope 3] Test erase range
+//     // ======================================
+//     {
+//         ns::map<int, std::string> m;
+//         for (int i = 0; i < 10; ++i)
+//             m.insert(ns::make_pair(i, "val_" + std::to_string(i)));
+
+//         ns::map<int, std::string>::iterator it1 = m.find(3);
+//         ns::map<int, std::string>::iterator it2 = m.find(7);
+//         m.erase(it1, it2); // should erase keys 3 to 6
+
+//         print_result("Key 3 no longer exists", m.find(3) == m.end());
+//         print_result("Key 6 no longer exists", m.find(6) == m.end());
+//         print_result("Key 7 still exists", m.find(7) != m.end());
+//     }
+
+//     // ======================================
+//     // [Scope 4] Test find and const_find
+//     // ======================================
+//     {
+//         ns::map<int, std::string> m;
+//         m.insert(ns::make_pair(100, "hundred"));
+//         m.insert(ns::make_pair(200, "two_hundred"));
+
+//         ns::map<int, std::string>::iterator it = m.find(100);
+//         print_result("Find key=100 yields correct value", it != m.end() && it->second == "hundred");
+
+//         const ns::map<int, std::string>& cm = m;
+//         ns::map<int, std::string>::const_iterator cit = cm.find(200);
+//         print_result("Const find key=200 yields correct value", cit != cm.end() && cit->second == "two_hundred");
+
+//         print_result("Const find for missing key=300 returns end", cm.find(300) == cm.end());
+//     }
+
+//     return 0;
+// }
 
 
 

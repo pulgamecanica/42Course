@@ -4,6 +4,7 @@
 #include <memory>
 #include "utility.hpp"
 #include "utils/rbt.hpp"
+#include "utils/exception.hpp"
 #include "utils/less.hpp"
 #include "utils/lexicographical_compare.hpp"
 #include "iterators/reverse_iterator.hpp"
@@ -65,20 +66,39 @@ public:
   explicit map(const key_compare& comp, const allocator_type& alloc = allocator_type()): _tree(comp, alloc) {}
   
   template <class InputIt>
-  map(InputIt first, InputIt last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type());
+  map(InputIt first, InputIt last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+    : _tree(first, last, comp, alloc) {} 
 
-  map(const map& other);
+  map(const map& other): _tree(other._tree) {};
   
-  map& operator=(const map& other);
+  map& operator=(const map& other) {
+    if (this != &other)
+      _tree = other._tree;
+    return *this;
+  }
 
   ~map() {
     clear();
   }
 
   // Element access
-  mapped_type& operator[](const key_type& key);
-  mapped_type& at(const key_type& key);
-  const mapped_type& at(const key_type& key) const;
+  mapped_type& operator[](const key_type& key) {
+    return insert(ft::make_pair(key, mapped_type())).first->second;
+  }
+
+  mapped_type& at(const key_type& key) {
+    iterator it = find(key);
+    if (it == end())
+      throw ft::out_of_range("map::at: key not foun");
+    return it->second;
+  }
+
+  const mapped_type& at(const key_type& key) const {
+    const_iterator it = find(key);
+    if (it == end())
+      throw ft::out_of_range("map::at: key not foun");
+    return it->second;
+  }
 
   // Iterators
   iterator begin() { return _tree.begin(); }
