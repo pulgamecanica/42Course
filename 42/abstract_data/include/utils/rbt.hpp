@@ -223,11 +223,9 @@ public:
     size_type count = 0;
     iterator it = lower_bound(key);
     while (it != end() && !_comp(key, _key_of_value(*it))) {
-      iterator next = it;
-      ++next;
       erase(it);
+      it = lower_bound(key);
       ++count;
-      it = next;
     }
     return count;
   }

@@ -9,18 +9,36 @@
 #include "iterator_tests.hpp"
 #include "relational_tests.hpp"
 #include "assign_tests.hpp"
+#include "associative_tests.hpp"
+#include "map_extra_tests.hpp"
 
 #ifdef MODE_FT
+	#include "map.hpp"
 	#include "vector.hpp"
 	#include "deque.hpp"
 	#include "list.hpp"
 	namespace ns = ft;
 #else
+	#include <map>
 	#include <vector>
 	#include <deque>
 	#include <list>
 	namespace ns = std;
 #endif
+
+static ns::pair<const int, int> make_pair_int_int() {
+	return ns::make_pair(rand() % 100, rand() % 100);
+}
+
+// static int make_int() {
+// 	return rand() % 100;
+// }
+
+// static ns::pair<std::string, double> make_string_double() {
+// 	static int counter = 0;
+// 	return ns::make_pair("key" + std::to_string(counter++), rand() % 1000 / 10.0);
+// }
+
 
 static void test_vector() {
   int ntest = 1;
@@ -79,6 +97,24 @@ static void test_list() {
 	);
 }
 
+static void test_map() {
+	int ntest = 1;
+	using Map = ns::map<int, int>;
+
+	test_container<Map>(
+    "MAP",
+		container::get_table<Map>() +
+		capacity::get_table<Map>() +
+		common_modifiers::get_table<Map>() +
+		associative::get_table<Map>() +
+    associative_modifiers::get_table<Map>(make_pair_int_int) +
+		map_extras::get_table<Map>() +
+		iterators::get_table<Map>() +
+		relational::get_table<Map>(),
+		ntest
+	);
+}
+
 
 int main() {
 	std::srand(std::time(nullptr));
@@ -86,6 +122,7 @@ int main() {
 	test_vector();
 	test_list();
 	test_deque();
+  test_map();
 
 	return 0;
 }

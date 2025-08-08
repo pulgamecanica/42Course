@@ -26,10 +26,14 @@ public:
 
   BTIterator(const node_pointer p) : _ptr(p) {}
 
-  BTIterator(const iterator& it) : _ptr(it._ptr) {}
+  BTIterator(const BTIterator& other) : _ptr(other._ptr) {}
 
-  type& operator=(const const_iterator& it) {
-    _ptr = it._ptr;
+  template <typename P2, typename R2>
+  BTIterator(const BTIterator<T, P2, R2, Compare>& other) : _ptr(other._ptr) {}
+
+  BTIterator& operator=(const BTIterator& other) {
+    if (this != &other)
+      this->_ptr = other._ptr;
     return *this;
   }
 

@@ -142,7 +142,9 @@ public:
   }
 
   // Lookup
-  size_type count(const key_type& key) const;
+  size_type count(const key_type& key) const {
+    return _tree.count(key);
+  }
   
   iterator find(const key_type& key) {
     return _tree.find(key);

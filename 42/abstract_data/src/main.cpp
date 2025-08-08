@@ -4,6 +4,10 @@
 #include <string>
 #include <ctime>
 
+// void run_list_compliance_tests();
+void run_map_compliance_tests();
+// void run_set_compliance_tests();
+
 void run_vector_compliance_tests();
 void run_deque_compliance_tests();
 
@@ -18,5 +22,11 @@ int main() {
     run_vector_compliance_tests();
     print_header("Deque");
     run_deque_compliance_tests();
+    // print_header("List");
+    // run_list_compliance_tests();
+    print_header("Map");
+    run_map_compliance_tests();
+    // print_header("Set");
+    // run_set_compliance_tests();
     return 0;
 }

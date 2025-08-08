@@ -72,35 +72,65 @@ TestList<C> get_table() {
 
 } // namespace common_modifiers
 
-
 namespace associative_modifiers {
 
 template <typename C>
-TestList<C> get_table() {
-	return {
-		{
-			"insert(value)",
-			[](C& a, C&) {
-				typename C::value_type val;
-				a.insert(val);
-			}
-		},
-		{
-			"erase(key)",
-			[](C& a, C&) {
-				if (!a.empty()) {
-					a.erase(a.begin()->first);
-				}
-			}
-		},
-		{
-			"erase(iterator)",
-			[](C& a, C&) {
-				if (!a.empty())
-					a.erase(a.begin());
+TestList<C> get_table(typename C::value_type (*make_value)()) {
+	TestList<C> out;
+
+	out.push_back({
+		"insert(value)",
+		[make_value](C& a, C&) {
+			a.insert(make_value());
+		}
+	});
+
+	out.push_back({
+		"insert(hint, value)",
+		[make_value](C& a, C&) {
+			a.insert(a.begin(), make_value());
+		}
+	});
+
+	out.push_back({
+		"insert(range)",
+		[make_value](C& a, C&) {
+			C tmp;
+			tmp.insert(make_value());
+			tmp.insert(make_value());
+			a.insert(tmp.begin(), tmp.end());
+		}
+	});
+
+	out.push_back({
+		"erase(iterator)",
+		[](C& a, C&) {
+			if (!a.empty())
+				a.erase(a.begin());
+		}
+	});
+
+	out.push_back({
+		"erase(key)",
+		[](C& a, C&) {
+			if (!a.empty())
+				a.erase(a.begin()->first);
+		}
+	});
+
+	out.push_back({
+		"erase(range)",
+		[](C& a, C&) {
+			if (a.size() >= 2) {
+				typename C::iterator first = a.begin();
+				typename C::iterator last = a.begin();
+				std::advance(last, 2);
+				a.erase(first, last);
 			}
 		}
-	};
+	});
+
+	return out;
 }
 
 } // namespace associative_modifiers
