@@ -1,86 +1,232 @@
+
 #include <iostream>
 #include <string>
 #include <vector>
-#include "map.hpp" // or wherever your ft::map is defined
-#include <map>
+#include <cstdlib>
+#include <ctime>
+#include "map.hpp" // replace with actual path if needed
 
-#define ns std
+#define ns ft
 
-// this class compare two string after applying a rotation on it
-class stateful_comparator
-{
-private:
-	int	key;
-public:
-	stateful_comparator() : key(rand()) {} // hehe
-	stateful_comparator(const stateful_comparator &other) : key(other.key) {}
-	stateful_comparator &operator=(const stateful_comparator &other) {
-		this->key = other.key;
-		return *this;
-	}
-	bool	operator()(const std::string &l, const std::string &r) const
-	{
-		return rotate(l) < rotate(r);
-	}
-	std::string rotate(std::string s) const
-	{
-		if (s.empty())
-			return s;
-		int shift = key % s.size();
-		return s.substr(shift) + s.substr(0, shift);
-	}
-	friend bool operator==(const stateful_comparator &l, const stateful_comparator &r) {return l.key == r.key;}
-	friend bool operator!=(const stateful_comparator &l, const stateful_comparator &r) {return l.key != r.key;}
+struct stateful_comparator {
+    int key;
+    stateful_comparator() : key(std::rand()) {}
+    bool operator()(const std::string& a, const std::string& b) const {
+        int shift = key % a.size();
+        std::string ra = a.substr(shift) + a.substr(0, shift);
+        shift = key % b.size();
+        std::string rb = b.substr(shift) + b.substr(0, shift);
+        return ra < rb;
+    }
 };
-
 
 template <typename Map>
 void print_map(const Map& m, const std::string& name) {
-    std::cout << name << ":\n";
-    for (typename Map::const_iterator it = m.begin(); it != m.end(); ++it) {
-        std::cout << "-> [{" << it->first << ", " << it->second << "}]\n";
-    }
+    std::cout << name << " (size: " << m.size() << "):\n";
+    for (typename Map::const_iterator it = m.begin(); it != m.end(); ++it)
+        std::cout << "-> {" << it->first << ", " << it->second << "}\n";
+    std::cout << std::endl;
 }
 
 int main() {
+    std::srand(std::time(0));
     typedef ns::map<std::string, std::string, stateful_comparator> map_type;
+    typedef map_type::iterator iterator;
+
     map_type a;
-    a["un dos tres quatro"] = "";
-    a["nzlgd"] = "";
+    for (int i = 0; i < 100; ++i)
+        a["key" + std::to_string(i)] = "value" + std::to_string(i);
 
+    print_map(a, "Initial Map A");
+
+    // Test copy constructor
+    map_type b(a);
+    print_map(b, "Copied Map B");
+
+    // Test assignment
+    map_type c;
+    c = a;
+    print_map(c, "Assigned Map C");
+
+    // Test insert with hint
+    iterator hint = a.begin();
+    for (int i = 100; i < 110; ++i)
+        a.insert(hint, map_type::value_type("hintkey" + std::to_string(i), "hintvalue" + std::to_string(i)));
+
+    print_map(a, "After Hint Insert");
+
+    // Test insert range
     std::vector<map_type::value_type> range;
-    range.push_back(map_type::value_type("atencion", ""));
-    range.push_back(map_type::value_type("sadeu", ""));
-    range.push_back(map_type::value_type("uumoq", ""));
-    range.push_back(map_type::value_type("un", ""));
-    range.push_back(map_type::value_type("atencion", "")); // duplicate
-    range.push_back(map_type::value_type("etoky", ""));
-    range.push_back(map_type::value_type("amigo de pepito", ""));
-    range.push_back(map_type::value_type("achwd", ""));
-    range.push_back(map_type::value_type("mxxrd", ""));
-    range.push_back(map_type::value_type("amigo de la tornada", ""));
-    range.push_back(map_type::value_type("lmndq", ""));
-    range.push_back(map_type::value_type("ukwag", ""));
-    range.push_back(map_type::value_type("lejuu", ""));
-    range.push_back(map_type::value_type("wcibx", ""));
-    range.push_back(map_type::value_type("bumen", ""));
-    range.push_back(map_type::value_type("eyatd", ""));
+    for (int i = 200; i < 210; ++i)
+        range.push_back(map_type::value_type("range" + std::to_string(i), "rvalue" + std::to_string(i)));
+    a.insert(range.begin(), range.end());
+    print_map(a, "After Range Insert");
 
-    map_type b;
+    // Test erase by key
+    a.erase("key1");
+    a.erase("key2");
 
-    std::cout << "==== BEFORE ====\n";
-    print_map(a, "a");
-    print_map(b, "b");
+    // Test erase by iterator
+    iterator it = a.begin();
+    ++it;
+    a.erase(it);
 
-    std::cout << "==== INSERT RANGE ====\n";
-    b.insert(range.begin(), range.end());
+    // Test erase range
+    iterator start = a.begin();
+    for (int i = 0; i < 5; ++i) ++start;
+    iterator end = start;
+    for (int i = 0; i < 10; ++i) ++end;
+    a.erase(start, end);
+    print_map(a, "After All Erase Types");
 
-    std::cout << "==== AFTER ====\n";
-    print_map(a, "a");
-    print_map(b, "b");
+    // Test clear
+    c.clear();
+    print_map(c, "After Clear");
+
+    // Test swap
+    a.swap(b);
+    print_map(a, "A after swap with B");
+    print_map(b, "B after swap with A");
 
     return 0;
 }
+
+
+
+// #include <iostream>
+// #include <string>
+// #include <vector>
+// #include "map.hpp" // Your ft::map
+// #include <map>
+
+// #define ns ft
+
+// // Comparator as before
+// struct stateful_comparator {
+//     int key;
+//     stateful_comparator() : key(rand()) {}
+//     bool operator()(const std::string &a, const std::string &b) const {
+//         int shift_a = key % a.size();
+//         int shift_b = key % b.size();
+//         return (a.substr(shift_a) + a.substr(0, shift_a)) < (b.substr(shift_b) + b.substr(0, shift_b));
+//     }
+// };
+
+// void fill_map(ns::map<std::string, std::string, stateful_comparator> &m) {
+//     std::vector<std::string> keys = {
+//         "alpha", "beta", "gamma", "delta", "epsilon", "zeta",
+//         "eta", "theta", "iota", "kappa", "lambda", "mu", "nu",
+//         "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon"
+//     };
+
+//     for (size_t i = 0; i < keys.size(); ++i)
+//         m.insert(ns::make_pair(keys[i], "value_" + std::to_string(i)));
+
+//     // Insert duplicate keys — triggers fallback
+//     for (size_t i = 0; i < keys.size(); i += 2)
+//         m.insert(ns::make_pair(keys[i], "dupe_" + std::to_string(i)));
+
+//     // Insert with invalid hints repeatedly
+//     for (size_t i = 0; i < keys.size(); ++i) {
+//         ns::map<std::string, std::string, stateful_comparator>::iterator hint = m.end();
+//         m.insert(hint, ns::make_pair("hinted_" + std::to_string(i), "val"));
+//     }
+// }
+
+// int main() {
+//     for (int i = 0; i < 1000; ++i) {
+//         ns::map<std::string, std::string, stateful_comparator> m;
+//         fill_map(m);
+//         m.clear(); // ensure nodes are destructed
+//     }
+//     return 0;
+// }
+
+
+
+// #include <iostream>
+// #include <string>
+// #include <vector>
+// #include "map.hpp" // or wherever your ft::map is defined
+// #include <map>
+
+// #define ns std
+
+// // this class compare two string after applying a rotation on it
+// class stateful_comparator
+// {
+// private:
+// 	int	key;
+// public:
+// 	stateful_comparator() : key(rand()) {} // hehe
+// 	stateful_comparator(const stateful_comparator &other) : key(other.key) {}
+// 	stateful_comparator &operator=(const stateful_comparator &other) {
+// 		this->key = other.key;
+// 		return *this;
+// 	}
+// 	bool	operator()(const std::string &l, const std::string &r) const
+// 	{
+// 		return rotate(l) < rotate(r);
+// 	}
+// 	std::string rotate(std::string s) const
+// 	{
+// 		if (s.empty())
+// 			return s;
+// 		int shift = key % s.size();
+// 		return s.substr(shift) + s.substr(0, shift);
+// 	}
+// 	friend bool operator==(const stateful_comparator &l, const stateful_comparator &r) {return l.key == r.key;}
+// 	friend bool operator!=(const stateful_comparator &l, const stateful_comparator &r) {return l.key != r.key;}
+// };
+
+
+// template <typename Map>
+// void print_map(const Map& m, const std::string& name) {
+//     std::cout << name << ":\n";
+//     for (typename Map::const_iterator it = m.begin(); it != m.end(); ++it) {
+//         std::cout << "-> [{" << it->first << ", " << it->second << "}]\n";
+//     }
+// }
+
+// int main() {
+//     typedef ns::map<std::string, std::string, stateful_comparator> map_type;
+//     map_type a;
+//     a["un dos tres quatro"] = "";
+//     a["nzlgd"] = "";
+
+//     std::vector<map_type::value_type> range;
+//     range.push_back(map_type::value_type("atencion", ""));
+//     range.push_back(map_type::value_type("sadeu", ""));
+//     range.push_back(map_type::value_type("uumoq", ""));
+//     range.push_back(map_type::value_type("un", ""));
+//     range.push_back(map_type::value_type("atencion", "")); // duplicate
+//     range.push_back(map_type::value_type("etoky", ""));
+//     range.push_back(map_type::value_type("amigo de pepito", ""));
+//     range.push_back(map_type::value_type("achwd", ""));
+//     range.push_back(map_type::value_type("mxxrd", ""));
+//     range.push_back(map_type::value_type("amigo de la tornada", ""));
+//     range.push_back(map_type::value_type("lmndq", ""));
+//     range.push_back(map_type::value_type("ukwag", ""));
+//     range.push_back(map_type::value_type("lejuu", ""));
+//     range.push_back(map_type::value_type("wcibx", ""));
+//     range.push_back(map_type::value_type("bumen", ""));
+//     range.push_back(map_type::value_type("eyatd", ""));
+
+//     map_type b;
+
+//     std::cout << "==== BEFORE ====\n";
+//     print_map(a, "a");
+//     print_map(b, "b");
+
+//     std::cout << "==== INSERT RANGE ====\n";
+//     b.insert(range.begin(), range.end());
+
+//     std::cout << "==== AFTER ====\n";
+//     print_map(a, "a");
+//     print_map(b, "b");
+
+//     return 0;
+// }
 
 
 // #include <iostream>

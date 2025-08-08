@@ -201,7 +201,7 @@ public:
     }
 
     return insert(val).first;
-}
+  }
 
 
   template<class InputIt>
@@ -493,6 +493,7 @@ private:
         z->parent = near;
     } else {
         // Fallback: treat it like a normal insert (walk from root)
+        _destroy_node(z);
         return insert(val).first._ptr;
     }
 
