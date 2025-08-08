@@ -183,8 +183,6 @@ public:
       _first = new_node;
     if (_last == &_super_root || _less_keys(_key_of_value(_last->data), _key_of_value(new_node->data))) {
       _last = new_node->successor();
-      // node_pointer succ = new_node->successor();
-      // _last = succ ? succ : &_super_root; // ← this line is the fix
     }
     return ft::make_pair(iterator(new_node), true);
   }
@@ -211,7 +209,6 @@ public:
     debug("insert(first, last)");
 		iterator tmp = begin();
 		while (first != last) {
-      // insert((value_type)*first);
 			tmp = insert(tmp, (value_type)*first);
 			first++;
 		}
@@ -287,9 +284,9 @@ public:
     debug("Begin erase(iterator)");
 		while (first != last) {
       iterator next = first;
-      ++next;              // advance before erase
-      erase(first);        // erase current
-      first = next;        // move on
+      ++next;
+      erase(first);
+      first = next;
     }
     debug("End erase(iterator)");
   }

@@ -258,6 +258,13 @@ This iterator is meant to be used internally in a `ft::deque<T>` implementation,
 
 ---
 
+MAP
+
+> In the official implementation, the tree is COMPOSED, not inherited.
+> https://github.com/gcc-mirror/gcc/blob/43949a5271b6c0b14076b736d0c609235d36f7df/libstdc%2B%2B-v3/include/bits/stl_map.h#L161
+
+---
+
 monkey tester is missing tests for the 3rth constructor, specially check for SFINAE implementation...
 
 ---
