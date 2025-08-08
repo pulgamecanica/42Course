@@ -191,10 +191,12 @@ public:
   }
 
   // Extra
+#ifdef BT_DEBUG
   void print() {
     _tree.print_metadata();
     _tree.print_tree_top_down();
   }
+#endif // BT_DEBUG
 };
 
 template <class Key, class T, class Compare, class Alloc>
@@ -398,10 +400,12 @@ public:
   }
 
   // Extra
+#ifdef BT_DEBUG
   void print() {
     _tree.print_metadata();
     _tree.print_tree_top_down();
   }
+#endif // BT_DEBUG
 };
 
 // Relational operators

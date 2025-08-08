@@ -142,10 +142,12 @@ public:
 
   allocator_type get_allocator() const { return _tree.get_allocator(); }
 
+#ifdef BT_DEBUG
   void print() {
     _tree.print_metadata();
     _tree.print_tree_top_down();
   }
+#endif // BT_DEBUG
 };
 
 // Relational operators
@@ -296,10 +298,12 @@ public:
   allocator_type get_allocator() const { return _tree.get_allocator(); }
 
   // Extra
+#ifdef BT_DEBUG
   void print() {
     _tree.print_metadata();
     _tree.print_tree_top_down();
   }
+#endif // BT_DEBUG
 };
 
 // Relational operators

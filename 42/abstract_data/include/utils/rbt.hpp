@@ -9,11 +9,14 @@
 #include "../utils/swap.hpp"
 #include "../utils/less.hpp"
 #include "../utils/exception.hpp"
+#include "../utils/algorithm.hpp"
 #include "../utility.hpp"
 
-#include <iostream>
-#include <sstream>
-#include <vector>
+#ifdef BT_DEBUG
+# include <iostream>
+# include <sstream>
+# include <vector>
+#endif // BT_DEBUG
 
 namespace ft {
 
@@ -61,9 +64,11 @@ private:
   node_pointer        _first;
   node_pointer        _last;
 
-  void debug(std::string msg) {
+  void debug(const char *msg) {
     (void)msg;
-    // std::cout << "[rbt] " << msg << std::endl;
+#ifdef BT_DEBUG
+    std::cout << "[rbt] " << msg << std::endl;
+#endif // BT_DEBUG
   }
 
 public:
@@ -785,9 +790,10 @@ private:
   }
 
 public:
+#ifdef BT_DEBUG
   int _compute_tree_width(node_pointer node) const {
     if (!node) return 0;
-    return std::max(1, _compute_tree_width(node->left) + _compute_tree_width(node->right));
+    return ft::max(1, _compute_tree_width(node->left) + _compute_tree_width(node->right));
   }
 
   int _build_tree_display(node_pointer node, int depth, int x, std::vector<std::string>& canvas, int spacing) const {
@@ -853,6 +859,7 @@ public:
 
     std::cout << std::endl;
   }
+#endif // BT_DEBUG
 };
 
 // value_compare nested class
