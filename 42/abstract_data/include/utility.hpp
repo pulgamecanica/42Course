@@ -2,7 +2,24 @@
 # define FT_UTILITY_HPP
 
 namespace ft {
-  
+
+template <typename Pair>
+struct Select1st {
+  typedef typename Pair::first_type result_type;
+  const result_type& operator()(const Pair& p) const {
+      return p.first;
+  }
+};
+
+template <typename T>
+struct identity {
+  typedef T result_type;
+
+  const T& operator()(const T& x) const {
+    return x;
+  }
+};
+
 template <typename type_1, typename type_2>
 struct pair {
 public:

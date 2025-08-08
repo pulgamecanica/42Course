@@ -13,7 +13,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <iomanip> // for std::setw
 #include <vector>
 
 namespace ft {
@@ -193,16 +192,19 @@ public:
   iterator insert(iterator hint, const value_type& val) {
     debug("insert(hint, val)");
 
-    if (hint == end()) return insert(val).first;
+    if (hint == end())
+      return insert(val).first;
 
-    if ((hint == begin() || _less_keys((--iterator(hint))->first, val.first)) &&
-        _less_keys(val.first, hint->first)) {
+    const key_type& val_key = _key_of_value(val);
+    const key_type& hint_key = _key_of_value(*hint);
+
+    if ((hint == begin() || _less_keys(_key_of_value(*(--iterator(hint))), val_key)) &&
+        _less_keys(val_key, hint_key)) {
       return iterator(_insert_node_near(hint._ptr, val));
     }
 
     return insert(val).first;
   }
-
 
   template<class InputIt>
 	void insert(InputIt first, InputIt last) {
@@ -279,11 +281,6 @@ public:
       _first = _minimum(_super_root.left);
       _last = _maximum(_super_root.left)->successor();
     }
-  }
-  
-  bool is_valid_iterator(const iterator& it) const {
-    // For now, check against end() range. You can improve this if your tree tracks valid nodes.
-    return (it == end()) || (find(it->first) != end());
   }
 
   void erase(iterator first, iterator last) {

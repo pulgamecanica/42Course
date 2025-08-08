@@ -12,14 +12,6 @@
 
 namespace ft {
 
-template <typename Pair>
-struct Select1st {
-  typedef typename Pair::first_type result_type;
-  const result_type& operator()(const Pair& p) const {
-      return p.first;
-  }
-};
-
 template <
   class Key,
   class T,
