@@ -1,6 +1,39 @@
 #pragma once
 #include "test_framework.hpp"
 
+#ifdef MODE_FT
+	#include "map.hpp"
+	#include "set.hpp"
+	#include "utility.hpp"
+
+	namespace ns = ft;
+#else
+	#include <map>
+	#include <set>
+	#include <utility>
+	namespace ns = std;
+#endif
+
+template <typename Value>
+struct key_of {
+	using type = Value;
+};
+
+template <typename Key, typename T>
+struct key_of<ns::pair<const Key, T>> {
+	using type = Key;
+};
+
+template <typename T>
+T extract_key(const T& x) {
+	return x;
+}
+
+template <typename K, typename V>
+K extract_key(const ns::pair<const K, V>& x) {
+	return x.first;
+}
+
 namespace sequence_modifiers {
 
 template <typename C>
@@ -113,8 +146,10 @@ TestList<C> get_table(typename C::value_type (*make_value)()) {
 	out.push_back({
 		"erase(key)",
 		[](C& a, C&) {
-			if (!a.empty())
-				a.erase(a.begin()->first);
+			if (!a.empty()) {
+				typename key_of<typename C::value_type>::type key = extract_key(*a.begin());
+				a.erase(key);
+			}
 		}
 	});
 

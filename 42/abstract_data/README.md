@@ -1,3 +1,22 @@
+# Abstract data
+
+This project aims to replicate all stl containers as they are described in iso 14882-1998.
+
+The project includes a testing suite, which compares my implementation agains the original stl one. Where you can change the amount of tests as you prefer.
+
+I also provide a plot generator to compare visually the benchmark between my implementation and the original one, meassuring for different sizes 1K 10K 100K.
+
+---
+
+## Testing
+
+```bash
+make test # --> run tests against stl
+make plot # --> generate plot and show it
+```
+
+---
+
 # Understanding When and Why to Use `iterator_traits`
 
 In generic programming, especially when writing STL-like containers and iterators, it’s essential to understand the role of `iterator_traits` and **when you should or should not use it**.

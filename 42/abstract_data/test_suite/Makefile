@@ -20,6 +20,11 @@ BIN_FT          := $(BIN_DIR)/ft.out
 BIN_STD         := $(BIN_DIR)/std.out
 BIN_DEBUG       := $(BIN_DIR)/debug.out
 
+# Out targets
+OUT_DIR = out
+OUT_FT  = $(OUT_DIR)/ft.out
+OUT_STD = $(OUT_DIR)/std.out
+
 # ========================
 # TARGETS
 # ========================
@@ -46,10 +51,14 @@ debug: $(SRC_FILES)
 
 # Run both versions and compare output
 test: all
+	@mkdir -p $(OUT_DIR)
 	@echo "\n=== FT OUTPUT ==="
-	./$(BIN_FT)
+	./$(BIN_FT) > $(OUT_FT)
 	@echo "\n=== STD OUTPUT ==="
-	./$(BIN_STD)
+	./$(BIN_STD) > $(OUT_STD)
+	@echo "\n=== DIFF ==="
+	-@diff $(OUT_FT) $(OUT_STD)
+	@echo "=== END OF TESTS ==="
 
 # Clean object files and binaries
 clean:
@@ -57,7 +66,7 @@ clean:
 
 fclean:
 	@echo "Removing binaries..."
-	@rm -rf $(BIN_DIR)
+	@rm -rf $(BIN_DIR) $(OUT_DIR)
 
 re: fclean all
 
@@ -69,7 +78,7 @@ show:
 	@echo "  Test headers in:      include/"
 	@echo "  Make targets:"
 	@echo "    all      → build both FT and STD"
-	@echo "    test     → run both binaries"
+	@echo "    test     → run both binaries and see diff"
 	@echo "    debug    → build FT with debug flags"
 	@echo "    clean    → nothing (header-only)"
 	@echo "    fclean   → remove all binaries"

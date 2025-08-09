@@ -32,6 +32,9 @@ public:
 
   pair(const type_1& x, const type_2& y): first(x), second(y) {}
 
+  template <typename U, typename V>
+  pair(const std::pair<U, V>& p) : first(p.first), second(p.second) {}
+
   template<typename U, typename V>
   pair(const pair<U, V>& p): first(p.first), second(p.second) {}
 

@@ -9,7 +9,7 @@ template <typename C>
 TestList<C> get_table() {
 	return {
 		{
-			"operator[] access and insert",
+			"operator[] access",
 			[](C& a, C&) {
 				a[rand() % 100] = typename C::mapped_type();
 			}

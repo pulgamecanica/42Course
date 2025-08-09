@@ -1,4 +1,5 @@
 // src/main.cpp
+#include <stdlib.h> // For atoi()
 
 #include "test_framework.hpp"
 #include "container_tests.hpp"
@@ -14,35 +15,32 @@
 
 #ifdef MODE_FT
 	#include "map.hpp"
+	#include "set.hpp"
 	#include "vector.hpp"
 	#include "deque.hpp"
 	#include "list.hpp"
 	namespace ns = ft;
 #else
 	#include <map>
+	#include <set>
 	#include <vector>
 	#include <deque>
 	#include <list>
 	namespace ns = std;
 #endif
 
+int ntests = 1;
+
 static ns::pair<const int, int> make_pair_int_int() {
 	return ns::make_pair(rand() % 100, rand() % 100);
 }
 
-// static int make_int() {
-// 	return rand() % 100;
-// }
-
-// static ns::pair<std::string, double> make_string_double() {
-// 	static int counter = 0;
-// 	return ns::make_pair("key" + std::to_string(counter++), rand() % 1000 / 10.0);
-// }
+static int make_int() {
+	return rand() % 100;
+}
 
 
 static void test_vector() {
-  int ntest = 1;
-
 	using Vec = ns::vector<int>;
 
 	test_container<Vec>(
@@ -56,12 +54,11 @@ static void test_vector() {
     assign::get_table<Vec>() +
     iterators::get_table<Vec>() +
     relational::get_table<Vec>(),
-		ntest
+		ntests
 	);
 }
 
 static void test_deque() {
-	int ntest = 1;
 	using Deq = ns::deque<int>;
 
 	test_container<Deq>(
@@ -75,12 +72,11 @@ static void test_deque() {
 		access::get_table<Deq>() +
 		iterators::get_table<Deq>() +
 		relational::get_table<Deq>(),
-		ntest
+		ntests
 	);
 }
 
 static void test_list() {
-	int ntest = 1;
 	using List = ns::list<int>;
 
 	test_container<List>(
@@ -93,12 +89,11 @@ static void test_list() {
 		access::get_table<List>() +
 		iterators::get_table<List>() +
 		relational::get_table<List>(),
-		ntest
+		ntests
 	);
 }
 
 static void test_map() {
-	int ntest = 1;
 	using Map = ns::map<int, int>;
 
 	test_container<Map>(
@@ -111,19 +106,76 @@ static void test_map() {
 		map_extras::get_table<Map>() +
 		iterators::get_table<Map>() +
 		relational::get_table<Map>(),
-		ntest
+		ntests
 	);
 }
 
+static void test_multimap() {
+	using MultiMap = ns::multimap<int, int>;
 
-int main() {
+	test_container<MultiMap>(
+    "MULTIMAP",
+		container::get_table<MultiMap>() +
+		capacity::get_table<MultiMap>() +
+		common_modifiers::get_table<MultiMap>() +
+		associative::get_table<MultiMap>() +
+    associative_modifiers::get_table<MultiMap>(make_pair_int_int) +
+		iterators::get_table<MultiMap>() +
+		relational::get_table<MultiMap>(),
+		ntests
+	);
+}
+
+static void test_set() {
+	using Set = ns::set<int>;
+
+	test_container<Set>(
+    "SET",
+		container::get_table<Set>() +
+		capacity::get_table<Set>() +
+		common_modifiers::get_table<Set>() +
+    associative_modifiers::get_table<Set>(make_int) +
+		associative::get_table<Set>() +
+		iterators::get_table<Set>() +
+		relational::get_table<Set>(),
+		ntests
+	);
+}
+
+static void test_multiset() {
+	using MultiSet = ns::multiset<int>;
+
+	test_container<MultiSet>(
+    "MULTISET",
+		container::get_table<MultiSet>() +
+		capacity::get_table<MultiSet>() +
+		common_modifiers::get_table<MultiSet>() +
+    associative_modifiers::get_table<MultiSet>(make_int) +
+		associative::get_table<MultiSet>() +
+		iterators::get_table<MultiSet>() +
+		relational::get_table<MultiSet>(),
+		ntests
+	);
+}
+
+int main(int ac, char *av[]) {
 	std::srand(std::time(nullptr));
 
+	if (ac > 1) {
+		ntests = atoi(av[1]);
+	}
+	
+	if (ntests <= 0) {
+		std::cout << "Number of tests should be > 0 (got: " << av[1] << ")" << std::endl;
+		return 1;
+	}
 	test_vector();
 	test_list();
 	test_deque();
   test_map();
-
+  test_set();
+	test_multimap();
+	test_multiset();
 	return 0;
 }
 

@@ -18,7 +18,7 @@ TestList<C> get_table() {
 		{
 			"insert(value)",
 			[](C& a, C&) {
-				typename C::value_type v;
+				typename C::value_type v{};
 				a.insert(v); // if multimap or map, v = pair<const K, T>
 			}
 		},
@@ -26,7 +26,7 @@ TestList<C> get_table() {
 			"erase(key)",
 			[](C& a, C&) {
 				if (!a.empty())
-					a.erase(a.begin()->first);
+				  (void)a.erase(typename C::key_type());
 			}
 		},
 		{

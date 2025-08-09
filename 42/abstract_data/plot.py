@@ -43,10 +43,14 @@ unique_containers = df["Container"].unique()  # <-- FIXED
 for container in unique_containers:  # <-- FIXED
     df_container = df[df["Container"] == container]  # <-- FIXED
     for func in df_container["Function"].unique():  # <-- FIXED
+        
         safe_func = func.replace(':', '_').replace('/', '_')
         func_dir = os.path.join(output_dir, container, safe_func)  # <-- FIXED
         os.makedirs(func_dir, exist_ok=True)
-
+        fname = os.path.join(func_dir, f"{safe_func}.png")
+        if os.path.exists(fname):
+            next
+        
         fig, axes = plt.subplots(1, len(unique_types), figsize=(6 * len(unique_types), 5), sharey=True)
         if len(unique_types) == 1:
             axes = [axes]
@@ -73,7 +77,6 @@ for container in unique_containers:  # <-- FIXED
 
         fig.suptitle(f"{container}::{func}()", fontsize=16)  # <-- FIXED
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-        fname = os.path.join(func_dir, f"{safe_func}.png")
         plt.savefig(fname)
         plot_files.append(fname)
         plt.close()

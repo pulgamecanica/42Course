@@ -5,20 +5,21 @@
 # Compiler and flags
 CXX             := c++
 CXXFLAGS        := -Wall -Wextra -Werror -std=c++98 -fsanitize=address
-CXXFLAGS_DEBUG  := $(CXXFLAGS) -g -DDEBUG
 CXXFLAGS_BENCH  := -Wall -Wextra -Werror -std=c++11
 
 INCLUDES        := -Iinclude
 
+RM := rm -rf
+
 # Executables
-BIN_FT          := ft_containers.out
-BIN_STD         := std_containers.out
-BIN_DEBUG       := debug.out
+BIN_FT          := test_suite/bin/ft.out
+BIN_STD         := test_suite/bin/std.out
 BIN_BENCH       := benchmark.out
 
 # Directories and sources
+TEST_SUITE_SRC_DIR         := test_suite/src
 SRC_DIR         := src
-SRC_COMMON      := $(SRC_DIR)/main.cpp $(SRC_DIR)/test_vector.cpp $(SRC_DIR)/test_deque.cpp $(SRC_DIR)/test_map.cpp
+SRC_COMMON      := $(TEST_SUITE_SRC_DIR)/main.cpp
 SRC_BENCH       := $(SRC_DIR)/benchmark.cpp
 
 # Python setup
@@ -35,26 +36,18 @@ all: $(BIN_FT) $(BIN_STD) $(BIN_BENCH)
 
 $(BIN_FT): $(SRC_COMMON)
 	@echo "Building: $@"
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -DMODE_FT $^ -o $@
+	make all -C test_suite
 
 $(BIN_STD): $(SRC_COMMON)
 	@echo "Building: $@"
-	$(CXX) $(CXXFLAGS) $(INCLUDES) -DMODE_STD $^ -o $@
+	make all -C test_suite
 
 $(BIN_BENCH): $(SRC_BENCH)
 	@echo "Building: $@ (C++11)"
 	$(CXX) $(CXXFLAGS_BENCH) $(INCLUDES) $^ -o $@
 
-debug: $(SRC_COMMON)
-	@echo "Building: $(BIN_DEBUG) (Debug)"
-	$(CXX) $(CXXFLAGS_DEBUG) $(INCLUDES) -DMODE_FT $^ -o $(BIN_DEBUG)
-
 test: all
-	@echo "\n--- FT Version ---"
-	./$(BIN_FT)
-	@echo "\n--- STD Version ---"
-	./$(BIN_STD)
-	@echo "\n--- Benchmark ---"
+	make test -C test_suite
 	./$(BIN_BENCH)
 
 benchmark: $(BIN_BENCH)
@@ -71,6 +64,8 @@ install: venv
 	$(PIP) install -r requirements.txt
 
 plot: $(BIN_BENCH)
+	@mkdir -p plots
+	@./$(BIN_BENCH)
 	@echo "Generating benchmark graphs..."
 	$(PYTHON) plot.py &> /dev/null
 
@@ -84,13 +79,15 @@ show:
 	@echo " - $(BIN_STD): Uses standard std::containers"
 	@echo "Use \`make test\` to compare output and correctness"
 	@echo "Use \`make benchmark\` to compare performance"
+	@echo "Use \`make plot\` to show plot"
 
 clean:
-	@echo "Nothing to clean (header-only project)"
+	make clean -C test_suite
 
-fclean:
+fclean: clean
 	@echo "Removing binaries..."
-	rm -f $(BIN_FT) $(BIN_STD) $(BIN_DEBUG) $(BIN_BENCH) benchmark_results.csv
+	make fclean -C test_suite
+	$(RM) $(BIN_FT) $(BIN_STD) $(BIN_BENCH) benchmark_results.csv plots
 
 re: fclean all
 
