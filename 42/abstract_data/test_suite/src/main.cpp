@@ -19,6 +19,8 @@
 	#include "vector.hpp"
 	#include "deque.hpp"
 	#include "list.hpp"
+	#include "stack.hpp"
+	#include "queue.hpp"
 	namespace ns = ft;
 #else
 	#include <map>
@@ -26,6 +28,8 @@
 	#include <vector>
 	#include <deque>
 	#include <list>
+	#include <stack>
+	#include <queue>
 	namespace ns = std;
 #endif
 
@@ -38,7 +42,6 @@ static ns::pair<const int, int> make_pair_int_int() {
 static int make_int() {
 	return rand() % 100;
 }
-
 
 static void test_vector() {
 	using Vec = ns::vector<int>;
@@ -89,6 +92,20 @@ static void test_list() {
 		access::get_table<List>() +
 		iterators::get_table<List>() +
 		relational::get_table<List>(),
+		ntests
+	);
+}
+
+static void test_stack() {
+	using Stack = ns::stack<int>;
+
+	test_container<Stack>(
+    "STACK",
+		container::get_table<Stack>() +
+		capacity::simple_get_table<Stack>() +
+		sequence::get_stack_table<Stack>() +
+		access::get_stack_table<Stack>() +
+		relational::get_table<Stack>(),
 		ntests
 	);
 }
@@ -158,6 +175,32 @@ static void test_multiset() {
 	);
 }
 
+static void test_queue() {
+	using Queue = ns::queue<int>;
+
+	test_container<Queue>(
+    "QUEUE",
+		container::get_table<Queue>() +
+		capacity::simple_get_table<Queue>() +
+		sequence::get_stack_table<Queue>() +
+		access::get_table<Queue>() +
+		relational::get_table<Queue>(),
+		ntests
+	);
+}
+
+static void test_priority_queue() {
+	using Queue = ns::priority_queue<int>;
+
+	test_container<Queue>(
+    "PRIORITY_QUEUE",
+		container::get_table<Queue>() +
+		capacity::simple_get_table<Queue>() +
+		sequence::get_stack_table<Queue>(),
+		ntests
+	);
+}
+
 int main(int ac, char *av[]) {
 	std::srand(std::time(nullptr));
 
@@ -171,11 +214,14 @@ int main(int ac, char *av[]) {
 	}
 	test_vector();
 	test_list();
+	test_stack();
 	test_deque();
   test_map();
   test_set();
 	test_multimap();
 	test_multiset();
+	test_queue();
+	test_priority_queue();
 	return 0;
 }
 

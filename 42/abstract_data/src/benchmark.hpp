@@ -89,7 +89,7 @@ template <>
 std::vector<ft::pair<int, int> > generate_data<ft::pair<int, int>>(std::size_t count) {
     std::vector<ft::pair<int, int>> data;
     for (std::size_t i = 0; i < count; ++i)
-        data.push_back(std::make_pair<int, int>(rand() % 1000, rand() % 1000));
+        data.push_back(ft::make_pair<int, int>(rand() % 1000, rand() % 1000));
     return data;
 }
 
@@ -97,7 +97,7 @@ template <>
 std::vector<ft::pair<std::string, int> > generate_data<ft::pair<std::string, int>>(std::size_t count) {
     std::vector<ft::pair<std::string, int>> data;
     for (std::size_t i = 0; i < count; ++i)
-        data.push_back(std::make_pair<std::string, int>("str_" + std::to_string(rand() % 10000), rand() % 1000));
+        data.push_back(ft::make_pair<std::string, int>("str_" + std::to_string(rand() % 10000), rand() % 1000));
     return data;
 }
 
@@ -105,7 +105,7 @@ template <>
 std::vector<ft::pair<Point, int> > generate_data<ft::pair<Point, int>>(std::size_t count) {
     std::vector<ft::pair<Point, int>> data;
     for (std::size_t i = 0; i < count; ++i)
-        data.push_back(std::make_pair<Point, int>(Point(rand() % 1000, rand() % 1000), rand() % 1000));
+        data.push_back(ft::make_pair<Point, int>(Point(rand() % 1000, rand() % 1000), rand() % 1000));
     return data;
 }
 

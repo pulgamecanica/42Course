@@ -27,12 +27,6 @@ TestList<C> get_table() {
 			[](C& a, C& b) {
 				a = b;
 			}
-		},
-		{
-			"Clear",
-			[](C& a, C&) {
-				a.clear();
-			}
 		}
 	};
 }

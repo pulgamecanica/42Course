@@ -25,6 +25,9 @@ OUT_DIR = out
 OUT_FT  = $(OUT_DIR)/ft.out
 OUT_STD = $(OUT_DIR)/std.out
 
+# Testing
+N_TESTS = 10
+
 # ========================
 # TARGETS
 # ========================
@@ -53,9 +56,9 @@ debug: $(SRC_FILES)
 test: all
 	@mkdir -p $(OUT_DIR)
 	@echo "\n=== FT OUTPUT ==="
-	./$(BIN_FT) > $(OUT_FT)
+	./$(BIN_FT) $(N_TESTS) > $(OUT_FT)
 	@echo "\n=== STD OUTPUT ==="
-	./$(BIN_STD) > $(OUT_STD)
+	./$(BIN_STD) $(N_TESTS) > $(OUT_STD)
 	@echo "\n=== DIFF ==="
 	-@diff $(OUT_FT) $(OUT_STD)
 	@echo "=== END OF TESTS ==="

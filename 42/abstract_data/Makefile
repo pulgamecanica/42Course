@@ -48,7 +48,6 @@ $(BIN_BENCH): $(SRC_BENCH)
 
 test: all
 	make test -C test_suite
-	./$(BIN_BENCH)
 
 benchmark: $(BIN_BENCH)
 	@echo "\n--- Running Benchmark ---"
@@ -66,6 +65,9 @@ install: venv
 plot: $(BIN_BENCH)
 	@echo "Generating benchmark graphs..."
 	$(PYTHON) plot.py &> /dev/null
+
+std:
+	grep -rn --include='*.*' 'std' include
 
 show:
 	@echo "Project: Abstract Data - C++ Containers"

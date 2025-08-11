@@ -67,15 +67,15 @@ void test_container(const std::string& container_name, const TestList<C>& tests,
 			print(*b);
 #endif
 
-			std::cout << "\n[ |" << container_name << "| Test " << (++test_number) << " ] " << name << " (run " << i+1 << ")\n";
+			std::cout << "\n[ |" << container_name << "| Test " << (++test_number) << " ] " << name << " (run " << i+1 << ") ";
 
 			try {
 				fn(*b, *a);
-				std::cout << "✓ OK\n";
+				std::cout << "| ✓ OK\n";
 			} catch (const std::exception& e) {
-				std::cout << "✗ FAILED: " << e.what() << "\n";
+				std::cout << "| ✗ FAILED: " << e.what() << "\n";
 			} catch (...) {
-				std::cout << "✗ FAILED: unknown error\n";
+				std::cout << "| ✗ FAILED: unknown error\n";
 			}
 
 #ifdef DEBUG

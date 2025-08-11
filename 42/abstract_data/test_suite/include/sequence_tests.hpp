@@ -5,6 +5,26 @@
 
 namespace sequence {
 
+
+template <typename C>
+TestList<C> get_stack_table() {
+	return {
+		{
+			"push(value)",
+			[](C& a, C&) {
+				a.push(rand() % 100);
+			}
+		},
+		{
+			"pop()",
+			[](C& a, C&) {
+				if (!a.empty())
+					a.pop();
+			}
+		}
+	};
+}
+
 template <typename C>
 TestList<C> get_table() {
 	return {

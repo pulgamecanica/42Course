@@ -7,6 +7,19 @@
 namespace access {
 
 template <typename C>
+TestList<C> get_stack_table() {
+	return {
+		{
+			"top()",
+			[](C& a, C&) {
+				if (!a.empty())
+					(void)a.top();
+			}
+		}
+	};
+}
+
+template <typename C>
 TestList<C> get_table() {
 	return {
 		{

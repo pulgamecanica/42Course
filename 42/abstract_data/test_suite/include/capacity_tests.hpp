@@ -8,6 +8,23 @@
 namespace capacity {
 
 template <typename C>
+TestList<C> simple_get_table() {
+	return {
+		{
+			"Check empty() and size()",
+			[](C& a, C&) {
+				bool e = a.empty();
+				typename C::size_type s = a.size();
+				if (e && s != 0)
+					throw std::runtime_error("empty() is true but size() != 0");
+				if (!e && s == 0)
+					throw std::runtime_error("empty() is false but size() == 0");
+			}
+		}
+	};
+}
+
+template <typename C>
 TestList<C> get_table() {
 	return {
 		{

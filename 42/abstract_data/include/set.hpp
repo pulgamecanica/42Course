@@ -200,7 +200,6 @@ public:
   typedef Key                                     key_type;
   typedef Key                                     value_type;
   typedef Compare                                 key_compare;
-  typedef Compare                                 value_compare;
   typedef Alloc                                   allocator_type;
   typedef value_type&                             reference;
   typedef const value_type&                       const_reference;
@@ -226,6 +225,8 @@ public:
   typedef typename tree_type::const_iterator          const_iterator;
   typedef typename tree_type::reverse_iterator        reverse_iterator;
   typedef typename tree_type::const_reverse_iterator  const_reverse_iterator;
+  typedef typename tree_type::value_compare           value_compare;
+
 
   // Constructors
   multiset() {}
