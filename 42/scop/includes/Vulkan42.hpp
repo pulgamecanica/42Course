@@ -1,21 +1,30 @@
-//***************************//
-//*Template by pulgamecanica*//
-//***************************//
+#ifndef SCOP_VULKAN42_HPP
+#define SCOP_VULKAN42_HPP
 
-#ifndef __VULKAN42_HPP__
-# define __VULKAN42_HPP__
+#include "IRenderer.hpp"
 
-#include <iostream>
+namespace scop {
+class Vulkan42 final : public IRenderer {
+public:
+	Vulkan42();
+	~Vulkan42() override;
 
-class Vulkan42 {
-	public:
-		Vulkan42();
-		Vulkan42(const Vulkan42&);
-		~Vulkan42();
-		Vulkan42&	operator= (const Vulkan42&); // const for safety... not super nesessary
+	void init(Window& window) override;
+	void resize(int width, int height) override;
+	void setMesh(const Mesh& mesh) override;
+	void setTexture(const Texture* texture) override;
+	void setRenderMode(RenderMode mode) override;
+	void draw(const FrameState& state) override;
+	void waitIdle() override;
+
+private:
+	// pimpl-friendly: keep raw pointers/handles out of the header if you want
+	struct Impl;
+	Impl* impl; // allocated in ctor, freed in dtor
 };
 
 std::ostream&	operator<<(std::ostream&, const Vulkan42&);
 
-#endif
+} // namespace scop
 
+#endif // SCOP_VULKAN42_HPP

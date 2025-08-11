@@ -5,7 +5,7 @@
 #include "lodepng.h"
 #include "Scop.hpp"
 
-using namespace scop;
+namespace scop {
 
 unsigned int Window::iconpng_error = 0;
 
@@ -61,8 +61,9 @@ int Window::getWidth() const { return (width); }
 
 int Window::getHeight() const { return (height); }
 
-std::ostream& scop::operator<<(std::ostream& s, const Window& win) {
+std::ostream& operator<<(std::ostream& s, const Window& win) {
 	s << GREEN << "ScopWindow " << win.getWidth() << "x" << win.getHeight() << ENDC; 
 	return (s);
 }
 
+} // namespace scop

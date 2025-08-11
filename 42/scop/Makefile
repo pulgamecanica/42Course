@@ -3,13 +3,13 @@
 #MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
 NAME	=	scop
 
-SRC	=	$(wildcard srcs/*.cpp srcs/figures/*.cpp)
+SRC	=	$(wildcard srcs/*.cpp)
 
-CFLAGS	=	-Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address -fno-omit-frame-pointer
+CPPFLAGS	=	-Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address -fno-omit-frame-pointer
 
 LDFLAGS = -lGL -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
-INC	=	-I includes -I includes/figures
+INC	=	-I includes
 
 OBJS_D	=	objs
 
@@ -24,12 +24,12 @@ VULKAN_HPP = Vulkan-Hpp
 VULKAN_HPP_GIT = https://github.com/KhronosGroup/Vulkan-Hpp
 
 ifeq ($(UNAME), Darwin)
-	CC = c++
+	CPP = c++
 else ifeq ($(UNAME), FreeBSD)
-	CC = clang++
+	CPP = clang++
 else
-	CC	= c++
-	CFLAGS += -D LINUX
+	CPP	= c++
+	CPPFLAGS += -D LINUX
 endif
 
 all: $(NAME)
@@ -39,12 +39,11 @@ $(VULKAN_HPP):
 
 $(OBJS_D)/%.o:srcs/%.cpp
 	@mkdir -p $(OBJS_D)
-	@mkdir -p $(OBJS_D)/figures
-	$(CC) $(CFLAGS) $(INC) -o $@ -c $<
+	$(CPP) $(CPPFLAGS) $(INC) -o $@ -c $<
 
 $(NAME):	$(OBJ)
 	@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
+	$(CPP) $(CPPFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
 	@printf "$(C_GREEN)DONE$(C_END)\n"
 
 build_ubuntu: $(VULKAN_HPP)
@@ -96,8 +95,8 @@ show:
 	@printf "$(C_GREEN)"
 	@printf "UNAME		: $(UNAME)\n"
 	@printf "NAME  		: $(C_YELLOW)$(NAME)$(C_GREEN)\n"
-	@printf "CC		: $(CC)\n"
-	@printf "CFLAGS		: $(CFLAGS)\n"
+	@printf "CPP		: $(CPP)\n"
+	@printf "CPPFLAGS		: $(CPPFLAGS)\n"
 	@printf "LDFLAGS		: $(LDFLAGS)\n"
 	@printf "INCLUDES	: $(INC)\n"
 	@printf "SRC		: $(C_YELLOW)$(SRC)$(C_GREEN)\n"
