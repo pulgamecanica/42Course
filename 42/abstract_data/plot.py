@@ -49,7 +49,8 @@ for container in unique_containers:  # <-- FIXED
         os.makedirs(func_dir, exist_ok=True)
         fname = os.path.join(func_dir, f"{safe_func}.png")
         if os.path.exists(fname):
-            next
+            plot_files.append(fname) 
+            continue
         
         fig, axes = plt.subplots(1, len(unique_types), figsize=(6 * len(unique_types), 5), sharey=True)
         if len(unique_types) == 1:

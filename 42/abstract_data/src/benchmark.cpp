@@ -4,6 +4,7 @@
   #include <deque>
   #include <list>
   #include <map>
+  #include <set>
   #include <string>
   #include <ctime>
   #include <cstdlib>
@@ -12,6 +13,7 @@
   #include "deque.hpp"
   #include "list.hpp"
   #include "map.hpp"
+  #include "set.hpp"
   #include "benchmark.hpp"
 
 namespace benchmark {
@@ -386,7 +388,6 @@ void benchmark_cpp98_map(const std::string& ns_label, const std::string& type_la
   std::vector<T> data = generate_data<T>(count);
   std::string prefix = "map," + type_label;
 
-  // typedef typename Map::key_type     Key;
   typedef typename Map::mapped_type  Mapped;
   typedef typename Map::value_type   Value; // usually pair<const Key, Mapped>
 
@@ -535,6 +536,284 @@ void benchmark_cpp98_map(const std::string& ns_label, const std::string& type_la
   }));
   }
 
+  // Benchmark all C++98 member functions (timing only, no return validation)
+  template <typename Map, typename T>
+  void benchmark_cpp98_multi_map(const std::string& ns_label, const std::string& type_label, std::size_t count, std::ofstream& out) {
+    std::vector<T> data = generate_data<T>(count);
+    std::string prefix = "multimap," + type_label;
+
+    typedef typename Map::value_type   Value; // usually pair<const Key, Mapped>
+
+    auto bench = [&](const std::string& name, const std::function<void()>& func) {
+      double t = measure_time(func);
+      out << prefix << "," << name << "," << count << "," << ns_label << "," << t << "\n";
+    };
+
+    auto make_value = [&](const T& t) -> Value {
+      return Value(t.first, t.second);
+    };
+
+    // Construct/copy/assign/insert
+    bench("constructor_default", std::function<void()>([&]() { Map v; }));
+    bench("constructor_range", std::function<void()>([&]() { Map v(data.begin(), data.end()); }));
+    bench("constructor_copy", std::function<void()>([&]() { Map v1(data.begin(), data.end()); Map v2(v1); }));
+    bench("operator_assign", std::function<void()>([&]() { Map v1(data.begin(), data.end()); Map v2; v2 = v1; }));
+
+    bench("get_allocator", std::function<void()>([&]() { Map v; typename Map::allocator_type a = v.get_allocator(); (void)a; }));
+
+    // Iterators
+    bench("begin_end_iter", std::function<void()>([&]() {
+      Map v(data.begin(), data.end());
+      for (typename Map::iterator it = v.begin(); it != v.end(); ++it) { volatile T x = *it; (void)x; }
+    }));
+    bench("rbegin_rend_iter", std::function<void()>([&]() {
+      Map v(data.begin(), data.end());
+      for (typename Map::reverse_iterator it = v.rbegin(); it != v.rend(); ++it) { volatile T x = *it; (void)x; }
+    }));
+
+    // Capacity
+    bench("size", std::function<void()>([&]() {
+      Map v(data.begin(), data.end());
+      volatile std::size_t s = v.size();
+      (void)s;
+    }));
+    bench("max_size", std::function<void()>([&]() {
+      Map v;
+      volatile std::size_t m = v.max_size();
+    (void)m;
+    }));
+    bench("empty", std::function<void()>([&]() {
+      Map v;
+      volatile bool e = v.empty();
+      (void)e;
+    }));
+
+    // Element access
+    bench("uppter and lower bounds", std::function<void()>([&]() {
+      Map v(data.begin(), data.end());
+      {
+          typename Map::iterator u = v.upper_bound(data[1].first); (void)u;
+          typename Map::iterator l = v.lower_bound(data[1].first); (void)l;
+      }
+      {
+          typename Map::const_iterator u = v.upper_bound(data[count - 2].first); (void)u;
+          typename Map::const_iterator b = v.lower_bound(data[count - 2].first); (void)b;
+      }
+    }));
+
+    // Iterate pairs (this is where you legitimately get pairs back)
+    bench("iterate values", std::function<void()>([&]() {
+      Map v(data.begin(), data.end());
+      for (typename Map::const_iterator it = v.begin(); it != v.end(); ++it) {
+          volatile Value kv = *it; // pair<const Key, Mapped>
+          (void)kv;
+      }
+    }));
+
+    // insert(value)
+    bench("insert_value", std::function<void()>([&]() {
+        Map v;
+        for (std::size_t i = 0; i < count; ++i)
+            v.insert(make_value(data[i]));
+    }));
+
+    // insert(hint, value)
+    bench("insert_hint", std::function<void()>([&]() {
+        Map v;
+        typename Map::iterator hint = v.begin(); // arbitrary; fine for first insert
+        for (std::size_t i = 0; i < count; ++i)
+            hint = v.insert(hint, make_value(data[i]));
+    }));
+
+    // insert range  (there is NO "fill" insert for map)
+    bench("insert_range", std::function<void()>([&]() {
+        Map v;
+        v.insert(data.begin(), data.end());
+    }));
+
+    // erase(first, last)
+    bench("erase_range", std::function<void()>([&]() {
+        Map v(data.begin(), data.end());
+        typename Map::iterator a = v.begin();
+        typename Map::iterator b = v.begin();
+        std::advance(a, v.size() / 4);
+        std::advance(b, v.size() / 2);
+        v.erase(a, b);
+
+        a = v.begin();
+        b = v.begin();
+        std::advance(a, v.size() / 4);
+        std::advance(b, v.size() / 2);
+        v.erase(a, b);
+    }));
+
+    // // erase(key)
+    // bench("erase_all_keys", std::function<void()>([&]() {
+    //     Map v(data.begin(), data.end());
+    //     for (std::size_t i = 0; i < count; ++i)
+    //         v.erase(data[i].first);
+    // }));
+
+    // insert duplicate keys (to see no-op cost in map vs multimap)
+    bench("insert_dupe_keys", std::function<void()>([&]() {
+        Map v;
+        for (std::size_t i = 0; i < count; ++i) {
+            Value val(data[0].first, data[i].second); // same key
+            v.insert(val); // map: many no-ops; multimap: inserts
+        }
+    }));
+
+    bench("swap", std::function<void()>([&]() {
+        Map v1(data.begin(), data.end());
+        Map v2(data.begin() + 1, data.end() - 1);
+        v1.swap(v2);
+    }));
+
+    bench("clear", std::function<void()>([&]() {
+        Map v(data.begin(), data.end());
+        v.clear();
+    }));
+  }
+
+
+  // Benchmark all C++98 member functions (timing only, no return validation)
+  template <typename Set, typename T>
+  void benchmark_cpp98_set(const std::string& container_name, const std::string& ns_label, const std::string& type_label, std::size_t count, std::ofstream& out) {
+    std::vector<T> data = generate_data<T>(count);
+    std::string prefix = container_name + "," + type_label;
+
+    typedef typename Set::value_type   Value; // usually pair<const Key>
+
+    auto bench = [&](const std::string& name, const std::function<void()>& func) {
+      double t = measure_time(func);
+      out << prefix << "," << name << "," << count << "," << ns_label << "," << t << "\n";
+    };
+
+    auto make_value = [&](const T& t) -> Value {
+      return Value(t);
+    };
+
+    // Construct/copy/assign/insert
+    bench("constructor_default", std::function<void()>([&]() { Set v; }));
+    bench("constructor_range", std::function<void()>([&]() { Set v(data.begin(), data.end()); }));
+    bench("constructor_copy", std::function<void()>([&]() { Set v1(data.begin(), data.end()); Set v2(v1); }));
+    bench("operator_assign", std::function<void()>([&]() { Set v1(data.begin(), data.end()); Set v2; v2 = v1; }));
+
+    bench("get_allocator", std::function<void()>([&]() { Set v; typename Set::allocator_type a = v.get_allocator(); (void)a; }));
+
+    // Iterators
+    bench("begin_end_iter", std::function<void()>([&]() {
+      Set v(data.begin(), data.end());
+      for (typename Set::iterator it = v.begin(); it != v.end(); ++it) { volatile T x = *it; (void)x; }
+    }));
+    bench("rbegin_rend_iter", std::function<void()>([&]() {
+      Set v(data.begin(), data.end());
+      for (typename Set::reverse_iterator it = v.rbegin(); it != v.rend(); ++it) { volatile T x = *it; (void)x; }
+    }));
+
+    // Capacity
+    bench("size", std::function<void()>([&]() {
+      Set v(data.begin(), data.end());
+      volatile std::size_t s = v.size();
+      (void)s;
+    }));
+    bench("max_size", std::function<void()>([&]() {
+      Set v;
+      volatile std::size_t m = v.max_size();
+    (void)m;
+    }));
+    bench("empty", std::function<void()>([&]() {
+      Set v;
+      volatile bool e = v.empty();
+      (void)e;
+    }));
+
+    // Element access
+    bench("uppter and lower bounds", std::function<void()>([&]() {
+      Set v(data.begin(), data.end());
+      {
+          typename Set::iterator u = v.upper_bound(data[1]); (void)u;
+          typename Set::iterator l = v.lower_bound(data[1]); (void)l;
+      }
+      {
+          typename Set::const_iterator u = v.upper_bound(data[count - 2]); (void)u;
+          typename Set::const_iterator b = v.lower_bound(data[count - 2]); (void)b;
+      }
+    }));
+
+    // Iterate pairs (this is where you legitimately get pairs back)
+    bench("iterate values", std::function<void()>([&]() {
+      Set v(data.begin(), data.end());
+      for (typename Set::const_iterator it = v.begin(); it != v.end(); ++it) {
+          volatile Value kv = *it; // pair<const Key, Setped>
+          (void)kv;
+      }
+    }));
+
+    // insert(value)
+    bench("insert_value", std::function<void()>([&]() {
+        Set v;
+        for (std::size_t i = 0; i < count; ++i)
+            v.insert(make_value(data[i]));
+    }));
+
+    // insert(hint, value)
+    bench("insert_hint", std::function<void()>([&]() {
+        Set v;
+        typename Set::iterator hint = v.begin(); // arbitrary; fine for first insert
+        for (std::size_t i = 0; i < count; ++i)
+            hint = v.insert(hint, make_value(data[i]));
+    }));
+
+    // insert range  (there is NO "fill" insert for map)
+    bench("insert_range", std::function<void()>([&]() {
+        Set v;
+        v.insert(data.begin(), data.end());
+    }));
+
+    // erase(first, last)
+    bench("erase_range", std::function<void()>([&]() {
+        Set v(data.begin(), data.end());
+        typename Set::iterator a = v.begin();
+        typename Set::iterator b = v.begin();
+        std::advance(a, v.size() / 4);
+        std::advance(b, v.size() / 2);
+        v.erase(a, b);
+
+        a = v.begin();
+        b = v.begin();
+        std::advance(a, v.size() / 4);
+        std::advance(b, v.size() / 2);
+        v.erase(a, b);
+    }));
+
+    // // erase(key)
+    // bench("erase_all_keys", std::function<void()>([&]() {
+    //     Set v(data.begin(), data.end());
+    //     for (std::size_t i = 0; i < count; ++i)
+    //         v.erase(data[i].first);
+    // }));
+
+    // insert duplicate keys (to see no-op cost in map vs multimap)
+    bench("insert_dupe_keys", std::function<void()>([&]() {
+        Set v;
+        for (std::size_t i = 0; i < count; ++i) {
+            v.insert(make_value(data[i])); // map: many no-ops; multimap: inserts
+        }
+    }));
+
+    bench("swap", std::function<void()>([&]() {
+        Set v1(data.begin(), data.end());
+        Set v2(data.begin() + 1, data.end() - 1);
+        v1.swap(v2);
+    }));
+
+    bench("clear", std::function<void()>([&]() {
+        Set v(data.begin(), data.end());
+        v.clear();
+    }));
+  }
+
 } // namespace benchmark
 
 int main() {
@@ -605,7 +884,7 @@ int main() {
   }
   }
 
-  { // LIST
+  { // MAP
   using ft_list_int = ft::map<int, int>;
   using std_list_int = std::map<int, int>;
   using ft_list_string = ft::map<std::string, int>;
@@ -625,6 +904,65 @@ int main() {
   }
   }
 
+  { // MULTIMAP
+  using ft_list_int = ft::multimap<int, int>;
+  using std_list_int = std::multimap<int, int>;
+  using ft_list_string = ft::multimap<std::string, int>;
+  using std_list_string = std::multimap<std::string, int>;
+  using ft_list_point = ft::multimap<Point, int>;
+  using std_list_point = std::multimap<Point, int>;
+
+  for (std::size_t size : sizes) {
+    benchmark_cpp98_multi_map<ft_list_int, ft::pair<int, int>>("ft", "int", size, csv);
+    benchmark_cpp98_multi_map<std_list_int, std::pair<int, int>>("std", "int", size, csv);
+
+    benchmark_cpp98_multi_map<ft_list_string, ft::pair<std::string, int>>("ft", "string", size, csv);
+    benchmark_cpp98_multi_map<std_list_string, std::pair<std::string, int>>("std", "string", size, csv);
+
+    benchmark_cpp98_multi_map<ft_list_point, ft::pair<Point, int>>("ft", "point", size, csv);
+    benchmark_cpp98_multi_map<std_list_point, std::pair<Point, int>>("std", "point", size, csv);
+  }
+  }
+
+  { // SET
+  using ft_list_int = ft::set<int>;
+  using std_list_int = std::set<int>;
+  using ft_list_string = ft::set<std::string>;
+  using std_list_string = std::set<std::string>;
+  using ft_list_point = ft::set<Point>;
+  using std_list_point = std::set<Point>;
+
+  for (std::size_t size : sizes) {
+    benchmark_cpp98_set<ft_list_int, int>("set", "ft", "int", size, csv);
+    benchmark_cpp98_set<std_list_int, int>("set", "std", "int", size, csv);
+
+    benchmark_cpp98_set<ft_list_string, std::string>("set", "ft", "string", size, csv);
+    benchmark_cpp98_set<std_list_string, std::string>("set", "std", "string", size, csv);
+
+    benchmark_cpp98_set<ft_list_point, Point>("set", "ft", "point", size, csv);
+    benchmark_cpp98_set<std_list_point, Point>("set", "std", "point", size, csv);
+  }
+  }
+
+  { // MULTISET
+  using ft_list_int = ft::multiset<int>;
+  using std_list_int = std::multiset<int>;
+  using ft_list_string = ft::multiset<std::string>;
+  using std_list_string = std::multiset<std::string>;
+  using ft_list_point = ft::multiset<Point>;
+  using std_list_point = std::multiset<Point>;
+
+  for (std::size_t size : sizes) {
+    benchmark_cpp98_set<ft_list_int, int>("multiset", "ft", "int", size, csv);
+    benchmark_cpp98_set<std_list_int, int>("multiset", "std", "int", size, csv);
+
+    benchmark_cpp98_set<ft_list_string, std::string>("multiset", "ft", "string", size, csv);
+    benchmark_cpp98_set<std_list_string, std::string>("multiset", "std", "string", size, csv);
+
+    benchmark_cpp98_set<ft_list_point, Point>("multiset", "ft", "point", size, csv);
+    benchmark_cpp98_set<std_list_point, Point>("multiset", "std", "point", size, csv);
+  }
+  }
   csv.close();
   std::cout << "✅ Full C++98 benchmark written to benchmark_results.csv\n";
   return 0;

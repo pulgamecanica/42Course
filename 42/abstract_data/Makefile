@@ -64,8 +64,6 @@ install: venv
 	$(PIP) install -r requirements.txt
 
 plot: $(BIN_BENCH)
-	@mkdir -p plots
-	@./$(BIN_BENCH)
 	@echo "Generating benchmark graphs..."
 	$(PYTHON) plot.py &> /dev/null
 
