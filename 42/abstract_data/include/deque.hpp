@@ -2,7 +2,7 @@
 #define FT_DEQUE_HPP
 
 #include <limits>
-#include "utils/exception.hpp"
+#include "exception.hpp"
 #include "utils/swap.hpp"
 #include "utils/enable_if.hpp"
 #include "utils/lexicographical_compare.hpp"

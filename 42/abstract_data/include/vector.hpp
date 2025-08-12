@@ -2,7 +2,8 @@
 #define FT_VECTOR_HPP
 
 #include <limits>
-#include "utils/exception.hpp"
+#include "exception.hpp"
+#include "utils/algorithm.hpp"
 #include "utils/swap.hpp"
 #include "utils/enable_if.hpp"
 #include "utils/lexicographical_compare.hpp"
@@ -46,7 +47,7 @@ private:
 
   void ensure_capacity(size_type min_capacity) {
     if (min_capacity > _capacity)
-        reserve(_capacity == 0 ? min_capacity : std::max(_capacity * 2, min_capacity));
+        reserve(_capacity == 0 ? min_capacity : ft::max(_capacity * 2, min_capacity));
   }
 
 public:

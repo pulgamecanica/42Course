@@ -4,7 +4,7 @@
 #include <memory>
 #include "utility.hpp"
 #include "utils/rbt.hpp"
-#include "utils/exception.hpp"
+#include "exception.hpp"
 #include "utils/less.hpp"
 #include "utils/lexicographical_compare.hpp"
 #include "iterators/reverse_iterator.hpp"
@@ -141,13 +141,6 @@ public:
   value_compare value_comp() const { return _tree.value_comp(); }
 
   allocator_type get_allocator() const { return _tree.get_allocator(); }
-
-#ifdef BT_DEBUG
-  void print() {
-    _tree.print_metadata();
-    _tree.print_tree_top_down();
-  }
-#endif // BT_DEBUG
 };
 
 // Relational operators
@@ -297,14 +290,6 @@ public:
 
   // Allocator
   allocator_type get_allocator() const { return _tree.get_allocator(); }
-
-  // Extra
-#ifdef BT_DEBUG
-  void print() {
-    _tree.print_metadata();
-    _tree.print_tree_top_down();
-  }
-#endif // BT_DEBUG
 };
 
 // Relational operators

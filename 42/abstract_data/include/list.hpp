@@ -6,7 +6,7 @@
 #include "utils/swap.hpp"
 #include "utils/node.hpp"
 #include "utils/enable_if.hpp"
-#include "utils/exception.hpp"
+#include "exception.hpp"
 #include "iterators/list_bidirectional_iterator.hpp"
 #include "iterators/reverse_iterator.hpp"
 

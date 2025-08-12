@@ -1,182 +1,143 @@
-# Abstract data
+# Abstract Data
 
-This project aims to replicate all stl containers as they are described in iso 14882-1998.
-
-The project includes a testing suite, which compares my implementation agains the original stl one. Where you can change the amount of tests as you prefer.
-
-I also provide a plot generator to compare visually the benchmark between my implementation and the original one, meassuring for different sizes 1K 10K 100K.
+**Abstract Data** is a from-scratch reimplementation of the C++98 STL containers, following ISO 14882:1998 specifications.
+It includes a **full testing suite** that compares this implementation (`ft::`) with the standard library (`std::`), as well as a **benchmarking system** with visual plotting.
 
 ---
 
-## Testing
+## 📂 Project Structure
+
+The core of the project lives in [`include/`](include), containing header-only implementations of all containers, iterators, and utilities:
+
+```
+include/
+├── deque.hpp                     # ft::deque
+├── list.hpp                      # ft::list
+├── map.hpp                       # ft::map & ft::multimap
+├── queue.hpp                     # ft::queue & ft::priority_queue
+├── set.hpp                       # ft::set & ft::multiset
+├── stack.hpp                     # ft::stack
+├── vector.hpp                    # ft::vector
+├── exception.hpp                 # Custom exceptions
+├── utility.hpp                   # ft::pair, ft::make_pair
+├── iterators/                    # Iterator classes
+│   ├── bt_iterator.hpp               # Binary tree iterator
+│   ├── deque_random_access_iterator.hpp
+│   ├── iterator_traits.hpp
+│   ├── list_bidirectional_iterator.hpp
+│   ├── reverse_iterator.hpp
+│   └── vector_random_access_iterator.hpp
+└── utils/                        # Generic utilities
+    ├── algorithm.hpp
+    ├── enable_if.hpp
+    ├── is_convertible.hpp
+    ├── less.hpp
+    ├── lexicographical_compare.hpp
+    ├── node.hpp
+    ├── rbt.hpp                      # Red-black tree
+    ├── remove_const.hpp
+    └── swap.hpp
+```
+
+These headers provide:
+
+* **Sequence containers**: `vector`, `deque`, `list`
+* **Associative containers**: `map`, `set`, `multimap`, `multiset`
+* **Container adaptors**: `stack`, `queue`, `priority_queue`
+* **Iterator implementations** (random access, bidirectional, reverse)
+* **STL-like utilities**: `enable_if`, `lexicographical_compare`, `pair`, etc.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone and build everything
 
 ```bash
-make test # --> run tests against stl
-make plot # --> generate plot and show it
+make
+```
+
+This will:
+
+* Build the **ft** test binary (`test_suite/bin/ft.out`)
+* Build the **std** reference binary (`test_suite/bin/std.out`)
+* Build the benchmark binary (`benchmark.out`)
+
+---
+
+## 🧪 Testing
+
+Run the tests comparing your containers to `std::`:
+
+```bash
+make test
+```
+
+Optionally specify number of test iterations:
+
+```bash
+./test_suite/bin/ft.out 1000
 ```
 
 ---
 
-# Understanding When and Why to Use `iterator_traits`
+## 📈 Benchmarking
 
-In generic programming, especially when writing STL-like containers and iterators, it’s essential to understand the role of `iterator_traits` and **when you should or should not use it**.
+Run performance comparisons:
 
-This guide explains:
-
-- What `iterator_traits` is
-- Why it is used in `reverse_iterator`
-- Why it is **not** used in `random_access_iterator`
-- The general rule for when to use `iterator_traits`
-- Code examples and analogies
-
----
-
-## 📚 What Is `iterator_traits`?
-
-`iterator_traits` is a traits class that extracts type information from an iterator type.  
-It gives you access to:
-
-- `value_type`
-- `pointer`
-- `reference`
-- `difference_type`
-- `iterator_category`
-
-### Example:
-
-```cpp
-template <typename Iterator>
-void foo(Iterator it) {
-    typedef typename ft::iterator_traits<Iterator>::value_type T;
-    ...
-}
-````
-
-This allows `foo()` to work with both:
-
-* Class iterators (`ft::random_access_iterator<T>`)
-* Raw pointers (`T*`)
-
----
-
-## 🧠 Why Use `iterator_traits` in `reverse_iterator`?
-
-Because `reverse_iterator` is a **generic adapter** over any iterator type `Iter`:
-
-```cpp
-template <typename Iter>
-class reverse_iterator {
-public:
-    typedef typename ft::iterator_traits<Iter>::value_type        value_type;
-    typedef typename ft::iterator_traits<Iter>::reference         reference;
-    typedef typename ft::iterator_traits<Iter>::pointer           pointer;
-    typedef typename ft::iterator_traits<Iter>::difference_type   difference_type;
-    typedef typename ft::iterator_traits<Iter>::iterator_category iterator_category;
-};
+```bash
+make benchmark
 ```
 
-This works for:
+Generate and display plots (requires Python + matplotlib):
 
-* `ft::random_access_iterator<T>`
-* `const T*`, `T*` (raw pointers)
-* Any future custom iterator class
-
-### Why not `Iter::value_type`?
-
-Because raw pointers like `int*` do **not** have member types like `value_type` or `reference`.
-
-```cpp
-// Invalid for raw pointer
-typename int*::value_type // ❌ compiler error
-```
-
-Traits fix that:
-
-```cpp
-typename ft::iterator_traits<int*>::value_type // ✅ int
+```bash
+make plot
 ```
 
 ---
 
-## 🧱 Why **Not** Use `iterator_traits` in `random_access_iterator`?
+## 🛠 Makefile Targets
 
-Your `ft::random_access_iterator<T>` **is the iterator being described**.
-
-```cpp
-template <typename T>
-class random_access_iterator {
-public:
-    typedef T*       pointer;
-    typedef T&       reference;
-    typedef T        value_type;
-    typedef std::ptrdiff_t difference_type;
-    typedef std::random_access_iterator_tag iterator_category;
-};
-```
-
-If you wrote this using `iterator_traits`:
-
-```cpp
-typedef typename ft::iterator_traits<T>::value_type value_type; // ❌ invalid
-```
-
-It assumes `T` is already an iterator — but in your case, it's the **value type**, like `int`.
-
-So this would be a **circular, incorrect use** of traits.
+| Target           | Description                                |
+| ---------------- | ------------------------------------------ |
+| `make`           | Build all binaries                         |
+| `make test`      | Run test suite against both ft:: and std:: |
+| `make benchmark` | Run benchmark binary                       |
+| `make plot`      | Generate benchmark plots (Python)          |
+| `make venv`      | Create Python virtual environment          |
+| `make install`   | Install Python requirements                |
+| `make clean`     | Clean object files in test suite           |
+| `make fclean`    | Clean everything (binaries, plots, CSVs)   |
+| `make re`        | Rebuild everything                         |
 
 ---
 
-## 🧠 Analogy: ID Cards
+## 📜 Example
 
-* `random_access_iterator<T>` is like **creating your own ID card**.
-* `iterator_traits<Iter>` is like a **scanner that reads ID cards**.
+Example: testing `ft::vector` vs `std::vector` for 100 iterations
 
-### So:
-
-* `random_access_iterator` defines the traits (name, age, etc.).
-* `iterator_traits` is used by others (like `reverse_iterator`) to extract those traits.
-
----
-
-## ✅ Summary: When to Use `iterator_traits`
-
-| Scenario                        | Use `iterator_traits`? | Why?                                          |
-| ------------------------------- | ---------------------- | --------------------------------------------- |
-| Inside `random_access_iterator` | ❌ No                   | You're defining the iterator                  |
-| Inside `reverse_iterator`       | ✅ Yes                  | You're adapting another iterator              |
-| Inside algorithms (`advance`)   | ✅ Yes                  | To support any iterator type (pointer, class) |
-| With raw pointers (`int*`)      | ✅ Yes                  | Only traits can describe them                 |
-
----
-
-## 🧪 Sanity Check
-
-This should work:
-
-```cpp
-ft::iterator_traits<ft::random_access_iterator<int> >::value_type // ✅ int
-ft::iterator_traits<int*>::value_type                             // ✅ int
-```
-
-But this will fail:
-
-```cpp
-typename int*::value_type // ❌ compiler error: no such member
+```bash
+./test_suite/bin/ft.out 100
+./test_suite/bin/std.out 100
 ```
 
 ---
 
-## ✅ Final Rule of Thumb
+## 📖 Reference
 
-> Use `iterator_traits<T>` when you don’t *own* or *define* the iterator `T`.
+### Understanding `iterator_traits`
 
-But when you're *defining* the iterator class itself — **don't use `iterator_traits` inside it**.
+> Use `iterator_traits<T>` when you don’t own or define the iterator `T`.
+
+When writing your own iterator class (`random_access_iterator`), you define the traits directly.
+When adapting or writing generic code (`reverse_iterator`, algorithms), use `iterator_traits` to support raw pointers and any iterator type.
+
+*(See detailed explanation and code in the [Iterator Traits Guide](docs/iterator_traits.md) — or inline in README if you want to keep it here.)*
 
 ---
 
-# `deque_random_access_iterator`
-
-A custom random access iterator for a segmented deque container, compatible with C++98 standards. This iterator supports full random access behavior (arithmetic, comparisons, dereferencing), while navigating a non-contiguous memory structure.
+## About deque implementation...
 
 ## 📦 Overview
 
@@ -221,44 +182,26 @@ An iterator pointing to element `6` would have:
 - `_block_offset = 2`
 - `_map[1][2] == 6`
 
-## 🧮 Mermaid Diagram
+### `deque_random_access_iterator` Diagram
 
 ```mermaid
 graph TD
   A0["map[0] → block 0"] --> B0["block 0"]
   A1["map[1] → block 1"] --> B1["block 1"]
   A2["map[2] → block 2"] --> B2["block 2"]
-
   B0 --> C0["0"]
   B0 --> C1["1"]
   B0 --> C2["2"]
   B0 --> C3["3"]
-
   B1 --> C4["4"]
   B1 --> C5["5"]
   B1 --> C6["6 ← _map[1][2]"]
   B1 --> C7["7"]
-
   B2 --> C8["8"]
   B2 --> C9["9"]
   B2 --> C10["10"]
   B2 --> C11["11"]
 ```
-
-## ⚙️ Operations Supported
-
-| Operation            | Behavior                                                  |
-| -------------------- | --------------------------------------------------------- |
-| `++`, `--`           | Moves across blocks automatically                         |
-| `+`, `-`, `+=`, `-=` | Jumps across blocks logically                             |
-| `*`, `->`, `[]`      | Accesses correct element from `_map[_map_index][_offset]` |
-| Comparisons          | Based on logical position across blocks                   |
-
-## 🚫 Notable Constraints
-
-* `BLOCK_SIZE` must match the underlying deque block size.
-* Assumes the block map (`pointer* _map`) and block contents are valid.
-* This iterator **cannot be reused** for `vector` or other containers.
 
 ## ✅ Use Case
 
@@ -277,14 +220,13 @@ This iterator is meant to be used internally in a `ft::deque<T>` implementation,
 
 ---
 
-MAP
+## 📌 Notes
 
-> In the official implementation, the tree is COMPOSED, not inherited.
-> https://github.com/gcc-mirror/gcc/blob/43949a5271b6c0b14076b736d0c609235d36f7df/libstdc%2B%2B-v3/include/bits/stl_map.h#L161
+* Fully C++98-compliant (except benchmarks, which use C++11 for convenience).
+* Containers follow STL complexity guarantees and iterator validity rules.
+* Red-black tree implementation supports `multi` containers by design.
+* Benchmarks measure performance at sizes: 1K, 10K, 100K.
+* In the official implementation, the tree is composed, not inherited:
+  - https://github.com/gcc-mirror/gcc/blob/43949a5271b6c0b14076b736d0c609235d36f7df/libstdc%2B%2B-v3/include/bits/stl_map.h#L161
 
----
-
-monkey tester is missing tests for the 3rth constructor, specially check for SFINAE implementation...
-
-monkey missing rule in makefile for the `queue`
 ---

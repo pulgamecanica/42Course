@@ -8,15 +8,9 @@
 #include "../iterators/reverse_iterator.hpp"
 #include "../utils/swap.hpp"
 #include "../utils/less.hpp"
-#include "../utils/exception.hpp"
+#include "../exception.hpp"
 #include "../utils/algorithm.hpp"
 #include "../utility.hpp"
-
-#ifdef BT_DEBUG
-# include <iostream>
-# include <sstream>
-# include <vector>
-#endif // BT_DEBUG
 
 namespace ft {
 
@@ -64,39 +58,26 @@ private:
   node_pointer        _first;
   node_pointer        _last;
 
-  void debug(const char *msg) {
-    (void)msg;
-#ifdef BT_DEBUG
-    std::cout << "[rbt] " << msg << std::endl;
-#endif // BT_DEBUG
-  }
-
 public:
   RedBlackTree()
     : _alloc(), _node_alloc(), _comp(), _key_of_value(), _size(0),
-      _super_root(), _first(&_super_root), _last(&_super_root) {
-    debug("Default Constructor");
-  }
+      _super_root(), _first(&_super_root), _last(&_super_root) {}
 
   explicit RedBlackTree(const key_compare& comp, const allocator_type& alloc = allocator_type())
     : _alloc(alloc), _node_alloc(), _comp(comp), _key_of_value(), _size(0),
-      _super_root(), _first(&_super_root), _last(&_super_root) {
-    debug("`comp`, `alloc` Constructor");
-  }
+      _super_root(), _first(&_super_root), _last(&_super_root) {}
 
   template<class InputIt>
   RedBlackTree(InputIt first, InputIt last, const key_compare& comp, const allocator_type& alloc)
     : _alloc(alloc), _node_alloc(), _comp(comp), _key_of_value(), _size(0),
       _super_root(), _first(&_super_root), _last(&_super_root) {
     insert(first, last);
-    debug("Iterator Constructor");
   }
 
   RedBlackTree(const RedBlackTree& other)
     : _alloc(other._alloc), _node_alloc(other._node_alloc), _comp(other._comp), _key_of_value(other._key_of_value),
       _size(0), _super_root(), _first(&_super_root), _last(&_super_root) {
     *this = other;
-    debug("Copy Constructor");
   }
 
   RedBlackTree& operator=(const RedBlackTree& other) {
@@ -123,13 +104,11 @@ public:
       _first = _last = &_super_root;
       _size = 0;
     }
-    debug("Assignment Operator");
     return *this;
   }
 
   ~RedBlackTree() {
     clear();
-    debug("Destructor");
   }
 
   // Iterators
@@ -154,11 +133,9 @@ public:
     _first = &_super_root;
     _last = &_super_root;
     _size = 0;
-    debug("Clear");
   }
 
   ft::pair<iterator, bool> insert(const value_type& val) {
-    debug("insert(val)");
     key_type key = _key_of_value(val);
     node_pointer parent = &_super_root;
     node_pointer* link = &_super_root.left;
@@ -193,7 +170,6 @@ public:
   }
 
   iterator insert(iterator hint, const value_type& val) {
-    debug("insert(hint, val)");
 
     if (hint == end())
       return insert(val).first;
@@ -211,7 +187,6 @@ public:
 
   template<class InputIt>
 	void insert(InputIt first, InputIt last) {
-    debug("insert(first, last)");
 		iterator tmp = begin();
 		while (first != last) {
 			tmp = insert(tmp, (value_type)*first);
@@ -284,18 +259,15 @@ public:
   }
 
   void erase(iterator first, iterator last) {
-    debug("Begin erase(iterator)");
 		while (first != last) {
       iterator next = first;
       ++next;
       erase(first);
       first = next;
     }
-    debug("End erase(iterator)");
   }
 
   void swap(RedBlackTree& other) {
-    debug("swap");
     if (this == &other)
         return;
 
@@ -325,7 +297,6 @@ public:
 
     other._first = (other._super_root.left) ? other._super_root.left->min() : &other._super_root;
     other._last  = (other._super_root.left) ? other._super_root.left->max() : &other._super_root;
-    debug("swap end");
   }
 
   // Lookup
@@ -786,78 +757,6 @@ private:
     }
     _super_root.left->color = B_BLACK; // Root is always black
   }
-
-public:
-#ifdef BT_DEBUG
-  int _compute_tree_width(node_pointer node) const {
-    if (!node) return 0;
-    return ft::max(1, _compute_tree_width(node->left) + _compute_tree_width(node->right));
-  }
-
-  int _build_tree_display(node_pointer node, int depth, int x, std::vector<std::string>& canvas, int spacing) const {
-    if (!node) return 0;
-
-    std::ostringstream label;
-    label << (node->color == B_RED ? "R:" : "B:") << _key_of_value(node->getData());
-    std::string lbl = label.str();
-
-    if ((int)canvas.size() <= depth)
-      canvas.resize(depth + 1, std::string(512, ' '));
-
-    int curr_x = x;
-    if (curr_x + (int)lbl.size() >= (int)canvas[depth].size())
-      canvas[depth].resize(curr_x + lbl.size() + 1, ' ');
-
-    // Write label
-    for (size_t i = 0; i < lbl.size(); ++i)
-      canvas[depth][curr_x + i] = lbl[i];
-
-    int left_size = _build_tree_display(node->left, depth + 2, x - spacing, canvas, spacing / 2);
-    int right_size = _build_tree_display(node->right, depth + 2, x + spacing, canvas, spacing / 2);
-
-    // Draw branches
-    if (node->left) {
-      canvas[depth + 1][x - spacing / 2] = '/';
-    }
-    if (node->right) {
-      canvas[depth + 1][x + spacing / 2] = '\\';
-    }
-
-    return 1;
-  }
-
-  void print_tree_top_down() const {
-    std::vector<std::string> canvas;
-    int spacing = 42;
-    int root_x = 140;
-
-    _build_tree_display(_super_root.left, 0, root_x, canvas, spacing);
-
-    std::cout << "\n[ Tree Top-Down View ]\n";
-    for (size_t i = 0; i < canvas.size(); ++i) {
-      std::cout << canvas[i] << '\n';
-    }
-    std::cout << std::endl;
-  }
-
-  void print_metadata() {
-    std::cout << "First: ";
-    if (_first && _first != &_super_root) std::cout << _first->data.first;
-    else std::cout << "null";
-
-    std::cout << ", Last: ";
-    if (_last && _last != &_super_root) std::cout << _last->data.first;
-    else std::cout << "end()";
-
-    std::cout << ", _last->predecessor(): ";
-    if (_last != &_super_root && _last->predecessor())
-        std::cout << _last->predecessor()->data.first;
-    else
-        std::cout << "none";
-
-    std::cout << std::endl;
-  }
-#endif // BT_DEBUG
 };
 
 // value_compare nested class
