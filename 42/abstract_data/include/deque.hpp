@@ -5,9 +5,11 @@
 #include "exception.hpp"
 #include "utils/swap.hpp"
 #include "utils/enable_if.hpp"
+#include "utils/algorithm.hpp"
 #include "utils/lexicographical_compare.hpp"
 #include "iterators/deque_random_access_iterator.hpp"
 #include "iterators/reverse_iterator.hpp"
+#include "iterators/iterator_traits.hpp"
 
 namespace ft {
 
@@ -45,29 +47,34 @@ private:
     size_type new_map_size = old_size * 2;
     pointer* new_map = _map_alloc.allocate(new_map_size);
 
-    size_type used_blocks = _end_block - _start_block + 1;
-    size_type new_start_block = (new_map_size - used_blocks) / 2;
-
+    // Initialize to null so empty slots are clearly empty.
     for (size_type i = 0; i < new_map_size; ++i)
       new_map[i] = 0;
 
+    size_type used_blocks = _end_block - _start_block + 1;
+    size_type new_start_block = (new_map_size - used_blocks) / 2;
+
+    // Move pointers for used blocks; do NOT allocate here.
     for (size_type i = 0; i < used_blocks; ++i) {
       size_type from_idx = _start_block + i;
-      size_type to_idx = new_start_block + i;
-
+      size_type to_idx   = new_start_block + i;
       new_map[to_idx] = _map[from_idx];
+      _map[from_idx] = 0; // prevent double-free below
     }
 
-    // Must deallocate the old map un-used blocks as well [important!]
-    for (size_type i = 0; i < old_size; ++i)
-      if (i < _start_block || i > _end_block)
+    // Deallocate any old blocks that were NOT moved.
+    for (size_type i = 0; i < old_size; ++i) {
+      if (_map[i] != 0) {
         _alloc.deallocate(_map[i], BLOCK_SIZE);
+        _map[i] = 0;
+      }
+    }
 
     _map_alloc.deallocate(_map, old_size);
     _map = new_map;
     _map_size = new_map_size;
-    _end_block = new_start_block + used_blocks - 1;
     _start_block = new_start_block;
+    _end_block = new_start_block + used_blocks - 1;
   }
 
   void ensure_back_capacity() {
@@ -142,7 +149,8 @@ private:
   ~deque() {
     clear();
     for (size_type i = 0; i < _map_size; ++i)
-      _alloc.deallocate(_map[i], BLOCK_SIZE);
+      if (_map[i] != 0)
+        _alloc.deallocate(_map[i], BLOCK_SIZE);
     _map_alloc.deallocate(_map, _map_size);
   }
   
@@ -276,39 +284,121 @@ private:
     ++_end_offset;
     ensure_back_capacity();
   }
-  
+
+  // 1) Intra-container overload: handles self-insertion & overlap correctly.
+  void insert(iterator position, const_iterator first, const_iterator last) {
+      if (first == last) return;
+
+      const size_type index        = position - begin();
+      const size_type first_index  = first    - begin(); // your const_iterator is same adaptor over map
+      const size_type last_index   = last     - begin();
+      const size_type n            = last_index - first_index;
+
+      const size_type old_sz = size();
+
+      // Grow by n default-constructed slots; hole will be at [index, index+n)
+      for (size_type k = 0; k < n; ++k) push_back(value_type());
+
+      // Shift tail right by n: move [index .. old_sz-1] to [index+n .. old_sz-1+n]
+      for (difference_type i = static_cast<difference_type>(old_sz) - 1;
+          i >= static_cast<difference_type>(index); --i) {
+          (*this)[static_cast<size_type>(i + n)] = (*this)[static_cast<size_type>(i)];
+          if (i == static_cast<difference_type>(index)) break;
+      }
+
+      // Now fill the hole. Three overlap cases.
+      if (index <= first_index) {
+          // Source moved right by n too.
+          for (size_type k = 0; k < n; ++k)
+              (*this)[index + k] = (*this)[first_index + k + n];
+      } else if (index >= last_index) {
+          // Source left intact.
+          for (size_type k = 0; k < n; ++k)
+              (*this)[index + k] = (*this)[first_index + k];
+      } else {
+          // Inserting into the source range itself.
+          // Left part (before position) stayed; right part (from position) moved by n.
+          const size_type left = index - first_index;           // elements before position within [first,last)
+          const size_type right = n - left;                     // elements from position to last
+          for (size_type k = 0; k < left; ++k)
+              (*this)[index + k] = (*this)[first_index + k];
+          for (size_type k = 0; k < right; ++k)
+              (*this)[index + left + k] = (*this)[index + n + k]; // from the shifted segment
+      }
+  }
+
   iterator insert(iterator position, const T& x) {
-    size_type index = position - begin();
-    push_back(x);  // Insert at end to expand size
-    for (size_type i = size() - 1; i > index; --i)
-      (*this)[i] = (*this)[i - 1];
-    (*this)[index] = x;
-    return begin() + index;
+      const size_type index  = position - begin();
+      const size_type old_sz = size();
+      push_back(value_type());
+      for (difference_type i = static_cast<difference_type>(old_sz) - 1;
+          i >= static_cast<difference_type>(index); --i) {
+          (*this)[static_cast<size_type>(i + 1)] = (*this)[static_cast<size_type>(i)];
+          if (i == static_cast<difference_type>(index)) break;
+      }
+      (*this)[index] = x;
+      return begin() + index;
   }
 
   void insert(iterator position, size_type n, const T& x) {
-    if (n == 0) return;
-    size_type index = position - begin();
-    for (size_type i = 0; i < n; ++i)
-      push_back(x);
-    for (size_type i = size() - 1; i >= index + n; --i)
-      (*this)[i] = (*this)[i - n];
-    for (size_type i = 0; i < n; ++i)
-      (*this)[index + i] = x;
+      if (n == 0) return;
+      const size_type index  = position - begin();
+      const size_type old_sz = size();
+      for (size_type k = 0; k < n; ++k) push_back(value_type());
+      for (difference_type i = static_cast<difference_type>(old_sz) - 1;
+          i >= static_cast<difference_type>(index); --i) {
+          (*this)[static_cast<size_type>(i + n)] = (*this)[static_cast<size_type>(i)];
+          if (i == static_cast<difference_type>(index)) break;
+      }
+      for (size_type k = 0; k < n; ++k)
+          (*this)[index + k] = x;
+  }
 
+
+  template <class ForwardIt>
+  typename ft::enable_if<
+      ft::is_base_of<
+          std::forward_iterator_tag,
+          typename ft::iterator_traits<ForwardIt>::iterator_category
+      >::value
+  >::type
+  insert(iterator position, ForwardIt first, ForwardIt last) {
+      if (first == last) return;
+
+      const size_type index  = position - begin();
+      const size_type n      = static_cast<size_type>(ft::distance(first, last));
+      const size_type old_sz = size();
+
+      for (size_type k = 0; k < n; ++k) push_back(value_type());
+
+      for (difference_type i = static_cast<difference_type>(old_sz) - 1;
+          i >= static_cast<difference_type>(index); --i) {
+          (*this)[static_cast<size_type>(i + n)] = (*this)[static_cast<size_type>(i)];
+          if (i == static_cast<difference_type>(index)) break;
+      }
+
+      // Fill the hole left-to-right; reading only from the external iterators.
+      size_type k = 0;
+      for (; first != last; ++first, ++k)
+          (*this)[index + k] = *first;
   }
 
   template <class InputIterator>
-  void insert(iterator position, InputIterator first, InputIterator last,
-              typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type* = 0) {
-
-    if (first == last)
-        return;
-
-    for (; first != last; ++first)
-        insert(position++, *first);
-
+  typename ft::enable_if<
+      ft::is_same<
+          typename ft::iterator_traits<InputIterator>::iterator_category,
+          std::input_iterator_tag
+      >::value
+  >::type
+  insert(iterator position, InputIterator first, InputIterator last) {
+      size_type index = position - begin();
+      for (; first != last; ++first) {
+          // insert single value at computed index; returns iterator but we keep index to avoid invalidation
+          insert(begin() + index, *first);
+          ++index;
+      }
   }
+
   
   void pop_front() {
     if (empty()) return;

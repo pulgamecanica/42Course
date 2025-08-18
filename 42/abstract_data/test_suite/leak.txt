@@ -1,0 +1,24 @@
+=================================================================
+==40322==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 16384 byte(s) in 8 object(s) allocated from:
+    #0 0x74da492fe548 in operator new(unsigned long) ../../../../src/libsanitizer/asan/asan_new_delete.cpp:95
+    #1 0x60f3c9ebf363 in std::__new_allocator<int>::allocate(unsigned long, void const*) /usr/include/c++/13/bits/new_allocator.h:151
+    #2 0x60f3c9efc3ef in ft::deque<int, std::allocator<int> >::reallocate_and_recenter() ../include/deque.hpp:53
+    #3 0x60f3c9ec66e5 in ft::deque<int, std::allocator<int> >::ensure_back_capacity() ../include/deque.hpp:76
+    #4 0x60f3c9e962be in ft::deque<int, std::allocator<int> >::push_back(int const&) ../include/deque.hpp:275
+    #5 0x60f3c9e976d7 in ft::deque<int, std::allocator<int> >::insert(ft::deque_random_access_iterator<int>, int const&) ../include/deque.hpp:283
+    #6 0x60f3c9e98140 in void ft::deque<int, std::allocator<int> >::insert<ft::deque_random_access_iterator<int> >(ft::deque_random_access_iterator<int>, ft::deque_random_access_iterator<int>, ft::deque_random_access_iterator<int>, ft::enable_if<!std::numeric_limits<ft::deque_random_access_iterator<int> >::is_specialized, void>::type*) ../include/deque.hpp:310
+    #7 0x60f3c9e572b7 in sequence_modifiers::get_table<ft::deque<int, std::allocator<int> > >()::{lambda(ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&)#3}::operator()(ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&) const include/modifiers_tests.hpp:60
+    #8 0x60f3c9f2a82a in void std::__invoke_impl<void, sequence_modifiers::get_table<ft::deque<int, std::allocator<int> > >()::{lambda(ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&)#3}&, ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&>(std::__invoke_other, sequence_modifiers::get_table<ft::deque<int, std::allocator<int> > >()::{lambda(ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&)#3}&, ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&) /usr/include/c++/13/bits/invoke.h:61
+    #9 0x60f3c9efda43 in std::enable_if<is_invocable_r_v<void, sequence_modifiers::get_table<ft::deque<int, std::allocator<int> > >()::{lambda(ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&)#3}&, ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&>, void>::type std::__invoke_r<void, sequence_modifiers::get_table<ft::deque<int, std::allocator<int> > >()::{lambda(ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&)#3}&, ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&>(sequence_modifiers::get_table<ft::deque<int, std::allocator<int> > >()::{lambda(ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&)#3}&, ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&) /usr/include/c++/13/bits/invoke.h:111
+    #10 0x60f3c9ec7ada in std::_Function_handler<void (ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&), sequence_modifiers::get_table<ft::deque<int, std::allocator<int> > >()::{lambda(ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&)#3}>::_M_invoke(std::_Any_data const&, ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&) /usr/include/c++/13/bits/std_function.h:290
+    #11 0x60f3c9e9c3ae in std::function<void (ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&)>::operator()(ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&) const /usr/include/c++/13/bits/std_function.h:591
+    #12 0x60f3c9e5bf7e in void test_container<ft::deque<int, std::allocator<int> > >(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::vector<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::function<void (ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&)> >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::function<void (ft::deque<int, std::allocator<int> >&, ft::deque<int, std::allocator<int> >&)> > > > const&, unsigned long) include/test_framework.hpp:78
+    #13 0x60f3c9e44762 in test_deque src/main.cpp:67
+    #14 0x60f3c9e4b708 in main src/main.cpp:218
+    #15 0x74da48a2a1c9 in __libc_start_call_main ../sysdeps/nptl/libc_start_call_main.h:58
+    #16 0x74da48a2a28a in __libc_start_main_impl ../csu/libc-start.c:360
+    #17 0x60f3c9e42804 in _start (/home/pulgamecanica/42Course/42/abstract_data/test_suite/bin/debug.out+0x7804) (BuildId: 8e8c184f5b9dd978645463b37ea9978af36a8566)
+
+SUMMARY: AddressSanitizer: 16384 byte(s) leaked in 8 allocation(s).

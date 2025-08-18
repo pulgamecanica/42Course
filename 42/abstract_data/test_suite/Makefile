@@ -6,8 +6,8 @@
 CXX             := c++
 STD             := -std=c++17
 CXXFLAGS        := -Wall -Wextra -Werror $(STD)
-SANITIZE        := -fsanitize=address
-DEBUG_FLAGS     := -g -DDEBUG
+SANITIZE        := -g -fsanitize=address
+DEBUG_FLAGS     := -DDEBUG
 INCLUDES        := -Iinclude -I../include
 
 # Source files
@@ -50,7 +50,7 @@ $(BIN_STD): $(SRC_FILES)
 debug: $(SRC_FILES)
 	@mkdir -p $(BIN_DIR)
 	@echo "Compiling Debug version..."
-	$(CXX) $(CXXFLAGS) $(DEBUG_FLAGS) $(INCLUDES) -DMODE_FT $^ -o $(BIN_DEBUG)
+	$(CXX) $(CXXFLAGS) $(SANITIZE) $(DEBUG_FLAGS) $(INCLUDES) -DMODE_FT $^ -o $(BIN_DEBUG)
 
 # Run both versions and compare output
 test: all

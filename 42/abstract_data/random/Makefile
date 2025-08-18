@@ -2,7 +2,7 @@ NAME = ft_test
 
 CC = c++
 
-CPPFLAGS = -g -O3 --std=c++11
+CPPFLAGS = -g -O3 --std=c++11 -fsanitize=address
 
 SRC = main.cpp
 

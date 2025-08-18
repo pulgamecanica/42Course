@@ -1,95 +1,122 @@
-
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <vector>
-#include <cstdlib>
-#include <ctime>
-#include "map.hpp" // replace with actual path if needed
+#include <deque>
+#include "deque.hpp"
 
 #define ns ft
 
-struct stateful_comparator {
-    int key;
-    stateful_comparator() : key(std::rand()) {}
-    bool operator()(const std::string& a, const std::string& b) const {
-        int shift = key % a.size();
-        std::string ra = a.substr(shift) + a.substr(0, shift);
-        shift = key % b.size();
-        std::string rb = b.substr(shift) + b.substr(0, shift);
-        return ra < rb;
-    }
-};
-
-template <typename Map>
-void print_map(const Map& m, const std::string& name) {
-    std::cout << name << " (size: " << m.size() << "):\n";
-    for (typename Map::const_iterator it = m.begin(); it != m.end(); ++it)
-        std::cout << "-> {" << it->first << ", " << it->second << "}\n";
-    std::cout << std::endl;
+void print_deque(const ns::deque<int>& d, const std::string& name = "deque") {
+    std::cout << name << " [size=" << d.size() << "]: ";
+    for (ns::deque<int>::const_iterator it = d.begin(); it != d.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << "\n";
 }
 
 int main() {
-    std::srand(std::time(0));
-    typedef ns::map<std::string, std::string, stateful_comparator> map_type;
-    typedef map_type::iterator iterator;
 
-    map_type a;
-    for (int i = 0; i < 100; ++i)
-        a["key" + std::to_string(i)] = "value" + std::to_string(i);
-
-    print_map(a, "Initial Map A");
-
-    // Test copy constructor
-    map_type b(a);
-    print_map(b, "Copied Map B");
-
-    // Test assignment
-    map_type c;
-    c = a;
-    print_map(c, "Assigned Map C");
-
-    // Test insert with hint
-    iterator hint = a.begin();
-    for (int i = 100; i < 110; ++i)
-        a.insert(hint, map_type::value_type("hintkey" + std::to_string(i), "hintvalue" + std::to_string(i)));
-
-    print_map(a, "After Hint Insert");
-
-    // Test insert range
-    std::vector<map_type::value_type> range;
-    for (int i = 200; i < 210; ++i)
-        range.push_back(map_type::value_type("range" + std::to_string(i), "rvalue" + std::to_string(i)));
-    a.insert(range.begin(), range.end());
-    print_map(a, "After Range Insert");
-
-    // Test erase by key
-    a.erase("key1");
-    a.erase("key2");
-
-    // Test erase by iterator
-    iterator it = a.begin();
-    ++it;
-    a.erase(it);
-
-    // Test erase range
-    iterator start = a.begin();
-    for (int i = 0; i < 5; ++i) ++start;
-    iterator end = start;
-    for (int i = 0; i < 10; ++i) ++end;
-    a.erase(start, end);
-    print_map(a, "After All Erase Types");
-
-    // Test clear
-    c.clear();
-    print_map(c, "After Clear");
-
-    // Test swap
-    a.swap(b);
-    print_map(a, "A after swap with B");
-    print_map(b, "B after swap with A");
+    std::cout << "\n== insert range from std::vector ==\n";
+    ns::deque<int> e;
+    ns::deque<int> e2;
+    e2.push_back(0);
+    for (int i = 0; i < 10000; ++i)
+        e.insert(e.begin(), e2.begin(), e2.end());
+    print_deque(e);
 
     return 0;
 }
+// #include <iostream>
+// #include <string>
+// #include <vector>
+// #include <cstdlib>
+// #include <ctime>
+// #include "map.hpp" // replace with actual path if needed
+
+// #define ns ft
+
+// struct stateful_comparator {
+//     int key;
+//     stateful_comparator() : key(std::rand()) {}
+//     bool operator()(const std::string& a, const std::string& b) const {
+//         int shift = key % a.size();
+//         std::string ra = a.substr(shift) + a.substr(0, shift);
+//         shift = key % b.size();
+//         std::string rb = b.substr(shift) + b.substr(0, shift);
+//         return ra < rb;
+//     }
+// };
+
+// template <typename Map>
+// void print_map(const Map& m, const std::string& name) {
+//     std::cout << name << " (size: " << m.size() << "):\n";
+//     for (typename Map::const_iterator it = m.begin(); it != m.end(); ++it)
+//         std::cout << "-> {" << it->first << ", " << it->second << "}\n";
+//     std::cout << std::endl;
+// }
+
+// int main() {
+//     std::srand(std::time(0));
+//     typedef ns::map<std::string, std::string, stateful_comparator> map_type;
+//     typedef map_type::iterator iterator;
+
+//     map_type a;
+//     for (int i = 0; i < 100; ++i)
+//         a["key" + std::to_string(i)] = "value" + std::to_string(i);
+
+//     print_map(a, "Initial Map A");
+
+//     // Test copy constructor
+//     map_type b(a);
+//     print_map(b, "Copied Map B");
+
+//     // Test assignment
+//     map_type c;
+//     c = a;
+//     print_map(c, "Assigned Map C");
+
+//     // Test insert with hint
+//     iterator hint = a.begin();
+//     for (int i = 100; i < 110; ++i)
+//         a.insert(hint, map_type::value_type("hintkey" + std::to_string(i), "hintvalue" + std::to_string(i)));
+
+//     print_map(a, "After Hint Insert");
+
+//     // Test insert range
+//     std::vector<map_type::value_type> range;
+//     for (int i = 200; i < 210; ++i)
+//         range.push_back(map_type::value_type("range" + std::to_string(i), "rvalue" + std::to_string(i)));
+//     a.insert(range.begin(), range.end());
+//     print_map(a, "After Range Insert");
+
+//     // Test erase by key
+//     a.erase("key1");
+//     a.erase("key2");
+
+//     // Test erase by iterator
+//     iterator it = a.begin();
+//     ++it;
+//     a.erase(it);
+
+//     // Test erase range
+//     iterator start = a.begin();
+//     for (int i = 0; i < 5; ++i) ++start;
+//     iterator end = start;
+//     for (int i = 0; i < 10; ++i) ++end;
+//     a.erase(start, end);
+//     print_map(a, "After All Erase Types");
+
+//     // Test clear
+//     c.clear();
+//     print_map(c, "After Clear");
+
+//     // Test swap
+//     a.swap(b);
+//     print_map(a, "A after swap with B");
+//     print_map(b, "B after swap with A");
+
+//     return 0;
+// }
 
 
 

@@ -4,6 +4,7 @@
 #include "less.hpp"
 #include "swap.hpp"
 #include "../iterators/iterator_traits.hpp"
+#include <cstddef>
 
 namespace ft {
 
@@ -56,18 +57,18 @@ inline void sift_up(RandomAccessIterator first,
                     T value,
                     Compare comp)
 {
-    // Move the hole up until parent satisfies heap with 'value'
-    while (hole_idx > 0) {
-        Distance parent = (hole_idx - 1) / 2;
-        // If parent < value (for less<T>, parent is "smaller"), we need to move parent down
-        if (comp(*(first + parent), value)) {
-            *(first + hole_idx) = *(first + parent);
-            hole_idx = parent;
-        } else {
-            break;
-        }
+  // Move the hole up until parent satisfies heap with 'value'
+  while (hole_idx > 0) {
+    Distance parent = (hole_idx - 1) / 2;
+    // If parent < value (for less<T>, parent is "smaller"), we need to move parent down
+    if (comp(*(first + parent), value)) {
+      *(first + hole_idx) = *(first + parent);
+      hole_idx = parent;
+    } else {
+      break;
     }
-    *(first + hole_idx) = value;
+  }
+  *(first + hole_idx) = value;
 }
 
 template <class RandomAccessIterator, class Distance, class T, class Compare>
@@ -81,19 +82,19 @@ inline void sift_down(RandomAccessIterator first,
   // Invariant: we want parent not less-than child: comp(parent, child) == false
   Distance child = 2 * hole_idx + 1; // left child
   while (child < n) {
-      // pick the child that should be above (the "max" for ft::less)
-      Distance right = child + 1;
-      if (right < n && comp(*(first + child), *(first + right))) {
-          child = right;
-      }
-      // If value should be below child, move child up and continue
-      if (comp(value, *(first + child))) {
-          *(first + hole_idx) = *(first + child);
-          hole_idx = child;
-          child = 2 * hole_idx + 1;
-      } else {
-          break;
-      }
+    // pick the child that should be above (the "max" for ft::less)
+    Distance right = child + 1;
+    if (right < n && comp(*(first + child), *(first + right))) {
+      child = right;
+    }
+    // If value should be below child, move child up and continue
+    if (comp(value, *(first + child))) {
+      *(first + hole_idx) = *(first + child);
+      hole_idx = child;
+      child = 2 * hole_idx + 1;
+    } else {
+      break;
+    }
   }
   *(first + hole_idx) = value;
 }
@@ -173,6 +174,33 @@ void pop_heap(RandomAccessIterator first, RandomAccessIterator last, Compare com
 
   // Put the former top at the end (heap-sorted position)
   *last = top;
+}
+
+// -------------------------------
+// distance() helpers
+// -------------------------------
+template <typename InputIterator>
+typename ft::iterator_traits<InputIterator>::difference_type
+__distance(InputIterator first, InputIterator last, ft::input_iterator_tag) {
+    typename ft::iterator_traits<InputIterator>::difference_type n = 0;
+    for (; first != last; ++first) ++n;
+    return n;
+}
+
+template <typename RandomAccessIterator>
+typename ft::iterator_traits<RandomAccessIterator>::difference_type
+__distance(RandomAccessIterator first, RandomAccessIterator last, ft::random_access_iterator_tag) {
+    return last - first;
+}
+
+// -------------------------------
+// public distance()
+// -------------------------------
+template <typename InputIterator>
+typename ft::iterator_traits<InputIterator>::difference_type
+distance(InputIterator first, InputIterator last) {
+    typedef typename ft::iterator_traits<InputIterator>::iterator_category category;
+    return __distance(first, last, category());
 }
 
 } // namespace ft
