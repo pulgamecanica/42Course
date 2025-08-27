@@ -1,0 +1,7 @@
+.venv
+venv
+venv/*
+.vscode
+bin
+build
+dist
