@@ -12,7 +12,7 @@ GuiStyle gui_style_default_light(void)
 
     s.padding = 8.0f;
     s.margin  = 0.0f;
-    s.border_radius = 6.0f;
+    s.border_radius = 4.0f;
     s.border_width  = 1.0f;
 
     s.fg     = RGBAf(0.10f, 0.10f, 0.12f, 1.0f);
@@ -37,7 +37,7 @@ GuiStyle gui_style_default_dark(void)
 
     s.padding = 4.0f;
     s.margin  = 0.0f;
-    s.border_radius = 50.0f;
+    s.border_radius = 5.0f;
     s.border_width  = 1.0f;
 
     s.fg     = RGBAf(0.90f, 0.92f, 0.96f, 1.0f);

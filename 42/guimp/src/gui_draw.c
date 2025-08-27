@@ -89,7 +89,8 @@ static void rr4_fill(SDL_Renderer* r, const SDL_FRect* fr, float rtl, float rtr,
         float y = fr->y + i + 0.5f;
         float x1 = left_boundary_for_y(fr, rtl, rbl, y);
         float x2 = right_boundary_for_y(fr, rtr, rbr, y);
-        if (x2 > x1) SDL_RenderLine(r, x1, y, x2, y);
+        draw_hspan(r, x1, x2, y);  
+        // if (x2 > x1) SDL_RenderLine(r, x1, y, x2, y);
     }
 }
 
@@ -167,7 +168,7 @@ static void rr4_fill_slice(SDL_Renderer* r, const SDL_FRect* fr,
         if (y < y_start || y >= y_end) continue;
         float x1 = left_boundary_for_y (fr, rtl, rbl, y);
         float x2 = right_boundary_for_y(fr, rtr, rbr, y);
-        if (x2 > x1) SDL_RenderLine(r, x1, y, x2, y);
+        draw_hspan(r, x1, x2, y);  
     }
 }
 

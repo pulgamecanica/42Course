@@ -115,35 +115,42 @@ static bool gw_event(GuiObject* obj, const void* sdl_event)
     return false;
 }
 
+// uses gui_draw helpers to paint the button (rounded fill + border), then draws the X glyph
 static void _gw_render_close_btn(SDL_Renderer* r, SDL_FRect *fr, const GuiStyle* style, float opacity) {
-    float dp         = style ? style->dp : 1.0f;
-    const float title_h = TITLE_FONT_SIZE * dp;
-    const float dp_local = dp > 0 ? dp : 1.0f;
-    const float pad   = (style ? style->padding : 4.0f) * dp_local;
-    const float btn   = 16.0f * dp_local;
-    
+    const float dp   = style ? style->dp : 1.0f;
+    const float bw   = style ? style->border_width  : 1.0f;
+    const float pad  = (style ? style->padding : 4.0f) * dp;
+    const float btn  = 16.0f * dp;
+    const float th   = TITLE_FONT_SIZE * dp;
+
+    // place inside the *inset* content rect to avoid bleeding over the outer border
+    SDL_FRect in = (SDL_FRect){ fr->x + bw, fr->y + bw, fr->w - 2*bw, fr->h - 2*bw };
+    if (in.w <= 0.0f || in.h <= 0.0f) return;
+
     SDL_FRect close_r = {
-        fr->x + fr->w - pad - btn,
-        fr->y + (title_h - btn) * 0.5f,
-        btn,
-        btn
+        in.x + in.w - pad - btn,
+        in.y + (th - btn) * 0.5f,
+        btn, btn
     };
 
-    // button background (use title bg a bit darker)
+    // colors
     GuiColor btn_bg = style ? style->win_title_bg : (GuiColor){0.7f,0.7f,0.74f,1.0f};
     btn_bg.r *= 0.95f; btn_bg.g *= 0.95f; btn_bg.b *= 0.95f;
-    set_draw_rgba(r, btn_bg, opacity);
-    SDL_RenderFillRect(r, &close_r);
+    const GuiColor border_col = style ? style->win_border : (GuiColor){0.24f,0.24f,0.28f,1.0f};
+    const GuiColor x_col      = style ? style->win_title_fg : (GuiColor){0.1f,0.1f,0.12f,1.0f};
 
-    // button border
-    set_draw_rgba(r, style ? style->win_border : (GuiColor){0.24f,0.24f,0.28f,1.0f}, 1.0f);
-    SDL_RenderRect(r, &close_r);
+    // small corner radius for the button (match inner curvature but cap to a fraction of size)
+    const float br_in  = fmaxf(0.0f, (style ? style->border_radius : 5.0f) - bw);
+    const float r_btn  = fminf(br_in, close_r.w * 0.3f);
 
-    // draw the 'X'
-    const float inset = 4.0f * dp_local;
+    // draw button square with helpers
+    gui_box_rounded(r, &close_r, btn_bg, opacity, border_col, bw, r_btn);
+
+    // draw the 'X' glyph
+    const float inset = 4.0f * dp;
     const float x1 = close_r.x + inset,               y1 = close_r.y + inset;
     const float x2 = close_r.x + close_r.w - inset,   y2 = close_r.y + close_r.h - inset;
-    set_draw_rgba(r, style ? style->win_title_fg : (GuiColor){0.1f,0.1f,0.12f,1.0f}, 1.0f);
+    gui_set_rgba(r, x_col, 1.0f);
     SDL_RenderLine(r, x1, y1, x2, y2);
     SDL_RenderLine(r, x1, y2, x2, y1);
 }
@@ -179,7 +186,6 @@ static void _gw_render_title_bar(SDL_Renderer* r, SDL_FRect *fr, const GuiStyle*
     gui_box_fill_rounded4_clipY(r, fr, titlebg, opacity, br, br, br, br, fr->y, fr->y + th);
 }
 
-
 static void _gw_render_border(SDL_Renderer* r, SDL_FRect *fr, const GuiStyle* style, float opacity) {
     (void)opacity; // keep for future alpha-able borders if desired
     const float bw = style ? style->border_width : 1.0f;
@@ -200,19 +206,13 @@ static void gw_render(const GuiObject* obj, void* renderer)
 
     SDL_FRect fr = (SDL_FRect){ obj->rect.x, obj->rect.y, obj->rect.w, obj->rect.h };
 
-    // 1) body
     _gw_render_body(r, &fr, style, obj->opacity);
-
-    // 2) title bar (if any)
     if (win->title) {
         _gw_render_title_bar(r, &fr, style, obj->opacity);
         // TODO: draw title text here
     }
-
-    // 3) border LAST so it’s not covered by the title bar
     _gw_render_border(r, &fr, style, obj->opacity);
 
-    // 4) adornments
     if (win->flags & GUI_WINDOW_CLOSABLE)
         _gw_render_close_btn(r, &fr, style, obj->opacity);
 
