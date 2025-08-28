@@ -124,11 +124,19 @@ void * window_set_style(const GuiObject* obj, void *ptr) {
 
 static void gw_destroy(GuiObject* obj)
 {
+    GuiObject* child = obj->first_child;
+    while (child)
+    {
+        GuiObject* next_child = child->next_sibling;
+        if (child->vtbl->destroy) child->vtbl->destroy(child);
+        else free(child);
+        child = next_child;
+    }
+    obj->first_child = NULL;
     GuiWindow* win = GUI_CAST(GuiWindow, obj);
-    free(obj);
     if (win && win->base.style)
         free(win->base.style);
-    // Should destroy all it's children recursively (cascade)
+    free(obj);
 }
 
 static void gw_set_visible(GuiObject* obj, bool v)

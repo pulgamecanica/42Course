@@ -44,7 +44,6 @@ static int  _event_tree(GuiWindow* w, const SDL_Event* ev); // returns 1 if hand
 static void _get_view_size(SDL_Renderer* r, float* out_w, float* out_h);
 
 // ── helpers (put near top of file) ───────────────────────────────────────────
-static inline bool _is_zero_rect(GuiRect r){ return r.x==0 && r.y==0 && r.w==0 && r.h==0; }
 static inline float _clampf(float v, float a, float b){ return v < a ? a : (v > b ? b : v); }
 
 // Treat windows with AUTO_POS or AUTO_SIZE as "managed" by the tiler.
@@ -116,6 +115,16 @@ static void _relayout_grid_children(GuiManager* gm, GuiWindow* parent)
     }
 }
 
+// Re-grid this parent's immediate children, then recurse into each child.
+static void _relayout_grid_subtree(GuiManager* gm, GuiWindow* parent)
+{
+    if (!gm || !parent) return;
+    _relayout_grid_children(gm, parent);  // uses parent's current rect
+
+    for (GuiObject* c = parent->base.first_child; c; c = c->next_sibling) {
+        _relayout_grid_subtree(gm, (GuiWindow*)c);
+    }
+}
 
 // Recompute a full-viewport grid for all top-level managed windows.
 static void _relayout_grid(GuiManager* gm)
@@ -160,6 +169,9 @@ static void _relayout_grid(GuiManager* gm)
         ++idx;
         if (idx >= n) break;
     }
+    for (GuiWindow* w = gm->root_head; w; w = GUI_CAST(GuiWindow, w->base.next_sibling)) {
+        _relayout_grid_subtree(gm, w);
+    }
 }
 
 // renderer viewport size (fallback if API not available)
@@ -193,27 +205,6 @@ static void _auto_place_top_level(GuiManager* gm, GuiRect* r) {
     r->y = _clampf(r->y, 0.0f, vh - r->h);
 }
 
-static void _auto_place_grid(GuiManager* gm, GuiRect* r) {
-    float vw, vh; _get_view_size(gm->renderer, &vw, &vh);
-    const uint32_t n = gui_window_count(gm);
-    const uint32_t cols = (uint32_t)ceilf(sqrtf((float)(n + 1)));
-    const uint32_t rows = (uint32_t)ceilf((float)(n + 1) / (float)cols);
-
-    const float cell_w = vw / (float)cols;
-    const float cell_h = vh / (float)rows;
-
-    const uint32_t idx = n; // place next in sequence
-    const uint32_t cx = idx % cols;
-    const uint32_t cy = idx / cols;
-
-    r->x = cx * cell_w + (cell_w - r->w) * 0.5f;
-    r->y = cy * cell_h + (cell_h - r->h) * 0.5f;
-
-    // clamp inside cell
-    r->x = _clampf(r->x, cx * cell_w, (cx+1)*cell_w - r->w);
-    r->y = _clampf(r->y, cy * cell_h, (cy+1)*cell_h - r->h);
-}
-
 static void _auto_place_child(const GuiManager* gm, const GuiWindow* parent, GuiRect* r) {
     const GuiStyle* s = &gm->d.style;
     const float dp = s->dp ? s->dp : 1.0f;
@@ -239,16 +230,45 @@ static void _auto_place_child(const GuiManager* gm, const GuiWindow* parent, Gui
     if (r->h > avail_h) r->h = avail_h;
 }
 
-// ensure the rect fits the viewport
-static void _clamp_to_view(SDL_Renderer* r, GuiRect* rect) {
-    float vw, vh; _get_view_size(r, &vw, &vh);
-    rect->w = _clampf(rect->w, 1.0f, vw);
-    rect->h = _clampf(rect->h, 1.0f, vh);
-    rect->x = _clampf(rect->x, 0.0f, vw - rect->w);
-    rect->y = _clampf(rect->y, 0.0f, vh - rect->h);
+// ───────────────────────── helpers (put near other statics) ─────────────────
+static inline bool _rect_all_zero(GuiRect r){ return r.x==0 && r.y==0 && r.w==0 && r.h==0; }
+
+static GuiRect _viewport_rect(GuiManager* gm) {
+    float vw=800, vh=600; _get_view_size(gm->renderer, &vw, &vh);
+    return (GuiRect){0,0,vw,vh};
 }
 
-// ---- API --------------------------------------------------------------------
+static GuiRect _context_rect(GuiManager* gm, const GuiWindow* parent) {
+    if (!parent) return _viewport_rect(gm);
+    return _parent_client_rect(gm, parent);  // inside border+padding+title
+}
+
+static void _limit_size_to_context(GuiRect* r, const GuiRect* cx) {
+    // Don’t move (respect position), just cap width/height so rect stays inside cx.
+    float maxw = (cx->x + cx->w) - r->x;
+    float maxh = (cx->y + cx->h) - r->y;
+    if (maxw < 1) maxw = 1;
+    if (maxh < 1) maxh = 1;
+    if (r->w > maxw) r->w = maxw;
+    if (r->h > maxh) r->h = maxh;
+}
+
+static GuiRect _default_size_in_context(GuiManager* gm, const GuiRect* cx) {
+    float vw, vh; _get_view_size(gm->renderer, &vw, &vh);
+    GuiRect def = _default_content_rect(&gm->d.style, vw, vh);
+    if (def.w > cx->w) def.w = cx->w;
+    if (def.h > cx->h) def.h = cx->h;
+    // Position is not used here; only w/h matter.
+    return (GuiRect){0,0,def.w,def.h};
+}
+
+static uint32_t _sibling_index(const GuiWindow* parent) {
+    uint32_t n=0; if (!parent) return 0;
+    for (GuiObject* c = parent->base.first_child; c; c = c->next_sibling) ++n;
+    return n;
+}
+
+// ---- Public API ------------------------------------------------------------
 GuiManager* gui_create(void* sdl_renderer)
 {
     GuiManager* gm = (GuiManager*)calloc(1, sizeof(GuiManager));
@@ -302,82 +322,100 @@ void gui_set_max_window_depth(GuiManager* gm, uint32_t depth) { if (gm) gm->max_
 void gui_set_max_objects(GuiManager* gm, uint32_t max_objects){ if (gm) gm->max_objects = max_objects; }
 void gui_set_tiling(GuiManager* gm, GuiTilingMode mode) { if (gm) gm->tiling = mode; }
 
+// ───────────────────────── the create function (drop-in) ────────────────────
 // NULL or opt_desc zero rect -> automatic placement
-// When either flag is set (Auto pos, or auto size) it follows the flags and ignores the desc. If flags are not set 
-// the zero_rect will also be auto, any other rect,, respects the given values
+// When either flag is set (AUTO_POS/AUTO_SIZE) we ignore the desc rect fields for that concern.
+// If flags are not set and the desc rect is all zero -> treat as auto for both.
 GuiWindow* gui_window_create(GuiManager* gm, GuiWindow* parent,
                                      const char* title, const GuiWindowDesc* opt_desc)
 {
     if (!gm) return NULL;
 
-    GuiWindowDesc desc = {0};
-    desc.rect  = (opt_desc && (opt_desc->rect.w || opt_desc->rect.h)) ? opt_desc->rect : gm->d.rect;
-    desc.flags = (opt_desc && opt_desc->flags) ? opt_desc->flags : gm->d.flags;
-    desc.title = (opt_desc && opt_desc->title) ? opt_desc->title : title;
+    // 1) resolve desc from manager defaults + override
+    GuiWindowDesc desc = (GuiWindowDesc){0};
+    desc.rect   = (opt_desc ? opt_desc->rect  : gm->d.rect);
+    desc.flags  = (opt_desc && opt_desc->flags) ? opt_desc->flags : gm->d.flags;
+    desc.title  = (opt_desc && opt_desc->title) ? opt_desc->title : title;
     desc.user_level = (opt_desc ? opt_desc->user_level : 0);
 
+    const bool rect_zero = _rect_all_zero(desc.rect);
+    bool want_auto_pos   = (desc.flags & GUI_WINDOW_AUTO_POS)  || rect_zero;
+    bool want_auto_size  = (desc.flags & GUI_WINDOW_AUTO_SIZE) || rect_zero;
+
+    // 2) build the object
     GuiWindow* w = window_create(&desc);
     if (!w) return NULL;
 
     window_set_style(w, &gm->d.style);
     w->level = parent ? (parent->level + 1) : 0;
-    gm->window_count++;
 
-    // compute initial rect if AUTO flags or zero rect pieces are present
-    GuiRect r = w->base.rect; // initialized by factory to desc.rect
-    const bool is_managed = _is_managed(w);
-    const bool auto_pos  = (w->flags & GUI_WINDOW_AUTO_POS) || _is_zero_rect(gm->d.rect));
-    const bool auto_size = (w->flags & GUI_WINDOW_AUTO_SIZE) || (r.w == 0.0f && r.h == 0.0f);
-
-    // Find the correct size for the newly created window.
-    // Depends if it has parents
-    if (auto_size) {
-        float vw, vh;
-        _get_view_size(gm->renderer, &vw, &vh);
-        GuiRect def = _default_content_rect(&gm->d.style, vw, vh);
-        r.w = def.w;
-        r.h = def.h;
-    }
-
+    // 3) link first (needed for grid relayout to see it)
     if (parent) {
-        // link as last child first
         w->base.parent = &parent->base;
         GuiObject** pnext = &parent->base.first_child;
         while (*pnext) pnext = &(*pnext)->next_sibling;
-        *pnext = &w->base; // Linked sibling after last most recent one
-
-        if (gm->tiling == GUI_TILING_GRID) {
-            _relayout_grid_children(gm, parent);   // always grid children
-            return w;
-        }
-
-        // non-grid fallback (single auto placement)
-        _auto_place_child(gm, parent, &r);
-        if (w->base.vtbl && w->base.vtbl->arrange) w->base.vtbl->arrange(&w->base, r);
-        else w->base.rect = r;
-        return w;
+        *pnext = &w->base;
     } else {
-        // top-level
-        if (gm->tiling == GUI_TILING_GRID && _is_managed(w)) {
-            // link first, then relayout ALL managed top-level windows to fill the grid
-            _link_front(gm, w);
-            _relayout_grid(gm);
-            return w;
-        } else {
-            // cascade (or explicit pos) for non-grid or unmanaged
-            if ((w->flags & GUI_WINDOW_AUTO_POS) || (r.x == 0.0f && r.y == 0.0f))
-                _auto_place_top_level(gm, &r);
-            _clamp_to_view(gm->renderer, &r);
-
-            if (w->base.vtbl && w->base.vtbl->arrange) w->base.vtbl->arrange(&w->base, r);
-            else w->base.rect = r;
-
-            _link_front(gm, w);
-        }
+        _link_front(gm, w);
     }
+    gm->window_count++;
+
+    // 4) compute context
+    const GuiRect cx = _context_rect(gm, parent);
+
+    // 5) choose behavior
+    GuiRect r = w->base.rect; // initialized from desc.rect by factory
+
+    // GRID: if auto (pos or size), relayout the whole context and we’re done.
+    if (gm->tiling == GUI_TILING_GRID && (want_auto_pos || want_auto_size)) {
+        if (parent) _relayout_grid_children(gm, parent);
+        else        _relayout_grid(gm);
+        return w;
+    }
+
+    // CASCADE / non-grid policies:
+    if (want_auto_pos && want_auto_size) {
+        // Both auto: pick default size for the context + compute position.
+        GuiRect dsz = _default_size_in_context(gm, &cx);
+        r.w = dsz.w; r.h = dsz.h;
+
+        if (parent) {
+            // place in parent client area (simple child cascade start)
+            _auto_place_child(gm, parent, &r);
+        } else {
+            // top-level cascade uses sibling count for offset
+            _auto_place_top_level(gm, &r);
+        }
+        _limit_size_to_context(&r, &cx);
+    }
+    else if (want_auto_pos && !want_auto_size) {
+        // Auto position only: keep size from desc, just place it.
+        if (parent) _auto_place_child(gm, parent, &r);
+        else        _auto_place_top_level(gm, &r);
+        _limit_size_to_context(&r, &cx);
+        // NOTE: In GRID this would ideally pair with AUTO_SIZE; for cascade this is fine.
+    }
+    else if (!want_auto_pos && want_auto_size) {
+        // Auto size only: keep given position, fit size inside context.
+        GuiRect dsz = _default_size_in_context(gm, &cx);
+        // fit but don’t exceed available space from current (given) position
+        r.w = fminf(dsz.w, (cx.x + cx.w) - r.x);
+        r.h = fminf(dsz.h, (cx.y + cx.h) - r.y);
+        if (r.w < 1) r.w = 1;
+        if (r.h < 1) r.h = 1;
+    }
+    else {
+        // Neither auto: respect desc; just clamp to be safe (viewport for top-level, client for child)
+        _limit_size_to_context(&r, &cx);
+    }
+
+    // 6) apply
+    if (w->base.vtbl && w->base.vtbl->arrange) w->base.vtbl->arrange(&w->base, r);
+    else w->base.rect = r;
 
     return w;
 }
+
 
 void gui_window_destroy(GuiManager* gm, GuiWindow* win)
 {
@@ -394,9 +432,8 @@ void gui_window_destroy(GuiManager* gm, GuiWindow* win)
     } else {
         _unlink(gm, win);
     }
-
-    // TODO: recursively destroy children if any (minimal for now)
-    // destroy this window object via its vtable
+    
+    // Destroying a window should recursively destroy all it's children
     if (win->base.vtbl && win->base.vtbl->destroy) win->base.vtbl->destroy(&win->base);
 
     if (gm->window_count) gm->window_count--;
@@ -427,7 +464,7 @@ void gui_handle_sdl_event(GuiManager* gm, const void* sdl_event)
         for (GuiWindow* cur = gm->root_head; cur && cur != w; cur = GUI_CAST(GuiWindow, cur->base.next_sibling)) prev = cur;
 
         if (_event_tree(w, ev)) {
-            // if clicked, bring to front
+            // if clicked, bring to front 
             if (ev->type == SDL_EVENT_MOUSE_BUTTON_DOWN) gui_window_bring_to_front(gm, w);
             return;
         }
@@ -492,6 +529,7 @@ static void _render_tree(SDL_Renderer* r, const GuiWindow* w)
     for (GuiObject* c = w->base.first_child; c; c = c->next_sibling) {
         const GuiWindow* cw = (const GuiWindow*)c; // if children are windows; otherwise branch by type
         if (cw->base.vtbl && cw->base.vtbl->render) cw->base.vtbl->render(&cw->base, r);
+        cw->base.vtbl->render_overlay(&cw->base, r); // perhaps not the best idea ?!
     }
 }
 

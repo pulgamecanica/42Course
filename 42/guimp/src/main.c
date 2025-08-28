@@ -1,6 +1,7 @@
 #define SDL_MAIN_USE_CALLBACKS 1
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <stdio.h>
 
 #include "gui_manager.h"
 
@@ -8,6 +9,9 @@ static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 // static GuiWindow* g_window = NULL;  // <- our one GUI window
 static GuiManager* gm = NULL;
+
+static const char *event_type_to_string(Uint32 type);
+void log_sdl_event(const SDL_Event *e);
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
@@ -45,12 +49,12 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     // GuiWindow* root2  = gui_window_create(gm, NULL, "Root", NULL);
     for (int i = 0; i < 4; ++i) {
         GuiWindow* tmp1 = gui_window_create(gm, NULL, "Root", NULL);
-        GuiWindow* tmp2 = gui_window_create(gm, tmp1, "Root", NULL);
-        GuiWindow* tmp3 = gui_window_create(gm, tmp1, "Root", NULL);
-        GuiWindow* tmp4 = gui_window_create(gm, tmp1, "Root", NULL);
-        GuiWindow* tmp5 = gui_window_create(gm, tmp1, "Root", NULL);
-        GuiWindow* tmp6 = gui_window_create(gm, tmp5, "Root", NULL);
-        GuiWindow* tmp7 = gui_window_create(gm, tmp5, "Root", NULL);
+        GuiWindow* tmp2 = gui_window_create(gm, tmp1, "[Root].child 1", NULL);
+        GuiWindow* tmp3 = gui_window_create(gm, tmp1, "[Root].child 2", NULL);
+        GuiWindow* tmp4 = gui_window_create(gm, tmp1, "[Root].child 3", NULL);
+        GuiWindow* tmp5 = gui_window_create(gm, tmp1, "[Root].child 4", NULL);
+        // GuiWindow* tmp6 = gui_window_create(gm, tmp5, "[child 4]child 1", NULL);
+        // GuiWindow* tmp7 = gui_window_create(gm, tmp5, "[child 4]child 2", NULL);
         tmp1->flags = tmp1->flags | GUI_WINDOW_CLOSABLE;
         // { // Style tmp1
         //     GuiStyle* style = (GuiStyle*)tmp1->base.style;
@@ -66,6 +70,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
             style->border_radius = 15.0f;
             style->margin = 5.0f;
         }
+        gui_window_destroy(gm, tmp5);
     }
     // GuiWindow* root3  = gui_window_create(gm, NULL, "Root", NULL);
     // root3->flags = root3->flags | GUI_WINDOW_CLOSABLE;
@@ -104,11 +109,11 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
     if (event->type == SDL_EVENT_QUIT) {
         return SDL_APP_SUCCESS;
     }
-
     // // (optional) forward events to the window’s event handler
     // if (g_window && g_window->base.vtbl->event) {
     //     g_window->base.vtbl->event(&g_window->base, (const void*)event);
     // }
+    log_sdl_event(event);
     gui_handle_sdl_event(gm, event);
 
     return SDL_APP_CONTINUE;
@@ -142,4 +147,105 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result)
     //     g_window = NULL;
     // }
     // SDL cleans up window/renderer automatically
+}
+
+/* ---------- LOG UTILS ----------- */
+
+static const char *event_type_to_string(Uint32 type) {
+    switch (type) {
+        case SDL_EVENT_QUIT: return "QUIT";
+        case SDL_EVENT_KEY_DOWN: return "KEY_DOWN";
+        case SDL_EVENT_KEY_UP: return "KEY_UP";
+        case SDL_EVENT_TEXT_INPUT: return "TEXT_INPUT";
+        case SDL_EVENT_MOUSE_MOTION: return "MOUSE_MOTION";
+        case SDL_EVENT_MOUSE_BUTTON_DOWN: return "MOUSE_BUTTON_DOWN";
+        case SDL_EVENT_MOUSE_BUTTON_UP: return "MOUSE_BUTTON_UP";
+        case SDL_EVENT_MOUSE_WHEEL: return "MOUSE_WHEEL";
+        case SDL_EVENT_WINDOW_SHOWN: return "WINDOW_SHOWN";
+        case SDL_EVENT_WINDOW_HIDDEN: return "WINDOW_HIDDEN";
+        case SDL_EVENT_WINDOW_EXPOSED: return "WINDOW_EXPOSED";
+        case SDL_EVENT_WINDOW_MOVED: return "WINDOW_MOVED";
+        case SDL_EVENT_WINDOW_RESIZED: return "WINDOW_RESIZED";
+        case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED: return "WINDOW_PIXEL_SIZE_CHANGED";
+        case SDL_EVENT_WINDOW_CLOSE_REQUESTED: return "WINDOW_CLOSE_REQUESTED";
+        case SDL_EVENT_WINDOW_FOCUS_GAINED: return "WINDOW_FOCUS_GAINED";
+        case SDL_EVENT_WINDOW_FOCUS_LOST: return "WINDOW_FOCUS_LOST";
+        case SDL_EVENT_WINDOW_HIT_TEST: return "WINDOW_HIT_TEST";
+        case SDL_EVENT_GAMEPAD_ADDED: return "GAMEPAD_ADDED";
+        case SDL_EVENT_GAMEPAD_REMOVED: return "GAMEPAD_REMOVED";
+        case SDL_EVENT_GAMEPAD_BUTTON_DOWN: return "GAMEPAD_BUTTON_DOWN";
+        case SDL_EVENT_GAMEPAD_BUTTON_UP: return "GAMEPAD_BUTTON_UP";
+        case SDL_EVENT_GAMEPAD_AXIS_MOTION: return "GAMEPAD_AXIS_MOTION";
+        default: return "UNKNOWN";
+    }
+}
+
+void log_sdl_event(const SDL_Event *e) {
+    printf("Event %-20s (type=%u)\n", event_type_to_string(e->type), e->type);
+
+    switch (e->type) {
+    case SDL_EVENT_KEY_DOWN:
+    case SDL_EVENT_KEY_UP:
+        printf("  key.sym = %s (%d), scancode=%d, state=%s, repeat=%d\n",
+               SDL_GetKeyName(e->key.key),
+               e->key.raw,
+               e->key.scancode,
+               (e->type == SDL_EVENT_KEY_DOWN ? "DOWN" : "UP"),
+               e->key.repeat);
+        break;
+
+    case SDL_EVENT_TEXT_INPUT:
+        printf("  text: \"%s\"\n", e->text.text);
+        break;
+
+    case SDL_EVENT_MOUSE_MOTION:
+        printf("  mouse motion: x=%d y=%d (rel %d,%d), state=0x%x\n",
+               e->motion.x, e->motion.y,
+               e->motion.xrel, e->motion.yrel,
+               e->motion.state);
+        break;
+
+    case SDL_EVENT_MOUSE_BUTTON_DOWN:
+    case SDL_EVENT_MOUSE_BUTTON_UP:
+        printf("  mouse button %d %s at (%d,%d), clicks=%d\n",
+               e->button.button,
+               (e->type == SDL_EVENT_MOUSE_BUTTON_DOWN ? "DOWN" : "UP"),
+               e->button.x, e->button.y,
+               e->button.clicks);
+        break;
+
+    case SDL_EVENT_MOUSE_WHEEL:
+        printf("  mouse wheel: x=%d y=%d, precise=(%.2f, %.2f), direction=%d\n",
+               e->wheel.x, e->wheel.y,
+               e->wheel.mouse_x, e->wheel.mouse_y,
+               e->wheel.direction);
+        break;
+
+    case SDL_EVENT_WINDOW_MOVED:
+        printf("  window moved: (%d,%d)\n", e->window.data1, e->window.data2);
+        break;
+
+    case SDL_EVENT_WINDOW_RESIZED:
+    case SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED:
+        printf("  window size: (%d,%d)\n", e->window.data1, e->window.data2);
+        break;
+
+    case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+        printf("  gamepad %d axis %d value=%d\n",
+               e->gaxis.which, e->gaxis.axis, e->gaxis.value);
+        break;
+
+    case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+    case SDL_EVENT_GAMEPAD_BUTTON_UP:
+        printf("  gamepad %d button %d %s\n",
+               e->gbutton.which,
+               e->gbutton.button,
+               (e->type == SDL_EVENT_GAMEPAD_BUTTON_DOWN ? "DOWN" : "UP"));
+        break;
+
+    default:
+        // Print raw memory for unknown/unhandled events
+        printf("  [no detailed printer for this type]\n");
+        break;
+    }
 }
