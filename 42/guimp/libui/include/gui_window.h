@@ -30,8 +30,9 @@ extern const GuiTypeId GUI_TYPE_WINDOW;
 
 // minimal constructor for a lone window
 // caller owns the returned pointer and must call base.vtbl->destroy(&win->base)
-GuiWindow* window_create(const GuiWindowDesc* desc);
-void * window_set_style(const GuiObject* obj, void *ptr);
+GuiWindow*  window_create(const GuiWindowDesc* desc);
+void *      window_set_style(const GuiObject* obj, void *ptr);
+void        set_hover(const GuiObject* obj, bool hover);
 
 #ifdef __cplusplus
 } // extern "C" {

@@ -84,6 +84,7 @@ GuiWindow* window_create(const GuiWindowDesc* desc)
     win->base.type         = GUI_TYPE_WINDOW;
     win->base.id           = s_next_id++;
     win->base.parent       = NULL;
+    win->base.parent       = NULL;
     win->base.first_child  = NULL;
     win->base.next_sibling = NULL;
     win->base.rect         = (GuiRect){0,0,0,0};
@@ -109,6 +110,7 @@ GuiWindow* window_create(const GuiWindowDesc* desc)
     return win;
 }
 
+// Might need to move the two functions bellow to a general objects uitls
 void * window_set_style(const GuiObject* obj, void *ptr) {
     const GuiStyle* style= (const GuiStyle*)ptr;
     GuiStyle* new_style = (GuiStyle*)calloc(1, sizeof(GuiStyle));
@@ -118,6 +120,12 @@ void * window_set_style(const GuiObject* obj, void *ptr) {
     GuiWindow* win = GUI_CAST(GuiWindow, obj);
     win->base.style = new_style;
     return new_style;
+}
+
+void        set_hover(const GuiObject* obj, bool hover) {
+    GuiStyle* style = (GuiStyle*)obj->style;
+    if (!style) return;
+    style->hovered = hover;
 }
 
 // ----- vtable impls -----
@@ -223,7 +231,7 @@ static void _gw_render_resizable_grip(SDL_Renderer* r, SDL_FRect *fr, const GuiS
 }
 
 static void _gw_render_body(SDL_Renderer* r, SDL_FRect *fr, const GuiStyle* style, float opacity) {
-    const GuiColor bg = style ? style->win_bg : (GuiColor){0.86f, 0.86f, 0.86f, 1.0f};
+    GuiColor bg = style ? style->hovered ? style->state_hover_tint :  style->win_bg : (GuiColor){0.86f, 0.86f, 0.86f, 1.0f};
     const float border_radius = style ? style->border_radius : 5.0f;
     gui_box_fill_rounded(r, fr, bg, opacity, border_radius);
 }

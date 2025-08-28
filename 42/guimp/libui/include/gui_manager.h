@@ -50,7 +50,7 @@ void        gui_set_tiling(GuiManager* gm, GuiTilingMode mode);
 
 // Create/destroy windows managed by GM (parent may be NULL for top-level)
 GuiWindow*  gui_window_create(GuiManager* gm, GuiWindow* parent,
-                                      const char* title, const GuiWindowDesc* desc);
+                                      const char* title, const GuiWindowDesc* desc, const GuiStyle* style);
 void        gui_window_destroy(GuiManager* gm, GuiWindow* win);
 void        gui_manager_invalidate_layout(GuiManager* gm, GuiWindow* container);
 

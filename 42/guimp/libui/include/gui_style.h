@@ -22,6 +22,8 @@ typedef struct {
     GuiColor state_hover_tint;
     GuiColor state_focus_tint;
 
+    bool hovered;
+
     // future: fonts, shadows, etc.
 } GuiStyle;
 

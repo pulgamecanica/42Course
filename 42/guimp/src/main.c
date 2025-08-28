@@ -35,46 +35,57 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 
     gm = gui_create(renderer);
     gui_set_tiling(gm, GUI_TILING_GRID);
-    GuiStyle gs =  gui_style_default_dark();
-    gs.margin = 3.0f;
-    gs.border_radius = 0.0f;
-    gui_set_style(gm, &gs);
+    // GuiStyle gs =  gui_style_default_dark();
+    // gs.border_radius = 0.0f;
+    // gs.padding = 0.0f;
+    // gs.border_width = 0.0f;
+    // gui_set_style(gm, &gs);
 
     // gui_defaults_add_window_flags(gm, GUI_WINDOW_MOVABLE | GUI_WINDOW_RESIZABLE);
     // gui_defaults_clear_window_flags(gm, GUI_WINDOW_AUTO_POS | GUI_WINDOW_AUTO_SIZE);
     // gui_set_style(gm, &(GuiStyle){ .dp=1, .border_width=1, .border_radius=6, /* ... or use gui_style_default_dark() */ });
 
     // create
-    // GuiWindow* root  = gui_window_create(gm, NULL, "Root", NULL);
-    // GuiWindow* root2  = gui_window_create(gm, NULL, "Root", NULL);
-    for (int i = 0; i < 6; ++i) {
-        GuiWindow* tmp1 = gui_window_create(gm, NULL, "Root", NULL);
-        GuiWindow* tmp2 = gui_window_create(gm, tmp1, "[Root].child 1", NULL);
-        GuiWindow* tmp3 = gui_window_create(gm, tmp1, "[Root].child 2", NULL);
-        GuiWindow* tmp4 = gui_window_create(gm, tmp1, "[Root].child 3", NULL);
-        GuiWindow* tmp5 = gui_window_create(gm, tmp1, "[Root].child 4", NULL);
-        GuiWindow* tmp6 = gui_window_create(gm, tmp2, "[child 4]child 1", NULL);
-        GuiWindow* tmp7 = gui_window_create(gm, tmp5, "[child 4]child 2", NULL);
-        tmp1->flags = tmp1->flags | GUI_WINDOW_CLOSABLE;
-        tmp6->flags = tmp6->flags | GUI_WINDOW_CLOSABLE;
-        // { // Style tmp1
-        //     GuiStyle* style = (GuiStyle*)tmp1->base.style;
-        //     style->win_bg = (GuiColor){ 0.9f, 0.2f, 0.4f, 1.0f };
-        //     style->margin = 5.0f;
-        // }
-        { // Style tmp4
-        tmp4->flags = tmp4->flags | GUI_WINDOW_CLOSABLE | GUI_WINDOW_RESIZABLE;
-        }
-        { // Style tmp2
-            GuiStyle* style = (GuiStyle*)tmp2->base.style;
-            style->border_width = 3.0f;
-            style->border_radius = 15.0f;
-            style->margin = 5.0f;
-        }
-        // gui_window_destroy(gm, tmp5);
-    }
-    // GuiWindow* root3  = gui_window_create(gm, NULL, "Root", NULL);
-    // root3->flags = root3->flags | GUI_WINDOW_CLOSABLE;
+    GuiStyle custom_style =  gui_style_default_dark();
+    custom_style.border_radius = 0.0f;
+    custom_style.padding = 0.0f;
+    custom_style.margin = 1.0f;
+    custom_style.border_width = 0.0f;
+    // gui_set_style(gm, &gs);
+    GuiWindow* main_window  = gui_window_create(gm, NULL, NULL, NULL, &custom_style);
+    custom_style.border_width = 1.0f;
+    custom_style.win_bg = (GuiColor){ 0.9f, 0.9f, 0.9f, 1.0f };
+    GuiWindow* canvas  = gui_window_create(gm, main_window, NULL, NULL, &custom_style);
+    GuiWindow* tools  = gui_window_create(gm, main_window, "Tools", NULL, NULL);
+    GuiWindow* brushes  = gui_window_create(gm, tools, "Brushes", NULL, NULL);
+    GuiWindow* layers  = gui_window_create(gm, tools, "Layers", NULL, NULL);
+    GuiWindow* palette  = gui_window_create(gm, tools, "Palette", NULL, NULL);
+    // for (int i = 0; i < 6; ++i) {
+    //     GuiWindow* tmp1 = gui_window_create(gm, NULL, "Root", NULL);
+    //     GuiWindow* tmp2 = gui_window_create(gm, tmp1, "[Root].child 1", NULL);
+    //     GuiWindow* tmp3 = gui_window_create(gm, tmp1, NULL, NULL);
+    //     GuiWindow* tmp4 = gui_window_create(gm, tmp1, "[Root].child 3", NULL);
+    //     GuiWindow* tmp5 = gui_window_create(gm, tmp1, "[Root].child 4", NULL);
+    //     GuiWindow* tmp6 = gui_window_create(gm, tmp2, NULL, NULL);
+    //     GuiWindow* tmp7 = gui_window_create(gm, tmp5, "[child 4]child 2", NULL);
+    //     tmp1->flags = tmp1->flags | GUI_WINDOW_CLOSABLE;
+    //     tmp6->flags = tmp6->flags | GUI_WINDOW_CLOSABLE;
+    //     // { // Style tmp1
+    //     //     GuiStyle* style = (GuiStyle*)tmp1->base.style;
+    //     //     style->win_bg = (GuiColor){ 0.9f, 0.2f, 0.4f, 1.0f };
+    //     //     style->margin = 5.0f;
+    //     // }
+    //     { // Style tmp4
+    //     tmp4->flags = tmp4->flags | GUI_WINDOW_CLOSABLE | GUI_WINDOW_RESIZABLE;
+    //     }
+    //     { // Style tmp2
+    //         GuiStyle* style = (GuiStyle*)tmp2->base.style;
+    //         style->border_width = 3.0f;
+    //         style->border_radius = 15.0f;
+    //         style->margin = 5.0f;
+    //     }
+    //     // gui_window_destroy(gm, tmp5);
+    // }
 
     // GuiWindow* tools = gui_window_create(gm, root, "Tools", NULL);
     // GuiWindow* tools2 = gui_window_create(gm, root, "Tools", NULL);
@@ -201,8 +212,8 @@ void log_sdl_event(const SDL_Event *e) {
 
     case SDL_EVENT_MOUSE_MOTION:
         printf("  mouse motion: x=%d y=%d (rel %d,%d), state=0x%x\n",
-               e->motion.x, e->motion.y,
-               e->motion.xrel, e->motion.yrel,
+               (int)e->motion.x, (int)e->motion.y,
+               (int)e->motion.xrel, (int)e->motion.yrel,
                e->motion.state);
         break;
 

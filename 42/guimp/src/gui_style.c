@@ -23,9 +23,11 @@ GuiStyle gui_style_default_light(void)
     s.win_title_bg  = RGBAf(0.86f, 0.86f, 0.90f, 1.0f);
     s.win_title_fg  = RGBAf(0.10f, 0.10f, 0.12f, 1.0f);
     s.win_border    = RGBAf(0.55f, 0.55f, 0.60f, 1.0f);
+    
+    s.hovered = false;
 
-    s.state_hover_tint = RGBAf(0.10f, 0.10f, 0.10f, 0.06f);
-    s.state_focus_tint = RGBAf(0.10f, 0.30f, 1.00f, 0.12f);
+    s.state_hover_tint = RGBAf(0.85f, 0.85f, 0.86f, 1.0f);
+    s.state_focus_tint = RGBAf(0.10f, 0.10f, 0.12f, 1.0f);
 
     return s;
 }
@@ -49,8 +51,10 @@ GuiStyle gui_style_default_dark(void)
     s.win_title_fg  = RGBAf(0.92f, 0.94f, 0.97f, 1.0f);
     s.win_border    = RGBAf(0.35f, 0.37f, 0.40f, 1.0f);
 
-    s.state_hover_tint = RGBAf(1.00f, 1.00f, 1.00f, 0.06f);
-    s.state_focus_tint = RGBAf(0.20f, 0.50f, 1.00f, 0.16f);
+    s.hovered = false;
+    
+    s.state_hover_tint = RGBAf(0.08f, 0.09f, 0.11f, 1.0f);
+    s.state_focus_tint = RGBAf(0.10f, 0.1f, 0.15f, 1.0f);
 
     return s;
 }

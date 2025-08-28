@@ -17,6 +17,15 @@ struct GuiManager {
         GuiStyle style;            // copied; windows point to this
     } d;
 
+    struct {
+        bool        active;
+        GuiWindow*  target;         // dragged window (the real one)
+        GuiWindow*  origin_parent;  // original parent (NULL if top-level)
+        GuiWindow*  hover_parent;   // current candidate parent under mouse (may be NULL for root)
+        float       dx, dy;         // mouse offset inside window at grab time
+        GuiRect     proxy;          // floating preview rect following the cursor
+    } drag;
+
     // Soft config
     uint32_t max_window_depth;
     uint32_t max_objects;
@@ -234,7 +243,59 @@ static void _auto_place_child(const GuiManager* gm, const GuiWindow* parent, Gui
     if (r->h > avail_h) r->h = avail_h;
 }
 
-// ───────────────────────── helpers (put near other statics) ─────────────────
+// ---------- helpers & hit-testing ----------
+static inline bool _pt_in_rect(float x, float y, const GuiRect* r) {
+    return (x >= r->x && y >= r->y && x < (r->x + r->w) && y < (r->y + r->h));
+}
+
+static bool _is_under(const GuiObject* maybe_ancestor, const GuiObject* node) {
+    for (const GuiObject* p = node; p; p = p->parent) if (p == maybe_ancestor) return true;
+    return false;
+}
+
+// walk children back-to-front (O(n^2) but trees are small; fine for now)
+static const GuiObject* _hit_deep_obj(const GuiObject* o, float x, float y, const GuiObject* exclude_root)
+{
+    if (!o || !o->visible || o->opacity <= 0.0f) return NULL;
+    if (!_pt_in_rect(x, y, &o->rect)) return NULL;
+    if (exclude_root && _is_under(exclude_root, o)) return NULL;
+
+    // find last child
+    const GuiObject* last = o->first_child;
+    if (last) { while (last->next_sibling) last = last->next_sibling; }
+
+    // iterate children in reverse z (last → first)
+    for (const GuiObject* tail = last; tail; ) {
+        const GuiObject* prev = NULL;
+        for (const GuiObject* it = o->first_child; it && it != tail; it = it->next_sibling) prev = it;
+        const GuiObject* hit = _hit_deep_obj(tail, x, y, exclude_root);
+        if (hit) return hit;
+        tail = prev;
+    }
+    return o;
+}
+
+static GuiWindow* _hit_window_at(GuiManager* gm, float x, float y, const GuiWindow* exclude_subtree)
+{
+    const GuiObject* exclude = exclude_subtree ? &exclude_subtree->base : NULL;
+    // top-level, front-to-back
+    for (GuiWindow* w = gm->root_tail; w; ) {
+        // find previous (singly linked)
+        GuiWindow* prev = NULL;
+        for (GuiWindow* it = gm->root_head; it && it != w; it = GUI_CAST(GuiWindow, it->base.next_sibling)) prev = it;
+
+        const GuiObject* hit = _hit_deep_obj(&w->base, x, y, exclude);
+        if (hit) {
+            // return nearest window ancestor of the hit object
+            const GuiObject* o = hit;
+            while (o && o->type != GUI_TYPE_WINDOW) o = o->parent;
+            return o ? (GuiWindow*)o : NULL;
+        }
+        w = prev;
+    }
+    return NULL;
+}
+
 static inline bool _rect_all_zero(GuiRect r){ return r.x==0 && r.y==0 && r.w==0 && r.h==0; }
 
 static GuiRect _viewport_rect(GuiManager* gm) {
@@ -270,6 +331,164 @@ static uint32_t _sibling_index(const GuiWindow* parent) {
     uint32_t n=0; if (!parent) return 0;
     for (GuiObject* c = parent->base.first_child; c; c = c->next_sibling) ++n;
     return n;
+}
+
+// ---------- drag helpers ----------
+static inline GuiWindow* _parent_of(GuiWindow* w) {
+    return w && w->base.parent ? (GuiWindow*)w->base.parent : NULL;
+}
+
+static inline bool _rect_contains_pt(const GuiRect* r, float x, float y) {
+    return x >= r->x && y >= r->y && x < r->x + r->w && y < r->y + r->h;
+}
+
+static void _drag_begin(GuiManager* gm, GuiWindow* w, float mx, float my)
+{
+    gm->drag.active        = true;
+    gm->drag.target        = w;
+    gm->drag.origin_parent = _parent_of(w);
+    gm->drag.hover_parent  = gm->drag.origin_parent;
+    gm->drag.proxy         = w->base.rect;
+    gm->drag.dx            = mx - w->base.rect.x;
+    gm->drag.dy            = my - w->base.rect.y;
+
+    // bring to front if top-level (cosmetic)
+    if (!w->base.parent) gui_window_bring_to_front(gm, w);
+}
+
+static void _drag_update(GuiManager* gm, float mx, float my)
+{
+    if (!gm->drag.active || !gm->drag.target) return;
+
+    if (gm->drag.hover_parent)
+        set_hover(gm->drag.hover_parent, false);
+    // move ghost
+    gm->drag.proxy.x = mx - gm->drag.dx;
+    gm->drag.proxy.y = my - gm->drag.dy;
+
+    // choose candidate parent (GRID rules), otherwise keep origin
+    if (gm->tiling == GUI_TILING_GRID) {
+        // hysteresis: only leave origin if pointer exits its client area by some margin
+        const float dp = gm->d.style.dp ? gm->d.style.dp : 1.0f;
+        const float hysteresis = 12.0f * dp;
+
+        GuiWindow* origin = gm->drag.origin_parent;
+        GuiRect keep = origin ? _parent_client_rect(gm, origin)
+                              : (GuiRect){0,0,0,0};
+        if (!origin) {
+            float vw, vh; _get_view_size(gm->renderer, &vw, &vh);
+            keep = (GuiRect){0,0,vw,vh};
+        }
+        GuiRect inflated = keep;
+        inflated.x -= hysteresis; inflated.y -= hysteresis;
+        inflated.w += 2*hysteresis; inflated.h += 2*hysteresis;
+
+        GuiWindow* candidate = _hit_window_at(gm, mx, my, gm->drag.target);
+
+        // stay with origin unless we truly left its (inflated) client area or we're over a different child explicitly
+        if (!_rect_contains_pt(&inflated, mx, my)) {
+            gm->drag.hover_parent = candidate;  // may be NULL for root
+        } else if (candidate && candidate != origin && !_is_under(&gm->drag.target->base, &candidate->base)) {
+            // inside origin, but over some sibling/descendant container → allow reparent
+            gm->drag.hover_parent = candidate;
+        } else {
+            gm->drag.hover_parent = origin;
+        }
+    }
+    if (gm->drag.hover_parent)
+        set_hover(gm->drag.hover_parent, true);
+    // CASCADE: nothing else to do during drag; we just move the ghost.
+}
+
+static void _link_as_last_child(GuiWindow* parent, GuiWindow* w)
+{
+    w->base.parent = &parent->base;
+    GuiObject** pnext = &parent->base.first_child;
+    while (*pnext) pnext = &(*pnext)->next_sibling;
+    *pnext = &w->base;
+}
+
+static void _detach_from_parent_or_root(GuiManager* gm, GuiWindow* w)
+{
+    if (w->base.parent) {
+        GuiObject** it = &w->base.parent->first_child;
+        while (*it) {
+            if (*it == &w->base) { *it = (*it)->next_sibling; break; }
+            it = &(*it)->next_sibling;
+        }
+        w->base.parent = NULL;
+        w->base.next_sibling = NULL;
+    } else {
+        _unlink(gm, w);
+    }
+}
+
+static void _drag_end(GuiManager* gm)
+{
+    if (!gm->drag.active || !gm->drag.target) { gm->drag.active=false; return; }
+
+    if (gm->drag.hover_parent)
+        set_hover(gm->drag.hover_parent, false);
+    GuiWindow* w       = gm->drag.target;
+    GuiWindow* old_par = gm->drag.origin_parent;
+    GuiWindow* new_par = gm->drag.hover_parent;
+
+    if (gm->tiling == GUI_TILING_GRID) {
+        // reparent if changed
+        if (new_par != old_par) {
+            _detach_from_parent_or_root(gm, w);
+            if (new_par) _link_as_last_child(new_par, w);
+            else         _link_front(gm, w);
+        }
+        // snap to grid
+        if (new_par) _relayout_grid_subtree(gm, new_par);
+        if (old_par && old_par != new_par) _relayout_grid_subtree(gm, old_par);
+        if (!new_par) _relayout_grid(gm); // top-level grid refresh
+    } else {
+        // CASCADE → commit the proxy rect (clamped to context)
+        const GuiRect cx = _context_rect(gm, _parent_of(w));
+        GuiRect r = gm->drag.proxy;
+        _limit_size_to_context(&r, &cx);
+        if (w->base.vtbl && w->base.vtbl->arrange) w->base.vtbl->arrange(&w->base, r);
+        else w->base.rect = r;
+    }
+
+    // clear drag
+    gm->drag.active = false;
+    gm->drag.target = gm->drag.origin_parent = gm->drag.hover_parent = NULL;
+    
+}
+
+
+// ---------- overlay ----------
+static void _render_drag_overlay(GuiManager* gm)
+{
+    if (!gm->drag.active) return;
+
+    SDL_Renderer* r = gm->renderer;
+    const GuiStyle* s = &gm->d.style;
+
+    // Make sure overlay is not clipped by previous node
+    SDL_SetRenderClipRect(r, NULL);
+
+    // ghost rectangle
+    GuiColor fill   = (GuiColor){0.20f, 0.55f, 1.0f, 0.25f};
+    GuiColor border = (GuiColor){0.20f, 0.55f, 1.0f, 0.9f};
+    float br        = s->border_radius > 0 ? s->border_radius : 6.0f;
+    float bw        = s->border_width  > 0 ? s->border_width  : 1.0f;
+
+    SDL_FRect fr = (SDL_FRect){ gm->drag.proxy.x, gm->drag.proxy.y, gm->drag.proxy.w, gm->drag.proxy.h };
+    gui_box_rounded(gm->renderer, &fr, fill, 1.0f, border, bw, br);
+
+    // highlight candidate parent’s client rect (if any, in GRID)
+    if (gm->tiling == GUI_TILING_GRID && gm->drag.hover_parent) {
+        // ((GuiStyle*)(gm->drag.hover_parent->base.style))->win_bg = (GuiColor){0.0f, 1.0f, 0.15f, 0.9f};
+
+        // GuiRect cr = _parent_client_rect(gm, gm->drag.hover_parent);
+        // SDL_FRect h = (SDL_FRect){ cr.x, cr.y, cr.w, cr.h };
+        // GuiColor hb = (GuiColor){0.0f, 1.0f, 0.15f, 0.9f};
+        // gui_box_border_rounded(gm->renderer, &h, hb, bw, br);
+    }
 }
 
 // ---- Public API ------------------------------------------------------------
@@ -331,7 +550,7 @@ void gui_set_tiling(GuiManager* gm, GuiTilingMode mode) { if (gm) gm->tiling = m
 // When either flag is set (AUTO_POS/AUTO_SIZE) we ignore the desc rect fields for that concern.
 // If flags are not set and the desc rect is all zero -> treat as auto for both.
 GuiWindow* gui_window_create(GuiManager* gm, GuiWindow* parent,
-                                     const char* title, const GuiWindowDesc* opt_desc)
+                                     const char* title, const GuiWindowDesc* opt_desc, const GuiStyle* opt_style)
 {
     if (!gm) return NULL;
 
@@ -350,7 +569,8 @@ GuiWindow* gui_window_create(GuiManager* gm, GuiWindow* parent,
     GuiWindow* w = window_create(&desc);
     if (!w) return NULL;
 
-    window_set_style(w, &gm->d.style);
+    if (opt_style) window_set_style(w, opt_style);
+    else window_set_style(w, &gm->d.style);
     w->level = parent ? (parent->level + 1) : 0;
 
     // 3) link first (needed for grid relayout to see it)
@@ -480,6 +700,32 @@ void gui_handle_sdl_event(GuiManager* gm, const void* sdl_event)
         return ;
     }
 
+    // DRAG state machine (manager-level)
+    switch (ev->type) {
+    case SDL_EVENT_MOUSE_BUTTON_DOWN:
+        if (ev->button.button == SDL_BUTTON_LEFT) {
+            GuiWindow* w = _hit_window_at(gm, (float)ev->button.x, (float)ev->button.y, NULL);
+            if (w && (w->flags & GUI_WINDOW_MOVABLE)) {
+                _drag_begin(gm, w, (float)ev->button.x, (float)ev->button.y);
+                return; // consume
+            }
+        }
+        break;
+    case SDL_EVENT_MOUSE_MOTION:
+        if (gm->drag.active) {
+            _drag_update(gm, (float)ev->motion.x, (float)ev->motion.y);
+            return; // consume
+        }
+        break;
+    case SDL_EVENT_MOUSE_BUTTON_UP:
+        if (ev->button.button == SDL_BUTTON_LEFT && gm->drag.active) {
+            _drag_end(gm);
+            return; // consume
+        }
+        break;
+    default: break;
+    }
+
     // walk front-to-back (so top-most handles first)
     for (GuiWindow* w = gm->root_tail; w; ) {
         // find previous by walking (list is singly-linked; keep it simple)
@@ -507,6 +753,7 @@ void gui_render(GuiManager* gm)
     for (GuiWindow* w = gm->root_head; w != NULL; w = GUI_CAST(GuiWindow, w->base.next_sibling)) {
         _render_subtree(gm, &w->base, 0);
     }
+    _render_drag_overlay(gm);
 }
 
 uint32_t gui_window_count(const GuiManager* gm) { return gm ? gm->window_count : 0; }
