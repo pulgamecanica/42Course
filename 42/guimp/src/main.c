@@ -47,15 +47,16 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     // create
     // GuiWindow* root  = gui_window_create(gm, NULL, "Root", NULL);
     // GuiWindow* root2  = gui_window_create(gm, NULL, "Root", NULL);
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 6; ++i) {
         GuiWindow* tmp1 = gui_window_create(gm, NULL, "Root", NULL);
         GuiWindow* tmp2 = gui_window_create(gm, tmp1, "[Root].child 1", NULL);
         GuiWindow* tmp3 = gui_window_create(gm, tmp1, "[Root].child 2", NULL);
         GuiWindow* tmp4 = gui_window_create(gm, tmp1, "[Root].child 3", NULL);
         GuiWindow* tmp5 = gui_window_create(gm, tmp1, "[Root].child 4", NULL);
-        // GuiWindow* tmp6 = gui_window_create(gm, tmp5, "[child 4]child 1", NULL);
-        // GuiWindow* tmp7 = gui_window_create(gm, tmp5, "[child 4]child 2", NULL);
+        GuiWindow* tmp6 = gui_window_create(gm, tmp2, "[child 4]child 1", NULL);
+        GuiWindow* tmp7 = gui_window_create(gm, tmp5, "[child 4]child 2", NULL);
         tmp1->flags = tmp1->flags | GUI_WINDOW_CLOSABLE;
+        tmp6->flags = tmp6->flags | GUI_WINDOW_CLOSABLE;
         // { // Style tmp1
         //     GuiStyle* style = (GuiStyle*)tmp1->base.style;
         //     style->win_bg = (GuiColor){ 0.9f, 0.2f, 0.4f, 1.0f };
@@ -70,7 +71,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
             style->border_radius = 15.0f;
             style->margin = 5.0f;
         }
-        gui_window_destroy(gm, tmp5);
+        // gui_window_destroy(gm, tmp5);
     }
     // GuiWindow* root3  = gui_window_create(gm, NULL, "Root", NULL);
     // root3->flags = root3->flags | GUI_WINDOW_CLOSABLE;

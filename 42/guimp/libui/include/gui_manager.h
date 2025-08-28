@@ -52,6 +52,7 @@ void        gui_set_tiling(GuiManager* gm, GuiTilingMode mode);
 GuiWindow*  gui_window_create(GuiManager* gm, GuiWindow* parent,
                                       const char* title, const GuiWindowDesc* desc);
 void        gui_window_destroy(GuiManager* gm, GuiWindow* win);
+void        gui_manager_invalidate_layout(GuiManager* gm, GuiWindow* container);
 
 // Z-order & focus
 void        gui_window_bring_to_front(GuiManager* gm, GuiWindow* win);

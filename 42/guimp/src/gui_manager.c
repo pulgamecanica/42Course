@@ -39,9 +39,9 @@ static GuiWindowFlags _default_window_flags(void) {
 static GuiRect _rect_zero(void){ GuiRect r = {0,0,0,0}; return r; }
 static void _link_front(struct GuiManager* gm, GuiWindow* w);
 static void _unlink(struct GuiManager* gm, GuiWindow* w);
-static void _render_tree(SDL_Renderer* r, const GuiWindow* w);
 static int  _event_tree(GuiWindow* w, const SDL_Event* ev); // returns 1 if handled
 static void _get_view_size(SDL_Renderer* r, float* out_w, float* out_h);
+static void _render_subtree(GuiManager* gm, const GuiObject* o, uint32_t depth);
 
 // ── helpers (put near top of file) ───────────────────────────────────────────
 static inline float _clampf(float v, float a, float b){ return v < a ? a : (v > b ? b : v); }
@@ -50,6 +50,10 @@ static inline float _clampf(float v, float a, float b){ return v < a ? a : (v > 
 // Are we auto-managed by tiler?
 static inline bool _is_managed(const GuiWindow* w) {
     return (w->flags & (GUI_WINDOW_AUTO_POS | GUI_WINDOW_AUTO_SIZE)) != 0;
+}
+
+static inline void _gui_manager_viewport_resized(GuiManager* gm) {
+    gui_manager_invalidate_layout(gm, NULL);
 }
 
 // Parent client rect (inside border + padding; below title if present)
@@ -279,7 +283,7 @@ GuiManager* gui_create(void* sdl_renderer)
     gm->d.flags  = _default_window_flags();
     gm->d.style  = gui_style_default_dark(); // default
 
-    gm->max_window_depth = 4;
+    gm->max_window_depth = 10;
     gm->max_objects      = 1024;
     gm->tiling           = GUI_TILING_CASCADE;
 
@@ -416,6 +420,19 @@ GuiWindow* gui_window_create(GuiManager* gm, GuiWindow* parent,
     return w;
 }
 
+void gui_manager_invalidate_layout(GuiManager* gm, GuiWindow* container)
+{
+    if (!gm) return;
+
+    if (gm->tiling == GUI_TILING_GRID) {
+        if (container) {
+            _relayout_grid_subtree(gm, container); // container changed → fix its subtree
+        } else {
+            _relayout_grid(gm);                    // viewport changed → fix all roots + descendants
+        }
+        return;
+    }
+}
 
 void gui_window_destroy(GuiManager* gm, GuiWindow* win)
 {
@@ -457,6 +474,12 @@ void gui_handle_sdl_event(GuiManager* gm, const void* sdl_event)
     if (!gm || !sdl_event) return;
     const SDL_Event* ev = (const SDL_Event*)sdl_event;
 
+    if (ev->type == SDL_EVENT_WINDOW_RESIZED ||
+        ev->type == SDL_EVENT_DISPLAY_CONTENT_SCALE_CHANGED) {
+        _gui_manager_viewport_resized(gm);
+        return ;
+    }
+
     // walk front-to-back (so top-most handles first)
     for (GuiWindow* w = gm->root_tail; w; ) {
         // find previous by walking (list is singly-linked; keep it simple)
@@ -482,7 +505,7 @@ void gui_render(GuiManager* gm)
 {
     if (!gm || !gm->renderer) return;
     for (GuiWindow* w = gm->root_head; w != NULL; w = GUI_CAST(GuiWindow, w->base.next_sibling)) {
-        _render_tree(gm->renderer, w);
+        _render_subtree(gm, &w->base, 0);
     }
 }
 
@@ -523,14 +546,46 @@ static void _unlink(struct GuiManager* gm, GuiWindow* w)
     w->base.next_sibling = NULL;
 }
 
-static void _render_tree(SDL_Renderer* r, const GuiWindow* w)
+static void _render_subtree(GuiManager* gm, const GuiObject* o, uint32_t depth)
 {
-    if (w->base.vtbl && w->base.vtbl->render) w->base.vtbl->render(&w->base, r);
-    for (GuiObject* c = w->base.first_child; c; c = c->next_sibling) {
-        const GuiWindow* cw = (const GuiWindow*)c; // if children are windows; otherwise branch by type
-        if (cw->base.vtbl && cw->base.vtbl->render) cw->base.vtbl->render(&cw->base, r);
-        cw->base.vtbl->render_overlay(&cw->base, r); // perhaps not the best idea ?!
+    if (!gm || !o || !o->visible || o->opacity <= 0.0f) return;
+
+    const uint32_t maxd = gm->max_window_depth; // 0 = unlimited
+    if (maxd && depth >= maxd) {
+        SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION,
+                    "GUI: render depth limit reached (id=%u type=%u depth=%u >= max=%u). "
+                    "Children will not be rendered.",
+                    (unsigned)o->id, (unsigned)o->type, (unsigned)depth, (unsigned)maxd);
+        return;
     }
+
+    SDL_Renderer* r = gm->renderer;
+
+    // Clip to this object’s rect (rounded to ints).
+    SDL_Rect prevClip; bool hadPrev = SDL_GetRenderClipRect(r, &prevClip);
+    SDL_Rect clip = {
+        (int)floorf(o->rect.x),
+        (int)floorf(o->rect.y),
+        (int)ceilf (o->rect.w),
+        (int)ceilf (o->rect.h)
+    };
+    // Only set if positive size; otherwise keep previous clip.
+    bool setClip = (clip.w > 0 && clip.h > 0);
+    if (setClip) SDL_SetRenderClipRect(r, &clip);
+
+    // 1) self (background/body)
+    if (o->vtbl && o->vtbl->render) o->vtbl->render(o, r);
+
+    // 2) children
+    for (const GuiObject* c = o->first_child; c; c = c->next_sibling) {
+        _render_subtree(gm, c, depth + 1);
+    }
+
+    // 3) overlay (chrome on top of children)
+    if (o->vtbl && o->vtbl->render_overlay) o->vtbl->render_overlay(o, r);
+
+    // restore parent’s clip
+    if (setClip) SDL_SetRenderClipRect(r, hadPrev ? &prevClip : NULL);
 }
 
 static int _event_tree(GuiWindow* w, const SDL_Event* ev)
