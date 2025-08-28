@@ -7,6 +7,33 @@
 #include "gui_style.h"
 #include "gui_draw.h"
 
+/**
+ * The margin should affect the size of the window
+ * For a window of size 100x100 with a margin of 20 it should print:
+ *        100
+ *         |
+ *    _____v_____
+ *   |20_______20|
+ *   | |       | |
+ *   | |       | |
+ *   | |       | |<-100
+ *   | |_______| |
+ *   |20_________|
+ * 
+ * The padding is internal and DOES not affect the size
+ * Ex: (padding of 5_
+ *        100
+ *         |
+ *    _____v_____
+ *   |20_______20|
+ *   | |5 ___ 5| |
+ *   | | |   | | |
+ *   | | |___| | |<-100
+ *   | |______5| |
+ *   |20_________|
+ * 
+*/
+
 #ifndef TITLE_FONT_SIZE
 #define TITLE_FONT_SIZE 24.0f
 #endif
@@ -34,19 +61,21 @@ static void gw_measure(GuiObject* obj);
 static void gw_arrange(GuiObject* obj, GuiRect rect);
 static bool gw_event(GuiObject* obj, const void* sdl_event);
 static void gw_render(const GuiObject* obj, void* renderer);
+static void gw_render_overlay(const GuiObject* obj, void* renderer);
 
 // a single static vtable instance
 static const GuiVTable GW_VTABLE = {
-    .destroy     = gw_destroy,
-    .set_visible = gw_set_visible,
-    .is_visible  = gw_is_visible,
-    .measure     = gw_measure,
-    .arrange     = gw_arrange,
-    .event       = gw_event,
-    .render      = gw_render,
+    .destroy        = gw_destroy,
+    .set_visible    = gw_set_visible,
+    .is_visible     = gw_is_visible,
+    .measure        = gw_measure,
+    .arrange        = gw_arrange,
+    .event          = gw_event,
+    .render         = gw_render,
+    .render_overlay = gw_render_overlay,
 };
 
-GuiWindow* gui_window_create(const GuiWindowDesc* desc)
+GuiWindow* window_create(const GuiWindowDesc* desc)
 {
     GuiWindow* win = (GuiWindow*)calloc(1, sizeof(GuiWindow));
     if (!win) return NULL;
@@ -57,7 +86,7 @@ GuiWindow* gui_window_create(const GuiWindowDesc* desc)
     win->base.parent       = NULL;
     win->base.first_child  = NULL;
     win->base.next_sibling = NULL;
-    win->base.rect         = (GuiRect){0,0,42,42};
+    win->base.rect         = (GuiRect){0,0,0,0};
     win->base.opacity      = 1.0f;
     win->base.visible      = true;
     win->base.style        = NULL;
@@ -80,11 +109,26 @@ GuiWindow* gui_window_create(const GuiWindowDesc* desc)
     return win;
 }
 
+void * window_set_style(const GuiObject* obj, void *ptr) {
+    const GuiStyle* style= (const GuiStyle*)ptr;
+    GuiStyle* new_style = (GuiStyle*)calloc(1, sizeof(GuiStyle));
+    if (!new_style) return NULL;
+
+    *new_style = *style; // copy object
+    GuiWindow* win = GUI_CAST(GuiWindow, obj);
+    win->base.style = new_style;
+    return new_style;
+}
+
 // ----- vtable impls -----
 
 static void gw_destroy(GuiObject* obj)
 {
+    GuiWindow* win = GUI_CAST(GuiWindow, obj);
     free(obj);
+    if (win && win->base.style)
+        free(win->base.style);
+    // Should destroy all it's children recursively (cascade)
 }
 
 static void gw_set_visible(GuiObject* obj, bool v)
@@ -118,7 +162,7 @@ static bool gw_event(GuiObject* obj, const void* sdl_event)
 // uses gui_draw helpers to paint the button (rounded fill + border), then draws the X glyph
 static void _gw_render_close_btn(SDL_Renderer* r, SDL_FRect *fr, const GuiStyle* style, float opacity) {
     const float dp   = style ? style->dp : 1.0f;
-    const float bw   = style ? style->border_width  : 1.0f;
+    const float bw   = 1.0f;
     const float pad  = (style ? style->padding : 4.0f) * dp;
     const float btn  = 16.0f * dp;
     const float th   = TITLE_FONT_SIZE * dp;
@@ -200,10 +244,9 @@ static void gw_render(const GuiObject* obj, void* renderer)
 {
     if (!obj->visible || obj->opacity <= 0.0f) return;
 
-    SDL_Renderer* r      = (SDL_Renderer*)renderer;
     const GuiWindow* win = GUI_CAST(GuiWindow, obj);
+    SDL_Renderer* r      = (SDL_Renderer*)renderer;
     const GuiStyle* style= (const GuiStyle*)obj->style;
-
     SDL_FRect fr = (SDL_FRect){ obj->rect.x, obj->rect.y, obj->rect.w, obj->rect.h };
 
     _gw_render_body(r, &fr, style, obj->opacity);
@@ -212,6 +255,14 @@ static void gw_render(const GuiObject* obj, void* renderer)
         // TODO: draw title text here
     }
     _gw_render_border(r, &fr, style, obj->opacity);
+}
+
+static void gw_render_overlay(const GuiObject* obj, void* renderer)
+{
+    const GuiWindow* win = GUI_CAST(GuiWindow, obj);
+    SDL_Renderer* r = (SDL_Renderer*)renderer;
+    const GuiStyle* style = (const GuiStyle*)obj->style;
+    SDL_FRect fr = (SDL_FRect){ obj->rect.x, obj->rect.y, obj->rect.w, obj->rect.h };
 
     if (win->flags & GUI_WINDOW_CLOSABLE)
         _gw_render_close_btn(r, &fr, style, obj->opacity);

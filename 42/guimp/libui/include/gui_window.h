@@ -30,11 +30,8 @@ extern const GuiTypeId GUI_TYPE_WINDOW;
 
 // minimal constructor for a lone window
 // caller owns the returned pointer and must call base.vtbl->destroy(&win->base)
-GuiWindow* gui_window_create(const GuiWindowDesc* desc);
-
-// a convenience if you want to change rect later (optional)
-static inline void gui_window_set_rect(GuiWindow* w, GuiRect r) { w->base.vtbl->arrange(&w->base, r); }
-
+GuiWindow* window_create(const GuiWindowDesc* desc);
+void * window_set_style(const GuiObject* obj, void *ptr);
 
 #ifdef __cplusplus
 } // extern "C" {

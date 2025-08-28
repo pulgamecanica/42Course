@@ -20,6 +20,7 @@ typedef struct {
     bool (*event)(GuiObject*, const void* sdl_event);
     // render
     void (*render)(const GuiObject*, void* renderer);
+    void (*render_overlay)(const GuiObject*, void* renderer);
 } GuiVTable;
 
 struct GuiObject {

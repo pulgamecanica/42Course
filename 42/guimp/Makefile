@@ -214,5 +214,9 @@ ffclean: fclean
 # Rebuild from scratch (keeps vendored libs)
 re: fclean all
 
+valgrind:
+	-valgrind --leak-check=summary --show-leak-kinds=definite,indirect,possible --track-origins=yes --verbose --log-file=valgrind-out.txt ./bin/test
+
+
 # Include generated dependency files
 -include $(DEPS)

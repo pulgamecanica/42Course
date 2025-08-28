@@ -1,6 +1,10 @@
 #ifndef GUI_DRAW_H
 #define GUI_DRAW_H
 
+// Shouldn't expose this functions, they should remain private
+// My gui is higher level
+// I don't want to give the ability to use this functions to my clients
+
 #ifdef __cplusplus
 extern "C" {
 #endif
