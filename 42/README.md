@@ -8,7 +8,7 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 ## Table of Contents
 
 1. [Python for Data Science](#python-for-data-science)
-2. [Cloud1](#cloud1)
+2. [cloud-1](#cloud1)
 3. [ft_ls](#ft_ls)
 4. [scop](#scop)
 5. [Zappy](#zappy)
@@ -21,6 +21,10 @@ Welcome to the 42 Projects Repository! Here you'll find a collection of projects
 12. [override](#override)
 13. [inception-of-things](#iot)
 14. [matcha](#matcha)
+15. [camagru](#camagru)
+16. [abstract_data](#abstract_data)
+17. [ft_linear_regression](#ft_linear_regression)
+18. [inception_of_things](#inception_of_things)
 
 ---
 

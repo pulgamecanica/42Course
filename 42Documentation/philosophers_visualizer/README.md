@@ -11,6 +11,21 @@
 
 ---
 
+You can execute your philo like this!
+```bash
+PHILO_ARGS="4 460 200 200 2" ruby -e 'args = ENV["PHILO_ARGS"].to_s.split; exec("./philo", *args)'
+```
+
+And then we can use this oneliner to open directly on the browser using my visualizer:
+
+```bash
+export PHILO_ARGS="8 1260 200 200 10"; \
+\
+xdg-open "http://localhost:4242/?log_gz_b64=$(ruby -e 'args = ENV["PHILO_ARGS"].to_s.split; exec("./philo", *args)' | gzip -c | base64 -w0 | sed -e 's/+/%2B/g; s/\//%2F/g; s/=/%3D/g')" | bash 
+```
+
+---
+
 Welcome to a **cyberpunk-infused, pastel-powered, nerd-approved** visualization of the legendary **Dining Philosophers Problem**. This project takes logs from a philosophers simulation and brings them to life — with motion, style, and lots of 🍴.
 
 ### 🔍 Features

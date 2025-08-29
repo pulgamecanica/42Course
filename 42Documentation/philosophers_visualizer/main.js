@@ -149,6 +149,83 @@ function collapseVisualizerPanel() {
   if (frames && frames.size) backToVisBtn.classList.remove('hidden');
 }
 
+async function tryLoadLogFromURL() {
+  const qs = new URLSearchParams(window.location.search);
+  const hash = new URLSearchParams(window.location.hash.slice(1));
+
+  // Helper decoders
+  const fromBase64 = (b64) => {
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  };
+
+  const maybe = (...keys) => {
+    for (const k of keys) {
+      if (qs.has(k)) return qs.get(k);
+      if (hash.has(k)) return hash.get(k);
+    }
+    return null;
+  };
+
+  // 1) gzip+base64 → requires pako if present (optional)
+  const gzB64 = maybe('log_gz_b64');
+  if (gzB64) {
+    try {
+      if (!window.pako) throw new Error("pako not loaded");
+      const bin = Uint8Array.from(atob(gzB64), c => c.charCodeAt(0));
+      const ungz = window.pako.ungzip(bin);
+      const text = new TextDecoder().decode(ungz);
+      logTextArea.value = text;
+      processLog(text);
+      return true;
+    } catch (e) {
+      console.warn("Failed to decode log_gz_b64:", e);
+      showToast("Failed to decode compressed log in URL");
+    }
+  }
+
+  // 2) base64
+  const b64 = maybe('log_b64');
+  if (b64) {
+    try {
+      const text = fromBase64(b64);
+      logTextArea.value = text;
+      processLog(text);
+      return true;
+    } catch (e) {
+      console.warn("Failed to decode log_b64:", e);
+      showToast("Failed to decode base64 log in URL");
+    }
+  }
+
+  // 3) plain URI-encoded text
+  const raw = maybe('log');
+  if (raw) {
+    try {
+      const text = decodeURIComponent(raw);
+      logTextArea.value = text;
+      processLog(text);
+      return true;
+    } catch {
+      // If it wasn’t encoded, use as-is
+      logTextArea.value = raw;
+      processLog(raw);
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// Ensure this runs before restoreFromLocalStorage replays old data
+window.addEventListener('DOMContentLoaded', async () => {
+  const loaded = await tryLoadLogFromURL();
+  if (!loaded) restoreFromLocalStorage();
+});
+
+
 function getConfig() {
   const die = parseInt(document.getElementById('timeToDie').value);
   const eat = parseInt(document.getElementById('timeToEat').value);
