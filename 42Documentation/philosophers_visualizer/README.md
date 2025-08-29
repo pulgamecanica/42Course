@@ -21,7 +21,7 @@ And then we can use this oneliner to open directly on the browser using my visua
 ```bash
 export PHILO_ARGS="8 1260 200 200 10"; \
 \
-xdg-open "http://localhost:4242/?log_gz_b64=$(ruby -e 'args = ENV["PHILO_ARGS"].to_s.split; exec("./philo", *args)' | gzip -c | base64 -w0 | sed -e 's/+/%2B/g; s/\//%2F/g; s/=/%3D/g')" | bash 
+xdg-open "https://42-course.github.io/philosophers_visualizer/?log_gz_b64=$(ruby -e 'args = ENV["PHILO_ARGS"].to_s.split; exec("./philo", *args)' | gzip -c | base64 -w0 | sed -e 's/+/%2B/g; s/\//%2F/g; s/=/%3D/g')" | bash 
 ```
 
 ---
