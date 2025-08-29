@@ -36,7 +36,7 @@ export function renderVisualizer(philosopherCount, frame, bonusMode) {
 
   const minSpacing = 80;
   const maxRadius = Math.min(centerX, centerY) - 50;
-  const angleStep = (2 * Math.PI) / philosopherCount;
+  const angleStep = (2 * Math.PI) / (philosopherCount - 1);
   const radius = Math.max(Math.min(maxRadius, philosopherCount * minSpacing / (2 * Math.PI)), 100);
   const nodeRadius = Math.max(10, Math.min(30, (radius * Math.PI) / philosopherCount / 2));
 
@@ -51,7 +51,7 @@ export function renderVisualizer(philosopherCount, frame, bonusMode) {
 
   // Determine locked forks
   const lockedForks = new Set();
-  for (let i = 0; i < philosopherCount; i++) {
+  for (let i = 1; i < philosopherCount; i++) {
     if (frame.philosophers[i].action === 'eating') {
       const left = (i - 1 + philosopherCount) % philosopherCount;
       const right = i;
@@ -61,7 +61,7 @@ export function renderVisualizer(philosopherCount, frame, bonusMode) {
   }
 
   // Draw philosophers
-  for (let i = 0; i < philosopherCount; i++) {
+  for (let i = 1; i < philosopherCount; i++) {
     const angle = i * angleStep;
     const x = centerX + radius * Math.cos(angle);
     const y = centerY + radius * Math.sin(angle);
@@ -117,7 +117,7 @@ export function renderVisualizer(philosopherCount, frame, bonusMode) {
     const centerForks = totalForks - takenForks;
     const forkRadius = 30;
 
-    for (let i = 0; i < centerForks; i++) {
+    for (let i = 1; i < centerForks; i++) {
       const angle = (2 * Math.PI / centerForks) * i;
       const fx = centerX + Math.cos(angle) * forkRadius;
       const fy = centerY + Math.sin(angle) * forkRadius;
@@ -153,7 +153,7 @@ export function renderVisualizer(philosopherCount, frame, bonusMode) {
       });
     }
   } else {
-    for (let i = 0; i < philosopherCount; i++) {
+    for (let i = 1; i < philosopherCount; i++) {
       const angle = (i + 0.5) * angleStep;
       const forkRadius = radius - 20;
       const baseX = centerX + forkRadius * Math.cos(angle);

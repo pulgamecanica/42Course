@@ -8,14 +8,14 @@
  */
 export function buildActionSpans(frames, philosopherCount) {
   const result = new Map();
-  for (let i = 0; i < philosopherCount; i++) {
+  for (let i = 1; i < philosopherCount; i++) {
     result.set(i, []);
   }
 
   const sortedTimestamps = [...frames.keys()].sort((a, b) => a - b);
   if (sortedTimestamps.length === 0) return result;
 
-  for (let i = 0; i < philosopherCount; i++) {
+  for (let i = 1; i < philosopherCount; i++) {
     let currentType = null;
     let currentStart = null;
 

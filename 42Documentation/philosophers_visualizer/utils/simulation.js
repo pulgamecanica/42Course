@@ -34,7 +34,7 @@ export function runSimulation(logText, config) {
   const state = {}; // philosopherId -> current state
   const forkCounts = {}; // philosopherId -> forks held
 
-  for (let i = 0; i < philosopherCount; i++) {
+  for (let i = 1; i < philosopherCount; i++) {
     state[i] = { action: 'thinking', forks: 0, alive: true };
     forkCounts[i] = 0;
   }
@@ -52,7 +52,7 @@ export function runSimulation(logText, config) {
         philosophers: {}
       };
 
-      for (let i = 0; i < philosopherCount; i++) {
+      for (let i = 1; i < philosopherCount; i++) {
         newFrame.philosophers[i] = {
           action: prevTime >= 0 ? frames.get(prevTime).philosophers[i].action : 'thinking',
           forks: prevTime >= 0 ? frames.get(prevTime).philosophers[i].forks : 0,
