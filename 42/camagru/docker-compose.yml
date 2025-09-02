@@ -1,0 +1,32 @@
+services:
+  web:
+    build: .
+    ports:
+      - "9292:9292"
+    env_file: .env
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    restart: on-failure
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: camagru
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: camagru_db
+    ports:
+      - "5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  pgdata:
