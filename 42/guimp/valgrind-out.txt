@@ -1,243 +1,245 @@
-==278463== Memcheck, a memory error detector
-==278463== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==278463== Using Valgrind-3.22.0-bd4db67b1d-20231031 and LibVEX; rerun with -h for copyright info
-==278463== Command: ./bin/test
-==278463== Parent PID: 278458
-==278463== 
---278463-- 
---278463-- Valgrind options:
---278463--    --leak-check=summary
---278463--    --show-leak-kinds=definite,indirect,possible
---278463--    --track-origins=yes
---278463--    --verbose
---278463--    --log-file=valgrind-out.txt
---278463-- Contents of /proc/version:
---278463--   Linux version 6.14.0-28-generic (buildd@lcy02-amd64-079) (x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #28~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 25 10:47:01 UTC 2
---278463-- 
---278463-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
---278463-- Page sizes: currently 4096, max supported 4096
---278463-- Valgrind library directory: /usr/libexec/valgrind
---278463-- Reading syms from /home/pulgamecanica/42Course/42/guimp/bin/test
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
---278463--   Considering /usr/lib/debug/.build-id/28/1ac1521b4102509b1c7ac7004db7c1efb81796.debug ..
---278463--   .. build-id is valid
---278463-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
---278463--    object doesn't have a dynamic symbol table
---278463-- Scheduler: using generic scheduler lock implementation.
---278463-- Reading suppressions file: /usr/libexec/valgrind/default.supp
-==278463== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-278463-by-pulgamecanica-on-???
-==278463== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-278463-by-pulgamecanica-on-???
-==278463== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-278463-by-pulgamecanica-on-???
-==278463== 
-==278463== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==278463== don't want to do, unless you know exactly what you're doing,
-==278463== or are doing some strange experiment):
-==278463==   /usr/bin/vgdb --pid=278463 ...command...
-==278463== 
-==278463== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==278463==   /path/to/gdb ./bin/test
-==278463== and then give GDB the following command
-==278463==   target remote | /usr/bin/vgdb --pid=278463
-==278463== --pid is optional if only one valgrind process is running
-==278463== 
---278463-- REDIR: 0x4028b00 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c2e1a (???)
---278463-- REDIR: 0x40272b0 (ld-linux-x86-64.so.2:index) redirected to 0x580c2e34 (???)
---278463-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
---278463-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
-==278463== WARNING: new redirection conflicts with existing -- ignoring it
---278463--     old: 0x04028b00 (strlen              ) R-> (0000.0) 0x580c2e1a ???
---278463--     new: 0x04028b00 (strlen              ) R-> (2007.0) 0x0484f340 strlen
---278463-- REDIR: 0x40274e0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4850460 (strcmp)
---278463-- REDIR: 0x4026910 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853cd0 (mempcpy)
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
---278463-- Reading syms from /home/pulgamecanica/42Course/42/guimp/dist/SDL3/lib/libSDL3.so.0.3.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
---278463--   Considering /usr/lib/debug/.build-id/28/2c2c16e7b6600b0b22ea0c99010d2795752b5f.debug ..
---278463--   .. build-id is valid
---278463-- REDIR: 0x4028ca0 (ld-linux-x86-64.so.2:strncmp) redirected to 0x484fc90 (strncmp)
---278463-- REDIR: 0x4cf4050 (libc.so.6:strnlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf40e0 (libc.so.6:strpbrk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf21a0 (libc.so.6:strcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4d0b3b0 (libc.so.6:wcsnlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf1290 (libc.so.6:memset) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4d0ab20 (libc.so.6:wcslen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4d763c0 (libc.so.6:__memcpy_chk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf1200 (libc.so.6:memrchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4d0b350 (libc.so.6:wcsncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf0720 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4d098e0 (libc.so.6:wcschr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf2090 (libc.so.6:index) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf4110 (libc.so.6:rindex) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4d09990 (libc.so.6:wcscmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf14b0 (libc.so.6:stpncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4d17eb0 (libc.so.6:wmemchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf3ef0 (libc.so.6:strncmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf1510 (libc.so.6:strcasecmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf3310 (libc.so.6:strcspn) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4d0a8f0 (libc.so.6:wcscpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf2020 (libc.so.6:strcat) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf3df0 (libc.so.6:strncasecmp_l) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf2110 (libc.so.6:strchrnul) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf0630 (libc.so.6:bcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf32a0 (libc.so.6:strcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf15b0 (libc.so.6:strcasecmp_l) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf3cc0 (libc.so.6:strlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf3f90 (libc.so.6:strncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4d17f30 (libc.so.6:wmemcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4d764e0 (libc.so.6:__memmove_chk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
-==278463== WARNING: new redirection conflicts with existing -- ignoring it
---278463--     old: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
---278463--     new: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
---278463-- REDIR: 0x4cf1440 (libc.so.6:stpcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf0fc0 (libc.so.6:memmove) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
-==278463== Preferring higher priority redirection:
---278463--     old: 0x04dc7a00 (__memcpy_avx_unalign) R-> (2018.0) 0x04851580 __memcpy_avx_unaligned_erms
---278463--     new: 0x04dc7a00 (__memcpy_avx_unalign) R-> (2018.1) 0x04852d60 memmove
---278463-- REDIR: 0x4cf05b0 (libc.so.6:memchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf42e0 (libc.so.6:strspn) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf10e0 (libc.so.6:mempcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4cf3d50 (libc.so.6:strncasecmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
---278463-- REDIR: 0x4dcc5f0 (libc.so.6:__strrchr_avx2) redirected to 0x484ed20 (rindex)
---278463-- REDIR: 0x4dca740 (libc.so.6:__strlen_avx2) redirected to 0x484f220 (strlen)
---278463-- REDIR: 0x4dcb820 (libc.so.6:__strncmp_avx2) redirected to 0x484fab0 (strncmp)
---278463-- REDIR: 0x4dc9f90 (libc.so.6:__strcmp_avx2) redirected to 0x4850360 (strcmp)
---278463-- REDIR: 0x4ced7a0 (libc.so.6:calloc) redirected to 0x484d8a0 (calloc)
---278463-- REDIR: 0x4cec650 (libc.so.6:malloc) redirected to 0x48467b0 (malloc)
---278463-- REDIR: 0x4dc7a00 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4852d60 (memmove)
---278463-- REDIR: 0x4dc9b60 (libc.so.6:__strchr_avx2) redirected to 0x484ef00 (index)
---278463-- REDIR: 0x4cecd30 (libc.so.6:free) redirected to 0x4849820 (free)
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libdbus-1.so.3.32.4
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libsystemd.so.0.38.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libcap.so.2.66
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcrypt.so.20.4.3
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/liblz4.so.1.9.4
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libzstd.so.1.5.5
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libgpg-error.so.0.34.0
---278463-- REDIR: 0x4cf4ba0 (libc.so.6:strstr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
-==278463== WARNING: new redirection conflicts with existing -- ignoring it
---278463--     old: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
---278463--     new: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
---278463-- REDIR: 0x4dc79d0 (libc.so.6:__memcpy_chk_avx_unaligned_erms) redirected to 0x4853dd0 (__memcpy_chk)
---278463-- REDIR: 0x4ced0a0 (libc.so.6:realloc) redirected to 0x484db00 (realloc)
---278463-- REDIR: 0x4dcbe80 (libc.so.6:__strncpy_avx2) redirected to 0x484f4f0 (strncpy)
---278463-- REDIR: 0x4dc9da0 (libc.so.6:__strchrnul_avx2) redirected to 0x48537b0 (strchrnul)
---278463-- REDIR: 0x4dc8400 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4852c50 (memset)
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libwayland-client.so.0.22.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libwayland-egl.so.1.22.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0.22.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libdecor-0.so.0.200.2
---278463-- REDIR: 0x4dc86b0 (libc.so.6:__stpcpy_avx2) redirected to 0x48525a0 (stpcpy)
---278463-- REDIR: 0x4dc79c0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x48538d0 (mempcpy)
---278463-- Discarding syms at 0x5627080-0x5627249 in /usr/lib/x86_64-linux-gnu/libwayland-egl.so.1.22.0 (have_dinfo 1)
---278463-- Discarding syms at 0x562d4a0-0x562ed8b in /usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0.22.0 (have_dinfo 1)
---278463-- Discarding syms at 0x563a5a0-0x5659672 in /usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0 (have_dinfo 1)
---278463-- Discarding syms at 0x56824c0-0x5684943 in /usr/lib/x86_64-linux-gnu/libdecor-0.so.0.200.2 (have_dinfo 1)
---278463-- Discarding syms at 0x560f580-0x5614b84 in /usr/lib/x86_64-linux-gnu/libwayland-client.so.0.22.0 (have_dinfo 1)
---278463-- Discarding syms at 0x561c460-0x562207a in /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4 (have_dinfo 1)
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libbsd.so.0.12.1
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libmd.so.0.1.0
-==278463== WARNING: new redirection conflicts with existing -- ignoring it
---278463--     old: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
---278463--     new: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libXcursor.so.1.0.2
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libXrender.so.1.3.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libXfixes.so.3.1.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libXi.so.6.1.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libXrandr.so.2.2.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libXss.so.1.0.0
---278463-- REDIR: 0x4d76f90 (libc.so.6:__strcpy_chk) redirected to 0x4853830 (__strcpy_chk)
---278463-- REDIR: 0x4dc72a0 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4852480 (bcmp)
---278463-- REDIR: 0x4d06e10 (libc.so.6:__strstr_sse2_unaligned) redirected to 0x4853e40 (strstr)
---278463-- REDIR: 0x4dc7000 (libc.so.6:__memchr_avx2) redirected to 0x48504e0 (memchr)
---278463-- REDIR: 0x4dca4f0 (libc.so.6:__strcpy_avx2) redirected to 0x484f370 (strcpy)
---278463-- REDIR: 0x4dcc320 (libc.so.6:__strnlen_avx2) redirected to 0x484f1c0 (strnlen)
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libGL.so.1.7.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0
---278463-- REDIR: 0x4de9c10 (libc.so.6:__strspn_sse42) redirected to 0x4854110 (strspn)
---278463-- REDIR: 0x4de6f70 (libc.so.6:__strcspn_sse42) redirected to 0x4854010 (strcspn)
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libgallium-25.0.7-0ubuntu0.24.04.1.so
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libdrm.so.2.4.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-glx.so.0.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11-xcb.so.1.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libXxf86vm.so.1.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-shm.so.0.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-dri3.so.0.1.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-present.so.0.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-xfixes.so.0.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libLLVM.so.19.1
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libz.so.1.3
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libsensors.so.5.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-randr.so.0.1.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-sync.so.1.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxshmfence.so.1.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libelf-0.190.so
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so.1.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libdrm_intel.so.1.0.0
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
---278463-- REDIR: 0x4026bf0 (ld-linux-x86-64.so.2:stpcpy) redirected to 0x4852960 (stpcpy)
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libedit.so.2.0.72
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.14
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libpciaccess.so.0.11.1
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libicuuc.so.74.2
---278463-- Reading syms from /usr/lib/x86_64-linux-gnu/libicudata.so.74.2
-==278463== WARNING: new redirection conflicts with existing -- ignoring it
---278463--     old: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
---278463--     new: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
---278463-- REDIR: 0x4cf3e90 (libc.so.6:strncat) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
-==278463== WARNING: new redirection conflicts with existing -- ignoring it
---278463--     old: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
---278463--     new: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
---278463-- REDIR: 0x108c8980 (libstdc++.so.6:operator new(unsigned long, std::align_val_t)) redirected to 0x4847500 (operator new(unsigned long, std::align_val_t))
---278463-- REDIR: 0x108c88e0 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4846f30 (operator new(unsigned long))
---278463-- REDIR: 0x108c68b0 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x484a530 (operator delete(void*, unsigned long))
---278463-- REDIR: 0x108c8aa0 (libstdc++.so.6:operator delete(void*, unsigned long, std::align_val_t)) redirected to 0x484aeb0 (operator delete(void*, unsigned long, std::align_val_t))
---278463-- memcheck GC: 1000 nodes, 231 survivors (23.1%)
---278463-- memcheck GC: 1014 new table size (driftup)
---278463-- REDIR: 0x4cee430 (libc.so.6:posix_memalign) redirected to 0x484e260 (posix_memalign)
---278463-- WARNING: Serious error when reading debug info
---278463-- When reading debug info from /memfd:xshmfence (deleted):
---278463-- failed to stat64/stat this file
---278463-- WARNING: Serious error when reading debug info
---278463-- When reading debug info from /memfd:xshmfence (deleted):
---278463-- failed to stat64/stat this file
---278463-- REDIR: 0x108c8950 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x4848550 (operator new[](unsigned long))
---278463-- REDIR: 0x108c68d0 (libstdc++.so.6:operator delete[](void*)) redirected to 0x484bec0 (operator delete[](void*))
---278463-- REDIR: 0x108c68e0 (libstdc++.so.6:operator delete[](void*, unsigned long)) redirected to 0x484c370 (operator delete[](void*, unsigned long))
---278463-- Discarding syms at 0x57b9660-0x57be5ec in /usr/lib/x86_64-linux-gnu/libXcursor.so.1.0.2 (have_dinfo 1)
---278463-- Discarding syms at 0x57da4a0-0x57e5b99 in /usr/lib/x86_64-linux-gnu/libXi.so.6.1.0 (have_dinfo 1)
---278463-- Discarding syms at 0x57d1300-0x57d3a4a in /usr/lib/x86_64-linux-gnu/libXfixes.so.3.1.0 (have_dinfo 1)
---278463-- Discarding syms at 0x57ec3a0-0x57f2ee9 in /usr/lib/x86_64-linux-gnu/libXrandr.so.2.2.0 (have_dinfo 1)
---278463-- Discarding syms at 0x57c5440-0x57cb787 in /usr/lib/x86_64-linux-gnu/libXrender.so.1.3.0 (have_dinfo 1)
---278463-- Discarding syms at 0x57f8240-0x57f8fbb in /usr/lib/x86_64-linux-gnu/libXss.so.1.0.0 (have_dinfo 1)
---278463-- REDIR: 0x108c68a0 (libstdc++.so.6:operator delete(void*)) redirected to 0x484a080 (operator delete(void*))
-==278463== 
-==278463== HEAP SUMMARY:
-==278463==     in use at exit: 368,568 bytes in 3,635 blocks
-==278463==   total heap usage: 126,337 allocs, 122,702 frees, 26,036,519 bytes allocated
-==278463== 
-==278463== Searching for pointers to 3,635 not-freed blocks
-==278463== Checked 3,759,392 bytes
-==278463== 
-==278463== LEAK SUMMARY:
-==278463==    definitely lost: 0 bytes in 0 blocks
-==278463==    indirectly lost: 0 bytes in 0 blocks
-==278463==      possibly lost: 0 bytes in 0 blocks
-==278463==    still reachable: 368,568 bytes in 3,635 blocks
-==278463==         suppressed: 0 bytes in 0 blocks
-==278463== Rerun with --leak-check=full to see details of leaked memory
-==278463== 
-==278463== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==18002== Memcheck, a memory error detector
+==18002== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==18002== Using Valgrind-3.22.0-bd4db67b1d-20231031 and LibVEX; rerun with -h for copyright info
+==18002== Command: ./bin/test
+==18002== Parent PID: 17999
+==18002== 
+--18002-- 
+--18002-- Valgrind options:
+--18002--    --leak-check=summary
+--18002--    --show-leak-kinds=definite,indirect,possible
+--18002--    --track-origins=yes
+--18002--    --verbose
+--18002--    --log-file=valgrind-out.txt
+--18002-- Contents of /proc/version:
+--18002--   Linux version 6.14.0-29-generic (buildd@lcy02-amd64-105) (x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #29~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Aug 14 16:52:50 UTC 2
+--18002-- 
+--18002-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--18002-- Page sizes: currently 4096, max supported 4096
+--18002-- Valgrind library directory: /usr/libexec/valgrind
+--18002-- Reading syms from /home/pulgamecanica/42Course/42/guimp/bin/test
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--18002--   Considering /usr/lib/debug/.build-id/28/1ac1521b4102509b1c7ac7004db7c1efb81796.debug ..
+--18002--   .. build-id is valid
+--18002-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--18002--    object doesn't have a dynamic symbol table
+--18002-- Scheduler: using generic scheduler lock implementation.
+--18002-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==18002== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-18002-by-pulgamecanica-on-???
+==18002== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-18002-by-pulgamecanica-on-???
+==18002== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-18002-by-pulgamecanica-on-???
+==18002== 
+==18002== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==18002== don't want to do, unless you know exactly what you're doing,
+==18002== or are doing some strange experiment):
+==18002==   /usr/bin/vgdb --pid=18002 ...command...
+==18002== 
+==18002== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==18002==   /path/to/gdb ./bin/test
+==18002== and then give GDB the following command
+==18002==   target remote | /usr/bin/vgdb --pid=18002
+==18002== --pid is optional if only one valgrind process is running
+==18002== 
+--18002-- REDIR: 0x4028b00 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c2e1a (???)
+--18002-- REDIR: 0x40272b0 (ld-linux-x86-64.so.2:index) redirected to 0x580c2e34 (???)
+--18002-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--18002-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+==18002== WARNING: new redirection conflicts with existing -- ignoring it
+--18002--     old: 0x04028b00 (strlen              ) R-> (0000.0) 0x580c2e1a ???
+--18002--     new: 0x04028b00 (strlen              ) R-> (2007.0) 0x0484f340 strlen
+--18002-- REDIR: 0x40274e0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4850460 (strcmp)
+--18002-- REDIR: 0x4026910 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853cd0 (mempcpy)
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--18002-- Reading syms from /home/pulgamecanica/42Course/42/guimp/dist/SDL3/lib/libSDL3.so.0.3.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--18002--   Considering /usr/lib/debug/.build-id/28/2c2c16e7b6600b0b22ea0c99010d2795752b5f.debug ..
+--18002--   .. build-id is valid
+--18002-- REDIR: 0x4028ca0 (ld-linux-x86-64.so.2:strncmp) redirected to 0x484fc90 (strncmp)
+--18002-- REDIR: 0x4cf4050 (libc.so.6:strnlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf40e0 (libc.so.6:strpbrk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf21a0 (libc.so.6:strcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4d0b3b0 (libc.so.6:wcsnlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf1290 (libc.so.6:memset) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4d0ab20 (libc.so.6:wcslen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4d763c0 (libc.so.6:__memcpy_chk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf1200 (libc.so.6:memrchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4d0b350 (libc.so.6:wcsncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf0720 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4d098e0 (libc.so.6:wcschr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf2090 (libc.so.6:index) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf4110 (libc.so.6:rindex) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4d09990 (libc.so.6:wcscmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf14b0 (libc.so.6:stpncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4d17eb0 (libc.so.6:wmemchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf3ef0 (libc.so.6:strncmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf1510 (libc.so.6:strcasecmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf3310 (libc.so.6:strcspn) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4d0a8f0 (libc.so.6:wcscpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf2020 (libc.so.6:strcat) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf3df0 (libc.so.6:strncasecmp_l) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf2110 (libc.so.6:strchrnul) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf0630 (libc.so.6:bcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf32a0 (libc.so.6:strcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf15b0 (libc.so.6:strcasecmp_l) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf3cc0 (libc.so.6:strlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf3f90 (libc.so.6:strncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4d17f30 (libc.so.6:wmemcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4d764e0 (libc.so.6:__memmove_chk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+==18002== WARNING: new redirection conflicts with existing -- ignoring it
+--18002--     old: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
+--18002--     new: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
+--18002-- REDIR: 0x4cf1440 (libc.so.6:stpcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf0fc0 (libc.so.6:memmove) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+==18002== Preferring higher priority redirection:
+--18002--     old: 0x04dc7a00 (__memcpy_avx_unalign) R-> (2018.0) 0x04851580 __memcpy_avx_unaligned_erms
+--18002--     new: 0x04dc7a00 (__memcpy_avx_unalign) R-> (2018.1) 0x04852d60 memmove
+--18002-- REDIR: 0x4cf05b0 (libc.so.6:memchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf42e0 (libc.so.6:strspn) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf10e0 (libc.so.6:mempcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4cf3d50 (libc.so.6:strncasecmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--18002-- REDIR: 0x4dcc5f0 (libc.so.6:__strrchr_avx2) redirected to 0x484ed20 (rindex)
+--18002-- REDIR: 0x4dca740 (libc.so.6:__strlen_avx2) redirected to 0x484f220 (strlen)
+--18002-- REDIR: 0x4dcb820 (libc.so.6:__strncmp_avx2) redirected to 0x484fab0 (strncmp)
+--18002-- REDIR: 0x4dc9f90 (libc.so.6:__strcmp_avx2) redirected to 0x4850360 (strcmp)
+--18002-- REDIR: 0x4ced7a0 (libc.so.6:calloc) redirected to 0x484d8a0 (calloc)
+--18002-- REDIR: 0x4cec650 (libc.so.6:malloc) redirected to 0x48467b0 (malloc)
+--18002-- REDIR: 0x4dc7a00 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4852d60 (memmove)
+--18002-- REDIR: 0x4dc9b60 (libc.so.6:__strchr_avx2) redirected to 0x484ef00 (index)
+--18002-- REDIR: 0x4cecd30 (libc.so.6:free) redirected to 0x4849820 (free)
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libdbus-1.so.3.32.4
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libsystemd.so.0.38.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libcap.so.2.66
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcrypt.so.20.4.3
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/liblz4.so.1.9.4
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/liblzma.so.5.4.5
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libzstd.so.1.5.5
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libgpg-error.so.0.34.0
+--18002-- REDIR: 0x4cf4ba0 (libc.so.6:strstr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+==18002== WARNING: new redirection conflicts with existing -- ignoring it
+--18002--     old: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
+--18002--     new: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
+--18002-- REDIR: 0x4dc79d0 (libc.so.6:__memcpy_chk_avx_unaligned_erms) redirected to 0x4853dd0 (__memcpy_chk)
+--18002-- REDIR: 0x4ced0a0 (libc.so.6:realloc) redirected to 0x484db00 (realloc)
+--18002-- REDIR: 0x4dcbe80 (libc.so.6:__strncpy_avx2) redirected to 0x484f4f0 (strncpy)
+--18002-- REDIR: 0x4dc9da0 (libc.so.6:__strchrnul_avx2) redirected to 0x48537b0 (strchrnul)
+--18002-- REDIR: 0x4dc8400 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4852c50 (memset)
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libwayland-client.so.0.22.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libwayland-egl.so.1.22.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0.22.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libdecor-0.so.0.200.2
+--18002-- REDIR: 0x4dc86b0 (libc.so.6:__stpcpy_avx2) redirected to 0x48525a0 (stpcpy)
+--18002-- REDIR: 0x4dc79c0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x48538d0 (mempcpy)
+--18002-- Discarding syms at 0x5627080-0x5627249 in /usr/lib/x86_64-linux-gnu/libwayland-egl.so.1.22.0 (have_dinfo 1)
+--18002-- Discarding syms at 0x562d4a0-0x562ed8b in /usr/lib/x86_64-linux-gnu/libwayland-cursor.so.0.22.0 (have_dinfo 1)
+--18002-- Discarding syms at 0x563a5a0-0x5659672 in /usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0 (have_dinfo 1)
+--18002-- Discarding syms at 0x56824c0-0x5684943 in /usr/lib/x86_64-linux-gnu/libdecor-0.so.0.200.2 (have_dinfo 1)
+--18002-- Discarding syms at 0x560f580-0x5614b84 in /usr/lib/x86_64-linux-gnu/libwayland-client.so.0.22.0 (have_dinfo 1)
+--18002-- Discarding syms at 0x561c460-0x562207a in /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4 (have_dinfo 1)
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libXau.so.6.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libXdmcp.so.6.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libbsd.so.0.12.1
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libmd.so.0.1.0
+==18002== WARNING: new redirection conflicts with existing -- ignoring it
+--18002--     old: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
+--18002--     new: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libXext.so.6.4.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libXcursor.so.1.0.2
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libXrender.so.1.3.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libXfixes.so.3.1.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libXi.so.6.1.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libXrandr.so.2.2.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libXss.so.1.0.0
+--18002-- REDIR: 0x4d76f90 (libc.so.6:__strcpy_chk) redirected to 0x4853830 (__strcpy_chk)
+--18002-- REDIR: 0x4dc72a0 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4852480 (bcmp)
+--18002-- REDIR: 0x4d06e10 (libc.so.6:__strstr_sse2_unaligned) redirected to 0x4853e40 (strstr)
+--18002-- REDIR: 0x4dc7000 (libc.so.6:__memchr_avx2) redirected to 0x48504e0 (memchr)
+--18002-- REDIR: 0x4dca4f0 (libc.so.6:__strcpy_avx2) redirected to 0x484f370 (strcpy)
+--18002-- REDIR: 0x4dcc320 (libc.so.6:__strnlen_avx2) redirected to 0x484f1c0 (strnlen)
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libGL.so.1.7.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libGLdispatch.so.0.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libGLX.so.0.0.0
+--18002-- REDIR: 0x4de9c10 (libc.so.6:__strspn_sse42) redirected to 0x4854110 (strspn)
+--18002-- REDIR: 0x4de6f70 (libc.so.6:__strcspn_sse42) redirected to 0x4854010 (strcspn)
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libGLX_mesa.so.0.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libgallium-25.0.7-0ubuntu0.24.04.1.so
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libdrm.so.2.4.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-glx.so.0.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libX11-xcb.so.1.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libXxf86vm.so.1.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-shm.so.0.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libexpat.so.1.9.1
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-dri3.so.0.1.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-present.so.0.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-xfixes.so.0.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libLLVM.so.19.1
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libz.so.1.3
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libsensors.so.5.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-randr.so.0.1.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxcb-sync.so.1.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxshmfence.so.1.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libelf-0.190.so
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libdrm_amdgpu.so.1.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libdrm_intel.so.1.0.0
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+--18002-- REDIR: 0x4026bf0 (ld-linux-x86-64.so.2:stpcpy) redirected to 0x4852960 (stpcpy)
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libffi.so.8.1.4
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libedit.so.2.0.72
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.14
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libpciaccess.so.0.11.1
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libicuuc.so.74.2
+--18002-- Reading syms from /usr/lib/x86_64-linux-gnu/libicudata.so.74.2
+==18002== WARNING: new redirection conflicts with existing -- ignoring it
+--18002--     old: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
+--18002--     new: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
+--18002-- REDIR: 0x4cf3e90 (libc.so.6:strncat) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+==18002== WARNING: new redirection conflicts with existing -- ignoring it
+--18002--     old: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
+--18002--     new: 0x04dc79d0 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
+--18002-- REDIR: 0x108c8980 (libstdc++.so.6:operator new(unsigned long, std::align_val_t)) redirected to 0x4847500 (operator new(unsigned long, std::align_val_t))
+--18002-- REDIR: 0x108c88e0 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4846f30 (operator new(unsigned long))
+--18002-- REDIR: 0x108c68b0 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x484a530 (operator delete(void*, unsigned long))
+--18002-- REDIR: 0x108c8aa0 (libstdc++.so.6:operator delete(void*, unsigned long, std::align_val_t)) redirected to 0x484aeb0 (operator delete(void*, unsigned long, std::align_val_t))
+--18002-- memcheck GC: 1000 nodes, 231 survivors (23.1%)
+--18002-- memcheck GC: 1014 new table size (driftup)
+--18002-- REDIR: 0x4cee430 (libc.so.6:posix_memalign) redirected to 0x484e260 (posix_memalign)
+--18002-- WARNING: Serious error when reading debug info
+--18002-- When reading debug info from /memfd:xshmfence (deleted):
+--18002-- failed to stat64/stat this file
+--18002-- WARNING: Serious error when reading debug info
+--18002-- When reading debug info from /memfd:xshmfence (deleted):
+--18002-- failed to stat64/stat this file
+--18002-- REDIR: 0x108c8950 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x4848550 (operator new[](unsigned long))
+--18002-- REDIR: 0x108c68d0 (libstdc++.so.6:operator delete[](void*)) redirected to 0x484bec0 (operator delete[](void*))
+--18002-- REDIR: 0x108c68e0 (libstdc++.so.6:operator delete[](void*, unsigned long)) redirected to 0x484c370 (operator delete[](void*, unsigned long))
+--18002-- memcheck GC: 1014 nodes, 209 survivors (20.6%)
+--18002-- memcheck GC: 1029 new table size (driftup)
+--18002-- Discarding syms at 0x57b9660-0x57be5ec in /usr/lib/x86_64-linux-gnu/libXcursor.so.1.0.2 (have_dinfo 1)
+--18002-- Discarding syms at 0x57da4a0-0x57e5b99 in /usr/lib/x86_64-linux-gnu/libXi.so.6.1.0 (have_dinfo 1)
+--18002-- Discarding syms at 0x57d1300-0x57d3a4a in /usr/lib/x86_64-linux-gnu/libXfixes.so.3.1.0 (have_dinfo 1)
+--18002-- Discarding syms at 0x57ec3a0-0x57f2ee9 in /usr/lib/x86_64-linux-gnu/libXrandr.so.2.2.0 (have_dinfo 1)
+--18002-- Discarding syms at 0x57c5440-0x57cb787 in /usr/lib/x86_64-linux-gnu/libXrender.so.1.3.0 (have_dinfo 1)
+--18002-- Discarding syms at 0x57f8240-0x57f8fbb in /usr/lib/x86_64-linux-gnu/libXss.so.1.0.0 (have_dinfo 1)
+--18002-- REDIR: 0x108c68a0 (libstdc++.so.6:operator delete(void*)) redirected to 0x484a080 (operator delete(void*))
+==18002== 
+==18002== HEAP SUMMARY:
+==18002==     in use at exit: 377,144 bytes in 3,699 blocks
+==18002==   total heap usage: 146,186 allocs, 142,487 frees, 31,738,036 bytes allocated
+==18002== 
+==18002== Searching for pointers to 3,699 not-freed blocks
+==18002== Checked 3,767,624 bytes
+==18002== 
+==18002== LEAK SUMMARY:
+==18002==    definitely lost: 0 bytes in 0 blocks
+==18002==    indirectly lost: 0 bytes in 0 blocks
+==18002==      possibly lost: 0 bytes in 0 blocks
+==18002==    still reachable: 377,144 bytes in 3,699 blocks
+==18002==         suppressed: 0 bytes in 0 blocks
+==18002== Rerun with --leak-check=full to see details of leaked memory
+==18002== 
+==18002== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

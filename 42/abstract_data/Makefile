@@ -51,7 +51,8 @@ test: all
 
 benchmark: $(BIN_BENCH)
 	@echo "\n--- Running Benchmark ---"
-	./$(BIN_BENCH)
+	-./$(BIN_BENCH) 
+	@echo "\n--- Finished Running Benchmark ---"
 
 venv:
 	@echo "Creating Python virtual environment..."

@@ -246,13 +246,13 @@ valgrind-%:
 	@echo "[MAKEFILE] Ex: export $(NAME)_ARGS=\"-a --recursive ..\""
 
 clean:
-	$(RM) $(OBJ_D)
-	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-	@printf "$(C_RED)Cleaning objs$(C_END)\n"
+	-$(RM) $(OBJ_D)
+	-@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
+	-@printf "$(C_RED)Cleaning objs$(C_END)\n"
 
 fclean:     clean
-	$(RM) $(NAME) *valgrind-out.txt doc/xml test_*
-	@printf "$(C_RED)Deleted Everything$(C_END)\n"
+	-$(RM) $(NAME) *valgrind-out.txt doc/xml test_*
+	-@printf "$(C_RED)Deleted Everything$(C_END)\n"
 
 re: fclean all
 

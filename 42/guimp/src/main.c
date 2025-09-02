@@ -60,37 +60,37 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
     GuiWindow* brushes  = gui_window_create(gm, tools, "Brushes", NULL, NULL);
     GuiWindow* layers  = gui_window_create(gm, tools, "Layers", NULL, NULL);
     GuiWindow* palette  = gui_window_create(gm, tools, "Palette", NULL, NULL);
-    // for (int i = 0; i < 6; ++i) {
-    //     GuiWindow* tmp1 = gui_window_create(gm, NULL, "Root", NULL);
-    //     GuiWindow* tmp2 = gui_window_create(gm, tmp1, "[Root].child 1", NULL);
-    //     GuiWindow* tmp3 = gui_window_create(gm, tmp1, NULL, NULL);
-    //     GuiWindow* tmp4 = gui_window_create(gm, tmp1, "[Root].child 3", NULL);
-    //     GuiWindow* tmp5 = gui_window_create(gm, tmp1, "[Root].child 4", NULL);
-    //     GuiWindow* tmp6 = gui_window_create(gm, tmp2, NULL, NULL);
-    //     GuiWindow* tmp7 = gui_window_create(gm, tmp5, "[child 4]child 2", NULL);
-    //     tmp1->flags = tmp1->flags | GUI_WINDOW_CLOSABLE;
-    //     tmp6->flags = tmp6->flags | GUI_WINDOW_CLOSABLE;
-    //     // { // Style tmp1
-    //     //     GuiStyle* style = (GuiStyle*)tmp1->base.style;
-    //     //     style->win_bg = (GuiColor){ 0.9f, 0.2f, 0.4f, 1.0f };
-    //     //     style->margin = 5.0f;
-    //     // }
-    //     { // Style tmp4
-    //     tmp4->flags = tmp4->flags | GUI_WINDOW_CLOSABLE | GUI_WINDOW_RESIZABLE;
-    //     }
-    //     { // Style tmp2
-    //         GuiStyle* style = (GuiStyle*)tmp2->base.style;
-    //         style->border_width = 3.0f;
-    //         style->border_radius = 15.0f;
-    //         style->margin = 5.0f;
-    //     }
-    //     // gui_window_destroy(gm, tmp5);
-    // }
-
-    // GuiWindow* tools = gui_window_create(gm, root, "Tools", NULL);
-    // GuiWindow* tools2 = gui_window_create(gm, root, "Tools", NULL);
-    // GuiWindow* tools3 = gui_window_create(gm, root, "Tools", NULL);
-    // GuiWindow* tools4 = gui_window_create(gm, root, "Tools", NULL);
+    for (int i = 0; i < 6; ++i) {
+        GuiWindow* tmp1 = gui_window_create(gm, NULL, "Root", NULL, NULL);
+        GuiWindow* tmp2 = gui_window_create(gm, tmp1, "[Root].child 1", NULL, NULL);
+        GuiWindow* tmp3 = gui_window_create(gm, tmp1, NULL, NULL, NULL);
+        GuiWindow* tmp4 = gui_window_create(gm, tmp1, "[Root].child 3", NULL, NULL);
+        GuiWindow* tmp5 = gui_window_create(gm, tmp1, "[Root].child 4", NULL, NULL);
+        GuiWindow* tmp6 = gui_window_create(gm, tmp2, NULL, NULL, NULL);
+        GuiWindow* tmp7 = gui_window_create(gm, tmp5, "[child 4]child 2", NULL, NULL);
+        tmp1->flags = tmp1->flags | GUI_WINDOW_CLOSABLE;
+        tmp6->flags = tmp6->flags | GUI_WINDOW_CLOSABLE;
+        // { // Style tmp1
+        //     GuiStyle* style = (GuiStyle*)tmp1->base.style;
+        //     style->win_bg = (GuiColor){ 0.9f, 0.2f, 0.4f, 1.0f };
+        //     style->margin = 5.0f;
+        // }
+        { // Style tmp4
+        tmp4->flags = tmp4->flags | GUI_WINDOW_CLOSABLE | GUI_WINDOW_RESIZABLE;
+        }
+        { // Style tmp2
+            GuiStyle* style = (GuiStyle*)tmp2->base.style;
+            style->border_width = 3.0f;
+            style->border_radius = 15.0f;
+            style->margin = 5.0f;
+        }
+        // gui_window_destroy(gm, tmp5);
+    }
+    
+    // GuiWindow* tools = gui_window_create(gm, root, "Tools", NULL, NULL);
+    // GuiWindow* tools2 = gui_window_create(gm, root, "Tools", NULL, NULL);
+    // GuiWindow* tools3 = gui_window_create(gm, root, "Tools", NULL, NULL);
+    // GuiWindow* tools4 = gui_window_create(gm, root, "Tools", NULL, NULL);
 
     // in SDL callbacks
     // SDL_AppEvent:    gui_handle_sdl_event(gm, &event);
