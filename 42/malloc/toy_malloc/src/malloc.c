@@ -1,9 +1,6 @@
 #include "malloc.h"
-#include <stddef.h>
 #include <stdint.h>
 #include <stdalign.h>
-#include <sys/mman.h>
-#include <unistd.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,7 +19,7 @@ static inline size_t align_up(size_t x, size_t a) {
 void *malloc(size_t n) {
     if (n == 0) n = 1;
 
-    size_t A = _Alignof(max_align_t);
+    size_t A = _Alignof(max_align_t); // The max align for any given object's 't' address
     size_t header_pad = align_up(sizeof(header_t), A);
 
     long ps_l = sysconf(_SC_PAGESIZE);

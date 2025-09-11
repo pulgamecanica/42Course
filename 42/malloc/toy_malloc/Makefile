@@ -32,7 +32,7 @@ LINK_NAME      := libft_malloc.so
 # -------------------------
 # Flags
 # -------------------------
-CFLAGS         := -Wall -Wextra -Werror -pedantic -O3 -fPIC -MMD -MP -I$(INC_DIR) -std=c11
+CFLAGS         := -Wall -Wextra -Werror -pedantic -O3 -fPIC -MMD -MP -I$(INC_DIR) -std=gnu11
 LDFLAGS        :=
 LDLIBS         :=
 LDLINK         := LD_PRELOAD=${LINK_NAME}
