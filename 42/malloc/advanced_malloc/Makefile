@@ -5,7 +5,7 @@ SRC_DIR        := src
 OBJ_DIR        := objs
 INC_DIR        := include
 # List your C sources here (space-separated)
-SRC            := $(SRC_DIR)/malloc.c
+SRC            := $(SRC_DIR)/malloc.c $(SRC_DIR)/align.c $(SRC_DIR)/fit.c $(SRC_DIR)/utils.c $(SRC_DIR)/zone.c
 
 # Test harness (optional)
 TEST_SRC       := tests/main.c
@@ -119,6 +119,9 @@ test: $(TEST_BIN)
 
 $(TEST_BIN): $(TEST_SRC) $(NAME)
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $< $(TEST_LDFLAGS)
+
+fails: $(TEST_BIN)
+	$(MAKE) test | grep --color=always "FAIL" | less
 
 # -------------------------
 # Valgrind helper
