@@ -1,6 +1,8 @@
 This malloc implementation represents a general purpose allocator. It should be space-concerving, portable, tunnable and relatively fast.
 While it's not the best at each characteristic I described before, it balances each characteristic, making it an ideal solution for general purpose allocator.
 
+![malloc_cell_view](circle.svg)
+
 ```md
 The main properties of the algorithms are:
 * For large (>= 512 bytes) requests, it is a pure best-fit allocator,
@@ -23,7 +25,7 @@ The main properties of the algorithms are:
 >
 > Also we can implement a simple circular doubled linked list which is super fast for insertion and deletion, given that we can access directly the iterator where we registered the memory address location in out memory map.
 
-```bash
+```txt
 FACTS:
 	In x_64bit systems, pointers or "addresses" are 8bytes (64bits) that means that we need 64 bits to represent a memory address.
 	Ex: 0x0000000ffffff2
@@ -65,8 +67,149 @@ List of MACROS:
 
 - `MALLOC_DEBUG`
 - `USE_MALLOC_LOCK` (safe thread malloc)
+(
+---
+
+### Fragmentation
+
+	Internal fragmentation
+	Rarely do processes require the use of an exact number of pages. As a result, the last page will likely only be partially full, wasting some amount of memory. Larger page sizes lead to a large amount of wasted memory, as more potentially unused portions of memory are loaded into the main memory. Smaller page sizes ensure a closer match to the actual amount of memory required in an allocation.
+	[https://en.wikipedia.org/wiki/Page_(computer_memory)](https://en.wikipedia.org/wiki/Page_(computer_memory))
 
 ---
+
+Perfect 👍 — let’s do this *cleanly*, using fixed-width ASCII diagrams so the spacing won’t collapse on you again.
+
+---
+
+### Memory alignment
+
+For any type `T`, the C standard defines an **alignment requirement** `A = alignof(T)`.
+👉 Rule: an object of type `T` must be stored at an address that is a multiple of `A`.
+
+So:
+
+* If `A = 1`, the object can live anywhere.
+* If `A = 2`, it must start at an even address.
+* If `A = 4`, it must start at a multiple of 4.
+* If `A = 8`, at a multiple of 8.
+* etc.
+
+---
+
+# 🔹 ASCII examples
+
+Imagine memory as a ruler of byte addresses. I’ll mark which addresses are valid (`^`) and which are invalid (`x`) for an object that requires a given alignment.
+
+---
+
+### 1-byte alignment (A = 1)
+
+```
+addresses:  ... 1000 1001 1002 1003 1004 1005 1006 1007 1008 ...
+valid     :      ^    ^    ^    ^    ^    ^    ^    ^    ^
+invalid   :     
+```
+
+✔ Every address works (chars, `uint8_t`, etc.).
+
+---
+
+### 2-byte alignment (A = 2)
+
+```
+addresses:  ... 1000 1001 1002 1003 1004 1005 1006 1007 1008 ...
+valid     :      ^         ^         ^         ^         ^
+invalid   :          x         x         x         x
+```
+
+✔ Valid at multiples of 2 (1000, 1002, 1004 …).
+✘ Invalid at odd addresses.
+
+---
+
+### 4-byte alignment (A = 4)
+
+```
+addresses:  ... 1000 1001 1002 1003 1004 1005 1006 1007 1008 1009 1010 1011 1012 ...
+valid     :      ^                   ^                   ^                   ^
+invalid   :          x   x   x           x   x   x           x   x   x           x
+```
+
+✔ Valid at 1000, 1004, 1008, 1012 …
+✘ Invalid at the three addresses in between.
+
+---
+
+### 8-byte alignment (A = 8)
+
+```
+addresses:  ... 1000 1001 1002 1003 1004 1005 1006 1007 1008 1009 1010 1011 1012 1013 1014 1015 1016 ...
+valid     :      ^                                      ^                                       ^
+invalid   :          x    x    x    x    x    x    x         x    x    x    x    x    x    x
+```
+
+✔ Valid at 1000, 1008, 1016 …
+✘ Invalid at the 7 addresses in between.
+
+---
+
+# 🔹 Pattern
+
+For alignment `A`:
+
+* Valid addresses = multiples of `A`.
+* Invalid addresses = `A − 1` between each valid one.
+
+So the higher the alignment requirement, the more “gaps” there are where you can’t start an object of that type.
+
+---
+
+# 🔹 Why this matters for `malloc`
+
+The C standard requires:
+
+> “The pointer returned by `malloc` is suitably aligned for any object type.”
+
+That means the pointer must be aligned to the strictest requirement on the platform.
+In practice, that’s `alignof(max_align_t)`.
+
+So if your platform’s `max_align_t` requires 16-byte alignment, then **every malloc result must be a multiple of 16**, no matter if the user requested 1 byte or 1000 bytes.
+
+In practice, malloc doesn't care about types `T`, the address is the alignement it must follow, since the address of any type will still be just an address `*`.
+
+---
+
+# 🔹 Real-world consequences
+
+* If you put your allocator’s **header** in front of the user memory, you must make sure the **user pointer** is aligned to `alignof(max_align_t)`. This is why allocators round the header size up to that alignment.
+* Misalignment can cause:
+
+  * CPU crashes (on strict hardware like older SPARC, Itanium, ARM in some modes).
+  * Slower access (x86 allows misaligned, but with penalties).
+  * Undefined behavior in C (the language itself forbids accessing a misaligned pointer as type `T`).
+
+---
+
+✅ **So alignment = which addresses are legal starting points for an object of a certain type.**
+The allocator must ensure the pointer it returns lands on one of those legal addresses for the *strictest* type.
+
+---
+
+# `max_align_t` in one sentence
+
+`alignof(max_align_t)` is the **largest** alignment any fundamental scalar type on your platform requires.
+If you align to that, you’re safe to place *any* type at the returned pointer.
+
+---
+
+From the manual:
+
+```
+If addr is NULL, then the kernel chooses the (page-aligned) address at which to create the mapping;
+```
+
+This is perfect, since the base pointer returned by mmap is already alligned, the issue arrises because we want to write the header in front of the addr returned to the user, so we can just padd the header untill we are alligned again, then the user returned address starts
 
 ##### References:
 

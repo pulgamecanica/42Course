@@ -75,11 +75,11 @@ ifeq ($(DEBUG),1)
   CFLAGS += -g
 endif
 
-ifeq ($(FT_MODE),1)
-	CFLAGS += -D FT_MODE
-	TEST_LDFLAGS += -L. -lft_malloc 
-else
+ifeq ($(LIB_G),1)
 	LDLINK         =
+else
+	CFLAGS += -D FT_MODE
+	TEST_LDFLAGS += -L. -lft_malloc
 endif
 
 # -------------------------
@@ -105,6 +105,7 @@ $(NAME): $(LIBFT_LIB) $(OBJ)
 	@printf "\033[0;33mCreating symbolic link -> $(LINK_NAME)\033[0m\n"
 	@$(LN) $(NAME) $(LINK_NAME)
 	@printf "\033[0;32mDONE: [$(LINK_NAME)]\033[0m\n"
+	$(MAKE) circle.svg
 
 # -------------------------
 # Test harness
@@ -154,6 +155,12 @@ check_malloc_lib:
 	@printf "\033[0;32mChecking if malloc is loaded in $(LINK_NAME)\033[0m\n"
 	-nm -D $(LINK_NAME) | grep 'malloc' --color=always
 	@printf "\033[0;32m--------------------------------------------\033[0m\n"
+
+
+circle.svg: FORCE
+	lsphere -o . --svg --ignore-file .gitignore --ignore ".* *.o Libft" -q && rm circle.html && rm circle.json
+
+FORCE: ;
 
 show: check_malloc_lib
 	@printf "\033[0;32m"

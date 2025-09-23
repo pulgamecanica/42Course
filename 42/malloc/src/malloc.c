@@ -39,12 +39,13 @@ extern "C" {
 
 // #define get_malloc_state() (&(av_))
 
+// 0x00000ff0123fee
 static inline size_t round_up(size_t x, size_t a) {
     return (x + a - 1) & ~(a - 1);
 }
 
 static inline void *error() {
-	MALLOC_FAILURE_ACTION;
+	// MALLOC_FAILURE_ACTION;
 	return NULL;
 }
 
@@ -73,8 +74,12 @@ static inline void *error() {
 */
 // static pthread_mutex_t g_malloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
+#include <stdio.h>
+
 void *malloc(size_t n) {
-	if (!PRE_MALLOC) return error();
+	int r = write(1, "Called malloc\n", 15);
+	(void)r;
+	if (PRE_MALLOC) return error();
 	
 	size_t need  = sizeof(header_t) + n;
 	size_t mlen  = round_up(need, (size_t)PAGE_SIZE);
