@@ -33,7 +33,8 @@
 
 <details>
 <summary><code>_BIT(b)</code></summary>
-
+<br>
+    
 ```c
 #define _BIT(b)       (1 << (b))
 ```
@@ -59,7 +60,8 @@ Equivalent to `(1 << b)`.
 
 <details>
 <summary><code>_SET(reg, b)</code></summary>
-
+<br>
+    
 ```c
 #define _SET(reg,b)   ((reg) |= _BIT(b))
 ```
@@ -85,7 +87,8 @@ Expands to `(reg |= (1 << b))`.
 
 <details>
 <summary><code>_CLEAR(reg, b)</code></summary>
-
+<br>
+    
 ```c
 #define _CLEAR(reg,b) ((reg) &= ~_BIT(b))
 ```
@@ -106,7 +109,8 @@ _CLEAR(PORTD, 5); // Clears bit 5 of PORTD
 
 <details>
 <summary><code>_TOGGLE(reg, b)</code></summary>
-
+<br>
+    
 ```c
 #define _TOGGLE(reg,b)((reg) ^= _BIT(b))
 ```
@@ -127,7 +131,8 @@ _TOGGLE(PORTB, 0); // Toggles bit 0 of PORTB
 
 <details>
 <summary><code>_IS_SET(reg, b)</code></summary>
-
+<br>
+    
 ```c
 #define _IS_SET(reg,b)((reg) & _BIT(b))
 ```
@@ -148,8 +153,9 @@ if (_IS_SET(PIND, 2)) {
 ---
 
 <details>
-<summary>🧩 <code>_CAT(a, b)</code> and <code>_CAT3(a, b, c)</code></summary>
-
+<summary><code>_CAT(a, b)</code> and <code>_CAT3(a, b, c)</code></summary>
+<br>
+    
 ### Description
 
 Concatenates tokens at compile time.
@@ -174,7 +180,7 @@ This is the backbone of dynamic register access in your macros.
 
 ---
 
-## 📘 Summary
+## Summary
 
 `core.h` defines **foundational macros** used across all other modules in Pulga:
 
