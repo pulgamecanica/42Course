@@ -68,7 +68,8 @@ static inline PinState readPin(Pin pin) {
 
 <details>
 <summary><code>setPinMode(Pin pin, PinMode mode)</code></summary>
-
+<br>
+    
 ```c
 static inline void setPinMode(Pin pin, PinMode mode) {
     if(mode == OUTPUT) _SET(PIN_DDR(pin), PIN_BITS[pin]);
@@ -98,7 +99,8 @@ setPinMode(PIN_D2, INPUT);  // Configure PD2 as input
 
 <details>
 <summary><code>writePin(Pin pin, PinState state)</code></summary>
-
+<br>
+    
 ```c
 static inline void writePin(Pin pin, PinState state) {
     if(state == HIGH) _SET(PIN_PORT(pin), PIN_BITS[pin]);
@@ -122,8 +124,9 @@ writePin(PIN_B1, LOW);  // Turn off LED
 ---
 
 <details>
-<summary>🔁 <code>togglePin(Pin pin)</code></summary>
-
+<summary><code>togglePin(Pin pin)</code></summary>
+<br>
+    
 ```c
 static inline void togglePin(Pin pin) {
     _SET(PIN_PIN(pin), PIN_BITS[pin]);
@@ -149,8 +152,9 @@ This takes advantage of the AVR’s special “write-1-to-toggle” behavior.
 ---
 
 <details>
-<summary>🔍 <code>readPin(Pin pin)</code></summary>
-
+<summary><code>readPin(Pin pin)</code></summary>
+<br>
+    
 ```c
 static inline PinState readPin(Pin pin) {
     return _IS_SET(PIN_PIN(pin), PIN_BITS[pin]) ? HIGH : LOW;
@@ -173,7 +177,7 @@ if (readPin(PIN_D2) == HIGH) {
 
 ---
 
-## 📘 Summary
+## Summary
 
 `pins.h` provides a **hardware-agnostic** way to manipulate pins without using Arduino’s functions.
 It builds on `core.h` macros to:
