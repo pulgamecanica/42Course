@@ -4,11 +4,7 @@
  * You must use only AVR registers (DDRX, PORTX, PINX).
  */
 
-#include <avr/io.h>
-
-#ifndef F_CPU
-# define F_CPU 16000000UL
-#endif
+#include "pulga/core.h"
 
 // https://ww1.microchip.com/downloads/en/Appnotes/AVR1000b-Getting-Started-Writing-C-Code-for-AVR-DS90003262B.pdf - page 11
 // #define PORTMUX (*(PORTMUX_t *) 0x0200) /* Port Multiplexer */

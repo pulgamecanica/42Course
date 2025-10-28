@@ -1,74 +1,68 @@
-/*
- * Subject:
- * You must write a program that reverses the state of the PB0 LED each time the
-   SW1 button (PD2) changes from the released state to the pressed state.
- * You must use only AVR registers ( DDRX, PORTX, PINX ).
- */
-
-#include <avr/io.h>
+#include "pulga/core.h"
+#include "pulga/pins.h"
 #include <util/delay.h>
 
-#ifndef F_CPU
-# define F_CPU 16000000UL
-#endif
+// ───────────────
+// LED pins
+// ───────────────
+#define LED0 PIN_B0
+#define LED1 PIN_B1
+#define LED2 PIN_B2
+#define LED3 PIN_B4
 
-// DDR = Data Direction Register
-// MODE USES DDR BY DEFAULT, will implement generic and API with defaults (see ex04)
-#define MODE_OUT(x,bit) DDR##x  |= (1<<DD##x##bit)    // <- set the mode to output
-#define MODE_IN(x,bit)  DDR##x  &= (~(1<<DD##x##bit)) // <- set the mode to output
+// ───────────────
+// Button pins
+// ───────────────
+#define BUTTON_DEC PIN_D4  // SW1
+#define BUTTON_INC PIN_D2  // SW2
 
-#define PORT_ON(x,bit)     PORT##x |= (1<<PORT##x##bit)    // <- set the reg bit to (1)
-#define PORT_OFF(x,bit)    PORT##x &= (~(1<<PORT##x##bit)) // <- set the reg bit to (0)
-#define PORT_TOGGLE(x,bit) PIN##x |= (1<<PIN##x##bit)    // <- toggle the reg bit
+const Pin LED_PINS[4] = { LED0, LED1, LED2, LED3 };
 
-// USES PIN BY DEFAULT
-#define IS_ON(x,bit)  PIN##x & (1<<PIN##x##bit) // <- check if the bit is on
-#define IS_OFF(x,bit) !(IS_ON(x,bit))
-
-void display_number(unsigned num)
-{
-    // We only care about 4 bits (PB0, PB1, PB2, PB4)
-    uint8_t mask = (1 << PB0) | (1 << PB1) | (1 << PB2) | (1 << PB4);
-    uint8_t pattern = 0;
-
-    // Reduce num to 4 bits
-    num &= 0x0F;
-
-    // Map the lower 4 bits of num to PB0, PB1, PB2, PB4
-    if (num & (1 << 0)) pattern |= (1 << PB0);
-    if (num & (1 << 1)) pattern |= (1 << PB1);
-    if (num & (1 << 2)) pattern |= (1 << PB2);
-    if (num & (1 << 3)) pattern |= (1 << PB4);
-
-    // Clear the LED bits, then set the new pattern
-    PORTB = (PORTB & ~mask) | pattern;
+// ───────────────
+// Display a 4-bit value on LEDs
+// ───────────────
+static inline void display_number(uint8_t num) {
+  for (int i = 0; i < 4; ++i) {
+    // Map bit i of num to LED i
+    if (num & (1 << i))
+      writePin(LED_PINS[i], LED_ON);
+    else
+      writePin(LED_PINS[i], LED_OFF);
+  }
 }
 
 int main(void) {
   unsigned num = 0;
-	MODE_OUT(B, 0);
-  MODE_OUT(B, 1);
-  MODE_OUT(B, 2);
-  MODE_OUT(B, 4);
-  MODE_IN(D, 4);
-  MODE_IN(D, 2);
-	while(42) {
-    _delay_ms(42);
-    unsigned should_add = IS_OFF(D, 2);
-    unsigned should_decrement = IS_OFF(D, 4);
 
-    if (!should_add && !should_decrement) continue;
+  // Set LED pins as outputs
+  for (int i = 0; i < 4; ++i)
+    setPinMode(LED_PINS[i], OUTPUT);
 
-    if (should_add) {
-      display_number(++num);
-      _delay_ms(42);
-      while(IS_OFF(D,2)) {_delay_ms(42);} // Wait for release
-    }
-    if (should_decrement) {
-      display_number(--num);
-      _delay_ms(42);
-      while(IS_OFF(D,4)) {_delay_ms(42);} // Wait for release
+  // Set button pins as inputs
+  setPinMode(BUTTON_INC, INPUT);
+  setPinMode(BUTTON_DEC, INPUT);
+
+  display_number(num);
+
+  while (1) {
+    _delay_ms(50);
+
+  // Check increment button
+  if (readPin(BUTTON_INC) == BUTTON_PRESSED) {
+    ++num;
+    display_number(num);
+    // Wait for release
+    while (readPin(BUTTON_INC) == BUTTON_PRESSED)
+      _delay_ms(10);
+  }
+
+  // Check decrement button
+  if (readPin(BUTTON_DEC) == BUTTON_PRESSED) {
+    --num;
+    display_number(num);
+    // Wait for release
+    while (readPin(BUTTON_DEC) == BUTTON_PRESSED)
+      _delay_ms(10);
     }
   }
-	return 0;
 }

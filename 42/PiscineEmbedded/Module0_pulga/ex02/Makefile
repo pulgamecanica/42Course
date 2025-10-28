@@ -2,7 +2,7 @@
 #                                PROJECT INFO                                  #
 # **************************************************************************** #
 
-PROJ_NAME   := ex02-PiscineEmbeded
+PROJ_NAME   := ex01-PiscineEmbeded
 NAME_BIN    := main.bin
 NAME_HEX    := main.hex
 
@@ -47,6 +47,7 @@ CFLAGS      := -Wall -Werror -Wextra -Wundef \
                 -ffunction-sections -fdata-sections \
                 -mmcu=$(MCU) $(CPPFLAGS)
 LDFLAGS     := -Wl,--gc-sections
+CFLAGS      += -I../
 
 # **************************************************************************** #
 #                                   COLORS                                     #
