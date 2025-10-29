@@ -16,7 +16,7 @@ void setup() {
   timer1_set_mode(TIMER1_MODE_FAST_PWM_ICR1); // Set to CTC (TCCR1B => WGM12) see func. for refs.
   timer1_set_prescaler(CLK_1024);             // Set prescaler to 1024 (TCCR1B => CS12 & CS10)
 
-  timer1_set_pwm_frequency(100);        // ICR1 = 15624
+  timer1_set_pwm_frequency(1);        // ICR1 = 15624
   timer1_set_duty_cycle(10);          // See page 122 (OCR1A => ICR1 * %[0..1])
   timer1_enable_oc1a_non_inverting(); // COM1A1 => OC1A set non inverting mode
 }

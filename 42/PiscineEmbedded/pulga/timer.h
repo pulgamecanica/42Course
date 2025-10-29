@@ -129,7 +129,7 @@ static inline void timer1_set_pwm_frequency(uint32_t freq_hz) {
   uint16_t prescaler = timer1_get_prescaler();
   if (prescaler == 0 || freq_hz == 0) return;
 
-  ICR1 = (16000000 / (prescaler * freq_hz)) - 1;
+  ICR1 = (F_CPU / (prescaler * freq_hz)) - 1;
 }
 
 static inline void timer1_set_pwm_period_ms(uint32_t period_ms) {
