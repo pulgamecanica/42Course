@@ -47,6 +47,7 @@ CFLAGS      := -Wall -Werror -Wextra -Wundef \
                 -ffunction-sections -fdata-sections \
                 -mmcu=$(MCU) $(CPPFLAGS)
 LDFLAGS     := -Wl,--gc-sections
+CFLAGS      += -I..
 
 # **************************************************************************** #
 #                                   COLORS                                     #

@@ -2,7 +2,7 @@
 #                                PROJECT INFO                                  #
 # **************************************************************************** #
 
-PROJ_NAME   := ex01-PiscineEmbeded01
+PROJ_NAME   := ex02-PiscineEmbeded01
 NAME_BIN    := main.bin
 NAME_HEX    := main.hex
 
