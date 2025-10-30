@@ -129,15 +129,27 @@ static inline void timer1_set_pwm_frequency(uint32_t freq_hz) {
   uint16_t prescaler = timer1_get_prescaler();
   if (prescaler == 0 || freq_hz == 0) return;
 
-  ICR1 = (F_CPU / (prescaler * freq_hz)) - 1;
+  uint32_t top = (F_CPU / (prescaler * freq_hz)) - 1;
+  if (top > 0xFFFF) top = 0xFFFF;
+  ICR1 = (uint16_t)top;
 }
 
 static inline void timer1_set_pwm_period_ms(uint32_t period_ms) {
-  timer1_set_pwm_frequency(1000UL / period_ms);
+  uint16_t prescaler = timer1_get_prescaler();
+  if (prescaler == 0 || period_ms == 0) return;
+
+  uint32_t top = (F_CPU / prescaler) * period_ms / 1000UL - 1;
+  if (top > 0xFFFF) top = 0xFFFF;
+  ICR1 = (uint16_t)top;
 }
 
 static inline void timer1_set_pwm_period_us(uint32_t period_us) {
-  timer1_set_pwm_frequency(1000000UL / period_us);
+  uint16_t prescaler = timer1_get_prescaler();
+  if (prescaler == 0 || period_us == 0) return;
+
+  uint32_t top = (F_CPU / prescaler) * period_us / 1000000UL - 1;
+  if (top > 0xFFFF) top = 0xFFFF;
+  ICR1 = (uint16_t)top;
 }
 
 // Page 122 from RTFM
@@ -166,16 +178,56 @@ static inline void timer1_set_toggle_frequency(uint32_t freq_hz) {
 
 // If you know the period in microseconds
 static inline void timer1_set_toggle_period_ms(uint32_t period_ms) {
-  if (period_ms == 0) return;
-  timer1_set_toggle_frequency(1000UL / period_ms);
+  uint16_t prescaler = timer1_get_prescaler();
+  if (prescaler == 0 || period_ms == 0) return;
+
+  uint32_t top = (F_CPU / prescaler) * period_ms / 2000UL - 1; // 2x because of toggle
+  if (top > 0xFFFF) top = 0xFFFF;
+  OCR1A = (uint16_t)top;
 }
 
 // If you know the period in miliseconds
 static inline void timer1_set_toggle_period_us(uint32_t period_us) {
-  if (period_us == 0) return;
-  timer1_set_toggle_frequency(1000000UL / period_us);
+  uint16_t prescaler = timer1_get_prescaler();
+  if (prescaler == 0 || period_us == 0) return;
+
+  uint32_t top = (F_CPU / prescaler) * period_us / 1000000UL - 1; // 2x because of toggle
+  if (top > 0xFFFF) top = 0xFFFF;
+  OCR1A = (uint16_t)top;
 }
 
+// CTC mode (ISR): one interrupt per compare match.
+// Formula: OCR1A = (F_CPU / (prescaler * freq)) - 1
+static inline void timer1_set_ctc_interrupt_frequency(uint32_t freq_hz) {
+    uint16_t prescaler = timer1_get_prescaler();
+    if (prescaler == 0 || freq_hz == 0) return;
+
+    uint32_t top = (F_CPU / (prescaler * freq_hz)) - 1;
+    if (top > 0xFFFF) top = 0xFFFF;
+    OCR1A = (uint16_t)top;
+}
+
+// Alternate version using milliseconds:
+static inline void timer1_set_ctc_interrupt_period_ms(uint32_t period_ms) {
+    uint16_t prescaler = timer1_get_prescaler();
+    if (prescaler == 0 || period_ms == 0) return;
+
+    uint32_t top = (F_CPU / prescaler) * period_ms / 1000UL - 1;
+    if (top > 0xFFFF) top = 0xFFFF;
+    OCR1A = (uint16_t)top;
+}
+
+// Alternate version using microseconds:
+static inline void timer1_set_ctc_interrupt_period_us(uint32_t period_us) {
+    uint16_t prescaler = timer1_get_prescaler();
+    if (prescaler == 0 || period_us == 0) return;
+
+    uint32_t top = (F_CPU / prescaler) * period_us / 1000000UL - 1;
+    if (top > 0xFFFF) top = 0xFFFF;
+    OCR1A = (uint16_t)top;
+}
+
+// CTC default is the toggle mode, use `timer1_set_ctc_interrupt_*` for interrupts
 // This function automatically detects the Timer1 mode and applies the correct formula
 static inline void timer1_set_frquency_auto(uint32_t freq_hz) {
   TimerMode tm = timer1_get_mode();
@@ -190,17 +242,6 @@ static inline void timer1_set_frquency_auto(uint32_t freq_hz) {
       timer1_set_pwm_frequency(freq_hz);
       break;
   }
-}
-
-static inline void timer1_set_period_ms_auto(uint32_t period_ms) {
-  if (period_ms == 0) return;
-  timer1_set_frquency_auto(1000L / period_ms);
-}
-
-static inline void timer1_set_period_us_auto(uint32_t period_us) {
-  if (period_us == 0) return;
-  timer1_set_frquency_auto(1000000L / period_us);
-
 }
 
 #endif // TIMER_H
