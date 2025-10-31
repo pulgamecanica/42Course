@@ -2,6 +2,11 @@
 #define UART_H
 
 #include "core.h"
+#include "utils.h"
+
+#define BACKSPACE  0x7F
+#define ENTER      '\r'
+#define NEWLINE    '\n'
 
 // ───────────────
 // BAUD Rate
@@ -45,11 +50,67 @@ void uart_puts(const char* str) {
   }
 }
 
+static inline void uart_putnum(uint8_t n) {
+  char buf[4];
+  int i = 0;
+  if (n == 0)
+    uart_putc('0');
+  else {
+    while (n > 0) {
+      buf[i++] = (n % 10) + '0';
+      n /= 10;
+    }
+    while (i--)
+      uart_putc(buf[i]);
+  }
+}
+
 static inline void uart_flush(void) {
   while (UCSR0A & (1 << RXC0)) {
     (void)UDR0; // flush
   }
 }
 
+// Reads user input until ENTER (blocking).
+// Echoes with callback function.
+// Handles Backspace.
+// Writes the result (null-terminated) into buffer.
+// Returns the number of characters read (not counting '\0').
+static inline uint8_t uart_get_input_callback(char *buffer, uint8_t max_len, void (*echo_callback)(unsigned char)) {
+  uint8_t i = 0;
+  char c;
+  while (1) {
+    c = uart_getc();
+    if (c == ENTER || c == NEWLINE) {
+      uart_puts("\r\n");
+      break;
+    }
+    else if (c == BACKSPACE) {
+      if (i > 0) {
+        i--;
+        uart_puts("\b \b"); // move back, erase, move back again
+      }
+    }
+    else if (i < max_len - 1) {
+      buffer[i++] = c;
+      echo_callback(c); // echo
+    }
+  }
+  buffer[i] = '\0';
+  return i;
+}
+
+static inline uint8_t uart_get_input(char *buffer, uint8_t max_len) {
+  return uart_get_input_callback(buffer, max_len, uart_putc);
+}
+
+static inline void uart_putsecret(unsigned char c) {
+  (void)c;
+  uart_putc('*');
+}
+
+static inline uint8_t uart_get_input_secret(char *buffer, uint8_t max_len) {
+    return uart_get_input_callback(buffer, max_len, uart_putsecret);
+}
 
 #endif

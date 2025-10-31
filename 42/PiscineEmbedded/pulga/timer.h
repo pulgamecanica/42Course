@@ -10,18 +10,24 @@
 // Timer identifiers
 // ───────────────
 typedef enum {
-  TIMER1
-  // Extend later: TIMER0, TIMER2
+  TIMER0,
+  TIMER1,
+  TIMER2
 } Timer;
 
 // ───────────────
 // Timer modes
 // ───────────────
 typedef enum {
-  TIMER1_MODE_NORMAL,
-  TIMER1_MODE_CTC,
-  TIMER1_MODE_FAST_PWM_ICR1
+  TIMER_MODE_NORMAL,
+  TIMER_MODE_CTC,
+  TIMER_MODE_FAST_PWM
 } TimerMode;
+
+// For backward compatibility (bad decitions)...
+#define TIMER1_MODE_NORMAL        TIMER_MODE_NORMAL
+#define TIMER1_MODE_CTC           TIMER_MODE_CTC
+#define TIMER1_MODE_FAST_PWM_ICR1 TIMER_MODE_FAST_PWM
 
 // ───────────────
 // Prescaler values
@@ -30,10 +36,54 @@ typedef enum {
   NO_CLOCK = 0,
   CLK_1 = 1,
   CLK_8 = 8,
+  CLK_32 = 32,    // only on Timer2
   CLK_64 = 64,
+  CLK_128 = 128,  // only on Timer2
   CLK_256 = 256,
   CLK_1024 = 1024
 } TimerPrescaler;
+
+// ───────────────
+// TIMER0 (8-bit PWM) — controls OC0A (D6) and OC0B (D5)
+// ───────────────
+static inline void timer0_init_fast_pwm(TimerPrescaler prescaler) {
+  // Fast PWM, non-inverting, prescaler selectable (Page 115 Table 15-8. RowMode(3) & Table 15-8 last row)
+  TCCR0A = _BIT(WGM00) | _BIT(WGM01) | _BIT(COM0A1) | _BIT(COM0B1);
+  TCCR0B = 0;
+
+  // Page 117
+  switch (prescaler) {
+    case CLK_1:    _SET(TCCR0B, CS00); break;
+    case CLK_8:    _SET(TCCR0B, CS01); break;
+    case CLK_64:   _SET(TCCR0B, CS01); _SET(TCCR0B, CS00); break;
+    case CLK_256:  _SET(TCCR0B, CS02); break;
+    case CLK_1024: _SET(TCCR0B, CS02); _SET(TCCR0B, CS00); break;
+    case CLK_32:
+    case CLK_128:
+    default: break;
+  }
+}
+
+// ───────────────
+// TIMER2 (8-bit PWM) — controls OC2B (D3)
+// ───────────────
+static inline void timer2_init_fast_pwm(TimerPrescaler prescaler) {
+  // Page 164 Table 18-8
+  TCCR2A = _BIT(WGM20) | _BIT(WGM21) | _BIT(COM2B1);
+  TCCR2B = 0;
+
+  // Page 165
+  switch (prescaler) {
+    case CLK_1:    _SET(TCCR2B, CS20); break;
+    case CLK_8:    _SET(TCCR2B, CS21); break;
+    case CLK_32:   _SET(TCCR2B, CS21); _SET(TCCR2B, CS20); break;
+    case CLK_64:   _SET(TCCR2B, CS22); break;
+    case CLK_128:  _SET(TCCR2B, CS22); _SET(TCCR2B, CS20); break;
+    case CLK_256:  _SET(TCCR2B, CS22); _SET(TCCR2B, CS21); break;
+    case CLK_1024: _SET(TCCR2B, CS22); _SET(TCCR2B, CS21); _SET(TCCR2B, CS20); break;
+    default: break;
+  }
+}
 
 // ───────────────
 // Timer1 specific functions
@@ -87,6 +137,9 @@ static inline void timer1_set_prescaler(TimerPrescaler prescaler) {
     case CLK_64:   _SET(TCCR1B, CS11); _SET(TCCR1B, CS10); break;
     case CLK_256:  _SET(TCCR1B, CS12); break;
     case CLK_1024: _SET(TCCR1B, CS12); _SET(TCCR1B, CS10); break;
+    case CLK_32:
+    case CLK_128:
+      break;
   }
 }
 
