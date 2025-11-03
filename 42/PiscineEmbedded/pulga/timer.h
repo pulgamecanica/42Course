@@ -297,5 +297,33 @@ static inline void timer1_set_frquency_auto(uint32_t freq_hz) {
   }
 }
 
+// Convenience function: Initialize Timer1 in CTC mode with interrupt
+// Sets up mode, prescaler, and period in one call
+static inline void timer1_init_ctc_mode(uint32_t period_ms) {
+  // Stop timer while configuring
+  timer1_set_prescaler(NO_CLOCK);
+
+  // Set CTC mode
+  timer1_set_mode(TIMER1_MODE_CTC);
+
+  // Choose prescaler based on period
+  // For periods < 4ms: use prescaler 64
+  // For periods < 16ms: use prescaler 256
+  // For longer periods: use prescaler 1024
+  TimerPrescaler prescaler;
+  if (period_ms < 4) {
+    prescaler = CLK_64;
+  } else if (period_ms < 16) {
+    prescaler = CLK_256;
+  } else {
+    prescaler = CLK_1024;
+  }
+
+  timer1_set_prescaler(prescaler);
+
+  // Set the period
+  timer1_set_ctc_interrupt_period_ms(period_ms);
+}
+
 #endif // TIMER_H
 

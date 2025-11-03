@@ -93,7 +93,7 @@ static inline int	ft_strstr(const char *haystack, const char *needle) {
   if (!*needle)
     return (1);
   for (i = 0; haystack[i]; i++) {
-    for (j = 0; needle[j] && haystack[i + j] == needle[j]; j++);
+    for (j = 0; needle[j] && haystack[i + j] == needle[j]; j++) {}
       if (!needle[j])
         return (1);
   }
