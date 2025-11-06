@@ -1,113 +1,155 @@
-/*
- * Module4 - ex02
- * Subject:
- * - SW1 button increments a value
- * - SW2 button decrements a value
- * - Display the value on LEDs D1, D2, D3, D4 in binary
- * - Use interrupts with nothing in main loop
- *
- * Challenge: LEDs are on PB0, PB1, PB2, PB4 (not PB3!)
- * Requires bit manipulation to map counter bits correctly.
- */
+// main.c
+// Module4 - exXX
+// Behavior:
+//  - SW1 (PD2 / INT0) increments a 4-bit value (0..15)
+//  - SW2 (PD4 / PCINT20) decrements the value (0..15)
+//  - value is shown permanently on LEDs D1..D4 (PB0, PB1, PB2, PB4) in binary
+//  - everything driven by interrupts, main contains no register access
 
 #include "pulga/pins.h"
 #include "pulga/interrupt.h"
-#include <avr/io.h>
+#include "pulga/timer.h"
+#include <stdint.h>
 
-// Hardware definitions - LEDs
-#define LED_D1  PIN_B0  // LED D1 on PB0 (bit 0 of counter)
-#define LED_D2  PIN_B1  // LED D2 on PB1 (bit 1 of counter)
-#define LED_D3  PIN_B2  // LED D3 on PB2 (bit 2 of counter)
-#define LED_D4  PIN_B4  // LED D4 on PB4 (bit 3 of counter) <- Gap at PB3!
-#define RGB_BLUE PIN_B3 // RGB LED D5 blue channel on PB3 (avoid activating it!)
+// Hardware mapping
+#define LED_D1  PIN_B0
+#define LED_D2  PIN_B1
+#define LED_D3  PIN_B2
+#define LED_D4  PIN_B4
 
-// Hardware definitions - Buttons
-// NOTE: Check your hardware! You need buttons on both PD2 (INT0) and PD3 (INT1)
-// If you only have SW1(PD2) and SW1(PD4), you'll need to wire a button to PD3
-#define SW1     PIN_D2  // Button SW1 on PD2 (INT0) - increment
-#define SW2     PIN_D3  // Button SW2 on PD3 (INT1) - decrement
+#define SW1     PIN_D2  // INT0
+#define SW2     PIN_D4  // PCINT20
 
-// LED pin array mapping (handles non-contiguous GPIO)
-const Pin LED_PINS[4] = { LED_D1, LED_D2, LED_D3, LED_D4 };
+// Debounce settings (number of timer ticks). Timer runs every 20 ms.
+#define DEBOUNCE_TICKS 3  // 3 * 20ms = 60 ms debounce
 
-// Global counter variable (0-15, 4 bits)
-volatile uint8_t counter = 0;
+// Shared state (volatile because used in ISRs / callbacks)
+volatile uint8_t g_value = 0;               // 0..15 displayed on LEDs
+volatile uint8_t g_inc_debounce_active = 0; // set by INT0 callback
+volatile uint8_t g_dec_debounce_active = 0; // set by PCINT callback
 
-// Display the counter value on the 4 LEDs
-// Uses the LED_PINS array to handle non-contiguous GPIO mapping
-void display_counter(void) {
-	for (int i = 0; i < 4; i++) {
-		// Map bit i of counter to LED i
-		if (counter & (1 << i))
-			writePin(LED_PINS[i], LED_ON);
+// Internal debounce counters (used inside timer callback)
+static uint8_t s_inc_counter = 0;
+static uint8_t s_dec_counter = 0;
+
+// LED pins in bit order (LSB -> MSB)
+static const Pin led_map[4] = { LED_D1, LED_D2, LED_D3, LED_D4 };
+
+// Helper: update the 4 LEDs to reflect g_value (no direct registers)
+static inline void update_leds(uint8_t value)
+{
+	for (int i = 0; i < 4; ++i) {
+		if ((value >> i) & 1)
+			writePin(led_map[i], LED_ON);
 		else
-			writePin(LED_PINS[i], LED_OFF);
+			writePin(led_map[i], LED_OFF);
 	}
 }
 
-// SW1 interrupt callback - increment counter
-void on_sw1_press(void) {
-	counter = (counter + 1) & 0x0F;  // Increment and wrap at 15
-	display_counter();
-
-	// Clear interrupt flag to handle debouncing
-	// Any bounces that occurred during display_counter() are ignored
-	EIFR |= (1 << INTF0);
+// INT0 callback: button SW1 pressed (falling edge configured)
+void on_sw1_press(void)
+{
+	// set debounce active flag, actual processing happens in timer
+	g_inc_debounce_active = 1;
 }
 
-// SW2 interrupt callback - decrement counter
-void on_sw2_press(void) {
-	counter = (counter - 1) & 0x0F;  // Decrement and wrap at 0
-	display_counter();
-
-	// Clear interrupt flag to handle debouncing
-	EIFR |= (1 << INTF1);
+// PCINT2 callback: pin change on PD4 (SW2)
+void on_sw2_change(void)
+{
+	// set debounce active flag; actual processing happens in timer
+	g_dec_debounce_active = 1;
 }
 
-int main(void) {
-	// ─────────────────────────────────────────────────────────
-	// Configure LEDs as OUTPUT
-	// ─────────────────────────────────────────────────────────
-	for (int i = 0; i < 4; i++)
-		setPinMode(LED_PINS[i], OUTPUT);
+// Timer1 compare A callback, runs every 20 ms
+void on_timer_tick(void)
+{
+	// Handle increment debounce
+	if (g_inc_debounce_active) {
+		s_inc_counter++;
+		if (s_inc_counter >= DEBOUNCE_TICKS) {
+			// reset counters/flags
+			s_inc_counter = 0;
+			g_inc_debounce_active = 0;
 
-	// Make sure RGB blue (PB3) is OFF
-	setPinMode(RGB_BLUE, OUTPUT);
-	writePin(RGB_BLUE, LOW);
+			// confirm button still pressed (buttons use pull-up => pressed == LOW)
+			if (readPin(SW1) == BUTTON_PRESSED) {
+				if (g_value < 15) {
+					g_value++;
+					update_leds(g_value);
+				}
+			}
+		}
+	} else {
+		// ensure counter is 0 when not active
+		s_inc_counter = 0;
+	}
 
-	// ─────────────────────────────────────────────────────────
-	// Configure buttons as INPUT with pull-ups
-	// ─────────────────────────────────────────────────────────
+	// Handle decrement debounce
+	if (g_dec_debounce_active) {
+		s_dec_counter++;
+		if (s_dec_counter >= DEBOUNCE_TICKS) {
+			// reset counters/flags
+			s_dec_counter = 0;
+			g_dec_debounce_active = 0;
+
+			// confirm button still pressed (buttons use pull-up => pressed == LOW)
+			if (readPin(SW2) == BUTTON_PRESSED) {
+				if (g_value > 0) {
+					g_value--;
+					update_leds(g_value);
+				}
+			}
+		}
+	} else {
+		// ensure counter is 0 when not active
+		s_dec_counter = 0;
+	}
+}
+
+int main(void)
+{
+	// Configure LED pins as outputs and initialize OFF
+	setPinMode(LED_D1, OUTPUT);
+	setPinMode(LED_D2, OUTPUT);
+	setPinMode(LED_D3, OUTPUT);
+	setPinMode(LED_D4, OUTPUT);
+
+	writePin(LED_D1, LED_OFF);
+	writePin(LED_D2, LED_OFF);
+	writePin(LED_D3, LED_OFF);
+	writePin(LED_D4, LED_OFF);
+
+	// Configure buttons as inputs with internal pull-ups
 	setPinMode(SW1, INPUT);
-	writePin(SW1, HIGH);  // Enable internal pull-up
-
 	setPinMode(SW2, INPUT);
-	writePin(SW2, HIGH);  // Enable internal pull-up
+	writePin(SW1, HIGH); // enable pull-up
+	writePin(SW2, HIGH); // enable pull-up
 
-	// ─────────────────────────────────────────────────────────
-	// Configure INT0 for SW1 (increment)
-	// ─────────────────────────────────────────────────────────
-	int0_set_mode(INT0_FALLING_EDGE);  // Trigger on button press
+	// Attach callbacks for external interrupts (no direct regs)
+	int0_set_mode(FALLING_EDGE);     // SW1 generates falling edge on press
 	attach_int0(on_sw1_press);
-	int0_enable();
+	int0_enable();                   // enable INT0
 
-	// ─────────────────────────────────────────────────────────
-	// Configure INT1 for SW2 (decrement)
-	// ─────────────────────────────────────────────────────────
-	int1_set_mode(INT1_FALLING_EDGE);  // Trigger on button press
-	attach_int1(on_sw2_press);
-	int1_enable();
+	// Enable pin-change for PCINT2 (PD4) and attach callback
+	int_pin_change_enable();         // enables PCIE2 and PCINT20 bit in mask
+	interrupts_set_pcint2_callback(on_sw2_change);
 
-	// Display initial value (0)
-	display_counter();
+	// Configure Timer1 CTC to tick every 20 ms, attach callback and enable
+	timer1_init_ctc_mode(20);              // selects prescaler/OCR1A appropriately
+	timer1_attach_compare_a(on_timer_tick);
+	timer1_enable_compare_a_interrupt();
+
+	// Initial LED update (shows 0)
+	update_leds(g_value);
 
 	// Enable global interrupts
 	interrupts_enable();
 
-	// Main loop does nothing - everything is handled by interrupts
-	while (42) {
-		// Empty loop as required by the exercise
+	// Main loop does nothing; all work is interrupt-driven
+	while (1) {
+		/* nothing here - required by the exercise */
 	}
 
+	// never reached
 	return 0;
 }

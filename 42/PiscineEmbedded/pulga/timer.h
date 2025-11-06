@@ -64,6 +64,28 @@ static inline void timer0_init_fast_pwm(TimerPrescaler prescaler) {
   }
 }
 
+// Initialize Timer0 for periodic interrupts
+void timer0_init_overflow_interrupt(TimerPrescaler prescaler) {
+  // Set Timer0 to Normal mode (overflow mode)
+  TCCR0A = 0;
+  TCCR0B = 0;
+
+  switch (prescaler) {
+    case CLK_1:    _SET(TCCR0B, CS00); break;
+    case CLK_8:    _SET(TCCR0B, CS01); break;
+    case CLK_64:   _SET(TCCR0B, CS01); _SET(TCCR0B, CS00); break;
+    case CLK_256:  _SET(TCCR0B, CS02); break;
+    case CLK_1024: _SET(TCCR0B, CS02); _SET(TCCR0B, CS00); break;
+    case CLK_32:
+    case CLK_128:
+    default: break;
+  }
+  TIMSK0 |= _BIT(TOIE0);
+
+  // Initialize counter
+  TCNT0 = 0;
+}
+
 // ───────────────
 // TIMER2 (8-bit PWM) — controls OC2B (D3)
 // ───────────────
