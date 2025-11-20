@@ -5,245 +5,297 @@
     /home/pulgamecanica/42Course/42/malloc
   </text>
   <g transform="translate(24,72)">
-    <circle cx="362.29" cy="349.02" r="274.66" fill="#fff" />
-    <circle cx="362.29" cy="349.02" r="274.66"
+    <circle cx="322.71" cy="411.67" r="227.77" fill="#fff" />
+    <circle cx="322.71" cy="411.67" r="227.77"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="800.37 125 800.37"
-            transform="rotate(90 362.29 349.02)" />
-    <circle cx="679.88" cy="349.02" r="41.04" fill="#fff" />
-    <circle cx="679.88" cy="349.02" r="41.04"
+            stroke-dasharray="653.07 125 653.07"
+            transform="rotate(90 322.71 411.67)" />
+    <circle cx="667.86" cy="411.67" r="115.49" fill="#fff" />
+    <circle cx="667.86" cy="411.67" r="115.49"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="100.97 55.91 100.97"
-            transform="rotate(90 679.88 349.02)" />
-    <circle cx="661.38" cy="420.57" r="30.97" fill="#fff" />
-    <circle cx="661.38" cy="420.57" r="30.97"
+            stroke-dasharray="328.34 69 328.34"
+            transform="rotate(90 667.86 411.67)" />
+    <circle cx="582.79" cy="606.77" r="95.47" fill="#fff" />
+    <circle cx="582.79" cy="606.77" r="95.47"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="78.30 38 78.30"
-            transform="rotate(90 661.38 420.57)" />
-    <circle cx="699.85" cy="224.41" r="83.27" fill="#fff" />
-    <circle cx="699.85" cy="224.41" r="83.27"
+            stroke-dasharray="275.91 48 275.91"
+            transform="rotate(90 582.79 606.77)" />
+    <circle cx="584.07" cy="211.72" r="99.42" fill="#fff" />
+    <circle cx="584.07" cy="211.72" r="99.42"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="230.60 62 230.60"
-            transform="rotate(90 699.85 224.41)" />
-    <circle cx="647.88" cy="497.66" r="45.40" fill="#fff" />
-    <circle cx="647.88" cy="497.66" r="45.40"
+            stroke-dasharray="291.84 41 291.84"
+            transform="rotate(90 584.07 211.72)" />
+    <circle cx="429.47" cy="710.74" r="87.89" fill="#fff" />
+    <circle cx="429.47" cy="710.74" r="87.89"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="124.10 37.02 124.10"
-            transform="rotate(90 647.88 497.66)" />
-    <circle cx="604.13" cy="119.28" r="57.02" fill="#fff" />
-    <circle cx="604.13" cy="119.28" r="57.02"
+            stroke-dasharray="248.63 55 248.63"
+            transform="rotate(90 429.47 710.74)" />
+    <circle cx="421.03" cy="102.07" r="95.19" fill="#fff" />
+    <circle cx="421.03" cy="102.07" r="95.19"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="151.62 55 151.62"
-            transform="rotate(90 604.13 119.28)" />
-    <circle cx="607.03" cy="654.96" r="115.23" fill="#fff" />
-    <circle cx="607.03" cy="654.96" r="115.23"
+            stroke-dasharray="254.04 90 254.04"
+            transform="rotate(90 421.03 102.07)" />
+    <circle cx="750.30" cy="582.13" r="71.97" fill="#fff" />
+    <circle cx="750.30" cy="582.13" r="71.97"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="317 90 317"
-            transform="rotate(90 607.03 654.96)" />
-    <circle cx="516.03" cy="69.96" r="42.06" fill="#1b9e77" />
-    <circle cx="448.42" cy="655.17" r="41.48" fill="#d95f02" />
-    <circle cx="437.81" cy="42.78" r="38.86" fill="#7570b3" />
-    <circle cx="365.06" cy="666.29" r="40.72" fill="#e7298a" />
-    <circle cx="244.21" cy="311.63" r="132.69" fill="#fff" />
-    <circle cx="244.21" cy="311.63" r="132.69"
+            stroke-dasharray="181.09 90 181.09"
+            transform="rotate(90 750.30 582.13)" />
+    <circle cx="708.93" cy="265.37" r="34.59" fill="#4e79a7" />
+    <circle cx="310.39" cy="675.46" r="34.42" fill="#f28e2c" />
+    <circle cx="300.66" cy="150.33" r="32.62" fill="#e15759" />
+    <circle cx="553.17" cy="737.62" r="36.81" fill="#76b7b2" />
+    <circle cx="242.35" cy="661.83" r="33.09" fill="#59a14f" />
+    <circle cx="231.42" cy="380.75" r="109.16" fill="#fff" />
+    <circle cx="231.42" cy="380.75" r="109.16"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="382.36 69 382.36"
-            transform="rotate(90 244.21 311.63)" />
-    <circle cx="476.97" cy="311.63" r="98.17" fill="#fff" />
-    <circle cx="476.97" cy="311.63" r="98.17"
+            stroke-dasharray="308.42 69 308.42"
+            transform="rotate(90 231.42 380.75)" />
+    <circle cx="423.33" cy="380.75" r="80.88" fill="#fff" />
+    <circle cx="423.33" cy="380.75" r="80.88"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="284.42 48 284.42"
-            transform="rotate(90 476.97 311.63)" />
-    <circle cx="394.57" cy="506.77" r="111.76" fill="#fff" />
-    <circle cx="394.57" cy="506.77" r="111.76"
+            stroke-dasharray="230.08 48 230.08"
+            transform="rotate(90 423.33 380.75)" />
+    <circle cx="355.20" cy="541.62" r="91.94" fill="#fff" />
+    <circle cx="355.20" cy="541.62" r="91.94"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="330.59 41 330.59"
-            transform="rotate(90 394.57 506.77)" />
-    <circle cx="389.58" cy="156.32" r="78.14" fill="#fff" />
-    <circle cx="389.58" cy="156.32" r="78.14"
+            stroke-dasharray="268.35 41 268.35"
+            transform="rotate(90 355.20 541.62)" />
+    <circle cx="351.13" cy="252.62" r="64.32" fill="#fff" />
+    <circle cx="351.13" cy="252.62" r="64.32"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="217.99 55 217.99"
-            transform="rotate(90 389.58 156.32)" />
-    <circle cx="269.47" cy="137.29" r="41.58" fill="#d95f02" />
-    <circle cx="243.61" cy="485.07" r="38.86" fill="#7570b3" />
-    <circle cx="505.54" cy="176.84" r="37.72" fill="#e7298a" />
-    <circle cx="679.88" cy="349.02" r="39.14" fill="#66a61e" />
-    <circle cx="661.38" cy="420.57" r="29.08" fill="#e6ab02" />
-    <circle cx="657.32" cy="224.41" r="38.84" fill="#a6761d" />
-    <circle cx="739.64" cy="224.41" r="41.58" fill="#666666" />
-    <circle cx="608.58" cy="497.06" r="4.21" fill="#a6761d" />
-    <circle cx="653.01" cy="497.06" r="38.33" fill="#a6761d" />
-    <circle cx="609.78" cy="507.29" r="4.21" fill="#a6761d" />
-    <circle cx="583.07" cy="119.28" r="34.06" fill="#a6761d" />
-    <circle cx="639.14" cy="119.28" r="20.12" fill="#1b9e77" />
-    <circle cx="544.92" cy="652.92" r="35.72" fill="#fff" />
-    <circle cx="544.92" cy="652.92" r="35.72"
+            stroke-dasharray="174.56 55 174.56"
+            transform="rotate(90 351.13 252.62)" />
+    <circle cx="252.17" cy="237.26" r="33.95" fill="#f28e2c" />
+    <circle cx="230.96" cy="523.52" r="31.73" fill="#e15759" />
+    <circle cx="446.63" cy="269.61" r="30.80" fill="#59a14f" />
+    <circle cx="471.41" cy="487.54" r="34.35" fill="#edc949" />
+    <circle cx="196.04" cy="252.24" r="22.26" fill="#af7aa1" />
+    <circle cx="638.91" cy="408.55" r="29.92" fill="#ff9da7" />
+    <circle cx="701.91" cy="408.55" r="31.19" fill="#ff9da7" />
+    <circle cx="669.11" cy="464.52" r="31.79" fill="#ff9da7" />
+    <circle cx="669.16" cy="355.77" r="29.04" fill="#ff9da7" />
+    <circle cx="733.01" cy="463.70" r="30.24" fill="#ff9da7" />
+    <circle cx="728.86" cy="352.81" r="28.85" fill="#ff9da7" />
+    <circle cx="608.65" cy="355.14" r="29.59" fill="#ff9da7" />
+    <circle cx="603.43" cy="461.66" r="32.07" fill="#ff9da7" />
+    <circle cx="556.68" cy="606.96" r="24.04" fill="#af7aa1" />
+    <circle cx="607.57" cy="606.96" r="24.97" fill="#af7aa1" />
+    <circle cx="581.15" cy="653.14" r="26.35" fill="#af7aa1" />
+    <circle cx="581.18" cy="562.43" r="24.91" fill="#af7aa1" />
+    <circle cx="634.56" cy="651.46" r="25.19" fill="#af7aa1" />
+    <circle cx="633.51" cy="561.42" r="25.55" fill="#af7aa1" />
+    <circle cx="529.34" cy="563.91" r="25.07" fill="#af7aa1" />
+    <circle cx="584.29" cy="212.38" r="30.85" fill="#9c755f" />
+    <circle cx="620.70" cy="212.38" r="3.68" fill="#9c755f" />
+    <circle cx="638.98" cy="242.59" r="29.75" fill="#9c755f" />
+    <circle cx="640.01" cy="178.49" r="32.48" fill="#9c755f" />
+    <circle cx="585.49" cy="277.17" r="32.07" fill="#9c755f" />
+    <circle cx="581.75" cy="148.57" r="31.13" fill="#9c755f" />
+    <circle cx="529.99" cy="244.59" r="30.40" fill="#9c755f" />
+    <circle cx="525.80" cy="180.85" r="31.59" fill="#9c755f" />
+    <circle cx="395.83" cy="710.12" r="31.19" fill="#9c755f" />
+    <circle cx="457.22" cy="710.12" r="28.32" fill="#9c755f" />
+    <circle cx="429.49" cy="765.24" r="31.51" fill="#9c755f" />
+    <circle cx="429.46" cy="655.66" r="30.93" fill="#9c755f" />
+    <circle cx="369.92" cy="100.03" r="29.51" fill="#fff" />
+    <circle cx="369.92" cy="100.03" r="29.51"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="86.46 51.50 86.46"
-            transform="rotate(90 544.92 652.92)" />
-    <circle cx="620.37" cy="652.92" r="37.84" fill="#fff" />
-    <circle cx="620.37" cy="652.92" r="37.84"
+            stroke-dasharray="66.96 51.50 66.96"
+            transform="rotate(90 369.92 100.03)" />
+    <circle cx="432.55" cy="100.03" r="31.24" fill="#fff" />
+    <circle cx="432.55" cy="100.03" r="31.24"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="101.77 34.19 101.77"
-            transform="rotate(90 620.37 652.92)" />
-    <circle cx="580.41" cy="722.63" r="40.62" fill="#fff" />
-    <circle cx="580.41" cy="722.63" r="40.62"
+            stroke-dasharray="81.38 33.50 81.38"
+            transform="rotate(90 432.55 100.03)" />
+    <circle cx="399.42" cy="157.83" r="33.50" fill="#fff" />
+    <circle cx="399.42" cy="157.83" r="33.50"
             fill="none" stroke="#222" stroke-width="1.2"
-            stroke-dasharray="104.90 45.38 104.90"
-            transform="rotate(90 580.41 722.63)" />
-    <circle cx="580.47" cy="585.30" r="38.79" fill="#7570b3" />
-    <circle cx="656.62" cy="717.01" r="33.90" fill="#e7298a" />
-    <circle cx="211.81" cy="312.54" r="33.81" fill="#66a61e" />
-    <circle cx="282.90" cy="312.54" r="35.39" fill="#66a61e" />
-    <circle cx="245.73" cy="376.49" r="36.68" fill="#66a61e" />
-    <circle cx="245.79" cy="251.72" r="33.97" fill="#66a61e" />
-    <circle cx="318.13" cy="374.35" r="33.86" fill="#66a61e" />
-    <circle cx="315.24" cy="249.43" r="33.63" fill="#66a61e" />
-    <circle cx="172.80" cy="251.03" r="37.13" fill="#66a61e" />
-    <circle cx="478.95" cy="309.96" r="28.53" fill="#e6ab02" />
-    <circle cx="539.44" cy="309.96" r="30.06" fill="#e6ab02" />
-    <circle cx="507.57" cy="366.79" r="33.20" fill="#e6ab02" />
-    <circle cx="507.72" cy="260.11" r="27.13" fill="#e6ab02" />
-    <circle cx="446.13" cy="256.03" r="32.70" fill="#e6ab02" />
-    <circle cx="398.77" cy="506.34" r="31.42" fill="#a6761d" />
-    <circle cx="463.58" cy="506.34" r="31.50" fill="#a6761d" />
-    <circle cx="431.09" cy="569.29" r="37.45" fill="#a6761d" />
-    <circle cx="431.10" cy="450.47" r="31.23" fill="#a6761d" />
-    <circle cx="358.93" cy="445.75" r="39.20" fill="#a6761d" />
-    <circle cx="351.96" cy="156.32" r="38.63" fill="#a6761d" />
-    <circle cx="429.16" cy="156.32" r="36.67" fill="#a6761d" />
-    <circle cx="544.92" cy="652.92" r="33.82" fill="#66a61e" />
-    <circle cx="620.37" cy="652.92" r="35.94" fill="#a6761d" />
-    <circle cx="580.41" cy="722.63" r="38.72" fill="#a6761d" />
-    <text x="516.03" y="69.96" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="12.016177583814706" fill="#fff">circle.svg</text>
-    <text x="448.42" y="655.17" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.8525451304422" fill="#fff">libft_malloc_x86_64_Linux.so</text>
-    <text x="437.81" y="42.78" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.103318801325472" fill="#fff">Makefile</text>
-    <text x="365.06" y="666.29" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.634978135594313" fill="#fff">README.md</text>
-    <text x="269.47" y="137.29" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.879768314735632" fill="#fff">libft_malloc_x86_64_Linux.so</text>
-    <text x="243.61" y="485.07" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.102371685043483" fill="#fff">Makefile</text>
-    <text x="505.54" y="176.84" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="10.776635097078715" fill="#fff">README.md</text>
-    <text x="679.88" y="349.02" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.183763432204955" fill="#fff">malloc.h</text>
-    <text x="661.38" y="420.57" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.308256660268823" fill="#fff">malloc.d</text>
-    <text x="657.32" y="224.41" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.09856849126388" fill="#fff">main.c</text>
-    <text x="739.64" y="224.41" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.881227459314394" fill="#fff">malloc_testing</text>
-    <text x="653.01" y="497.06" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="10.951659400184525" fill="#fff">malloc.c</text>
-    <text x="583.07" y="119.28" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.731471721568044" fill="#fff">main.c</text>
-    <text x="639.14" y="119.28" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">main.c.save</text>
-    <text x="580.47" y="585.30" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.081856063749058" fill="#fff">Makefile</text>
-    <text x="656.62" y="717.01" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.686087564232976" fill="#fff">README.md</text>
-    <text x="211.81" y="312.54" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.66035236036242" fill="#fff">align.h</text>
-    <text x="282.90" y="312.54" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="10.111910173353706" fill="#fff">alloc_hdr.h</text>
-    <text x="245.73" y="376.49" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="10.481167952687029" fill="#fff">block.h</text>
-    <text x="245.79" y="251.72" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.705070209550978" fill="#fff">fit.h</text>
-    <text x="318.13" y="374.35" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.673952312736658" fill="#fff">malloc.h</text>
-    <text x="315.24" y="249.43" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.609858179206332" fill="#fff">utils.h</text>
-    <text x="172.80" y="251.03" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="10.609851153281967" fill="#fff">zone.h</text>
-    <text x="478.95" y="309.96" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.152171992800934" fill="#fff">align.d</text>
-    <text x="539.44" y="309.96" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.58901856973906" fill="#fff">fit.d</text>
-    <text x="507.57" y="366.79" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.486781005906423" fill="#fff">malloc.d</text>
-    <text x="507.72" y="260.11" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">utils.d</text>
-    <text x="446.13" y="256.03" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.343358796950353" fill="#fff">zone.d</text>
-    <text x="398.77" y="506.34" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.977707602137476" fill="#fff">align.c</text>
-    <text x="463.58" y="506.34" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.000147191221867" fill="#fff">fit.c</text>
-    <text x="431.09" y="569.29" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="10.700537084226612" fill="#fff">malloc.c</text>
-    <text x="431.10" y="450.47" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.923692343157754" fill="#fff">utils.c</text>
-    <text x="358.93" y="445.75" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.199552552392344" fill="#fff">zone.c</text>
-    <text x="351.96" y="156.32" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.037891641647937" fill="#fff">main.c</text>
-    <text x="429.16" y="156.32" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="10.477513102382298" fill="#fff">show_malloc.c</text>
-    <text x="544.92" y="652.92" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.664088078647191" fill="#fff">malloc.h</text>
-    <text x="620.37" y="652.92" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="10.26970542936418" fill="#fff">malloc.c</text>
-    <text x="580.41" y="722.63" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="11.063522004589005" fill="#fff">main.c</text>
-    <defs><path id="rim-advanced_malloc-malloc-362-349" d="M 300.33 85.44 A 274.66 274.66 0 0 1 424.25 85.44"/></defs>
+            stroke-dasharray="84 42.50 84"
+            transform="rotate(90 399.42 157.83)" />
+    <circle cx="399.47" cy="44.32" r="31.67" fill="#e15759" />
+    <circle cx="462.32" cy="153.06" r="27.69" fill="#59a14f" />
+    <circle cx="716.55" cy="582.13" r="36.34" fill="#bab0ab" />
+    <circle cx="787.58" cy="582.13" r="32.81" fill="#59a14f" />
+    <circle cx="204.77" cy="381.50" r="27.62" fill="#ff9da7" />
+    <circle cx="263.18" cy="381.50" r="28.91" fill="#ff9da7" />
+    <circle cx="232.65" cy="434.01" r="29.96" fill="#ff9da7" />
+    <circle cx="232.70" cy="331.52" r="27.75" fill="#ff9da7" />
+    <circle cx="292.12" cy="432.27" r="27.66" fill="#ff9da7" />
+    <circle cx="289.77" cy="329.66" r="27.47" fill="#ff9da7" />
+    <circle cx="172.75" cy="330.96" r="30.33" fill="#ff9da7" />
+    <circle cx="424.94" cy="379.39" r="23.32" fill="#af7aa1" />
+    <circle cx="474.71" cy="379.39" r="24.56" fill="#af7aa1" />
+    <circle cx="448.50" cy="426.11" r="27.12" fill="#af7aa1" />
+    <circle cx="448.62" cy="338.36" r="22.17" fill="#af7aa1" />
+    <circle cx="397.96" cy="335.04" r="26.71" fill="#af7aa1" />
+    <circle cx="358.63" cy="541.27" r="25.67" fill="#9c755f" />
+    <circle cx="411.91" cy="541.27" r="25.74" fill="#9c755f" />
+    <circle cx="385.20" cy="592.98" r="30.59" fill="#9c755f" />
+    <circle cx="385.21" cy="495.34" r="25.52" fill="#9c755f" />
+    <circle cx="325.92" cy="491.49" r="32.01" fill="#9c755f" />
+    <circle cx="320.24" cy="252.62" r="31.55" fill="#9c755f" />
+    <circle cx="383.62" cy="252.62" r="29.95" fill="#9c755f" />
+    <circle cx="369.92" cy="100.03" r="27.63" fill="#ff9da7" />
+    <circle cx="432.55" cy="100.03" r="29.36" fill="#9c755f" />
+    <circle cx="399.42" cy="157.83" r="31.62" fill="#9c755f" />
+    <text x="708.93" y="265.37" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.882064938441554" fill="#fff">circle.svg</text>
+    <text x="310.39" y="675.46" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.83470308219223" fill="#fff">libft_malloc_x86_64_Linux.so</text>
+    <text x="300.66" y="150.33" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.319076520077312" fill="#fff">Makefile</text>
+    <text x="553.17" y="737.62" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="10.516113807389075" fill="#fff">malloc_log.json</text>
+    <text x="242.35" y="661.83" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.454631794727641" fill="#fff">README.md</text>
+    <text x="252.17" y="237.26" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.700062538218654" fill="#fff">libft_malloc_x86_64_Linux.so</text>
+    <text x="230.96" y="523.52" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.066313484787512" fill="#fff">Makefile</text>
+    <text x="446.63" y="269.61" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.800788962236702" fill="#fff">README.md</text>
+    <text x="471.41" y="487.54" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.815199018635086" fill="#fff">test_runner</text>
+    <text x="196.04" y="252.24" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">test_runner.d</text>
+    <text x="638.91" y="408.55" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.54793272519086" fill="#fff">align.h</text>
+    <text x="701.91" y="408.55" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.912796150642695" fill="#fff">alloc_hdr.h</text>
+    <text x="669.11" y="464.52" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.083988381919688" fill="#fff">block.h</text>
+    <text x="669.16" y="355.77" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.297304279862185" fill="#fff">fit.h</text>
+    <text x="733.01" y="463.70" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.639446052492993" fill="#fff">malloc.h</text>
+    <text x="728.86" y="352.81" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.24146356473228" fill="#fff">mem_logger.h</text>
+    <text x="608.65" y="355.14" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.455480545902814" fill="#fff">utils.h</text>
+    <text x="603.43" y="461.66" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.162189941823943" fill="#fff">zone.h</text>
+    <text x="556.68" y="606.96" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">block.d</text>
+    <text x="607.57" y="606.96" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">fit.d</text>
+    <text x="581.15" y="653.14" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">malloc.d</text>
+    <text x="581.18" y="562.43" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">mem_logger.d</text>
+    <text x="634.56" y="651.46" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">show.d</text>
+    <text x="633.51" y="561.42" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">utils.d</text>
+    <text x="529.34" y="563.91" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">zone.d</text>
+    <text x="584.29" y="212.38" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.814782678189413" fill="#fff">block.c</text>
+    <text x="638.98" y="242.59" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.498913196609932" fill="#fff">fit.c</text>
+    <text x="640.01" y="178.49" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.280304039263275" fill="#fff">malloc.c</text>
+    <text x="585.49" y="277.17" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.164097163130492" fill="#fff">mem_logger.c</text>
+    <text x="581.75" y="148.57" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.893403523653912" fill="#fff">show.c</text>
+    <text x="529.99" y="244.59" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.685793996967131" fill="#fff">utils.c</text>
+    <text x="525.80" y="180.85" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.026224063986941" fill="#fff">zone.c</text>
+    <text x="395.83" y="710.12" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.912796150642695" fill="#fff">comprehensive_test.c</text>
+    <text x="457.22" y="710.12" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.090042164392036" fill="#fff">main.c</text>
+    <text x="429.49" y="765.24" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.002342164428482" fill="#fff">test_inplace_realloc.c</text>
+    <text x="429.46" y="655.66" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.83855959351008" fill="#fff">test_logger.c</text>
+    <text x="399.47" y="44.32" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.049589736770026" fill="#fff">Makefile</text>
+    <text x="462.32" y="153.06" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">README.md</text>
+    <text x="716.55" y="582.13" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="10.382525513767176" fill="#fff">index.html</text>
+    <text x="787.58" y="582.13" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.373117214824683" fill="#fff">README.md</text>
+    <text x="204.77" y="381.50" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">align.h</text>
+    <text x="263.18" y="381.50" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.25898586632638" fill="#fff">alloc_hdr.h</text>
+    <text x="232.65" y="434.01" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.559951553179936" fill="#fff">block.h</text>
+    <text x="232.70" y="331.52" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">fit.h</text>
+    <text x="292.12" y="432.27" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">malloc.h</text>
+    <text x="289.77" y="329.66" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">utils.h</text>
+    <text x="172.75" y="330.96" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.664840578081172" fill="#fff">zone.h</text>
+    <text x="424.94" y="379.39" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">align.d</text>
+    <text x="474.71" y="379.39" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">fit.d</text>
+    <text x="448.50" y="426.11" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">malloc.d</text>
+    <text x="448.62" y="338.36" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">utils.d</text>
+    <text x="397.96" y="335.04" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">zone.d</text>
+    <text x="358.63" y="541.27" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">align.c</text>
+    <text x="411.91" y="541.27" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">fit.c</text>
+    <text x="385.20" y="592.98" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.738759699430247" fill="#fff">malloc.c</text>
+    <text x="385.21" y="495.34" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">utils.c</text>
+    <text x="325.92" y="491.49" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.145627387696889" fill="#fff">zone.c</text>
+    <text x="320.24" y="252.62" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.013751381288113" fill="#fff">main.c</text>
+    <text x="383.62" y="252.62" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.556972539921018" fill="#fff">show_malloc.c</text>
+    <text x="369.92" y="100.03" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8" fill="#fff">malloc.h</text>
+    <text x="432.55" y="100.03" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="8.387595090988164" fill="#fff">malloc.c</text>
+    <text x="399.42" y="157.83" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="9.034644382127876" fill="#fff">main.c</text>
+    <defs><path id="rim-advanced_malloc-malloc-323-412" d="M 260.99 196.42 A 227.77 227.77 0 0 1 384.43 196.42"/></defs>
     <text font-family="sans-serif" font-size="14" fill="#000">
-      <textPath href="#rim-advanced_malloc-malloc-362-349" startOffset="50%" text-anchor="middle">advanced_malloc</textPath>
+      <textPath href="#rim-advanced_malloc-malloc-323-412" startOffset="50%" text-anchor="middle">advanced_malloc</textPath>
     </text>
-    <defs><path id="rim-include-advanced_malloc-malloc-244-312" d="M 210.10 187.40 A 132.69 132.69 0 0 1 278.33 187.40"/></defs>
+    <defs><path id="rim-include-malloc-668-412" d="M 633.87 305.29 A 115.49 115.49 0 0 1 701.85 305.29"/></defs>
     <text font-family="sans-serif" font-size="14" fill="#000">
-      <textPath href="#rim-include-advanced_malloc-malloc-244-312" startOffset="50%" text-anchor="middle">include</textPath>
+      <textPath href="#rim-include-malloc-668-412" startOffset="50%" text-anchor="middle">include</textPath>
     </text>
-    <defs><path id="rim-toy_malloc-malloc-607-655" d="M 563.16 552.40 A 115.23 115.23 0 0 1 650.89 552.40"/></defs>
+    <defs><path id="rim-include-advanced_malloc-malloc-231-381" d="M 197.49 281 A 109.16 109.16 0 0 1 265.35 281"/></defs>
     <text font-family="sans-serif" font-size="14" fill="#000">
-      <textPath href="#rim-toy_malloc-malloc-607-655" startOffset="50%" text-anchor="middle">toy_malloc</textPath>
+      <textPath href="#rim-include-advanced_malloc-malloc-231-381" startOffset="50%" text-anchor="middle">include</textPath>
     </text>
-    <defs><path id="rim-src-advanced_malloc-malloc-395-507" d="M 374.18 400.89 A 111.76 111.76 0 0 1 414.95 400.89"/></defs>
+    <defs><path id="rim-src-malloc-584-212" d="M 563.72 118.41 A 99.42 99.42 0 0 1 604.43 118.41"/></defs>
     <text font-family="sans-serif" font-size="14" fill="#000">
-      <textPath href="#rim-src-advanced_malloc-malloc-395-507" startOffset="50%" text-anchor="middle">src</textPath>
+      <textPath href="#rim-src-malloc-584-212" startOffset="50%" text-anchor="middle">src</textPath>
     </text>
-    <defs><path id="rim-objs-advanced_malloc-malloc-477-312" d="M 453.21 220.38 A 98.17 98.17 0 0 1 500.73 220.38"/></defs>
+    <defs><path id="rim-objs-malloc-583-607" d="M 559.04 518.31 A 95.47 95.47 0 0 1 606.54 518.31"/></defs>
     <text font-family="sans-serif" font-size="14" fill="#000">
-      <textPath href="#rim-objs-advanced_malloc-malloc-477-312" startOffset="50%" text-anchor="middle">objs</textPath>
+      <textPath href="#rim-objs-malloc-583-607" startOffset="50%" text-anchor="middle">objs</textPath>
     </text>
-    <defs><path id="rim-random-malloc-700-224" d="M 669.56 150.85 A 83.27 83.27 0 0 1 730.14 150.85"/></defs>
+    <defs><path id="rim-toy_malloc-malloc-421-102" d="M 377.68 21.32 A 95.19 95.19 0 0 1 464.37 21.32"/></defs>
     <text font-family="sans-serif" font-size="14" fill="#000">
-      <textPath href="#rim-random-malloc-700-224" startOffset="50%" text-anchor="middle">random</textPath>
+      <textPath href="#rim-toy_malloc-malloc-421-102" startOffset="50%" text-anchor="middle">toy_malloc</textPath>
     </text>
-    <defs><path id="rim-tests-advanced_malloc-malloc-390-156" d="M 362.65 86.97 A 78.14 78.14 0 0 1 416.52 86.97"/></defs>
+    <defs><path id="rim-src-advanced_malloc-malloc-355-542" d="M 334.87 455.95 A 91.94 91.94 0 0 1 375.53 455.95"/></defs>
     <text font-family="sans-serif" font-size="14" fill="#000">
-      <textPath href="#rim-tests-advanced_malloc-malloc-390-156" startOffset="50%" text-anchor="middle">tests</textPath>
+      <textPath href="#rim-src-advanced_malloc-malloc-355-542" startOffset="50%" text-anchor="middle">src</textPath>
     </text>
-    <defs><path id="rim-tests-malloc-604-119" d="M 577.69 72.77 A 57.02 57.02 0 0 1 630.58 72.77"/></defs>
+    <defs><path id="rim-tests-malloc-429-711" d="M 402.42 631.11 A 87.89 87.89 0 0 1 456.53 631.11"/></defs>
     <text font-family="sans-serif" font-size="14" fill="#000">
-      <textPath href="#rim-tests-malloc-604-119" startOffset="50%" text-anchor="middle">tests</textPath>
+      <textPath href="#rim-tests-malloc-429-711" startOffset="50%" text-anchor="middle">tests</textPath>
     </text>
-    <defs><path id="rim-src-malloc-648-498" d="M 629.87 459.98 A 45.40 45.40 0 0 1 665.88 459.98"/></defs>
-    <text font-family="sans-serif" font-size="11.348923883321959" fill="#000">
-      <textPath href="#rim-src-malloc-648-498" startOffset="50%" text-anchor="middle">src</textPath>
+    <defs><path id="rim-objs-advanced_malloc-malloc-423-381" d="M 399.68 307.41 A 80.88 80.88 0 0 1 446.98 307.41"/></defs>
+    <text font-family="sans-serif" font-size="14" fill="#000">
+      <textPath href="#rim-objs-advanced_malloc-malloc-423-381" startOffset="50%" text-anchor="middle">objs</textPath>
     </text>
-    <defs><path id="rim-include-malloc-680-349" d="M 654.04 321.14 A 41.04 41.04 0 0 1 705.72 321.14"/></defs>
-    <text font-family="sans-serif" font-size="10.25904152459486" fill="#000">
-      <textPath href="#rim-include-malloc-680-349" startOffset="50%" text-anchor="middle">include</textPath>
+    <defs><path id="rim-visualizer-malloc-750-582" d="M 708.17 527.78 A 71.97 71.97 0 0 1 792.42 527.78"/></defs>
+    <text font-family="sans-serif" font-size="14" fill="#000">
+      <textPath href="#rim-visualizer-malloc-750-582" startOffset="50%" text-anchor="middle">visualizer</textPath>
     </text>
-    <defs><path id="rim-tests-toy_malloc-malloc-580-723" d="M 558.88 692.19 A 40.62 40.62 0 0 1 601.94 692.19"/></defs>
-    <text font-family="sans-serif" font-size="10.153830275430904" fill="#000">
-      <textPath href="#rim-tests-toy_malloc-malloc-580-723" startOffset="50%" text-anchor="middle">tests</textPath>
+    <defs><path id="rim-tests-advanced_malloc-malloc-351-253" d="M 324.46 198.09 A 64.32 64.32 0 0 1 377.80 198.09"/></defs>
+    <text font-family="sans-serif" font-size="14" fill="#000">
+      <textPath href="#rim-tests-advanced_malloc-malloc-351-253" startOffset="50%" text-anchor="middle">tests</textPath>
     </text>
-    <defs><path id="rim-src-toy_malloc-malloc-620-653" d="M 603.85 622.88 A 37.84 37.84 0 0 1 636.88 622.88"/></defs>
-    <text font-family="sans-serif" font-size="9.459240772109181" fill="#000">
-      <textPath href="#rim-src-toy_malloc-malloc-620-653" startOffset="50%" text-anchor="middle">src</textPath>
-    </text>
-    <defs><path id="rim-include-toy_malloc-malloc-545-653" d="M 521.34 630.09 A 35.72 35.72 0 0 1 568.50 630.09"/></defs>
+    <defs><path id="rim-tests-toy_malloc-malloc-399-158" d="M 379.57 134.85 A 33.50 33.50 0 0 1 419.28 134.85"/></defs>
     <text font-family="sans-serif" font-size="9" fill="#000">
-      <textPath href="#rim-include-toy_malloc-malloc-545-653" startOffset="50%" text-anchor="middle">include</textPath>
+      <textPath href="#rim-tests-toy_malloc-malloc-399-158" startOffset="50%" text-anchor="middle">tests</textPath>
     </text>
-    <defs><path id="rim-objs-malloc-661-421" d="M 643.55 399.24 A 30.97 30.97 0 0 1 679.21 399.24"/></defs>
+    <defs><path id="rim-src-toy_malloc-malloc-433-100" d="M 416.59 77.18 A 31.24 31.24 0 0 1 448.51 77.18"/></defs>
     <text font-family="sans-serif" font-size="9" fill="#000">
-      <textPath href="#rim-objs-malloc-661-421" startOffset="50%" text-anchor="middle">objs</textPath>
+      <textPath href="#rim-src-toy_malloc-malloc-433-100" startOffset="50%" text-anchor="middle">src</textPath>
+    </text>
+    <defs><path id="rim-include-toy_malloc-malloc-370-100" d="M 347.32 85.06 A 29.51 29.51 0 0 1 392.53 85.06"/></defs>
+    <text font-family="sans-serif" font-size="9" fill="#000">
+      <textPath href="#rim-include-toy_malloc-malloc-370-100" startOffset="50%" text-anchor="middle">include</textPath>
     </text>
   </g>
 
   <g class="legend">
-    <g transform="translate(900, 768)">
-      <circle cx="6" cy="0" r="6" fill="#a6761d" />
+    <g transform="translate(900, 750)">
+      <circle cx="6" cy="0" r="6" fill="#9c755f" />
       <text x="20" y="0" font-family="sans-serif" font-size="12"
             dominant-baseline="middle" fill="#000">.c</text>
     </g>
-    <g transform="translate(900, 786)">
-      <circle cx="6" cy="0" r="6" fill="#e6ab02" />
+    <g transform="translate(900, 768)">
+      <circle cx="6" cy="0" r="6" fill="#af7aa1" />
       <text x="20" y="0" font-family="sans-serif" font-size="12"
             dominant-baseline="middle" fill="#000">.d</text>
     </g>
-    <g transform="translate(900, 804)">
-      <circle cx="6" cy="0" r="6" fill="#66a61e" />
+    <g transform="translate(900, 786)">
+      <circle cx="6" cy="0" r="6" fill="#ff9da7" />
       <text x="20" y="0" font-family="sans-serif" font-size="12"
             dominant-baseline="middle" fill="#000">.h</text>
     </g>
+    <g transform="translate(900, 804)">
+      <circle cx="6" cy="0" r="6" fill="#bab0ab" />
+      <text x="20" y="0" font-family="sans-serif" font-size="12"
+            dominant-baseline="middle" fill="#000">.html</text>
+    </g>
     <g transform="translate(900, 822)">
-      <circle cx="6" cy="0" r="6" fill="#e7298a" />
+      <circle cx="6" cy="0" r="6" fill="#76b7b2" />
+      <text x="20" y="0" font-family="sans-serif" font-size="12"
+            dominant-baseline="middle" fill="#000">.json</text>
+    </g>
+    <g transform="translate(900, 840)">
+      <circle cx="6" cy="0" r="6" fill="#59a14f" />
       <text x="20" y="0" font-family="sans-serif" font-size="12"
             dominant-baseline="middle" fill="#000">.md</text>
     </g>
-    <g transform="translate(900, 840)">
-      <circle cx="6" cy="0" r="6" fill="#1b9e77" />
-      <text x="20" y="0" font-family="sans-serif" font-size="12"
-            dominant-baseline="middle" fill="#000">.save</text>
-    </g>
     <g transform="translate(900, 858)">
-      <circle cx="6" cy="0" r="6" fill="#d95f02" />
+      <circle cx="6" cy="0" r="6" fill="#f28e2c" />
       <text x="20" y="0" font-family="sans-serif" font-size="12"
             dominant-baseline="middle" fill="#000">.so</text>
     </g>
     <g transform="translate(900, 876)">
-      <circle cx="6" cy="0" r="6" fill="#1b9e77" />
+      <circle cx="6" cy="0" r="6" fill="#4e79a7" />
       <text x="20" y="0" font-family="sans-serif" font-size="12"
             dominant-baseline="middle" fill="#000">.svg</text>
     </g>

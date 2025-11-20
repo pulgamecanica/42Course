@@ -1,169 +1,273 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: malloc                                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18                               #+#    #+#             */
+/*   Updated: 2025/01/18                              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "malloc.h"
-#include <valgrind/valgrind.h>
-#include <valgrind/memcheck.h>
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/*
-	Safeguard when using threads.
-	This are wrappers used in all the public functions.
-*/
-#ifdef USE_MALLOC_LOCK
-#define PRE_MALLOC   pthread_mutex_lock(&g_malloc_mutex)
-#define POST_MALLOC  pthread_mutex_unlock(&g_malloc_mutex)
-#else
-#define PRE_MALLOC (1)
-#define POST_MALLOC (1)
-#endif
+#include "zone.h"
+#include "block.h"
+#include "alloc_hdr.h"
+#include "utils.h"
+#include "fit.h"
+#include "align.h"
+#include <stddef.h>
+#include <string.h>
 
 /*
-	Taken from Doug Leah's implementation, very useful shortcut.
+** ft_free_list_remove()
+**
+** Removes a block from the zone's free list.
+** Helper function for malloc when allocating a block.
 */
-#define MMAP(addr, size, prot, flags) \
- (mmap((addr), (size), (prot), (flags)|MAP_ANONYMOUS, -1, 0))
 
+static void	ft_free_list_remove(ft_zone_t *zone, ft_block_t *block)
+{
+	if (block->prev_free)
+		block->prev_free->next_free = block->next_free;
+	else
+		zone->free_head = block->next_free;
+	if (block->next_free)
+		block->next_free->prev_free = block->prev_free;
+	block->prev_free = NULL;
+	block->next_free = NULL;
+}
 
 /*
-	Util MACROS to deal with chunk header offsets
+** ft_free_list_add()
+**
+** Adds a block to the front of the zone's free list.
+** Helper function for free() when returning a block to the free pool.
 */
-#define chunk2mem(p)   ((void *)((char*)(p) + 2*SIZE_SZ))
-#define mem2chunk(mem) ((t_mchunkptr)((char*)(mem) - 2*SIZE_SZ))
-#define MIN_CHUNK_SIZE (sizeof(t_malloc_chunk))
-#define MINSIZE  \
-  (CHUNK_SIZE_T)(((MIN_CHUNK_SIZE+MALLOC_ALIGN_MASK) & ~MALLOC_ALIGN_MASK))
-#define aligned_OK(m)  (((PTR_UINT)((m)) & (MALLOC_ALIGN_MASK)) == 0)
 
-// static t_malloc_state av_;  /* never directly referenced */
-
-// #define get_malloc_state() (&(av_))
-
-// 0x00000ff0123fee
-static inline size_t round_up(size_t x, size_t a) {
-    return (x + a - 1) & ~(a - 1);
+static void	ft_free_list_add(ft_zone_t *zone, ft_block_t *block)
+{
+	block->prev_free = NULL;
+	block->next_free = zone->free_head;
+	if (zone->free_head)
+		zone->free_head->prev_free = block;
+	zone->free_head = block;
 }
-
-static inline void *error() {
-	// MALLOC_FAILURE_ACTION;
-	return NULL;
-}
-
-// static void malloc_init_state(t_malloc_state *av) {
-// 	// int     i;
-//   // mbinptr bin;
-
-//   /* Establish circular links for normal bins */
-//   // for (i = 1; i < NBINS; ++i) {
-//   //   bin = bin_at(av,i);
-//   //   bin->fd = bin->bk = bin;
-//   // }
-
-// 	// av->top_pad        = DEFAULT_TOP_PAD;
-//   // av->n_mmaps_max    = DEFAULT_MMAP_MAX;
-//   // av->mmap_threshold = DEFAULT_MMAP_THRESHOLD;
-//   // av->trim_threshold = DEFAULT_TRIM_THRESHOLD;
-
-//   // av->top            = initial_top(av);//depending on the bin?
-//   av->pagesize       = PAGE_SIZE;
-// }
 
 /*
-	PTHREAD_MUTEX_INITIALIZER vs pthread_mutex_init.
-	https://pages.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf ; page6.
+** ft_allocate_from_block()
+**
+** Allocates memory from a free block.
+** Splits the block if there's excess space, marks it as allocated,
+** sets up the allocation header, and returns the user pointer.
 */
-// static pthread_mutex_t g_malloc_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-#include <stdio.h>
+static void	*ft_allocate_from_block(ft_zone_t *zone, ft_block_t *block,
+	size_t alloc_size, size_t user_size)
+{
+	ft_block_t		*remainder;
+	ft_alloc_hdr_t	*hdr;
+	void			*user_ptr;
 
-void *malloc(size_t n) {
-	int r = write(1, "Called malloc\n", 15);
-	(void)r;
-	if (PRE_MALLOC) return error();
-	
-	size_t need  = sizeof(header_t) + n;
-	size_t mlen  = round_up(need, (size_t)PAGE_SIZE);
-
-	void *base = MMAP(NULL, mlen, PROT_READ | PROT_WRITE,
-										MAP_PRIVATE | MAP_ANONYMOUS);
-	if (base == MAP_FAILED) return error();
-
-	header_t *h = (header_t *)base;
-	h->mapped = mlen;
-	h->user   = n;
-
-	void *user = (void *)((char *)base + sizeof(header_t));
-
-
-	VALGRIND_MALLOCLIKE_BLOCK(user, n, 0, 0);
-
-	if (!POST_MALLOC) return error();
-
-	// small:
-	// return chunk2mem(victim);
-	// medium:
-	// return chunk2mem(victim);
-	// big:
-	// return chunk2mem(victim);
-	return user;
+	ft_free_list_remove(zone, block);
+	remainder = ft_block_split(block, alloc_size);
+	if (remainder)
+		ft_free_list_add(zone, remainder);
+	block->is_free = 0;
+	hdr = (ft_alloc_hdr_t *)ft_block_data_ptr(block);
+	hdr->magic = FT_ALLOC_MAGIC;
+	hdr->size = user_size;
+	hdr->block = block;
+	hdr->zone = zone;
+	user_ptr = ft_alloc_hdr_to_ptr(hdr);
+	zone->used_size += user_size;
+	zone->block_count++;
+	return (user_ptr);
 }
 
-void free(void *ptr) {
-	if (!PRE_MALLOC || !ptr) return;
+/*
+** malloc()
+**
+** Main allocation function.
+** Algorithm:
+** 1. Determine zone type based on size
+** 2. Calculate total size needed (including all headers and alignment)
+** 3. For TINY/SMALL: try to find existing free block, else create new zone
+** 4. For LARGE: always create dedicated zone
+** 5. Allocate from block and return user pointer
+*/
 
-	// Mark as freed to Memcheck before unmapping (order doesn’t really matter here)
-	VALGRIND_FREELIKE_BLOCK(ptr, /*redzone*/0);
+void	*malloc(size_t size)
+{
+	uint8_t		type;
+	size_t		alloc_size;
+	ft_zone_t	*zone;
+	ft_block_t	*block;
 
-	header_t *h = (header_t *)((char *)ptr - sizeof(header_t));
-	VALGRIND_MAKE_MEM_NOACCESS(ptr, h->user);
-
-	// Actually release memory back to the OS
-	munmap((void *)h, h->mapped);
-	puts("HEY, im freeee!\n");
-	if (!POST_MALLOC) return;
-}
-
-void *realloc(void *ptr, size_t size) {
-	(void)size;
-	if (!PRE_MALLOC || !ptr) return NULL;
-	// TODO
-	if (!POST_MALLOC) {
+	if (size == 0)
+		return (NULL);
+	type = ft_zone_get_type(size);
+	alloc_size = ft_calculate_alloc_size(size); // block header + alloc header + size
+	if (type == FT_ZONE_LARGE)
+	{
+		zone = ft_zone_create(type, alloc_size);
+		if (!zone)
+			return (NULL);
+		block = zone->first_block;
+		return (ft_allocate_from_block(zone, block, alloc_size, size));
 	}
-	return ptr;
-}
-
-int mallopt(int num, int val) {
-	int res;
-
-	res = 0;
-	(void)num;
-	(void)val;
-	if (!PRE_MALLOC) return 0;
-	// TODO
-	if (!POST_MALLOC) {
+	block = ft_first_fit(type, alloc_size, &zone);
+	if (!block)
+	{
+		zone = ft_zone_create(type, 0);
+		if (!zone)
+			return (NULL);
+		block = zone->first_block;
 	}
-	return res;
+	return (ft_allocate_from_block(zone, block, alloc_size, size));
 }
 
-// t_mallinfo mallinfo(void) {
-// 	t_mallinfo m;
+/*
+** ft_coalesce_blocks()
+**
+** After freeing a block, attempt to merge it with adjacent free blocks
+** to reduce external fragmentation.
+*/
 
-// 	if (!PRE_MALLOC || !ptr) {
-// 		return (t_mallinfo){ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-// 	}
-// 	// TODO
-// 	if (!POST_MALLOC) {
-// 	}
-// 	return m;
-// }
+static void	ft_coalesce_blocks(ft_zone_t *zone, ft_block_t *block)
+{
+	ft_block_t	*next;
 
-void show_alloc_mem(void) {
-	if (!PRE_MALLOC) return;
-	// TODO
-	if (!POST_MALLOC) {
+	if (block->next && ft_block_can_merge(block, block->next))
+	{
+		next = block->next;
+		ft_free_list_remove(zone, next); // must remove since it's independent
+		ft_block_merge(block, next);
+	}
+	if (block->prev && ft_block_can_merge(block->prev, block))
+	{
+		ft_free_list_remove(zone, block); // must remove since it's independent
+		ft_block_merge(block->prev, block);
 	}
 }
 
-#ifdef __cplusplus
-} /* extern "C" */
-#endif
+/*
+** free()
+**
+** Frees previously allocated memory.
+** Algorithm:
+** 1. Validate pointer using allocation header magic number
+** 2. Mark block as free and add to free list
+** 3. Coalesce with adjacent free blocks
+** 4. If zone becomes empty, unmap it (all zone types)
+*/
+
+void	free(void *ptr)
+{
+	ft_alloc_hdr_t	*hdr;
+	ft_block_t		*block;
+	ft_zone_t		*zone;
+
+	if (!ptr)
+		return ;
+	hdr = ft_alloc_hdr_from_ptr(ptr);
+	if (!ft_alloc_hdr_is_valid(hdr))
+		return ;
+	hdr->magic = 0;
+	block = (ft_block_t *)hdr->block;
+	zone = (ft_zone_t *)hdr->zone;
+	block->is_free = 1;
+	ft_free_list_add(zone, block);
+	zone->used_size -= hdr->size;
+	zone->block_count--;
+	ft_coalesce_blocks(zone, block);
+	if (zone->block_count == 0)
+		ft_zone_remove(zone);
+}
+
+/*
+** ft_try_extend_in_place()
+**
+** Attempts to extend an allocation in place by merging with the next free block.
+** This avoids expensive malloc + memcpy + free operations when growing buffers.
+**
+** @param block: Current block to extend
+** @param zone: Zone containing the block
+** @param needed_size: Total size needed for the new allocation
+** @return: 1 if extension succeeded, 0 if not possible
+**
+** Context: Called by realloc when growing an allocation. Checks if the next
+** block in address order is free and large enough to accommodate the growth.
+*/
+
+static int	ft_try_extend_in_place(ft_block_t *block, ft_zone_t *zone,
+	size_t needed_size)
+{
+	ft_block_t	*next;
+	size_t		available;
+	ft_block_t	*remainder;
+
+	next = block->next;
+	if (!next || !next->is_free)
+		return (0);
+	available = block->size + next->size;
+	if (available < needed_size)
+		return (0);
+	ft_free_list_remove(zone, next);
+	ft_block_merge(block, next);
+	remainder = ft_block_split(block, needed_size);
+	if (remainder)
+		ft_free_list_add(zone, remainder);
+	return (1);
+}
+
+/*
+** realloc()
+**
+** Changes the size of an allocation.
+** Algorithm:
+** 1. Handle special cases (NULL ptr, size 0)
+** 2. Validate existing allocation
+** 3. If new size fits in current block, just update header
+** 4. Try to extend in place by merging with next free block
+** 5. If that fails: allocate new block, copy data, free old block
+*/
+
+void	*realloc(void *ptr, size_t size)
+{
+	ft_alloc_hdr_t	*hdr;
+	void			*new_ptr;
+	size_t			copy_size;
+
+	if (!ptr)
+		return (malloc(size));
+	if (size == 0)
+	{
+		free(ptr);
+		return (NULL);
+	}
+	hdr = ft_alloc_hdr_from_ptr(ptr);
+	if (!ft_alloc_hdr_is_valid(hdr))
+		return (NULL);
+	if (hdr->size >= size)
+	{
+		hdr->size = size;
+		return (ptr);
+	}
+	if (ft_try_extend_in_place((ft_block_t *)hdr->block,
+		(ft_zone_t *)hdr->zone, ft_calculate_alloc_size(size)))
+	{
+		((ft_zone_t *)hdr->zone)->used_size += (size - hdr->size);
+		hdr->size = size;
+		return (ptr);
+	}
+	new_ptr = malloc(size);
+	if (!new_ptr)
+		return (NULL);
+	copy_size = hdr->size < size ? hdr->size : size;
+	memcpy(new_ptr, ptr, copy_size);
+	free(ptr);
+	return (new_ptr);
+}
+

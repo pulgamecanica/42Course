@@ -63,29 +63,19 @@ FACTS:
 
 ---
 
-List of MACROS:
-
-- `MALLOC_DEBUG`
-- `USE_MALLOC_LOCK` (safe thread malloc)
-(
----
-
 ### Fragmentation
 
 	Internal fragmentation
 	Rarely do processes require the use of an exact number of pages. As a result, the last page will likely only be partially full, wasting some amount of memory. Larger page sizes lead to a large amount of wasted memory, as more potentially unused portions of memory are loaded into the main memory. Smaller page sizes ensure a closer match to the actual amount of memory required in an allocation.
 	[https://en.wikipedia.org/wiki/Page_(computer_memory)](https://en.wikipedia.org/wiki/Page_(computer_memory))
 
----
-
-Perfect 👍 — let’s do this *cleanly*, using fixed-width ASCII diagrams so the spacing won’t collapse on you again.
 
 ---
 
 ### Memory alignment
 
-For any type `T`, the C standard defines an **alignment requirement** `A = alignof(T)`.
-👉 Rule: an object of type `T` must be stored at an address that is a multiple of `A`.
+For any type `T`, the C standard defines an **alignment requirement** `A = alignof(T)`
+Rule: an object of type `T` must be stored at an address that is a multiple of `A`.
 
 So:
 
@@ -177,22 +167,6 @@ In practice, that’s `alignof(max_align_t)`.
 So if your platform’s `max_align_t` requires 16-byte alignment, then **every malloc result must be a multiple of 16**, no matter if the user requested 1 byte or 1000 bytes.
 
 In practice, malloc doesn't care about types `T`, the address is the alignement it must follow, since the address of any type will still be just an address `*`.
-
----
-
-# 🔹 Real-world consequences
-
-* If you put your allocator’s **header** in front of the user memory, you must make sure the **user pointer** is aligned to `alignof(max_align_t)`. This is why allocators round the header size up to that alignment.
-* Misalignment can cause:
-
-  * CPU crashes (on strict hardware like older SPARC, Itanium, ARM in some modes).
-  * Slower access (x86 allows misaligned, but with penalties).
-  * Undefined behavior in C (the language itself forbids accessing a misaligned pointer as type `T`).
-
----
-
-✅ **So alignment = which addresses are legal starting points for an object of a certain type.**
-The allocator must ensure the pointer it returns lands on one of those legal addresses for the *strictest* type.
 
 ---
 

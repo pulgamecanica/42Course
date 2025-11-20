@@ -31,10 +31,22 @@ int main(void) {
 	if (ptr3 == NULL)
     handle_error("malloc");
 
-	fprintf(stdout, "Program finished, freeing everything!\n");
+	fprintf(stdout, "Program finished, showing memory state:\n");
+
+#ifdef FT_MODE
+	show_alloc_mem();
+#endif
+
+	fprintf(stdout, "\nFreeing everything...\n");
 
 	free(ptr1);
 	free(ptr2);
 	free(ptr3);
+
+#ifdef FT_MODE
+	fprintf(stdout, "\nAfter freeing:\n");
+	show_alloc_mem();
+#endif
+
 	return 0;
 }

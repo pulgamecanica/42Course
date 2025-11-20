@@ -1,0 +1,3914 @@
+{
+  "snapshot_id": 0,
+  "timestamp_us": 0,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 50,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 1496,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 1,
+  "timestamp_us": 210,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 150,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef530138", "size": 100}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 1496,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 2,
+  "timestamp_us": 321,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef530138", "size": 100},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 1496,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 3,
+  "timestamp_us": 442,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef530138", "size": 100},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 1696,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 4,
+  "timestamp_us": 552,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef530138", "size": 100},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 2208,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 512},
+        {"address": "0x7845ef534888", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 5,
+  "timestamp_us": 697,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef530138", "size": 100},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3008,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 512},
+        {"address": "0x7845ef534888", "size": 800},
+        {"address": "0x7845ef534c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 6,
+  "timestamp_us": 833,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef530138", "size": 100},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3008,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 512},
+        {"address": "0x7845ef534888", "size": 800},
+        {"address": "0x7845ef534c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 7,
+  "timestamp_us": 983,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef530138", "size": 100},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3008,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 512},
+        {"address": "0x7845ef534888", "size": 800},
+        {"address": "0x7845ef534c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef529000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5290a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52b000",
+      "total_size": 12288,
+      "used_size": 8192,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52b0a8", "size": 8192}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 8,
+  "timestamp_us": 1122,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef530138", "size": 100},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3008,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 512},
+        {"address": "0x7845ef534888", "size": 800},
+        {"address": "0x7845ef534c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef528000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5280a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52b000",
+      "total_size": 12288,
+      "used_size": 8192,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52b0a8", "size": 8192}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 9,
+  "timestamp_us": 1252,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 125,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3008,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 512},
+        {"address": "0x7845ef534888", "size": 800},
+        {"address": "0x7845ef534c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef528000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5280a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52b000",
+      "total_size": 12288,
+      "used_size": 8192,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52b0a8", "size": 8192}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 10,
+  "timestamp_us": 1361,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 125,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 2496,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 472},
+        {"address": "0x7845ef534888", "size": 800}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef528000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5280a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52b000",
+      "total_size": 12288,
+      "used_size": 8192,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52b0a8", "size": 8192}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 11,
+  "timestamp_us": 1505,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 125,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 50},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 2496,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 472},
+        {"address": "0x7845ef534888", "size": 800}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 12,
+  "timestamp_us": 1646,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 125,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 2496,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 472},
+        {"address": "0x7845ef534888", "size": 800}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 13,
+  "timestamp_us": 1761,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 170,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 2496,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 200},
+        {"address": "0x7845ef534628", "size": 472},
+        {"address": "0x7845ef534888", "size": 800}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 14,
+  "timestamp_us": 1884,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 170,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 2896,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 800},
+        {"address": "0x7845ef534c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 15,
+  "timestamp_us": 2004,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 170,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 2896,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 16,
+  "timestamp_us": 2123,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 170,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 2896,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 17,
+  "timestamp_us": 2247,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120},
+        {"address": "0x7845ef5302c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 2896,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 18,
+  "timestamp_us": 2367,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120},
+        {"address": "0x7845ef5302c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 450},
+        {"address": "0x7845ef534e28", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 19,
+  "timestamp_us": 2512,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 362,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120},
+        {"address": "0x7845ef5302c8", "size": 64},
+        {"address": "0x7845ef530368", "size": 128}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 450},
+        {"address": "0x7845ef534e28", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 20,
+  "timestamp_us": 2685,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 362,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120},
+        {"address": "0x7845ef5302c8", "size": 64},
+        {"address": "0x7845ef530368", "size": 128}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 450},
+        {"address": "0x7845ef534e28", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef528000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5280a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 21,
+  "timestamp_us": 2816,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120},
+        {"address": "0x7845ef5302c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 450},
+        {"address": "0x7845ef534e28", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef528000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5280a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 22,
+  "timestamp_us": 2945,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120},
+        {"address": "0x7845ef5302c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 300},
+        {"address": "0x7845ef534e28", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef528000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5280a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 23,
+  "timestamp_us": 3056,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120},
+        {"address": "0x7845ef5302c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3946,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 900},
+        {"address": "0x7845ef534fe8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef528000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5280a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 24,
+  "timestamp_us": 3178,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5300a8", "size": 40},
+        {"address": "0x7845ef5301f8", "size": 120},
+        {"address": "0x7845ef5302c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3946,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 150},
+        {"address": "0x7845ef534fe8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef528000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5280a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 25,
+  "timestamp_us": 3299,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 194,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5301f8", "size": 120},
+        {"address": "0x7845ef5302c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3946,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 150},
+        {"address": "0x7845ef534fe8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef528000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5280a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 26,
+  "timestamp_us": 3421,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7845ef530000",
+      "total_size": 16384,
+      "used_size": 130,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5301f8", "size": 120}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3946,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 150},
+        {"address": "0x7845ef534fe8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef528000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5280a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 27,
+  "timestamp_us": 3584,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3946,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 600},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 150},
+        {"address": "0x7845ef534fe8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef532000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5320a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 28,
+  "timestamp_us": 3700,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 472},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 150}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef532000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5320a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 29,
+  "timestamp_us": 3823,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3196,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534888", "size": 100},
+        {"address": "0x7845ef534c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef532000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5320a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 30,
+  "timestamp_us": 3934,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3096,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef532000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5320a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52e000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52e0a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 31,
+  "timestamp_us": 4075,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3096,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef532000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5320a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52c000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52c0a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 32,
+  "timestamp_us": 4200,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3096,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef532000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5320a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef52a000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef52a0a8", "size": 2048}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 33,
+  "timestamp_us": 4337,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7845ef534000",
+      "total_size": 65536,
+      "used_size": 3096,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7845ef5340a8", "size": 1024},
+        {"address": "0x7845ef534508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7845ef532000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7845ef5320a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 0,
+  "timestamp_us": 0,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 50,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 1496,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 1,
+  "timestamp_us": 175,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 150,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c4138", "size": 100}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 1496,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 2,
+  "timestamp_us": 276,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c4138", "size": 100},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 1496,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 3,
+  "timestamp_us": 382,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c4138", "size": 100},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 1696,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 4,
+  "timestamp_us": 491,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c4138", "size": 100},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 2208,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 512},
+        {"address": "0x7b9b122c8888", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 5,
+  "timestamp_us": 577,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c4138", "size": 100},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3008,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 512},
+        {"address": "0x7b9b122c8888", "size": 800},
+        {"address": "0x7b9b122c8c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 6,
+  "timestamp_us": 694,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c4138", "size": 100},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3008,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 512},
+        {"address": "0x7b9b122c8888", "size": 800},
+        {"address": "0x7b9b122c8c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 7,
+  "timestamp_us": 815,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c4138", "size": 100},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3008,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 512},
+        {"address": "0x7b9b122c8888", "size": 800},
+        {"address": "0x7b9b122c8c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bd000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bd0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bf000",
+      "total_size": 12288,
+      "used_size": 8192,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bf0a8", "size": 8192}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 8,
+  "timestamp_us": 950,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 225,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c4138", "size": 100},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3008,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 512},
+        {"address": "0x7b9b122c8888", "size": 800},
+        {"address": "0x7b9b122c8c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bc000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bc0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bf000",
+      "total_size": 12288,
+      "used_size": 8192,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bf0a8", "size": 8192}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 9,
+  "timestamp_us": 1090,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 125,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3008,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 512},
+        {"address": "0x7b9b122c8888", "size": 800},
+        {"address": "0x7b9b122c8c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bc000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bc0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bf000",
+      "total_size": 12288,
+      "used_size": 8192,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bf0a8", "size": 8192}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 10,
+  "timestamp_us": 1198,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 125,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 2496,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 472},
+        {"address": "0x7b9b122c8888", "size": 800}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bc000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bc0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bf000",
+      "total_size": 12288,
+      "used_size": 8192,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bf0a8", "size": 8192}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 11,
+  "timestamp_us": 1312,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 125,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 50},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 2496,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 472},
+        {"address": "0x7b9b122c8888", "size": 800}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 12,
+  "timestamp_us": 1416,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 125,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 75}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 2496,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 472},
+        {"address": "0x7b9b122c8888", "size": 800}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 13,
+  "timestamp_us": 1540,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 170,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 2496,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 200},
+        {"address": "0x7b9b122c8628", "size": 472},
+        {"address": "0x7b9b122c8888", "size": 800}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 14,
+  "timestamp_us": 1647,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 170,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 2896,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 800},
+        {"address": "0x7b9b122c8c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 15,
+  "timestamp_us": 1761,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 170,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 2896,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 16,
+  "timestamp_us": 1883,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 170,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 2896,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 17,
+  "timestamp_us": 2006,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120},
+        {"address": "0x7b9b122c42c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 2896,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 18,
+  "timestamp_us": 2119,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120},
+        {"address": "0x7b9b122c42c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 450},
+        {"address": "0x7b9b122c8e28", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 19,
+  "timestamp_us": 2216,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 362,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120},
+        {"address": "0x7b9b122c42c8", "size": 64},
+        {"address": "0x7b9b122c4368", "size": 128}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 450},
+        {"address": "0x7b9b122c8e28", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 20,
+  "timestamp_us": 2357,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 362,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120},
+        {"address": "0x7b9b122c42c8", "size": 64},
+        {"address": "0x7b9b122c4368", "size": 128}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 450},
+        {"address": "0x7b9b122c8e28", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bc000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bc0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 21,
+  "timestamp_us": 2482,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120},
+        {"address": "0x7b9b122c42c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 450},
+        {"address": "0x7b9b122c8e28", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bc000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bc0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 22,
+  "timestamp_us": 2589,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120},
+        {"address": "0x7b9b122c42c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 300},
+        {"address": "0x7b9b122c8e28", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bc000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bc0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 23,
+  "timestamp_us": 2703,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120},
+        {"address": "0x7b9b122c42c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3946,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 900},
+        {"address": "0x7b9b122c8fe8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bc000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bc0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 24,
+  "timestamp_us": 2802,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 234,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c40a8", "size": 40},
+        {"address": "0x7b9b122c41f8", "size": 120},
+        {"address": "0x7b9b122c42c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3946,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 150},
+        {"address": "0x7b9b122c8fe8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bc000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bc0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 25,
+  "timestamp_us": 2943,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 194,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c41f8", "size": 120},
+        {"address": "0x7b9b122c42c8", "size": 64}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3946,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 150},
+        {"address": "0x7b9b122c8fe8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bc000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bc0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 26,
+  "timestamp_us": 3160,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7b9b122c4000",
+      "total_size": 16384,
+      "used_size": 130,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c41f8", "size": 120}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3946,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 150},
+        {"address": "0x7b9b122c8fe8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122bc000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122bc0a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 27,
+  "timestamp_us": 3292,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3946,
+      "block_count": 5,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 600},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 150},
+        {"address": "0x7b9b122c8fe8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c6000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c60a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 28,
+  "timestamp_us": 3355,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3346,
+      "block_count": 4,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 472},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 150}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c6000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c60a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 29,
+  "timestamp_us": 3406,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3196,
+      "block_count": 3,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8888", "size": 100},
+        {"address": "0x7b9b122c8c08", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c6000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c60a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 30,
+  "timestamp_us": 3454,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3096,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c6000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c60a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c2000",
+      "total_size": 8192,
+      "used_size": 6000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c20a8", "size": 6000}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 31,
+  "timestamp_us": 3508,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3096,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c6000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c60a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c0000",
+      "total_size": 8192,
+      "used_size": 5000,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c00a8", "size": 5000}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 32,
+  "timestamp_us": 3557,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3096,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c6000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c60a8", "size": 4096}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122be000",
+      "total_size": 4096,
+      "used_size": 2048,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122be0a8", "size": 2048}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 33,
+  "timestamp_us": 3611,
+  "zones": [
+    {
+      "type": "SMALL",
+      "address": "0x7b9b122c8000",
+      "total_size": 65536,
+      "used_size": 3096,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7b9b122c80a8", "size": 1024},
+        {"address": "0x7b9b122c8508", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7b9b122c6000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7b9b122c60a8", "size": 4096}
+      ]
+    }
+  ]
+}

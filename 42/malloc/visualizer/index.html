@@ -1,0 +1,3279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ft_malloc Memory Visualizer</title>
+<style>
+  :root {
+    --bg-primary: #0a0e27;
+    --bg-secondary: #151932;
+    --bg-tertiary: #1e2340;
+    --accent-tiny: #ff6b9d;
+    --accent-small: #4d9fff;
+    --accent-large: #00d9a8;
+    --text-primary: #e8eaf0;
+    --text-secondary: #9ca3af;
+    --border-color: #2d3250;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --header-color: #9333ea;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body, html {
+    height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+  }
+
+  /* Minimum resolution warning */
+  #minResWarning {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-primary);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  #minResWarning h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--warning);
+  }
+
+  #minResWarning p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+  }
+
+  /* Top menu bar */
+  #menuBar {
+    height: 60px;
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    gap: 15px;
+    z-index: 100;
+    position: relative;
+  }
+
+  #menuBar h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-tiny), var(--accent-large));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-right: 20px;
+  }
+
+  .menu-btn {
+    padding: 8px 16px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .menu-btn:hover {
+    background: var(--bg-primary);
+    border-color: var(--accent-small);
+    transform: translateY(-1px);
+  }
+
+  .menu-btn.active {
+    background: var(--accent-small);
+    color: white;
+    border-color: var(--accent-small);
+  }
+
+  /* Main container */
+  #mainContainer {
+    display: flex;
+    height: calc(100vh - 140px);
+  }
+
+  /* Left sidebar */
+  #sidebar {
+    width: 300px;
+    background: var(--bg-secondary);
+    border-right: 2px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    transition: transform 0.3s ease, width 0.3s ease;
+  }
+
+  #sidebar.hidden {
+    transform: translateX(-100%);
+    width: 0;
+    overflow: hidden;
+  }
+
+  .sidebar-section {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .sidebar-section h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: var(--accent-small);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Upload area - compact */
+  #uploadArea {
+    border: 2px dashed var(--border-color);
+    border-radius: 6px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: var(--bg-tertiary);
+  }
+
+  #uploadArea:hover {
+    border-color: var(--accent-small);
+    background: var(--bg-primary);
+  }
+
+  #uploadArea.dragging {
+    border-color: var(--accent-large);
+    background: rgba(0, 217, 168, 0.1);
+  }
+
+  #uploadArea svg {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+
+  #uploadArea p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 2px 0;
+  }
+
+  #fileInput {
+    display: none;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, var(--accent-small), var(--accent-large));
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(77, 159, 255, 0.4);
+  }
+
+  /* Stats - compact grid */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .stat-box {
+    background: var(--bg-tertiary);
+    padding: 10px;
+    border-radius: 6px;
+    border-left: 3px solid var(--accent-small);
+  }
+
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  .detach-btn {
+    background: var(--accent-small);
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .detach-btn:hover {
+    background: var(--accent-large);
+    transform: translateY(-1px);
+  }
+
+  /* Info panel */
+  #infoPanel {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    min-height: 100px;
+  }
+
+  #infoPanel.detached {
+    flex: 0;
+    min-height: 0;
+  }
+
+  #infoPanel.detached #detachDetailsBtn,
+  #statsSection.detached #detachStatsBtn {
+    display: none;
+  }
+
+  .detached-placeholder {
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border: 1px dashed var(--border-color);
+    border-radius: 6px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+
+  #infoContent {
+    font-size: 0.85rem;
+  }
+
+  #infoContent pre {
+    background: var(--bg-tertiary);
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    color: var(--accent-large);
+  }
+
+  /* Floating panels base style */
+  .floating-panel {
+    display: none;
+    position: fixed;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow: hidden;
+    resize: both;
+    min-width: 280px;
+    min-height: 200px;
+    max-width: 90vw;
+    max-height: 80vh;
+  }
+
+  .floating-panel.visible {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .floating-panel-header {
+    background: var(--bg-tertiary);
+    padding: 12px 15px;
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    user-select: none;
+  }
+
+  .floating-panel-header h4 {
+    font-size: 1rem;
+    color: var(--accent-small);
+  }
+
+  .floating-panel-content {
+    padding: 15px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .floating-panel-content pre {
+    background: var(--bg-tertiary);
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    color: var(--accent-large);
+  }
+
+  /* Floating details */
+  #floatingDetails {
+    min-width: 300px;
+    max-width: 600px;
+    max-height: 80vh;
+  }
+
+  /* Floating stats */
+  #floatingStats {
+    min-width: 320px;
+    width: 400px;
+    max-height: 80vh;
+  }
+
+  #floatingStats .stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Settings modal */
+  #settingsModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #settingsModal.visible {
+    display: flex;
+  }
+
+  #settingsModalContent {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 30px;
+    width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  #settingsModalContent h2 {
+    color: var(--accent-small);
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+  }
+
+  .settings-group {
+    margin-bottom: 25px;
+  }
+
+  .settings-group h3 {
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+
+  .option-item:hover {
+    background: var(--bg-tertiary);
+  }
+
+  .option-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--accent-small);
+  }
+
+  .option-item label {
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.95rem;
+  }
+
+  .modal-close-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    transition: all 0.2s;
+  }
+
+  .modal-close-btn:hover {
+    background: var(--accent-small);
+    color: white;
+    border-color: var(--accent-small);
+  }
+
+  /* Memory chart */
+  #memoryChartContainer {
+    display: none;
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 400px;
+    height: 300px;
+    min-width: 300px;
+    min-height: 250px;
+    max-width: 90vw;
+    max-height: 80vh;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow: hidden;
+    resize: both;
+  }
+
+  #memoryChartContainer.visible {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #memoryChartHeader {
+    background: var(--bg-tertiary);
+    padding: 10px 15px;
+    cursor: move;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  #memoryChartHeader h4 {
+    font-size: 1rem;
+    color: var(--accent-small);
+  }
+
+  #memoryChartContent {
+    flex: 1;
+    padding: 15px;
+  }
+
+  #memoryChart {
+    width: 100%;
+    height: 100%;
+  }
+
+  .close-btn {
+    background: var(--accent-tiny);
+    color: white;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .close-btn:hover {
+    background: var(--warning);
+    transform: translateY(-1px);
+  }
+
+  /* Main canvas area */
+  #canvasArea {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* View tabs */
+  #viewTabs {
+    display: flex;
+    gap: 10px;
+    padding: 15px 20px 0;
+    background: var(--bg-primary);
+  }
+
+  .view-tab {
+    padding: 10px 20px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+
+  .view-tab:hover {
+    background: var(--bg-tertiary);
+  }
+
+  .view-tab.active {
+    background: var(--bg-primary);
+    border-bottom-color: var(--bg-primary);
+    color: var(--accent-small);
+  }
+
+  /* Canvas content */
+  #canvasContent {
+    flex: 1;
+    background: var(--bg-primary);
+    margin: 0 20px 15px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .canvas-view {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .canvas-view.active {
+    display: block;
+  }
+
+  /* Graph view with panning */
+  #graphView {
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+  }
+
+  #graphView.panning {
+    cursor: grabbing;
+  }
+
+  #graphViewSvg {
+    width: 100%;
+    height: 100%;
+  }
+
+  #graphControls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 10;
+  }
+
+  .control-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .control-btn:hover {
+    background: var(--bg-primary);
+    border-color: var(--accent-small);
+  }
+
+  /* Memory layout nodes */
+  .zone-container {
+    cursor: pointer;
+  }
+
+  .zone-rect {
+    fill: var(--bg-secondary);
+    stroke-width: 3;
+    rx: 4;
+  }
+
+  .zone-rect.tiny {
+    stroke: var(--accent-tiny);
+  }
+
+  .zone-rect.small {
+    stroke: var(--accent-small);
+  }
+
+  .zone-rect.large {
+    stroke: var(--accent-large);
+  }
+
+  .zone-rect:hover {
+    filter: brightness(1.2);
+  }
+
+  .header-rect {
+    fill: var(--header-color);
+    opacity: 0.8;
+    rx: 2;
+  }
+
+  .block-rect {
+    fill: var(--bg-tertiary);
+    stroke: var(--text-secondary);
+    stroke-width: 1;
+    rx: 2;
+  }
+
+  .block-rect.allocated {
+    fill: var(--accent-large);
+    opacity: 0.7;
+  }
+
+  .block-rect:hover {
+    filter: brightness(1.3);
+    stroke-width: 2;
+  }
+
+  .zone-label {
+    fill: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .zone-address-external {
+    fill: var(--text-secondary);
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .block-label {
+    fill: var(--text-primary);
+    font-size: 10px;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .address-label {
+    fill: var(--text-primary);
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    pointer-events: none;
+    user-select: none;
+    font-weight: 500;
+  }
+
+
+  /* Timeline Player */
+  #timeline {
+    height: 80px;
+    background: var(--bg-secondary);
+    border-top: 2px solid var(--border-color);
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  #playerControls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .player-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+  }
+
+  .player-btn:hover {
+    background: var(--accent-small);
+    border-color: var(--accent-small);
+    color: white;
+    transform: scale(1.05);
+  }
+
+  .player-btn:active {
+    transform: scale(0.95);
+  }
+
+  .player-btn.play-pause {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--accent-small), var(--accent-large));
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+  }
+
+  #timelineSlider {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #timelineSliderTrack {
+    position: relative;
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #timelineSliderProgress {
+    position: absolute;
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-small), var(--accent-large));
+    border-radius: 4px;
+    transition: width 0.1s;
+  }
+
+  #timelineSliderHandle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 3px solid var(--accent-small);
+    border-radius: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    transition: left 0.1s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  #timelineSliderHandle:active {
+    cursor: grabbing;
+  }
+
+  #timelineLabels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  #snapshotInfo {
+    min-width: 200px;
+    text-align: right;
+  }
+
+  #snapshotInfoToggle {
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+
+  #snapshotInfoToggle:hover {
+    background: var(--bg-primary);
+    border-color: var(--accent-small);
+  }
+
+  #snapshotDetails {
+    margin-top: 5px;
+  }
+
+  .snapshot-label {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent-small);
+  }
+
+  .snapshot-time {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  /* List view */
+  #listView {
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  .zone-card {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .zone-card:hover {
+    border-color: var(--accent-small);
+    transform: translateX(5px);
+  }
+
+  .zone-card.tiny {
+    border-left: 4px solid var(--accent-tiny);
+  }
+
+  .zone-card.small {
+    border-left: 4px solid var(--accent-small);
+  }
+
+  .zone-card.large {
+    border-left: 4px solid var(--accent-large);
+  }
+
+  .zone-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .zone-type {
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .zone-address {
+    font-family: 'Courier New', monospace;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+
+  .zone-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .zone-stat {
+    text-align: center;
+  }
+
+  .zone-stat-label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+
+  .zone-stat-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-top: 3px;
+  }
+
+  .alloc-list {
+    margin-top: 10px;
+  }
+
+  .alloc-item {
+    background: var(--bg-tertiary);
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 5px 0;
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .alloc-item:hover {
+    background: var(--bg-primary);
+  }
+
+  .alloc-addr {
+    font-family: 'Courier New', monospace;
+    color: var(--accent-large);
+  }
+
+  .alloc-size {
+    color: var(--text-secondary);
+  }
+
+  /* Visual details view */
+  .visual-details {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .visual-details-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .visual-details-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .visual-details-icon.zone {
+    background: linear-gradient(135deg, var(--accent-small), var(--accent-large));
+  }
+
+  .visual-details-icon.block {
+    background: var(--accent-large);
+  }
+
+  .visual-details-icon.header {
+    background: var(--header-color);
+  }
+
+  .visual-details-title {
+    flex: 1;
+  }
+
+  .visual-details-title h4 {
+    font-size: 1.1rem;
+    margin-bottom: 3px;
+    color: var(--accent-small);
+  }
+
+  .visual-details-title p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .visual-details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .visual-detail-item {
+    background: var(--bg-primary);
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  .visual-detail-label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .visual-detail-value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    word-break: break-all;
+  }
+
+  .visual-detail-value.mono {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+  }
+
+  .visual-details-note {
+    background: rgba(77, 159, 255, 0.1);
+    border-left: 3px solid var(--accent-small);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 10px;
+  }
+
+  .raw-json-section {
+    margin-top: 15px;
+  }
+
+  .raw-json-header {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Loading overlay */
+  #loadingOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 14, 39, 0.95);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  #loadingOverlay.visible {
+    display: flex;
+  }
+
+  .loading-content {
+    text-align: center;
+  }
+
+  .loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--accent-small);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .loading-text {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+  }
+
+  .loading-subtext {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary);
+  }
+
+  .empty-state svg {
+    width: 80px;
+    height: 80px;
+    opacity: 0.3;
+    margin-bottom: 20px;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-small);
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div id="loadingOverlay">
+  <div class="loading-content">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading Data...</div>
+    <div class="loading-subtext">Parsing snapshots, please wait</div>
+  </div>
+</div>
+
+<!-- Minimum resolution warning -->
+<div id="minResWarning">
+  <div>
+    <h2>⚠️ Screen Too Small</h2>
+    <p>This visualizer requires a minimum screen width of 1280px.</p>
+    <p>Current width: <span id="currentWidth"></span>px</p>
+    <p style="margin-top: 20px;">Please use a larger screen or maximize your browser window.</p>
+  </div>
+</div>
+
+<!-- Top menu bar -->
+<div id="menuBar">
+  <h1>ft_malloc Visualizer</h1>
+  <button class="menu-btn" id="toggleSidebarBtn">☰ Sidebar</button>
+  <button class="menu-btn" id="settingsBtn">⚙️ Settings</button>
+  <button class="menu-btn" id="clearDataBtn">Clear Data</button>
+  <button class="menu-btn" id="toggleChartBtn">Toggle Chart</button>
+  <div style="flex: 1;"></div>
+  <span id="dataStatus" style="color: var(--text-secondary); font-size: 0.85rem;">No data loaded</span>
+</div>
+
+<!-- Settings modal -->
+<div id="settingsModal">
+  <div id="settingsModalContent">
+    <h2>⚙️ Display Settings</h2>
+
+    <div class="settings-group">
+      <h3>Memory Layout Options</h3>
+      <div class="option-item">
+        <input type="checkbox" id="showZoneHeaders" checked>
+        <label for="showZoneHeaders">Show Zone Headers</label>
+      </div>
+      <div class="option-item">
+        <input type="checkbox" id="showBlockHeaders" checked>
+        <label for="showBlockHeaders">Show Block Headers</label>
+      </div>
+      <div class="option-item">
+        <input type="checkbox" id="showAddresses" checked>
+        <label for="showAddresses">Show Memory Addresses</label>
+      </div>
+      <div class="option-item">
+        <input type="checkbox" id="showBlocks" checked>
+        <label for="showBlocks">Show Individual Blocks</label>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>Block Size Scaling</h3>
+      <div class="option-item">
+        <input type="radio" id="scaleLinear" name="blockScale" value="linear" checked>
+        <label for="scaleLinear">Linear (proportional to actual size)</label>
+      </div>
+      <div class="option-item">
+        <input type="radio" id="scaleLog" name="blockScale" value="log">
+        <label for="scaleLog">Logarithmic (better for varied sizes)</label>
+      </div>
+      <div class="option-item">
+        <input type="radio" id="scaleSqrt" name="blockScale" value="sqrt">
+        <label for="scaleSqrt">Square Root (balanced)</label>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>Timeline Playback</h3>
+      <div class="option-item">
+        <input type="radio" id="timelineVelocity" name="timelineMode" value="velocity" checked>
+        <label for="timelineVelocity">Velocity-based (ms between snapshots)</label>
+      </div>
+      <div class="option-item" style="margin-left: 32px;">
+        <label for="playbackVelocity" style="flex: 1;">Velocity (ms):</label>
+        <input type="number" id="playbackVelocity" min="50" max="5000" step="50" value="500"
+               style="width: 80px; padding: 4px; background: var(--bg-tertiary); border: 1px solid var(--border-color);
+                      border-radius: 4px; color: var(--text-primary);">
+      </div>
+      <div class="option-item">
+        <input type="radio" id="timelineDuration" name="timelineMode" value="duration">
+        <label for="timelineDuration">Duration-based (total playback time)</label>
+      </div>
+      <div class="option-item" style="margin-left: 32px;">
+        <label for="playbackDuration" style="flex: 1;">Total time (seconds):</label>
+        <input type="number" id="playbackDuration" min="1" max="60" step="1" value="10"
+               style="width: 80px; padding: 4px; background: var(--bg-tertiary); border: 1px solid var(--border-color);
+                      border-radius: 4px; color: var(--text-primary);">
+      </div>
+      <div class="option-item" style="margin-left: 32px;">
+        <input type="checkbox" id="respectAllSnapshots" checked>
+        <label for="respectAllSnapshots">Show all snapshots (may exceed duration)</label>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 32px; margin-top: -8px;">
+        When unchecked, snapshots will be skipped to meet duration target
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>Layout Options</h3>
+      <div class="option-item">
+        <label for="maxBlocksPerLine" style="flex: 1;">Max blocks per line:</label>
+        <input type="number" id="maxBlocksPerLine" min="1" max="50" step="1" value="0"
+               style="width: 80px; padding: 4px; background: var(--bg-tertiary); border: 1px solid var(--border-color);
+                      border-radius: 4px; color: var(--text-primary);">
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 32px; margin-top: -8px;">
+        Set to 0 for unlimited blocks per line
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>Performance Options</h3>
+      <div class="option-item">
+        <label for="maxBlocksToRender" style="flex: 1;">Max blocks to render per zone:</label>
+        <input type="number" id="maxBlocksToRender" min="0" max="1000" step="10" value="0"
+               style="width: 80px; padding: 4px; background: var(--bg-tertiary); border: 1px solid var(--border-color);
+                      border-radius: 4px; color: var(--text-primary);">
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 32px; margin-top: -8px;">
+        Limit blocks rendered for better performance (0 = unlimited)
+      </div>
+      <div class="option-item">
+        <input type="checkbox" id="enableGraphCaching">
+        <label for="enableGraphCaching">Enable render caching (faster navigation)</label>
+      </div>
+      <div style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 32px; margin-top: -8px;">
+        Cache rendered frames for smoother playback (uses more memory)
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <h3>Details View Mode</h3>
+      <div class="option-item">
+        <input type="radio" id="detailsRaw" name="detailsMode" value="raw">
+        <label for="detailsRaw">Raw JSON only</label>
+      </div>
+      <div class="option-item">
+        <input type="radio" id="detailsBoth" name="detailsMode" value="both" checked>
+        <label for="detailsBoth">Visual + Raw JSON</label>
+      </div>
+    </div>
+
+    <button class="modal-close-btn" id="closeSettingsBtn">Close</button>
+  </div>
+</div>
+
+<!-- Main container -->
+<div id="mainContainer">
+  <!-- Left sidebar -->
+  <div id="sidebar">
+    <!-- Upload section -->
+    <div class="sidebar-section">
+      <h3>Load Data</h3>
+      <div id="uploadArea">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+        </svg>
+        <p><strong>Drop file or click</strong></p>
+      </div>
+      <input type="file" id="fileInput" accept=".json" />
+      <button class="btn-primary" id="loadExampleBtn">Load Example</button>
+    </div>
+
+    <!-- Stats section -->
+    <div class="sidebar-section" id="statsSection" style="display: none;">
+      <h3>
+        Current Snapshot
+        <button class="detach-btn" id="detachStatsBtn">Detach</button>
+      </h3>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-label">Snapshot</div>
+          <div class="stat-value" id="statSnapshotId">-</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Time (μs)</div>
+          <div class="stat-value" id="statTimestamp">-</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Zones</div>
+          <div class="stat-value" id="statZones">-</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Allocations</div>
+          <div class="stat-value" id="statAllocs">-</div>
+        </div>
+        <div class="stat-box" style="grid-column: 1 / -1;">
+          <div class="stat-label">Total Used</div>
+          <div class="stat-value" id="statTotalUsed">-</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info panel -->
+    <div class="sidebar-section" id="infoPanel" style="flex: 1;">
+      <h3 style="display: flex; justify-content: space-between; align-items: center;">
+        Details
+        <button class="detach-btn" id="detachDetailsBtn">Detach</button>
+      </h3>
+      <div id="infoContent">
+        <p style="color: var(--text-secondary); font-size: 0.85rem;">Click on a zone or block to see details</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Canvas area -->
+  <div id="canvasArea">
+    <!-- View tabs -->
+    <div id="viewTabs">
+      <div class="view-tab active" data-view="graph">Memory Layout</div>
+      <div class="view-tab" data-view="list">List View</div>
+    </div>
+
+    <!-- Canvas content -->
+    <div id="canvasContent">
+      <!-- Graph view -->
+      <div id="graphView" class="canvas-view active">
+        <div id="graphControls">
+          <div class="control-btn" id="zoomInBtn">Zoom +</div>
+          <div class="control-btn" id="zoomOutBtn">Zoom -</div>
+          <div class="control-btn" id="resetViewBtn">Reset</div>
+        </div>
+        <svg id="graphViewSvg"></svg>
+        <div class="empty-state" id="graphEmptyState">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+          <p>No data to visualize</p>
+          <p style="margin-top: 10px; font-size: 0.8rem;">WASD/Arrows to pan • Wheel to zoom • Drag to pan</p>
+        </div>
+      </div>
+
+      <!-- List view -->
+      <div id="listView" class="canvas-view">
+        <div class="empty-state">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+          </svg>
+          <p>No data to display</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Timeline Player -->
+<div id="timeline">
+  <div id="playerControls">
+    <div class="player-btn" id="firstBtn" title="First">⏮</div>
+    <div class="player-btn" id="prevBtn" title="Previous">◀</div>
+    <div class="player-btn play-pause" id="playPauseBtn" title="Play/Pause">▶</div>
+    <div class="player-btn" id="nextBtn" title="Next">▶</div>
+    <div class="player-btn" id="lastBtn" title="Last">⏭</div>
+  </div>
+
+  <div id="timelineSlider">
+    <div id="timelineSliderTrack">
+      <div id="timelineSliderProgress"></div>
+      <div id="timelineSliderHandle"></div>
+    </div>
+    <div id="timelineLabels">
+      <span id="startLabel">0:00</span>
+      <span id="endLabel">0:00</span>
+    </div>
+  </div>
+
+  <div id="snapshotInfo">
+    <div id="snapshotInfoToggle">
+      <span class="snapshot-label" id="snapshotNumber">-</span>
+    </div>
+    <div id="snapshotDetails" style="display: none;">
+      <div class="snapshot-time" id="snapshotTime">-</div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating details panel -->
+<div id="floatingDetails" class="floating-panel">
+  <div class="floating-panel-header">
+    <h4>Details</h4>
+    <button class="close-btn" id="attachDetailsBtn">Attach</button>
+  </div>
+  <div class="floating-panel-content" id="floatingDetailsContent"></div>
+</div>
+
+<!-- Floating stats panel -->
+<div id="floatingStats" class="floating-panel">
+  <div class="floating-panel-header">
+    <h4>Current Snapshot</h4>
+    <button class="close-btn" id="attachStatsBtn">Attach</button>
+  </div>
+  <div class="floating-panel-content">
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-label">Snapshot</div>
+        <div class="stat-value" id="floatStatSnapshotId">-</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Time (μs)</div>
+        <div class="stat-value" id="floatStatTimestamp">-</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Zones</div>
+        <div class="stat-value" id="floatStatZones">-</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Allocations</div>
+        <div class="stat-value" id="floatStatAllocs">-</div>
+      </div>
+      <div class="stat-box" style="grid-column: 1 / -1;">
+        <div class="stat-label">Total Used</div>
+        <div class="stat-value" id="floatStatTotalUsed">-</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Memory chart -->
+<div id="memoryChartContainer">
+  <div id="memoryChartHeader">
+    <h4>Memory Usage Over Time</h4>
+    <button class="close-btn" id="closeChartBtn">Close</button>
+  </div>
+  <div id="memoryChartContent">
+    <canvas id="memoryChart"></canvas>
+  </div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  // Global state
+  let snapshots = [];
+  let currentSnapIdx = 0;
+  const MIN_WIDTH = 1280;
+  let memoryChart = null;
+
+  // View state
+  let viewTransform = { x: 0, y: 0, scale: 1 };
+  let isPanning = false;
+  let panStart = { x: 0, y: 0 };
+  let showZoneHeaders = true;
+  let showBlockHeaders = true;
+  let showAddresses = true;
+  let showBlocks = true;
+  let detailsDetached = false;
+  let statsDetached = false;
+  let chartVisible = false;
+  let isPlaying = false;
+  let playInterval = null;
+  let showSnapshotDetails = false;
+  let blockScaleMode = 'linear';
+  let timelineMode = 'velocity';
+  let playbackVelocity = 500;
+  let playbackDuration = 10;
+  let respectAllSnapshots = true;
+  let maxBlocksPerLine = 0;
+  let maxBlocksToRender = 0;
+  let enableGraphCaching = false;
+  let detailsMode = 'both';
+  let selectedElement = null; // Tracks currently selected element for reactive updates
+
+  // DOM elements
+  const uploadArea = document.getElementById('uploadArea');
+  const fileInput = document.getElementById('fileInput');
+  const loadExampleBtn = document.getElementById('loadExampleBtn');
+  const clearDataBtn = document.getElementById('clearDataBtn');
+  const toggleChartBtn = document.getElementById('toggleChartBtn');
+  const toggleSidebarBtn = document.getElementById('toggleSidebarBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
+  const settingsModal = document.getElementById('settingsModal');
+  const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+  const dataStatus = document.getElementById('dataStatus');
+  const statsSection = document.getElementById('statsSection');
+  const sidebar = document.getElementById('sidebar');
+
+  // Player elements
+  const firstBtn = document.getElementById('firstBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const lastBtn = document.getElementById('lastBtn');
+  const timelineSliderTrack = document.getElementById('timelineSliderTrack');
+  const timelineSliderProgress = document.getElementById('timelineSliderProgress');
+  const timelineSliderHandle = document.getElementById('timelineSliderHandle');
+  const startLabel = document.getElementById('startLabel');
+  const endLabel = document.getElementById('endLabel');
+  const snapshotNumber = document.getElementById('snapshotNumber');
+  const snapshotTime = document.getElementById('snapshotTime');
+  const snapshotInfoToggle = document.getElementById('snapshotInfoToggle');
+  const snapshotDetails = document.getElementById('snapshotDetails');
+  const graphView = document.getElementById('graphView');
+  const graphViewSvg = document.getElementById('graphViewSvg');
+  const graphEmptyState = document.getElementById('graphEmptyState');
+  const listView = document.getElementById('listView');
+  const infoPanel = document.getElementById('infoPanel');
+  const infoContent = document.getElementById('infoContent');
+  const detachDetailsBtn = document.getElementById('detachDetailsBtn');
+  const attachDetailsBtn = document.getElementById('attachDetailsBtn');
+  const detachStatsBtn = document.getElementById('detachStatsBtn');
+  const attachStatsBtn = document.getElementById('attachStatsBtn');
+  const floatingDetails = document.getElementById('floatingDetails');
+  const floatingDetailsContent = document.getElementById('floatingDetailsContent');
+  const floatingStats = document.getElementById('floatingStats');
+  const minResWarning = document.getElementById('minResWarning');
+  const currentWidth = document.getElementById('currentWidth');
+  const mainContainer = document.getElementById('mainContainer');
+  const memoryChartContainer = document.getElementById('memoryChartContainer');
+  const closeChartBtn = document.getElementById('closeChartBtn');
+  const loadingOverlay = document.getElementById('loadingOverlay');
+
+  // Check minimum resolution
+  function checkMinResolution() {
+    const width = window.innerWidth;
+    currentWidth.textContent = width;
+    if (width < MIN_WIDTH) {
+      minResWarning.style.display = 'flex';
+      mainContainer.style.display = 'none';
+    } else {
+      minResWarning.style.display = 'none';
+      mainContainer.style.display = 'flex';
+    }
+  }
+
+  window.addEventListener('resize', checkMinResolution);
+  checkMinResolution();
+
+  // LocalStorage helpers
+  function saveToLocalStorage(data) {
+    try {
+      localStorage.setItem('malloc_visualizer_data', data);
+    } catch (e) {
+      console.error('Failed to save to localStorage:', e);
+    }
+  }
+
+  function loadFromLocalStorage() {
+    try {
+      return localStorage.getItem('malloc_visualizer_data');
+    } catch (e) {
+      console.error('Failed to load from localStorage:', e);
+      return null;
+    }
+  }
+
+  function clearLocalStorage() {
+    localStorage.removeItem('malloc_visualizer_data');
+  }
+
+  function saveUIState() {
+    try {
+      const state = {
+        // Panel states
+        detailsDetached,
+        statsDetached,
+        chartVisible,
+        floatingDetailsPos: detailsDetached ? {
+          top: floatingDetails.style.top,
+          left: floatingDetails.style.left,
+          width: floatingDetails.style.width,
+          height: floatingDetails.style.height
+        } : null,
+        floatingStatsPos: statsDetached ? {
+          top: floatingStats.style.top,
+          left: floatingStats.style.left,
+          width: floatingStats.style.width,
+          height: floatingStats.style.height
+        } : null,
+        chartPos: chartVisible ? {
+          top: memoryChartContainer.style.top,
+          right: memoryChartContainer.style.right,
+          width: memoryChartContainer.style.width,
+          height: memoryChartContainer.style.height
+        } : null,
+        // All visualization settings
+        showZoneHeaders,
+        showBlockHeaders,
+        showAddresses,
+        showBlocks,
+        blockScaleMode,
+        timelineMode,
+        playbackVelocity,
+        playbackDuration,
+        respectAllSnapshots,
+        maxBlocksPerLine,
+        maxBlocksToRender,
+        enableGraphCaching,
+        detailsMode
+      };
+      localStorage.setItem('malloc_visualizer_ui_state', JSON.stringify(state));
+    } catch (e) {
+      console.error('Failed to save UI state:', e);
+    }
+  }
+
+  function loadUIState() {
+    try {
+      const state = JSON.parse(localStorage.getItem('malloc_visualizer_ui_state'));
+      if (!state) return;
+
+      // Restore panel states
+      if (state.detailsDetached && state.floatingDetailsPos) {
+        detailsDetached = true;
+        floatingDetails.classList.add('visible');
+        infoPanel.classList.add('detached');
+        infoContent.innerHTML = '<div class="detached-placeholder">Detached - check floating panel</div>';
+        Object.assign(floatingDetails.style, state.floatingDetailsPos);
+      }
+
+      if (state.statsDetached && state.floatingStatsPos) {
+        statsDetached = true;
+        floatingStats.classList.add('visible');
+        statsSection.classList.add('detached');
+
+        const statsContent = statsSection.querySelector('.stat-grid');
+        if (statsContent) {
+          statsContent.style.display = 'none';
+        }
+        const placeholder = document.createElement('div');
+        placeholder.className = 'detached-placeholder';
+        placeholder.id = 'statsPlaceholder';
+        placeholder.textContent = 'Detached - check floating panel';
+        statsSection.appendChild(placeholder);
+
+        Object.assign(floatingStats.style, state.floatingStatsPos);
+      }
+
+      if (state.chartVisible && state.chartPos) {
+        chartVisible = true;
+        memoryChartContainer.classList.add('visible');
+        Object.assign(memoryChartContainer.style, state.chartPos);
+      }
+
+      // Restore all visualization settings
+      if (state.showZoneHeaders !== undefined) {
+        showZoneHeaders = state.showZoneHeaders;
+        document.getElementById('showZoneHeaders').checked = showZoneHeaders;
+      }
+      if (state.showBlockHeaders !== undefined) {
+        showBlockHeaders = state.showBlockHeaders;
+        document.getElementById('showBlockHeaders').checked = showBlockHeaders;
+      }
+      if (state.showAddresses !== undefined) {
+        showAddresses = state.showAddresses;
+        document.getElementById('showAddresses').checked = showAddresses;
+      }
+      if (state.showBlocks !== undefined) {
+        showBlocks = state.showBlocks;
+        document.getElementById('showBlocks').checked = showBlocks;
+      }
+      if (state.blockScaleMode) {
+        blockScaleMode = state.blockScaleMode;
+        document.querySelector(`input[name="blockScale"][value="${blockScaleMode}"]`).checked = true;
+      }
+      if (state.timelineMode) {
+        timelineMode = state.timelineMode;
+        document.querySelector(`input[name="timelineMode"][value="${timelineMode}"]`).checked = true;
+      }
+      if (state.playbackVelocity !== undefined) {
+        playbackVelocity = state.playbackVelocity;
+        document.getElementById('playbackVelocity').value = playbackVelocity;
+      }
+      if (state.playbackDuration !== undefined) {
+        playbackDuration = state.playbackDuration;
+        document.getElementById('playbackDuration').value = playbackDuration;
+      }
+      if (state.respectAllSnapshots !== undefined) {
+        respectAllSnapshots = state.respectAllSnapshots;
+        document.getElementById('respectAllSnapshots').checked = respectAllSnapshots;
+      }
+      if (state.maxBlocksPerLine !== undefined) {
+        maxBlocksPerLine = state.maxBlocksPerLine;
+        document.getElementById('maxBlocksPerLine').value = maxBlocksPerLine;
+      }
+      if (state.maxBlocksToRender !== undefined) {
+        maxBlocksToRender = state.maxBlocksToRender;
+        document.getElementById('maxBlocksToRender').value = maxBlocksToRender;
+      }
+      if (state.enableGraphCaching !== undefined) {
+        enableGraphCaching = state.enableGraphCaching;
+        document.getElementById('enableGraphCaching').checked = enableGraphCaching;
+      }
+      if (state.detailsMode) {
+        detailsMode = state.detailsMode;
+        document.querySelector(`input[name="detailsMode"][value="${detailsMode}"]`).checked = true;
+      }
+
+      // Restore sidebar hidden state
+      const sidebarHidden = localStorage.getItem('sidebarHidden') === 'true';
+      if (sidebarHidden) {
+        sidebar.classList.add('hidden');
+        toggleSidebarBtn.classList.add('active');
+      }
+    } catch (e) {
+      console.error('Failed to load UI state:', e);
+    }
+  }
+
+  // Settings modal
+  settingsBtn.addEventListener('click', () => {
+    settingsModal.classList.add('visible');
+  });
+
+  closeSettingsBtn.addEventListener('click', () => {
+    settingsModal.classList.remove('visible');
+  });
+
+  settingsModal.addEventListener('click', (e) => {
+    if (e.target === settingsModal) {
+      settingsModal.classList.remove('visible');
+    }
+  });
+
+  // Parse newline-delimited JSON
+  function parseRaw(raw) {
+    const objs = [];
+    let start = 0, depth = 0;
+    for (let i = 0; i < raw.length; i++) {
+      if (raw[i] === '{') {
+        if (depth === 0) start = i;
+        depth++;
+      } else if (raw[i] === '}') {
+        depth--;
+        if (depth === 0) {
+          const chunk = raw.slice(start, i + 1);
+          objs.push(JSON.parse(chunk));
+        }
+      }
+    }
+    return objs;
+  }
+
+  // Load data
+  function loadData(data) {
+    loadingOverlay.classList.add('visible');
+
+    // Use setTimeout to allow UI to update before heavy parsing
+    setTimeout(() => {
+      try {
+        snapshots = parseRaw(data);
+        currentSnapIdx = 0;
+        saveToLocalStorage(data);
+        dataStatus.textContent = `${snapshots.length} snapshots`;
+        if (!statsDetached) {
+          statsSection.style.display = 'block';
+        }
+        renderAll();
+        if (chartVisible) {
+          renderMemoryChart();
+        }
+      } catch (e) {
+        alert('Error parsing JSON: ' + e.message);
+      } finally {
+        loadingOverlay.classList.remove('visible');
+      }
+    }, 50);
+  }
+
+  // Clear data
+  function clearData() {
+    snapshots = [];
+    currentSnapIdx = 0;
+    clearLocalStorage();
+    dataStatus.textContent = 'No data loaded';
+    statsSection.style.display = 'none';
+    renderAll();
+  }
+
+  // Upload area handlers
+  uploadArea.addEventListener('click', () => fileInput.click());
+
+  uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('dragging');
+  });
+
+  uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('dragging');
+  });
+
+  uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragging');
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) handleFile(file);
+  });
+
+  function handleFile(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        loadData(reader.result);
+      } catch (e) {
+        alert('Error parsing JSON: ' + e.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  // Load example data
+  loadExampleBtn.addEventListener('click', () => {
+    loadData(EXAMPLE_DATA);
+  });
+
+  clearDataBtn.addEventListener('click', () => {
+    if (confirm('Clear all data?')) {
+      clearData();
+    }
+  });
+
+  // Toggle chart
+  toggleChartBtn.addEventListener('click', () => {
+    chartVisible = !chartVisible;
+    if (chartVisible) {
+      memoryChartContainer.classList.add('visible');
+      if (snapshots.length > 0) {
+        renderMemoryChart();
+      }
+    } else {
+      memoryChartContainer.classList.remove('visible');
+    }
+    saveUIState();
+  });
+
+  // Toggle sidebar
+  toggleSidebarBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('hidden');
+    const isHidden = sidebar.classList.contains('hidden');
+    localStorage.setItem('sidebarHidden', isHidden);
+    toggleSidebarBtn.classList.toggle('active', isHidden);
+  });
+
+  closeChartBtn.addEventListener('click', () => {
+    chartVisible = false;
+    memoryChartContainer.classList.remove('visible');
+    saveUIState();
+  });
+
+  // View tabs
+  document.querySelectorAll('.view-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.canvas-view').forEach(v => v.classList.remove('active'));
+      tab.classList.add('active');
+      const viewId = tab.dataset.view + 'View';
+      document.getElementById(viewId).classList.add('active');
+      if (snapshots.length > 0) {
+        if (tab.dataset.view === 'graph') {
+          renderGraphView();
+        } else {
+          renderListView();
+        }
+      }
+    });
+  });
+
+  // Options
+  document.getElementById('showZoneHeaders').addEventListener('change', (e) => {
+    showZoneHeaders = e.target.checked;
+    saveUIState();
+    renderGraphView();
+  });
+
+  document.getElementById('showBlockHeaders').addEventListener('change', (e) => {
+    showBlockHeaders = e.target.checked;
+    saveUIState();
+    renderGraphView();
+  });
+
+  document.getElementById('showAddresses').addEventListener('change', (e) => {
+    showAddresses = e.target.checked;
+    saveUIState();
+    renderGraphView();
+  });
+
+  document.getElementById('showBlocks').addEventListener('change', (e) => {
+    showBlocks = e.target.checked;
+    saveUIState();
+    renderGraphView();
+  });
+
+  // Block scale mode
+  document.querySelectorAll('input[name="blockScale"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      blockScaleMode = e.target.value;
+      saveUIState();
+      renderGraphView();
+    });
+  });
+
+  // Timeline mode
+  document.querySelectorAll('input[name="timelineMode"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      timelineMode = e.target.value;
+      saveUIState();
+    });
+  });
+
+  document.getElementById('playbackVelocity').addEventListener('change', (e) => {
+    playbackVelocity = parseInt(e.target.value);
+    saveUIState();
+  });
+
+  document.getElementById('playbackDuration').addEventListener('change', (e) => {
+    playbackDuration = parseInt(e.target.value);
+    saveUIState();
+  });
+
+  document.getElementById('respectAllSnapshots').addEventListener('change', (e) => {
+    respectAllSnapshots = e.target.checked;
+    saveUIState();
+  });
+
+  // Max blocks per line
+  document.getElementById('maxBlocksPerLine').addEventListener('change', (e) => {
+    maxBlocksPerLine = parseInt(e.target.value);
+    saveUIState();
+    renderAll();
+  });
+
+  // Performance options
+  document.getElementById('maxBlocksToRender').addEventListener('change', (e) => {
+    maxBlocksToRender = parseInt(e.target.value);
+    saveUIState();
+    renderAll();
+  });
+
+  document.getElementById('enableGraphCaching').addEventListener('change', (e) => {
+    enableGraphCaching = e.target.checked;
+    saveUIState();
+  });
+
+  // Details mode
+  document.querySelectorAll('input[name="detailsMode"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      detailsMode = e.target.value;
+      saveUIState();
+      refreshDetailsPanel(); // Re-render details with new mode
+    });
+  });
+
+  // Detach/Attach details
+  detachDetailsBtn.addEventListener('click', () => {
+    detailsDetached = true;
+    floatingDetails.classList.add('visible');
+
+    // Copy current content to floating panel
+    floatingDetailsContent.innerHTML = infoContent.innerHTML;
+
+    // Replace with placeholder
+    infoContent.innerHTML = '<div class="detached-placeholder">Detached - check floating panel</div>';
+    infoPanel.classList.add('detached');
+
+    floatingDetails.style.top = '100px';
+    floatingDetails.style.left = '400px';
+    floatingDetails.style.width = '400px';
+    floatingDetails.style.height = '500px';
+    saveUIState();
+  });
+
+  attachDetailsBtn.addEventListener('click', () => {
+    detailsDetached = false;
+    floatingDetails.classList.remove('visible');
+
+    // Restore content from floating panel
+    infoContent.innerHTML = floatingDetailsContent.innerHTML;
+    infoPanel.classList.remove('detached');
+
+    saveUIState();
+  });
+
+  // Detach/Attach stats
+  detachStatsBtn.addEventListener('click', () => {
+    statsDetached = true;
+    floatingStats.classList.add('visible');
+    statsSection.classList.add('detached');
+
+    // Hide stats grid and add placeholder
+    const statsContent = statsSection.querySelector('.stat-grid');
+    if (statsContent) {
+      statsContent.style.display = 'none';
+    }
+
+    // Create placeholder
+    const placeholder = document.createElement('div');
+    placeholder.className = 'detached-placeholder';
+    placeholder.id = 'statsPlaceholder';
+    placeholder.textContent = 'Detached - check floating panel';
+    statsSection.appendChild(placeholder);
+
+    floatingStats.style.top = '100px';
+    floatingStats.style.left = '100px';
+    updateFloatingStats();
+    saveUIState();
+  });
+
+  attachStatsBtn.addEventListener('click', () => {
+    statsDetached = false;
+    floatingStats.classList.remove('visible');
+    statsSection.classList.remove('detached');
+
+    // Remove placeholder
+    const placeholder = document.getElementById('statsPlaceholder');
+    if (placeholder) {
+      placeholder.remove();
+    }
+
+    // Show stats grid
+    const statsContent = statsSection.querySelector('.stat-grid');
+    if (statsContent) {
+      statsContent.style.display = 'grid';
+    }
+
+    saveUIState();
+  });
+
+  // Make floating panels draggable
+  makeDraggable(floatingDetails, floatingDetails.querySelector('.floating-panel-header'));
+  makeDraggable(floatingStats, floatingStats.querySelector('.floating-panel-header'));
+  makeDraggable(memoryChartContainer, document.getElementById('memoryChartHeader'));
+
+  function makeDraggable(element, handle) {
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    handle.onmousedown = dragMouseDown;
+
+    function dragMouseDown(e) {
+      if (e.target.tagName === 'BUTTON') return;
+      e.preventDefault();
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e.preventDefault();
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      element.style.top = (element.offsetTop - pos2) + "px";
+      element.style.left = (element.offsetLeft - pos1) + "px";
+      element.style.right = 'auto';
+    }
+
+    function closeDragElement() {
+      document.onmouseup = null;
+      document.onmousemove = null;
+      saveUIState();
+    }
+  }
+
+  // Render all
+  function renderAll() {
+    updateTimelinePlayer();
+    renderStats();
+    refreshDetailsPanel(); // Update details for current snapshot
+    const activeTab = document.querySelector('.view-tab.active');
+    if (activeTab && activeTab.dataset.view === 'graph') {
+      renderGraphView();
+    } else if (activeTab) {
+      renderListView();
+    }
+  }
+
+  // Update timeline player
+  function updateTimelinePlayer() {
+    if (snapshots.length === 0) {
+      snapshotNumber.textContent = '-';
+      snapshotTime.textContent = '-';
+      startLabel.textContent = '0:00';
+      endLabel.textContent = '0:00';
+      timelineSliderProgress.style.width = '0%';
+      timelineSliderHandle.style.left = '0%';
+      return;
+    }
+
+    const snap = snapshots[currentSnapIdx];
+    const progress = snapshots.length > 1 ? (currentSnapIdx / (snapshots.length - 1)) * 100 : 0;
+
+    snapshotNumber.textContent = `#${snap.snapshot_id}`;
+    snapshotTime.textContent = `${snap.timestamp_us}μs`;
+
+    const startTime = snapshots[0].timestamp_us;
+    const endTime = snapshots[snapshots.length - 1].timestamp_us;
+    startLabel.textContent = formatTime(startTime);
+    endLabel.textContent = formatTime(endTime);
+
+    timelineSliderProgress.style.width = `${progress}%`;
+    timelineSliderHandle.style.left = `${progress}%`;
+  }
+
+  function formatTime(microseconds) {
+    const ms = microseconds / 1000;
+    if (ms < 1000) {
+      return `${ms.toFixed(0)}ms`;
+    }
+    const sec = ms / 1000;
+    if (sec < 60) {
+      return `${sec.toFixed(1)}s`;
+    }
+    const min = Math.floor(sec / 60);
+    const remainingSec = (sec % 60).toFixed(0);
+    return `${min}:${remainingSec.padStart(2, '0')}`;
+  }
+
+  // Player controls
+  firstBtn.addEventListener('click', () => {
+    stopPlaying();
+    currentSnapIdx = 0;
+    renderAll();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    stopPlaying();
+    if (currentSnapIdx > 0) {
+      currentSnapIdx--;
+      renderAll();
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    stopPlaying();
+    if (currentSnapIdx < snapshots.length - 1) {
+      currentSnapIdx++;
+      renderAll();
+    }
+  });
+
+  lastBtn.addEventListener('click', () => {
+    stopPlaying();
+    currentSnapIdx = snapshots.length - 1;
+    renderAll();
+  });
+
+  playPauseBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      stopPlaying();
+    } else {
+      startPlaying();
+    }
+  });
+
+  function startPlaying() {
+    if (snapshots.length === 0) return;
+    isPlaying = true;
+    playPauseBtn.textContent = '⏸';
+
+    // Calculate interval and step based on mode
+    let interval;
+    let step = 1;
+
+    if (timelineMode === 'velocity') {
+      interval = playbackVelocity;
+      step = 1;
+    } else {
+      // Duration mode
+      const totalMs = playbackDuration * 1000;
+      const transitions = snapshots.length - 1;
+
+      if (respectAllSnapshots) {
+        // Show all snapshots, may exceed duration
+        interval = transitions > 0 ? Math.floor(totalMs / transitions) : 500;
+        step = 1;
+      } else {
+        // Skip snapshots to meet duration target
+        // Minimum interval of 50ms for smooth playback
+        const minInterval = 50;
+        interval = minInterval;
+        // Calculate how many snapshots to skip per frame
+        const framesAvailable = Math.floor(totalMs / minInterval);
+        step = Math.max(1, Math.ceil(transitions / framesAvailable));
+      }
+    }
+
+    playInterval = setInterval(() => {
+      if (currentSnapIdx < snapshots.length - 1) {
+        currentSnapIdx = Math.min(currentSnapIdx + step, snapshots.length - 1);
+        renderAll();
+      } else {
+        stopPlaying();
+      }
+    }, interval);
+  }
+
+  function stopPlaying() {
+    isPlaying = false;
+    playPauseBtn.textContent = '▶';
+    if (playInterval) {
+      clearInterval(playInterval);
+      playInterval = null;
+    }
+  }
+
+  // Slider interaction
+  let isDraggingSlider = false;
+
+  timelineSliderHandle.addEventListener('mousedown', (e) => {
+    isDraggingSlider = true;
+    stopPlaying();
+    e.stopPropagation();
+  });
+
+  timelineSliderTrack.addEventListener('click', (e) => {
+    if (snapshots.length === 0) return;
+    const rect = timelineSliderTrack.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = (x / rect.width);
+    currentSnapIdx = Math.round(percentage * (snapshots.length - 1));
+    currentSnapIdx = Math.max(0, Math.min(snapshots.length - 1, currentSnapIdx));
+    renderAll();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (isDraggingSlider && snapshots.length > 0) {
+      const rect = timelineSliderTrack.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentage = Math.max(0, Math.min(1, x / rect.width));
+      currentSnapIdx = Math.round(percentage * (snapshots.length - 1));
+      renderAll();
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDraggingSlider = false;
+  });
+
+  // Toggle snapshot details
+  snapshotInfoToggle.addEventListener('click', () => {
+    showSnapshotDetails = !showSnapshotDetails;
+    snapshotDetails.style.display = showSnapshotDetails ? 'block' : 'none';
+  });
+
+  // Render stats
+  function renderStats() {
+    if (snapshots.length === 0) {
+      document.getElementById('statSnapshotId').textContent = '-';
+      document.getElementById('statTimestamp').textContent = '-';
+      document.getElementById('statZones').textContent = '-';
+      document.getElementById('statAllocs').textContent = '-';
+      document.getElementById('statTotalUsed').textContent = '-';
+      if (statsDetached) updateFloatingStats();
+      return;
+    }
+
+    const snap = snapshots[currentSnapIdx];
+    const totalAllocs = snap.zones.reduce((sum, z) => sum + z.block_count, 0);
+    const totalUsed = snap.zones.reduce((sum, z) => sum + z.used_size, 0);
+
+    document.getElementById('statSnapshotId').textContent = snap.snapshot_id;
+    document.getElementById('statTimestamp').textContent = snap.timestamp_us;
+    document.getElementById('statZones').textContent = snap.zones.length;
+    document.getElementById('statAllocs').textContent = totalAllocs;
+    document.getElementById('statTotalUsed').textContent = formatBytes(totalUsed);
+
+    if (statsDetached) {
+      updateFloatingStats();
+    }
+  }
+
+  function updateFloatingStats() {
+    if (snapshots.length === 0) {
+      document.getElementById('floatStatSnapshotId').textContent = '-';
+      document.getElementById('floatStatTimestamp').textContent = '-';
+      document.getElementById('floatStatZones').textContent = '-';
+      document.getElementById('floatStatAllocs').textContent = '-';
+      document.getElementById('floatStatTotalUsed').textContent = '-';
+      return;
+    }
+
+    const snap = snapshots[currentSnapIdx];
+    const totalAllocs = snap.zones.reduce((sum, z) => sum + z.block_count, 0);
+    const totalUsed = snap.zones.reduce((sum, z) => sum + z.used_size, 0);
+
+    document.getElementById('floatStatSnapshotId').textContent = snap.snapshot_id;
+    document.getElementById('floatStatTimestamp').textContent = snap.timestamp_us;
+    document.getElementById('floatStatZones').textContent = snap.zones.length;
+    document.getElementById('floatStatAllocs').textContent = totalAllocs;
+    document.getElementById('floatStatTotalUsed').textContent = formatBytes(totalUsed);
+  }
+
+  // Format bytes
+  function formatBytes(bytes) {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  // Refresh details panel based on current selection and snapshot
+  function refreshDetailsPanel() {
+    if (!selectedElement || snapshots.length === 0) {
+      return;
+    }
+
+    const snap = snapshots[currentSnapIdx];
+    let obj = null;
+
+    try {
+      // Try to find the selected element in the current snapshot
+      switch (selectedElement.type) {
+        case 'zone':
+          if (selectedElement.zoneIndex < snap.zones.length) {
+            obj = snap.zones[selectedElement.zoneIndex];
+          }
+          break;
+
+        case 'zone-header':
+          if (selectedElement.zoneIndex < snap.zones.length) {
+            const zone = snap.zones[selectedElement.zoneIndex];
+            obj = {
+              type: 'Zone Header',
+              description: 'Metadata structure that manages this memory zone',
+              zone_address: zone.address,
+              zone_type: zone.type,
+              total_size: formatBytes(zone.total_size),
+              used_size: formatBytes(zone.used_size),
+              contains: 'Zone type, size information, free list pointers, block count',
+              location: `Located at zone start: ${zone.address}`,
+              typical_size: '40-64 bytes (implementation dependent)'
+            };
+          }
+          break;
+
+        case 'block':
+          if (selectedElement.zoneIndex < snap.zones.length) {
+            const zone = snap.zones[selectedElement.zoneIndex];
+            if (selectedElement.blockIndex < zone.allocations.length) {
+              const block = zone.allocations[selectedElement.blockIndex];
+              obj = {
+                type: 'Allocated Block (User Data)',
+                address: block.address,
+                size: block.size,
+                formatted_size: formatBytes(block.size),
+                description: 'This is the actual memory returned to the user by malloc()',
+                note: 'The block header (metadata) is located BEFORE this address',
+                what_malloc_returns: block.address,
+                header_location: 'Located immediately before this address (not at this address)'
+              };
+            }
+          }
+          break;
+
+        case 'block-header':
+          if (selectedElement.zoneIndex < snap.zones.length) {
+            const zone = snap.zones[selectedElement.zoneIndex];
+            if (selectedElement.blockIndex < zone.allocations.length) {
+              const block = zone.allocations[selectedElement.blockIndex];
+              const TYPICAL_HEADER_SIZE = 16;
+              obj = {
+                type: 'Block Header (Allocation Metadata)',
+                description: 'Metadata stored before each allocated block',
+                user_data_address: block.address,
+                user_data_size: formatBytes(block.size),
+                note: 'Header is located BEFORE the user data pointer',
+                typical_header_location: `Approximately ${TYPICAL_HEADER_SIZE} bytes before ${block.address}`,
+                contains: [
+                  'Block size',
+                  'Allocation flags (free/used)',
+                  'Magic number (for validation)',
+                  'Possibly prev/next block pointers'
+                ],
+                purpose: 'Tracks allocation size, status, and manages the free list'
+              };
+            }
+          }
+          break;
+      }
+
+      if (obj) {
+        showInfo(obj, false); // Don't update selection tracking
+      } else {
+        // Element no longer exists in this snapshot
+        const html = `
+          <div class="visual-details">
+            <div class="visual-details-header">
+              <div class="visual-details-icon" style="background: var(--warning);">⚠</div>
+              <div class="visual-details-title">
+                <h4>Element Not Found</h4>
+                <p>The selected element no longer exists in snapshot #${snap.snapshot_id}</p>
+              </div>
+            </div>
+            <div class="visual-details-note">
+              The ${selectedElement.type} you selected may have been freed, reallocated, or is not present in this snapshot.
+              Try selecting a different element or returning to the previous snapshot.
+            </div>
+          </div>
+        `;
+        if (detailsDetached) {
+          floatingDetailsContent.innerHTML = html;
+        } else {
+          infoContent.innerHTML = html;
+        }
+      }
+    } catch (e) {
+      console.error('Error refreshing details panel:', e);
+    }
+  }
+
+  // Show info
+  function showInfo(obj, updateSelection = true) {
+    let html = '';
+
+    // Create visual details view if mode is 'both'
+    if (detailsMode === 'both') {
+      html += createVisualDetails(obj);
+      html += '<div class="raw-json-section"><div class="raw-json-header">Raw JSON Data</div>';
+      html += '<pre>' + JSON.stringify(obj, null, 2) + '</pre></div>';
+    } else {
+      // Raw only mode
+      html = '<pre>' + JSON.stringify(obj, null, 2) + '</pre>';
+    }
+
+    if (detailsDetached) {
+      floatingDetailsContent.innerHTML = html;
+    } else {
+      infoContent.innerHTML = html;
+    }
+  }
+
+  // Create visual details HTML
+  function createVisualDetails(obj) {
+    if (!obj || !obj.type) return '';
+
+    let iconType = 'zone';
+    let iconSymbol = 'Z';
+    let title = obj.type || 'Unknown';
+    let subtitle = '';
+    let items = [];
+    let note = '';
+
+    // Determine type and create appropriate visual
+    if (obj.type === 'TINY' || obj.type === 'SMALL' || obj.type === 'LARGE') {
+      // Zone
+      iconType = 'zone';
+      iconSymbol = obj.type[0];
+      title = `${obj.type} Zone`;
+      subtitle = 'Memory zone container';
+      items = [
+        { label: 'Address', value: obj.address, mono: true },
+        { label: 'Total Size', value: formatBytes(obj.total_size) },
+        { label: 'Used Size', value: formatBytes(obj.used_size) },
+        { label: 'Block Count', value: obj.block_count },
+      ];
+      note = `This zone manages ${obj.block_count} allocation(s) with ${formatBytes(obj.used_size)} of ${formatBytes(obj.total_size)} used.`;
+    } else if (obj.type === 'Allocated Block (User Data)') {
+      // Allocated Block
+      iconType = 'block';
+      iconSymbol = 'B';
+      title = 'Allocated Block';
+      subtitle = 'User data returned by malloc()';
+      items = [
+        { label: 'Address', value: obj.address, mono: true },
+        { label: 'Size', value: obj.formatted_size },
+      ];
+      note = obj.note || 'This is the memory pointer returned to the user. The allocation header is located before this address.';
+    } else if (obj.type === 'Block Header (Allocation Metadata)') {
+      // Block Header
+      iconType = 'header';
+      iconSymbol = 'H';
+      title = 'Block Header';
+      subtitle = 'Allocation metadata';
+      items = [
+        { label: 'User Data Address', value: obj.user_data_address, mono: true },
+        { label: 'User Data Size', value: obj.user_data_size },
+      ];
+      note = obj.note || 'This header is located before the user data pointer and contains allocation metadata.';
+    } else if (obj.type === 'Zone Header') {
+      // Zone Header
+      iconType = 'header';
+      iconSymbol = 'ZH';
+      title = 'Zone Header';
+      subtitle = 'Zone metadata structure';
+      items = [
+        { label: 'Zone Address', value: obj.zone_address, mono: true },
+        { label: 'Zone Type', value: obj.zone_type },
+        { label: 'Total Size', value: obj.total_size },
+        { label: 'Used Size', value: obj.used_size },
+      ];
+      note = obj.description || 'Metadata structure that manages this memory zone.';
+    }
+
+    return `
+      <div class="visual-details">
+        <div class="visual-details-header">
+          <div class="visual-details-icon ${iconType}">${iconSymbol}</div>
+          <div class="visual-details-title">
+            <h4>${title}</h4>
+            <p>${subtitle}</p>
+          </div>
+        </div>
+        <div class="visual-details-grid">
+          ${items.map(item => `
+            <div class="visual-detail-item">
+              <div class="visual-detail-label">${item.label}</div>
+              <div class="visual-detail-value ${item.mono ? 'mono' : ''}">${item.value}</div>
+            </div>
+          `).join('')}
+        </div>
+        ${note ? `<div class="visual-details-note">${note}</div>` : ''}
+      </div>
+    `;
+  }
+
+  // Render graph view
+  function renderGraphView() {
+    if (snapshots.length === 0) {
+      graphEmptyState.style.display = 'flex';
+      graphViewSvg.innerHTML = '';
+      return;
+    }
+
+    graphEmptyState.style.display = 'none';
+
+    const snap = snapshots[currentSnapIdx];
+    const svg = d3.select(graphViewSvg);
+    svg.selectAll('*').remove();
+
+    const width = graphView.clientWidth;
+    const height = graphView.clientHeight;
+
+    const g = svg.append('g');
+
+    const ZONE_SPACING = 80;
+    const HEADER_HEIGHT = 30;
+    const BLOCK_HEIGHT = 50;
+    const BLOCK_HEADER_HEIGHT = 20;
+    const MIN_BLOCK_WIDTH = 80;
+    const MAX_ZONE_WIDTH = 1200;
+    const PADDING = 20;
+    const INNER_PADDING = 20;
+
+    let yOffset = PADDING;
+
+    // Scale function based on mode
+    function scaleSize(size, maxSize) {
+      const ratio = size / maxSize;
+      switch(blockScaleMode) {
+        case 'log':
+          return Math.max(MIN_BLOCK_WIDTH, Math.log(size + 1) / Math.log(maxSize + 1) * MAX_ZONE_WIDTH);
+        case 'sqrt':
+          return Math.max(MIN_BLOCK_WIDTH, Math.sqrt(ratio) * MAX_ZONE_WIDTH);
+        case 'linear':
+        default:
+          return Math.max(MIN_BLOCK_WIDTH, ratio * MAX_ZONE_WIDTH);
+      }
+    }
+
+    snap.zones.forEach(zone => {
+      const zoneType = zone.type.toLowerCase();
+
+      // Calculate zone dimensions
+      const maxSize = Math.max(zone.total_size, 1);
+      const blocks = [];
+
+      if (showBlocks && zone.allocations.length > 0) {
+        // Apply max blocks limit for performance
+        const allocsToRender = maxBlocksToRender > 0 && zone.allocations.length > maxBlocksToRender
+          ? zone.allocations.slice(0, maxBlocksToRender)
+          : zone.allocations;
+
+        const hasMore = maxBlocksToRender > 0 && zone.allocations.length > maxBlocksToRender;
+
+        allocsToRender.forEach((alloc, idx) => {
+          const blockWidth = scaleSize(alloc.size, maxSize);
+          blocks.push({
+            type: 'allocated',
+            data: alloc,
+            width: blockWidth,
+            label: formatBytes(alloc.size)
+          });
+        });
+
+        // Add indicator if blocks were truncated
+        if (hasMore) {
+          blocks.push({
+            type: 'truncated',
+            data: { address: '...', size: 0 },
+            width: 100,
+            label: `+${zone.allocations.length - maxBlocksToRender} more`
+          });
+        }
+      }
+
+      // Calculate rows and dimensions
+      let numRows = 1;
+      let maxRowWidth = 0;
+
+      if (blocks.length > 0 && maxBlocksPerLine > 0 && blocks.length > maxBlocksPerLine) {
+        numRows = Math.ceil(blocks.length / maxBlocksPerLine);
+        // Calculate max width needed for any row
+        for (let i = 0; i < blocks.length; i += maxBlocksPerLine) {
+          const rowBlocks = blocks.slice(i, i + maxBlocksPerLine);
+          const rowWidth = rowBlocks.reduce((sum, b) => sum + b.width, 0) + (rowBlocks.length - 1) * 8;
+          maxRowWidth = Math.max(maxRowWidth, rowWidth);
+        }
+      } else {
+        // Single row
+        maxRowWidth = blocks.length > 0
+          ? blocks.reduce((sum, b) => sum + b.width, 0) + (blocks.length - 1) * 8
+          : 300;
+      }
+
+      const contentWidth = maxRowWidth || 300;
+
+      // Zone dimensions including padding
+      const zoneHeaderHeight = showZoneHeaders ? HEADER_HEIGHT : 0;
+      const blockHeaderHeight = (showBlocks && showBlockHeaders) ? BLOCK_HEADER_HEIGHT : 0;
+      const blocksHeight = showBlocks ? (BLOCK_HEIGHT + 10) * numRows - 10 : 0; // -10 to remove extra spacing after last row
+      const rowHeaderHeight = showBlocks && showBlockHeaders ? blockHeaderHeight * numRows : 0;
+
+      const zoneWidth = contentWidth + (INNER_PADDING * 2);
+      const zoneHeight = 30 + zoneHeaderHeight + rowHeaderHeight + blocksHeight + INNER_PADDING;
+
+      // Zone container
+      const zoneGroup = g.append('g')
+        .attr('class', 'zone-container')
+        .attr('transform', `translate(${PADDING}, ${yOffset})`);
+
+      // Zone address OUTSIDE rectangle (top-left, above the zone)
+      if (showAddresses) {
+        zoneGroup.append('text')
+          .attr('class', 'zone-address-external')
+          .attr('x', 0)
+          .attr('y', -5)
+          .text(`Zone @ ${zone.address}`);
+      }
+
+      // Zone background rectangle - contains everything
+      const zoneIndex = snap.zones.indexOf(zone);
+      zoneGroup.append('rect')
+        .attr('class', `zone-rect ${zoneType}`)
+        .attr('width', zoneWidth)
+        .attr('height', zoneHeight)
+        .on('click', () => {
+          selectedElement = { type: 'zone', zoneIndex };
+          showInfo(zone);
+        });
+
+      // Zone label at top (inside rectangle, no overlap)
+      zoneGroup.append('text')
+        .attr('class', 'zone-label')
+        .attr('x', INNER_PADDING)
+        .attr('y', 20)
+        .text(`${zone.type} - ${zone.block_count} blocks - ${formatBytes(zone.used_size)}/${formatBytes(zone.total_size)}`);
+
+      let currentY = 30;
+
+      // Zone Header
+      if (showZoneHeaders) {
+        zoneGroup.append('rect')
+          .attr('class', 'header-rect')
+          .attr('x', INNER_PADDING)
+          .attr('y', currentY)
+          .attr('width', contentWidth)
+          .attr('height', HEADER_HEIGHT - 5)
+          .on('click', () => {
+            selectedElement = { type: 'zone-header', zoneIndex };
+            showInfo({
+              type: 'Zone Header',
+              description: 'Metadata structure that manages this memory zone',
+              zone_address: zone.address,
+              zone_type: zone.type,
+              total_size: formatBytes(zone.total_size),
+              used_size: formatBytes(zone.used_size),
+              contains: 'Zone type, size information, free list pointers, block count',
+              location: `Located at zone start: ${zone.address}`,
+              typical_size: '40-64 bytes (implementation dependent)'
+            });
+          });
+
+        zoneGroup.append('text')
+          .attr('class', 'block-label')
+          .attr('x', INNER_PADDING + 10)
+          .attr('y', currentY + 17)
+          .text('Zone Header (metadata)');
+
+        currentY += HEADER_HEIGHT;
+      }
+
+      // Blocks
+      if (showBlocks && blocks.length > 0) {
+        // Split blocks into rows if maxBlocksPerLine is set
+        const blockRows = [];
+        if (maxBlocksPerLine > 0) {
+          for (let i = 0; i < blocks.length; i += maxBlocksPerLine) {
+            blockRows.push(blocks.slice(i, i + maxBlocksPerLine));
+          }
+        } else {
+          blockRows.push(blocks);
+        }
+
+        blockRows.forEach((rowBlocks, rowIdx) => {
+          // Block headers (one for each allocation in this row)
+          if (showBlockHeaders) {
+            let headerXOffset = INNER_PADDING;
+            let blockIndexOffset = rowIdx * (maxBlocksPerLine > 0 ? maxBlocksPerLine : blocks.length);
+            rowBlocks.forEach((block, idx) => {
+              // Calculate theoretical header address (before user data)
+              const userAddr = block.data.address;
+              const TYPICAL_HEADER_SIZE = 16; // Typical allocation header size
+              const blockIndex = blockIndexOffset + idx;
+
+              zoneGroup.append('rect')
+                .attr('class', 'header-rect')
+                .attr('x', headerXOffset)
+                .attr('y', currentY)
+                .attr('width', block.width)
+                .attr('height', BLOCK_HEADER_HEIGHT - 5)
+                .attr('opacity', 0.6)
+                .on('click', (event) => {
+                  event.stopPropagation();
+                  selectedElement = { type: 'block-header', zoneIndex, blockIndex };
+                  showInfo({
+                    type: 'Block Header (Allocation Metadata)',
+                    description: 'Metadata stored before each allocated block',
+                    user_data_address: userAddr,
+                    user_data_size: formatBytes(block.data.size),
+                    note: 'Header is located BEFORE the user data pointer',
+                    typical_header_location: `Approximately ${TYPICAL_HEADER_SIZE} bytes before ${userAddr}`,
+                    contains: [
+                      'Block size',
+                      'Allocation flags (free/used)',
+                      'Magic number (for validation)',
+                      'Possibly prev/next block pointers'
+                    ],
+                    purpose: 'Tracks allocation size, status, and manages the free list'
+                  });
+                });
+
+              zoneGroup.append('text')
+                .attr('class', 'block-label')
+                .attr('x', headerXOffset + block.width / 2)
+                .attr('y', currentY + 12)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', '9px')
+                .text('Hdr');
+
+              headerXOffset += block.width + 8;
+            });
+
+            currentY += BLOCK_HEADER_HEIGHT;
+          }
+
+          // Actual allocation blocks in this row
+          let xOffset = INNER_PADDING;
+          let blockIndexOffset = rowIdx * (maxBlocksPerLine > 0 ? maxBlocksPerLine : blocks.length);
+          rowBlocks.forEach((block, idx) => {
+            const blockIndex = blockIndexOffset + idx;
+            const blockGroup = zoneGroup.append('g')
+              .attr('transform', `translate(${xOffset}, ${currentY})`);
+
+            const rect = blockGroup.append('rect')
+              .attr('class', `block-rect ${block.type}`)
+              .attr('width', block.width)
+              .attr('height', BLOCK_HEIGHT);
+
+            if (block.type === 'truncated') {
+              // Truncated indicator - different styling and no click
+              rect.attr('opacity', 0.5)
+                  .attr('stroke-dasharray', '5,5');
+            } else {
+              // Normal block - add click handler
+              rect.on('click', (event) => {
+                event.stopPropagation();
+                selectedElement = { type: 'block', zoneIndex, blockIndex };
+                showInfo({
+                  type: 'Allocated Block (User Data)',
+                  address: block.data.address,
+                  size: block.data.size,
+                  formatted_size: formatBytes(block.data.size),
+                  description: 'This is the actual memory returned to the user by malloc()',
+                  note: 'The block header (metadata) is located BEFORE this address',
+                  what_malloc_returns: block.data.address,
+                  header_location: 'Located immediately before this address (not at this address)'
+                });
+              });
+            }
+
+            // Block size label - always show, adjust font and position
+            const sizeFontSize = block.width < 100 ? '10px' : '12px';
+            const sizeYPos = block.width < 100 ? BLOCK_HEIGHT / 2 - 4 : BLOCK_HEIGHT / 2 - 8;
+
+            blockGroup.append('text')
+              .attr('class', 'block-label')
+              .attr('x', block.width / 2)
+              .attr('y', sizeYPos)
+              .attr('text-anchor', 'middle')
+              .attr('font-size', sizeFontSize)
+              .text(block.label);
+
+            // Memory address (more visible, with proper spacing)
+            if (showAddresses) {
+              // For small blocks, show abbreviated address
+              const displayAddr = block.width < 150
+                ? block.data.address.substring(0, 10) + '...'
+                : block.data.address;
+
+              const addrYPos = block.width < 100 ? BLOCK_HEIGHT / 2 + 8 : BLOCK_HEIGHT / 2 + 6;
+              const addrFontSize = block.width < 100 ? '9px' : '11px';
+
+              blockGroup.append('text')
+                .attr('class', 'address-label')
+                .attr('x', block.width / 2)
+                .attr('y', addrYPos)
+                .attr('text-anchor', 'middle')
+                .attr('font-size', addrFontSize)
+                .text(displayAddr);
+            }
+
+            xOffset += block.width + 8;
+          });
+
+          currentY += BLOCK_HEIGHT + 10; // Add spacing between rows
+        });
+      }
+
+      yOffset += zoneHeight + ZONE_SPACING;
+    });
+
+    // Apply transform
+    applyTransform();
+  }
+
+  // Transform management
+  function applyTransform() {
+    const g = d3.select(graphViewSvg).select('g');
+    if (g.empty()) return;
+    g.attr('transform', `translate(${viewTransform.x}, ${viewTransform.y}) scale(${viewTransform.scale})`);
+  }
+
+  function resetView() {
+    viewTransform = { x: 0, y: 0, scale: 1 };
+    applyTransform();
+  }
+
+  function zoomIn() {
+    viewTransform.scale = Math.min(3, viewTransform.scale * 1.2);
+    applyTransform();
+  }
+
+  function zoomOut() {
+    viewTransform.scale = Math.max(0.3, viewTransform.scale / 1.2);
+    applyTransform();
+  }
+
+  // Graph controls
+  document.getElementById('zoomInBtn').addEventListener('click', zoomIn);
+  document.getElementById('zoomOutBtn').addEventListener('click', zoomOut);
+  document.getElementById('resetViewBtn').addEventListener('click', resetView);
+
+  // Panning - works on entire SVG background
+  graphViewSvg.addEventListener('mousedown', (e) => {
+    // Only pan if clicking on SVG background or g elements (not on zones/blocks)
+    const target = e.target;
+    const tagName = target.tagName.toLowerCase();
+    if (tagName === 'svg' || tagName === 'g') {
+      isPanning = true;
+      panStart = { x: e.clientX - viewTransform.x, y: e.clientY - viewTransform.y };
+      graphView.classList.add('panning');
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (isPanning) {
+      viewTransform.x = e.clientX - panStart.x;
+      viewTransform.y = e.clientY - panStart.y;
+      applyTransform();
+      e.preventDefault();
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (isPanning) {
+      isPanning = false;
+      graphView.classList.remove('panning');
+    }
+  });
+
+  // Zoom with mouse wheel
+  graphView.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+    viewTransform.scale = Math.max(0.3, Math.min(3, viewTransform.scale * delta));
+    applyTransform();
+  });
+
+  // Keyboard controls
+  document.addEventListener('keydown', (e) => {
+    const activeTab = document.querySelector('.view-tab.active');
+    if (!activeTab || activeTab.dataset.view !== 'graph') return;
+
+    const step = 20;
+    switch(e.key) {
+      case 'w':
+      case 'W':
+      case 'ArrowUp':
+        viewTransform.y += step;
+        applyTransform();
+        e.preventDefault();
+        break;
+      case 's':
+      case 'S':
+      case 'ArrowDown':
+        viewTransform.y -= step;
+        applyTransform();
+        e.preventDefault();
+        break;
+      case 'a':
+      case 'A':
+      case 'ArrowLeft':
+        viewTransform.x += step;
+        applyTransform();
+        e.preventDefault();
+        break;
+      case 'd':
+      case 'D':
+      case 'ArrowRight':
+        viewTransform.x -= step;
+        applyTransform();
+        e.preventDefault();
+        break;
+      case '+':
+      case '=':
+        zoomIn();
+        e.preventDefault();
+        break;
+      case '-':
+      case '_':
+        zoomOut();
+        e.preventDefault();
+        break;
+      case 'r':
+      case 'R':
+        resetView();
+        e.preventDefault();
+        break;
+    }
+  });
+
+  // Render list view
+  function renderListView() {
+    listView.innerHTML = '';
+    if (snapshots.length === 0) {
+      listView.innerHTML = `
+        <div class="empty-state">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+          </svg>
+          <p>No data to display</p>
+        </div>
+      `;
+      return;
+    }
+
+    const snap = snapshots[currentSnapIdx];
+
+    snap.zones.forEach(zone => {
+      const card = document.createElement('div');
+      card.className = `zone-card ${zone.type.toLowerCase()}`;
+
+      // Apply showBlocks setting - only show allocations if enabled
+      const allocsHtml = (showBlocks && zone.allocations.length > 0) ? zone.allocations.map(a => `
+        <div class="alloc-item">
+          ${showAddresses ? `<span class="alloc-addr">${a.address}</span>` : ''}
+          <span class="alloc-size">${formatBytes(a.size)}</span>
+        </div>
+      `).join('') : '';
+
+      card.innerHTML = `
+        <div class="zone-header">
+          <div class="zone-type">${zone.type}</div>
+          ${showAddresses ? `<div class="zone-address">${zone.address}</div>` : ''}
+        </div>
+        <div class="zone-stats">
+          <div class="zone-stat">
+            <div class="zone-stat-label">Total</div>
+            <div class="zone-stat-value">${formatBytes(zone.total_size)}</div>
+          </div>
+          <div class="zone-stat">
+            <div class="zone-stat-label">Used</div>
+            <div class="zone-stat-value">${formatBytes(zone.used_size)}</div>
+          </div>
+          <div class="zone-stat">
+            <div class="zone-stat-label">Blocks</div>
+            <div class="zone-stat-value">${zone.block_count}</div>
+          </div>
+        </div>
+        ${showBlocks && zone.allocations.length > 0 ? `<div class="alloc-list">${allocsHtml}</div>` : ''}
+      `;
+
+      const zoneIndex = snap.zones.indexOf(zone);
+      card.addEventListener('click', (e) => {
+        if (e.target.classList.contains('alloc-item') || e.target.closest('.alloc-item')) {
+          const allocItem = e.target.classList.contains('alloc-item') ? e.target : e.target.closest('.alloc-item');
+          const blockIndex = Array.from(card.querySelectorAll('.alloc-item')).indexOf(allocItem);
+          const block = zone.allocations[blockIndex];
+          selectedElement = { type: 'block', zoneIndex, blockIndex };
+          showInfo({
+            type: 'Allocated Block (User Data)',
+            address: block.address,
+            size: block.size,
+            formatted_size: formatBytes(block.size),
+            description: 'This is the actual memory returned to the user by malloc()',
+            note: 'The block header (metadata) is located BEFORE this address',
+            what_malloc_returns: block.address,
+            header_location: 'Located immediately before this address (not at this address)'
+          });
+        } else {
+          selectedElement = { type: 'zone', zoneIndex };
+          showInfo(zone);
+        }
+      });
+
+      listView.appendChild(card);
+    });
+  }
+
+  // Render memory chart
+  function renderMemoryChart() {
+    const ctx = document.getElementById('memoryChart').getContext('2d');
+
+    if (memoryChart) {
+      memoryChart.destroy();
+    }
+
+    const labels = snapshots.map(s => `#${s.snapshot_id}`);
+    const tinyData = snapshots.map(s => {
+      const zone = s.zones.find(z => z.type === 'TINY');
+      return zone ? zone.used_size : 0;
+    });
+    const smallData = snapshots.map(s => {
+      const zone = s.zones.find(z => z.type === 'SMALL');
+      return zone ? zone.used_size : 0;
+    });
+    const largeData = snapshots.map(s => {
+      return s.zones.filter(z => z.type === 'LARGE').reduce((sum, z) => sum + z.used_size, 0);
+    });
+
+    memoryChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Tiny',
+            data: tinyData,
+            borderColor: '#ff6b9d',
+            backgroundColor: 'rgba(255, 107, 157, 0.1)',
+            fill: true
+          },
+          {
+            label: 'Small',
+            data: smallData,
+            borderColor: '#4d9fff',
+            backgroundColor: 'rgba(77, 159, 255, 0.1)',
+            fill: true
+          },
+          {
+            label: 'Large',
+            data: largeData,
+            borderColor: '#00d9a8',
+            backgroundColor: 'rgba(0, 217, 168, 0.1)',
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: { color: '#e8eaf0' }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#9ca3af' },
+            grid: { color: '#2d3250' }
+          },
+          y: {
+            ticks: { color: '#9ca3af' },
+            grid: { color: '#2d3250' }
+          }
+        }
+      }
+    });
+  }
+
+  // Load from localStorage on startup
+  window.addEventListener('load', () => {
+    loadUIState();
+    const savedData = loadFromLocalStorage();
+    if (savedData) {
+      loadData(savedData);
+    }
+  });
+
+  // Example data
+  const EXAMPLE_DATA = `{
+  "snapshot_id": 0,
+  "timestamp_us": 0,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7029b068d000",
+      "total_size": 16384,
+      "used_size": 50,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7029b068d0a8", "size": 50}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7029b067d000",
+      "total_size": 65536,
+      "used_size": 472,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7029b067d0a8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7029b067b000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7029b067b0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 1,
+  "timestamp_us": 157,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7029b068d000",
+      "total_size": 16384,
+      "used_size": 150,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7029b068d0a8", "size": 50},
+        {"address": "0x7029b068d138", "size": 100}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7029b067d000",
+      "total_size": 65536,
+      "used_size": 472,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7029b067d0a8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7029b067b000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7029b067b0a8", "size": 4096}
+      ]
+    }
+  ]
+}
+{
+  "snapshot_id": 2,
+  "timestamp_us": 316,
+  "zones": [
+    {
+      "type": "TINY",
+      "address": "0x7029b068d000",
+      "total_size": 16384,
+      "used_size": 50,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7029b068d0a8", "size": 50}
+      ]
+    },
+    {
+      "type": "SMALL",
+      "address": "0x7029b067d000",
+      "total_size": 65536,
+      "used_size": 672,
+      "block_count": 2,
+      "allocations": [
+        {"address": "0x7029b067d0a8", "size": 200},
+        {"address": "0x7029b067d1c8", "size": 472}
+      ]
+    },
+    {
+      "type": "LARGE",
+      "address": "0x7029b067b000",
+      "total_size": 8192,
+      "used_size": 4096,
+      "block_count": 1,
+      "allocations": [
+        {"address": "0x7029b067b0a8", "size": 4096}
+      ]
+    }
+  ]
+}`;
+</script>
+
+</body>
+</html>
