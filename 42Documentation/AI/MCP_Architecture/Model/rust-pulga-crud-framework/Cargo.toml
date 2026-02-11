@@ -1,0 +1,8 @@
+[workspace]
+members = [
+    "pulga-crud-core",
+    "pulga-crud-storage",
+    "example-library"
+]
+
+resolver = "2"

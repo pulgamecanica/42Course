@@ -1,0 +1,13 @@
+[package]
+name = "example-library"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+colored = "3.1.1"
+dialoguer = "0.12.0"
+pulga-crud-core = { path = "../pulga-crud-core" }
+pulga-crud-storage = { path = "../pulga-crud-storage" }
+serde = "1.0.228"
+uuid = { version = "1.20.0", features = ["v4", "fast-rng"] }
+

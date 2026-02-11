@@ -1,0 +1,9 @@
+[package]
+name = "pulga-crud-storage"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+pulga-crud-core = { version = "0.1.0", path = "../pulga-crud-core" }
+serde = "1.0.228"
+serde_json = "1.0.149"
