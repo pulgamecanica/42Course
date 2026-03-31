@@ -1,113 +1,131 @@
-# Makefile created automatically from script\n
-# C++ scop [Thu Nov 16 08:07:50 PM CET 2023]\n
-#MAKEFLAGS += --silent	# Silence makefile [Commented by default]\n
-NAME	=	scop
+# **************************************************************************** #
+#    SCOP - Basic GPU rendering with Vulkan                                    #
+# **************************************************************************** #
 
-SRC	=	$(wildcard srcs/*.cpp)
+NAME		= scop
 
-CPPFLAGS	=	-Wall -Wextra -Werror -std=c++17 -pedantic -fsanitize=address -fno-omit-frame-pointer
+# --------------------------------------------------------------------------- #
+#  Directories                                                                 #
+# --------------------------------------------------------------------------- #
+SRC_DIR		= srcs
+INC_DIR		= includes
+OBJ_DIR		= objs
+SHADER_DIR	= assets/shaders
 
-LDFLAGS = -lGL -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
+# --------------------------------------------------------------------------- #
+#  Sources & Objects                                                           #
+# --------------------------------------------------------------------------- #
+SRC			= $(wildcard $(SRC_DIR)/*.cpp)
+OBJ			= $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
-INC	=	-I includes
+# --------------------------------------------------------------------------- #
+#  Shaders                                                                     #
+# --------------------------------------------------------------------------- #
+GLSLC		= glslc
+VERT_SRC	= $(wildcard $(SHADER_DIR)/*.vert)
+FRAG_SRC	= $(wildcard $(SHADER_DIR)/*.frag)
+VERT_SPV	= $(VERT_SRC:.vert=.vert.spv)
+FRAG_SPV	= $(FRAG_SRC:.frag=.frag.spv)
+SHADER_SPV	= $(VERT_SPV) $(FRAG_SPV)
 
-OBJS_D	=	objs
-
-OBJ	=	$(SRC:srcs/%.cpp=$(OBJS_D)/%.o)
-
-UNAME	:=	$(shell uname)
-
-RM		= rm -rf
-
-VULKAN_HPP = Vulkan-Hpp
-
-VULKAN_HPP_GIT = https://github.com/KhronosGroup/Vulkan-Hpp
+# --------------------------------------------------------------------------- #
+#  Compiler & Flags                                                            #
+# --------------------------------------------------------------------------- #
+UNAME		:= $(shell uname)
 
 ifeq ($(UNAME), Darwin)
-	CPP = c++
+	CPP		= c++
 else ifeq ($(UNAME), FreeBSD)
-	CPP = clang++
+	CPP		= clang++
 else
-	CPP	= c++
+	CPP		= c++
 	CPPFLAGS += -D LINUX
 endif
 
-all: $(NAME)
+CPPFLAGS	+= -Wall -Wextra -Werror -std=c++17 -pedantic
+LDFLAGS		= -lglfw -lvulkan -ldl -lpthread
 
-$(VULKAN_HPP):
-	git clone --recurse-submodules https://github.com/KhronosGroup/Vulkan-Hpp $(VULKAN_HPP)
+# Vulkan SDK (adjust if installed elsewhere)
+VULKAN_SDK	?= /opt/vulkan-sdk/x86_64
+INC			= -I $(INC_DIR) -I $(VULKAN_SDK)/include
+LDFLAGS		+= -L $(VULKAN_SDK)/lib -Wl,-rpath,$(VULKAN_SDK)/lib
 
-$(OBJS_D)/%.o:srcs/%.cpp
-	@mkdir -p $(OBJS_D)
+# --------------------------------------------------------------------------- #
+#  External Dependencies                                                       #
+# --------------------------------------------------------------------------- #
+VULKAN_HPP		= Vulkan-Hpp
+VULKAN_HPP_URL	= https://github.com/KhronosGroup/Vulkan-Hpp
+
+# --------------------------------------------------------------------------- #
+#  Targets                                                                     #
+# --------------------------------------------------------------------------- #
+all: shaders $(NAME)
+
+# -- Shader compilation ------------------------------------------------------ #
+shaders: $(SHADER_SPV)
+
+$(SHADER_DIR)/%.vert.spv: $(SHADER_DIR)/%.vert
+	@printf "$(C_BLUE)Compiling shader $(C_YELLOW)$<$(C_END)\n"
+	$(GLSLC) $< -o $@
+
+$(SHADER_DIR)/%.frag.spv: $(SHADER_DIR)/%.frag
+	@printf "$(C_BLUE)Compiling shader $(C_YELLOW)$<$(C_END)\n"
+	$(GLSLC) $< -o $@
+
+# -- C++ compilation --------------------------------------------------------- #
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(OBJ_DIR)
 	$(CPP) $(CPPFLAGS) $(INC) -o $@ -c $<
 
-$(NAME):	$(OBJ)
-	@printf "Compiling $(C_YELLOW)$(NAME)$(C_END) ... \n"
+$(NAME): $(OBJ)
+	@printf "$(C_BLUE)Linking $(C_YELLOW)$(NAME)$(C_END) ...\n"
 	$(CPP) $(CPPFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
-	@printf "$(C_GREEN)DONE$(C_END)\n"
+	@printf "$(C_GREEN)Build complete: $(NAME)$(C_END)\n"
 
-build_ubuntu: $(VULKAN_HPP)
-# 	sudo apt update
-	sudo apt install libglfw3-dev \
-										libglm-dev
-	sudo apt install vulkan-tools \
-										libvulkan-dev \
-										vulkan-validationlayers-dev\
-										spirv-tools
-	cd $(VULKAN_HPP)
-	cmake  -DVULKAN_HPP_SAMPLES_BUILD=ON -DVULKAN_HPP_SAMPLES_BUILD_WITH_LOCAL_VULKAN_HPP=ON -DVULKAN_HPP_TESTS_BUILD=ON -DVULKAN_HPP_TESTS_BUILD_WITH_LOCAL_VULKAN_HPP=ON -B build
+# -- Setup targets ----------------------------------------------------------- #
+$(VULKAN_HPP):
+	git clone --recurse-submodules $(VULKAN_HPP_URL) $(VULKAN_HPP)
 
+setup_ubuntu: $(VULKAN_HPP)
+	sudo apt install libglfw3-dev vulkan-tools libvulkan-dev \
+		vulkan-validationlayers-dev spirv-tools
 
-build_fedora: $(VULKAN_HPP)
-	sudo dnf install glfw-devel \
-										glm-devel
-	sudo dnf install vulkan-tools
-	sudo dnf install vulkan-loader-devel
-	-sudo dnf install mesa-vulkan-devel
-	-sudo dnf install vulkan-validation-layers-devel
-	cd $(VULKAN_HPP)
-	cmake  -DVULKAN_HPP_SAMPLES_BUILD=ON -DVULKAN_HPP_SAMPLES_BUILD_WITH_LOCAL_VULKAN_HPP=ON -DVULKAN_HPP_TESTS_BUILD=ON -DVULKAN_HPP_TESTS_BUILD_WITH_LOCAL_VULKAN_HPP=ON -B build
+setup_fedora: $(VULKAN_HPP)
+	sudo dnf install glfw-devel vulkan-tools vulkan-loader-devel
+	-sudo dnf install mesa-vulkan-devel vulkan-validation-layers-devel
 
-# build_mac:
-# 	brew install glfw
-# 	brew install glm
-
-test:	re
-	@printf "$(C_BLUE)Testing $(C_YELLOW)$(NAME)$(C_END)\n"
-	@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-	-LSAN_OPTIONS=suppressions=suppressions.supp ./$(NAME)
-	@printf "\n$(C_BLUE)********************************************$(C_END)\n"
-	@printf "\n$(C_BLUE)Finished Test...$(C_END)\n"
-	@$(MAKE) show --no-print-directory
-# 	@$(MAKE) fclean --no-print-directory
-
+# -- Clean ------------------------------------------------------------------- #
 clean:
-	$(RM) $(OBJS_D)
-	@printf "$(C_RED)Cleaning objs$(C_END)\n"
+	rm -rf $(OBJ_DIR)
+	rm -f $(SHADER_SPV)
+	@printf "$(C_RED)Cleaned objects and compiled shaders$(C_END)\n"
 
-fclean:	clean
-	$(RM) $(NAME)
-	@printf "$(C_RED)Deleted Everything$(C_END)\n"
+fclean: clean
+	rm -f $(NAME)
+	@printf "$(C_RED)Removed $(NAME)$(C_END)\n"
 
-re:	fclean all
+re: fclean all
 
+# -- Info -------------------------------------------------------------------- #
 show:
 	@printf "$(C_GREEN)"
-	@printf "UNAME		: $(UNAME)\n"
-	@printf "NAME  		: $(C_YELLOW)$(NAME)$(C_GREEN)\n"
-	@printf "CPP		: $(CPP)\n"
-	@printf "CPPFLAGS		: $(CPPFLAGS)\n"
-	@printf "LDFLAGS		: $(LDFLAGS)\n"
-	@printf "INCLUDES	: $(INC)\n"
-	@printf "SRC		: $(C_YELLOW)$(SRC)$(C_GREEN)\n"
-	@printf "OBJ		: $(C_YELLOW)[$(OBJS_D)] --> $(OBJ)$(C_END)\n"
+	@printf "UNAME    : $(UNAME)\n"
+	@printf "NAME     : $(C_YELLOW)$(NAME)$(C_GREEN)\n"
+	@printf "CPP      : $(CPP)\n"
+	@printf "CPPFLAGS : $(CPPFLAGS)\n"
+	@printf "LDFLAGS  : $(LDFLAGS)\n"
+	@printf "INC      : $(INC)\n"
+	@printf "SRC      : $(C_YELLOW)$(SRC)$(C_GREEN)\n"
+	@printf "OBJ      : $(C_YELLOW)$(OBJ)$(C_GREEN)\n"
+	@printf "SHADERS  : $(C_YELLOW)$(SHADER_SPV)$(C_END)\n"
 
-.PHONY: all test re
+.PHONY: all shaders clean fclean re show setup_ubuntu setup_fedora
 
-C_BLACK		= \033[0;30m
+# --------------------------------------------------------------------------- #
+#  Colors                                                                      #
+# --------------------------------------------------------------------------- #
 C_RED		= \033[0;31m
 C_GREEN		= \033[0;32m
 C_YELLOW	= \033[0;33m
 C_BLUE		= \033[0;34m
-C_WHITE		= \033[0;37m
 C_END		= \033[0m

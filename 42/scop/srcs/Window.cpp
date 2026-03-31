@@ -1,69 +1,60 @@
-//***************************//
-//*Template by pulgamecanica*//
-//***************************//
 #include "Window.hpp"
 #include "lodepng.h"
-#include "Scop.hpp"
+#include "colors.hpp"
 
 namespace scop {
 
 unsigned int Window::iconpng_error = 0;
 
-Window::Window(int width, int height) {
-	this->width = width;
-	this->height = height;
-	// Very important to set up Client API or else glfwCreateWindowSurface will just return error
-	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-	this->glfw_window = glfwCreateWindow(width, height, "42 Pulga Scop", NULL, NULL);
-  if (!this->glfw_window) {
-      glfwTerminate();
-      throw GLFWFailedException();
-  } else {
-  	glfwSetWindowAttrib(this->glfw_window, GLFW_RESIZABLE, GLFW_TRUE);
+Window::Window(int width, int height) : _width(width), _height(height) {
+  glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+  glfw_window = glfwCreateWindow(_width, _height, "42 Pulga Scop", nullptr, nullptr);
+  if (!glfw_window) {
+    glfwTerminate();
+    throw GLFWFailedException();
   }
-  /**
-   * Decode pixels for GLFWimage using external library:
-   * [ https://github.com/lvandeve/lodepng ]
-	 */
-	GLFWimage images[1];
-	Window::iconpng_error = lodepng_decode32_file(&(images[0].pixels), (unsigned*)(&(images[0].width)), (unsigned*)(&(images[0].height)), "icons/42logo.png");
-	if (iconpng_error) {
-		glfwTerminate();
-		throw WindowIconNotLoadedException();
-	} else {
-		glfwSetWindowIcon(this->glfw_window, 1, images);
-		free(images[0].pixels);
-	}
+  glfwSetWindowAttrib(glfw_window, GLFW_RESIZABLE, GLFW_TRUE);
+
+  GLFWimage images[1];
+  iconpng_error = lodepng_decode32_file(
+    &images[0].pixels,
+    reinterpret_cast<unsigned*>(&images[0].width),
+    reinterpret_cast<unsigned*>(&images[0].height),
+    "icons/42logo.png"
+  );
+  if (iconpng_error) {
+    glfwTerminate();
+    throw WindowIconNotLoadedException();
+  }
+  glfwSetWindowIcon(glfw_window, 1, images);
+  free(images[0].pixels);
 }
 
 Window::~Window() {
   glfwDestroyWindow(glfw_window);
-	glfwTerminate();
-	std::cout << *this << " destroyed" << std::endl;
+  glfwTerminate();
+  std::cout << *this << " destroyed" << std::endl;
 }
 
-const char* Window::GLFWFailedException::what() const throw() {
-	return ("GLFW function called failed");
+const char* Window::GLFWFailedException::what() const noexcept {
+  return "GLFW window creation failed";
 }
-const char* Window::WindowIconNotLoadedException::what() const throw() {
-	return (lodepng_error_text(Window::iconpng_error));
+
+const char* Window::WindowIconNotLoadedException::what() const noexcept {
+  return lodepng_error_text(Window::iconpng_error);
 }
 
 void Window::resizeWindow(int width, int height) {
-	std::cout << "new size: " << width << "x" << height << std::endl;
-	if (width > 0)
-		this->width = width;
-	if (height > 0)
-		this->height = height;
+  if (width > 0)  _width = width;
+  if (height > 0) _height = height;
 }
 
-int Window::getWidth() const { return (width); }
-
-int Window::getHeight() const { return (height); }
+int Window::getWidth() const  { return _width; }
+int Window::getHeight() const { return _height; }
 
 std::ostream& operator<<(std::ostream& s, const Window& win) {
-	s << GREEN << "ScopWindow " << win.getWidth() << "x" << win.getHeight() << ENDC; 
-	return (s);
+  s << GREEN << "ScopWindow " << win.getWidth() << "x" << win.getHeight() << ENDC;
+  return s;
 }
 
 } // namespace scop

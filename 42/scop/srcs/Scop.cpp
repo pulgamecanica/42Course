@@ -1,9 +1,9 @@
 #include "Scop.hpp"
 #include <cmath>
 
-using namespace scop;
+namespace scop {
 
-// --- GLFW callback wrappers (unchanged) ---
+// --- GLFW callback wrappers ---
 static void key_callback(GLFWwindow* w, int key, int scancode, int action, int mods) {
   (void)scancode;
   static_cast<Scop*>(glfwGetWindowUserPointer(w))->keyEvent(key, action, mods);
@@ -21,28 +21,24 @@ static void window_size_callback(GLFWwindow* w, int width, int height) {
   static_cast<Scop*>(glfwGetWindowUserPointer(w))->resize(width, height);
 }
 
-// --- Scop ---
+// --- Scop lifecycle ---
 Scop::Scop() {
   win = new Window(1000, 650);
 
-  // Renderer
   renderer = std::unique_ptr<IRenderer>(new Vulkan42());
   renderer->init(*win);
 
-  // Camera: perspective required by subject
-  const float aspect = float(win->getWidth()) / float(win->getHeight());
-  camera.setPerspective( /*fov*/ 60.0f * 3.1415926f/180.f, aspect, /*znear*/ 0.1f, /*zfar*/ 100.f );
-  camera.setLookAt( /*eye*/ {0.f, 0.f, 3.0f}, /*center*/ {0.f,0.f,0.f}, /*up*/ {0.f,1.f,0.f} );
+  const float aspect = static_cast<float>(win->getWidth()) / static_cast<float>(win->getHeight());
+  camera.setPerspective(60.0f * 3.1415926f / 180.f, aspect, 0.1f, 100.f);
+  camera.setLookAt({0.f, 0.f, 3.0f}, {0.f, 0.f, 0.f}, {0.f, 1.f, 0.f});
 
-  // Assets
   loadDefaultAssets();
   renderer->setMesh(mesh);
-  renderer->setTexture(nullptr); // start in Faces mode
+  renderer->setTexture(nullptr);
   renderer->setRenderMode(mode);
 
   status = ScopStatus::Rendering;
 
-  // User pointer + callbacks
   glfwSetWindowUserPointer(win->glfw_window, this);
   glfwSetKeyCallback(win->glfw_window, key_callback);
   glfwSetCursorPosCallback(win->glfw_window, cursor_position_callback);
@@ -64,131 +60,125 @@ void Scop::resize(int width, int height) {
   if (width <= 0 || height <= 0) return;
   win->resizeWindow(width, height);
   renderer->resize(width, height);
-  camera.setAspect(float(width) / float(height));
+  camera.setAspect(static_cast<float>(width) / static_cast<float>(height));
 }
 
+// --- Input events ---
 void Scop::mouseButtonEvent(int key, int action, int mods) {
   (void)mods;
   std::cout << "Mouse: " << GREEN << key << ENDC
             << " Action: " << GREEN << action << ENDC << std::endl;
 }
+
 void Scop::mouseMoveEvent(double xpos, double ypos) {
-  std::cout << "MouseMove: (" << xpos << "," << ypos << ")\n";
+  (void)xpos; (void)ypos;
 }
+
 void Scop::mouseScrollEvent(double xoffset, double yoffset) {
-  std::cout << "MouseScroll: (" << xoffset << "," << yoffset << ")\n";
-  // (Optional) zoom by scrolling: move eye along view dir and rebuild lookAt
+  (void)xoffset; (void)yoffset;
 }
+
 void Scop::keyEvent(int key, int action, int mods) {
-  std::cout << "Key: " << GREEN << key << ENDC << " Action: " << GREEN << action << ENDC << " Mods: " << GREEN << mods << ENDC << std::endl;  
   (void)mods;
-  if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-    // Move along axes: A/D -> X-,X+, W/S -> Y+,Y-, Q/E -> Z-,Z+
-    switch (key) {
-      case GLFW_KEY_A: translation.x -= 0.05f; break;
-      case GLFW_KEY_D: translation.x += 0.05f; break;
-      case GLFW_KEY_W: translation.y += 0.05f; break;
-      case GLFW_KEY_S: translation.y -= 0.05f; break;
-      case GLFW_KEY_Q: translation.z -= 0.05f; break;
-      case GLFW_KEY_E: translation.z += 0.05f; break;
+  if (action != GLFW_PRESS && action != GLFW_REPEAT) return;
 
-      // Toggle render mode (Faces/Textured) with smooth transition
-      case GLFW_KEY_T:
-        if (mode == RenderMode::Faces) { mode = RenderMode::Textured; blendTarget = 1.f; }
-        else                           { mode = RenderMode::Faces;   blendTarget = 0.f; }
-        renderer->setRenderMode(mode);
-        break;
-
-      default: break;
-    }
+  constexpr float moveStep = 0.05f;
+  switch (key) {
+    case GLFW_KEY_A: translation.x -= moveStep; break;
+    case GLFW_KEY_D: translation.x += moveStep; break;
+    case GLFW_KEY_W: translation.y += moveStep; break;
+    case GLFW_KEY_S: translation.y -= moveStep; break;
+    case GLFW_KEY_Q: translation.z -= moveStep; break;
+    case GLFW_KEY_E: translation.z += moveStep; break;
+    case GLFW_KEY_T:
+      if (mode == RenderMode::Faces) { mode = RenderMode::Textured; blendTarget = 1.f; }
+      else                           { mode = RenderMode::Faces;    blendTarget = 0.f; }
+      renderer->setRenderMode(mode);
+      break;
+    default: break;
   }
 }
 
+// --- Main loop ---
 void Scop::runScop() {
   created_at = gettimeofday_ms();
   updated_at = created_at;
   int fps = 0;
+  uint64_t fpsTimer = created_at;
 
   while (!glfwWindowShouldClose(win->glfw_window)) {
     const uint64_t now = gettimeofday_ms();
-    const float dt = (now - updated_at) / 1000.0f;
+    const float dt = static_cast<float>(now - updated_at) / 1000.0f;
     updated_at = now;
 
     glfwPollEvents();
 
-    // Animate blend + auto-rotation
     updateBlend(dt);
     angle += autoRotateRadPerSec * dt;
 
-    // Build per-frame state
     FrameState fs;
-    fs.model = buildModel(dt);
-    fs.camera = { camera.proj(), camera.view() };
+    fs.model       = buildModel(dt);
+    fs.camera      = {camera.proj(), camera.view()};
     fs.blendFactor = blendFactor;
 
     renderer->draw(fs);
 
-    // Simple FPS print each second (optional)
     ++fps;
-    static uint64_t t0 = now;
-    if (now - t0 >= 1000) {
+    if (now - fpsTimer >= 1000) {
       std::cout << "[" << GREEN << (now - created_at) << ENDC << "] "
                 << fps << " fps "
                 << YELLOW << (status == ScopStatus::Menu ? "Menu"
                              : status == ScopStatus::Settings ? "Settings" : "Rendering")
                 << ENDC << std::endl;
       fps = 0;
-      t0 = now;
+      fpsTimer = now;
     }
   }
 }
 
 // --- Helpers ---
 void Scop::loadDefaultAssets() {
-  // OBJ
   ObjLoader loader;
   try {
-    mesh = loader.load("models/42logo.obj", /*computeNormals*/true, /*triangulate*/true);
+    mesh = loader.load("assets/models/42.obj", true, true);
   } catch (const std::exception& e) {
     std::cout << RED << "OBJ load failed: " << e.what() << ENDC << std::endl;
-    // Fallback: empty mesh; renderer should handle gracefully
-    mesh = Mesh(std::vector<Vertex>{}, std::vector<uint32_t>{}, {0,0,0}, {0,1,0});
+    mesh = Mesh({}, {}, {0, 0, 0}, {0, 1, 0});
   }
 
-  // Optional texture: if present you can enable with 'T'
   try {
-    texture = Texture::fromPNG("textures/42logo.png");
-    // Don’t bind yet; Faces mode is default (blendTarget stays 0).
+    texture = Texture::fromPNG("assets/textures/ponies.png");
     renderer->setTexture(&texture);
   } catch (...) {
-    // Texture optional; keep renderer texture as nullptr if loading fails
     renderer->setTexture(nullptr);
   }
 }
 
 void Scop::updateBlend(float dt) {
-  const float speed = 2.5f; // seconds to fully switch ~0.4s
+  constexpr float speed = 2.5f;
   const float delta = blendTarget - blendFactor;
   const float step = (delta > 0.f ? 1.f : -1.f) * speed * dt;
-  if (std::fabs(delta) <= std::fabs(step)) blendFactor = blendTarget;
-  else blendFactor += step;
+  if (std::fabs(delta) <= std::fabs(step))
+    blendFactor = blendTarget;
+  else
+    blendFactor += step;
 }
 
 Mat4 Scop::buildModel(float /*dt*/) const {
-  // Rotate around mesh centroid along its main axis, then apply translation
-  const Vec3 c = mesh.centroid();
+  const Vec3 c  = mesh.centroid();
   const Vec3 ax = mesh.mainAxis();
 
-  Mat4 T_to = Mat4::translate({ c.x, c.y, c.z });
-  Mat4 T_back = Mat4::translate({ -c.x, -c.y, -c.z });
-  Mat4 R = Mat4::rotateAxisAngle(ax, angle);
-  Mat4 T_world = Mat4::translate(translation);
+  Mat4 toOrigin  = Mat4::translate({-c.x, -c.y, -c.z});
+  Mat4 rotate    = Mat4::rotateAxisAngle(ax, angle);
+  Mat4 fromOrigin = Mat4::translate({c.x, c.y, c.z});
+  Mat4 world     = Mat4::translate(translation);
 
-  // Order depends on your math convention (document it!):
-  // Here: column-major with column vectors → M = T_world * T_to * R * T_back
-  return T_world * (T_to * (R * T_back));
+  return world * (fromOrigin * (rotate * toOrigin));
 }
 
-std::ostream& scop::operator<<(std::ostream& s, const Scop& param) {
-  (void)param; return s;
+std::ostream& operator<<(std::ostream& s, const Scop& param) {
+  (void)param;
+  return s;
 }
+
+} // namespace scop
