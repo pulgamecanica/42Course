@@ -72,6 +72,11 @@ struct SwapchainSupportDetails {
   std::vector<VkPresentModeKHR>   presentModes;
 };
 
+// We allow up to MAX_FRAMES_IN_FLIGHT frames to be processed concurrently by the
+// GPU/CPU. Two is the textbook choice: while frame N is on the GPU, the CPU can
+// already build frame N+1.
+static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
+
 // -------------------------------------------------------------------------- //
 //  Impl (pimpl)                                                               //
 // -------------------------------------------------------------------------- //
@@ -92,6 +97,7 @@ struct Vulkan42::Impl {
   VkExtent2D                 swapchainExtent = {0, 0};
   std::vector<VkImage>       swapchainImages;
   std::vector<VkImageView>   swapchainImageViews;
+  std::vector<VkFramebuffer> swapchainFramebuffers;
 
   // Depth buffer
   VkImage        depthImage       = VK_NULL_HANDLE;
@@ -106,6 +112,45 @@ struct Vulkan42::Impl {
   VkDescriptorSetLayout descriptorSetLayout = VK_NULL_HANDLE;
   VkPipelineLayout      pipelineLayout      = VK_NULL_HANDLE;
   VkPipeline            graphicsPipeline    = VK_NULL_HANDLE;
+
+  // Commands
+  VkCommandPool                 commandPool = VK_NULL_HANDLE;
+  std::vector<VkCommandBuffer>  commandBuffers; // size = MAX_FRAMES_IN_FLIGHT
+
+  // Synchronization
+  //  - imageAvailable: per frame-in-flight (signaled by acquire, waited by submit)
+  //  - renderFinished: per swapchain image (signaled by submit, waited by present).
+  //    Per-image is required because the present queue may still be using the
+  //    semaphore from a previous frame when we try to reuse it.
+  //  - inFlightFences: per frame-in-flight (lets the CPU reuse the frame slot)
+  std::vector<VkSemaphore> imageAvailableSemaphores;
+  std::vector<VkSemaphore> renderFinishedSemaphores;
+  std::vector<VkFence>     inFlightFences;
+  uint32_t                 currentFrame = 0;
+  bool                     framebufferResized = false;
+
+  // Vertex / index buffers (device-local, uploaded via staging buffer)
+  VkBuffer       vertexBuffer       = VK_NULL_HANDLE;
+  VkDeviceMemory vertexBufferMemory = VK_NULL_HANDLE;
+  VkBuffer       indexBuffer        = VK_NULL_HANDLE;
+  VkDeviceMemory indexBufferMemory  = VK_NULL_HANDLE;
+  uint32_t       indexCount         = 0;
+  bool           meshUploaded       = false;
+
+  // Uniform buffers (one per frame in flight, host-visible + coherent, persistently mapped)
+  std::vector<VkBuffer>       uniformBuffers;
+  std::vector<VkDeviceMemory> uniformBuffersMemory;
+  std::vector<void*>          uniformBuffersMapped;
+
+  // Texture (real image + sampler; falls back to a 1x1 white pixel when none provided)
+  VkImage        textureImage       = VK_NULL_HANDLE;
+  VkDeviceMemory textureImageMemory = VK_NULL_HANDLE;
+  VkImageView    textureImageView   = VK_NULL_HANDLE;
+  VkSampler      textureSampler     = VK_NULL_HANDLE;
+
+  // Descriptors
+  VkDescriptorPool             descriptorPool = VK_NULL_HANDLE;
+  std::vector<VkDescriptorSet> descriptorSets; // size = MAX_FRAMES_IN_FLIGHT
 
   // Window reference
   Window*     window  = nullptr;
@@ -144,8 +189,29 @@ struct Vulkan42::Impl {
   void createDepthResources();
   void createDescriptorSetLayout();
   void createGraphicsPipeline();
+  void createFramebuffers();
+  void createCommandPool();
+  void createCommandBuffers();
+  void createSyncObjects();
+  void createUniformBuffers();
+  void createFallbackTexture();
+  void createDescriptorPool();
+  void createDescriptorSets();
+  void writeDescriptorSets();
   void cleanup();
   void cleanupSwapchain();
+  void destroyTexture();
+  void destroyMeshBuffers();
+
+  void recreateSwapchain();
+
+  // Per-frame work
+  void recordCommandBuffer(VkCommandBuffer cb, uint32_t imageIndex, float blendFactor);
+  void updateUniformBuffer(uint32_t frame, const FrameState& state);
+
+  // Asset upload helpers
+  void uploadMesh(const Mesh& mesh);
+  void uploadTexture(const Texture& tex);
 
   // Shader helpers
   VkShaderModule createShaderModule(const std::vector<char>& code) const;
@@ -171,6 +237,22 @@ struct Vulkan42::Impl {
   VkFormat    findSupportedFormat(const std::vector<VkFormat>& candidates,
                                  VkImageTiling tiling, VkFormatFeatureFlags features) const;
   VkFormat    findDepthFormat() const;
+
+  // Buffer helpers
+  void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage,
+                    VkMemoryPropertyFlags props,
+                    VkBuffer& buffer, VkDeviceMemory& memory) const;
+  void copyBuffer(VkBuffer src, VkBuffer dst, VkDeviceSize size) const;
+
+  // One-shot command-buffer helpers (used for layout transitions / staging copies)
+  VkCommandBuffer beginSingleTimeCommands() const;
+  void            endSingleTimeCommands(VkCommandBuffer cb) const;
+
+  // Image / texture helpers
+  void transitionImageLayout(VkImage image, VkFormat format,
+                             VkImageLayout oldLayout, VkImageLayout newLayout) const;
+  void copyBufferToImage(VkBuffer buffer, VkImage image,
+                         uint32_t width, uint32_t height) const;
 
   static void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& info);
 };
@@ -947,6 +1029,594 @@ void Vulkan42::Impl::createGraphicsPipeline() {
 }
 
 // -------------------------------------------------------------------------- //
+//  Framebuffers                                                               //
+// -------------------------------------------------------------------------- //
+// One framebuffer per swapchain image. Each binds [color view, depth view] in
+// the same order as the render pass attachments.
+void Vulkan42::Impl::createFramebuffers() {
+  swapchainFramebuffers.resize(swapchainImageViews.size());
+
+  for (size_t i = 0; i < swapchainImageViews.size(); ++i) {
+    VkImageView attachments[] = {swapchainImageViews[i], depthImageView};
+
+    VkFramebufferCreateInfo fbInfo{};
+    fbInfo.sType           = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+    fbInfo.renderPass      = renderPass;
+    fbInfo.attachmentCount = 2;
+    fbInfo.pAttachments    = attachments;
+    fbInfo.width           = swapchainExtent.width;
+    fbInfo.height          = swapchainExtent.height;
+    fbInfo.layers          = 1;
+
+    if (vkCreateFramebuffer(device, &fbInfo, nullptr, &swapchainFramebuffers[i]) != VK_SUCCESS)
+      throw std::runtime_error("Failed to create framebuffer");
+  }
+  std::cout << GREEN << "[Vulkan] " << swapchainFramebuffers.size()
+            << " framebuffers created" << ENDC << std::endl;
+}
+
+// -------------------------------------------------------------------------- //
+//  Command pool + command buffers                                             //
+// -------------------------------------------------------------------------- //
+void Vulkan42::Impl::createCommandPool() {
+  VkCommandPoolCreateInfo poolInfo{};
+  poolInfo.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+  // RESET_COMMAND_BUFFER_BIT lets us re-record a buffer every frame
+  poolInfo.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+  poolInfo.queueFamilyIndex = queueFamilies.graphics;
+
+  if (vkCreateCommandPool(device, &poolInfo, nullptr, &commandPool) != VK_SUCCESS)
+    throw std::runtime_error("Failed to create command pool");
+
+  std::cout << GREEN << "[Vulkan] Command pool created" << ENDC << std::endl;
+}
+
+void Vulkan42::Impl::createCommandBuffers() {
+  commandBuffers.resize(MAX_FRAMES_IN_FLIGHT);
+
+  VkCommandBufferAllocateInfo allocInfo{};
+  allocInfo.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+  allocInfo.commandPool        = commandPool;
+  allocInfo.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+  allocInfo.commandBufferCount = static_cast<uint32_t>(commandBuffers.size());
+
+  if (vkAllocateCommandBuffers(device, &allocInfo, commandBuffers.data()) != VK_SUCCESS)
+    throw std::runtime_error("Failed to allocate command buffers");
+}
+
+// -------------------------------------------------------------------------- //
+//  Synchronization primitives                                                 //
+// -------------------------------------------------------------------------- //
+// Sync layout: imageAvailable (per-frame) + inFlight (per-frame) created here.
+// renderFinished semaphores are sized to swapchain images (see below).
+void Vulkan42::Impl::createSyncObjects() {
+  imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
+  inFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
+  renderFinishedSemaphores.resize(swapchainImages.size());
+
+  VkSemaphoreCreateInfo semInfo{};
+  semInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+
+  VkFenceCreateInfo fenceInfo{};
+  fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+  // Start in signaled state so the first frame does not block forever
+  fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+  for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; ++i) {
+    if (vkCreateSemaphore(device, &semInfo,  nullptr, &imageAvailableSemaphores[i]) != VK_SUCCESS ||
+        vkCreateFence    (device, &fenceInfo, nullptr, &inFlightFences[i])           != VK_SUCCESS)
+      throw std::runtime_error("Failed to create per-frame sync objects");
+  }
+  for (size_t i = 0; i < swapchainImages.size(); ++i) {
+    if (vkCreateSemaphore(device, &semInfo, nullptr, &renderFinishedSemaphores[i]) != VK_SUCCESS)
+      throw std::runtime_error("Failed to create per-image renderFinished semaphore");
+  }
+  std::cout << GREEN << "[Vulkan] Sync objects created ("
+            << MAX_FRAMES_IN_FLIGHT << " frames in flight, "
+            << swapchainImages.size() << " present semaphores)" << ENDC << std::endl;
+}
+
+// -------------------------------------------------------------------------- //
+//  Uniform buffers (one per frame in flight)                                  //
+// -------------------------------------------------------------------------- //
+void Vulkan42::Impl::createUniformBuffers() {
+  const VkDeviceSize bufSize = sizeof(UboMVP);
+
+  uniformBuffers.resize(MAX_FRAMES_IN_FLIGHT);
+  uniformBuffersMemory.resize(MAX_FRAMES_IN_FLIGHT);
+  uniformBuffersMapped.resize(MAX_FRAMES_IN_FLIGHT);
+
+  for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; ++i) {
+    createBuffer(bufSize,
+                 VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+                 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT
+                 | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                 uniformBuffers[i], uniformBuffersMemory[i]);
+
+    // Persistent mapping: we update the UBO every frame from the CPU, so we
+    // map it once and write through the pointer each time.
+    vkMapMemory(device, uniformBuffersMemory[i], 0, bufSize, 0, &uniformBuffersMapped[i]);
+  }
+  std::cout << GREEN << "[Vulkan] Uniform buffers created (per-frame)" << ENDC << std::endl;
+}
+
+// -------------------------------------------------------------------------- //
+//  Fallback texture (1x1 white pixel)                                         //
+// -------------------------------------------------------------------------- //
+// The descriptor set always binds a sampler, even when the user has not
+// provided a texture. We upload a 1x1 white texel so the texture branch in the
+// shader stays valid; the blend factor (push constant) controls visibility.
+void Vulkan42::Impl::createFallbackTexture() {
+  uint8_t pixel[4] = {255, 255, 255, 255};
+  Texture white(1, 1, std::vector<uint8_t>(pixel, pixel + 4));
+  uploadTexture(white);
+}
+
+// -------------------------------------------------------------------------- //
+//  Descriptor pool + descriptor sets                                          //
+// -------------------------------------------------------------------------- //
+void Vulkan42::Impl::createDescriptorPool() {
+  VkDescriptorPoolSize poolSizes[2]{};
+  poolSizes[0].type            = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+  poolSizes[0].descriptorCount = MAX_FRAMES_IN_FLIGHT;
+  poolSizes[1].type            = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+  poolSizes[1].descriptorCount = MAX_FRAMES_IN_FLIGHT;
+
+  VkDescriptorPoolCreateInfo poolInfo{};
+  poolInfo.sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+  poolInfo.poolSizeCount = 2;
+  poolInfo.pPoolSizes    = poolSizes;
+  poolInfo.maxSets       = MAX_FRAMES_IN_FLIGHT;
+
+  if (vkCreateDescriptorPool(device, &poolInfo, nullptr, &descriptorPool) != VK_SUCCESS)
+    throw std::runtime_error("Failed to create descriptor pool");
+}
+
+void Vulkan42::Impl::createDescriptorSets() {
+  std::vector<VkDescriptorSetLayout> layouts(MAX_FRAMES_IN_FLIGHT, descriptorSetLayout);
+
+  VkDescriptorSetAllocateInfo allocInfo{};
+  allocInfo.sType              = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO;
+  allocInfo.descriptorPool     = descriptorPool;
+  allocInfo.descriptorSetCount = MAX_FRAMES_IN_FLIGHT;
+  allocInfo.pSetLayouts        = layouts.data();
+
+  descriptorSets.resize(MAX_FRAMES_IN_FLIGHT);
+  if (vkAllocateDescriptorSets(device, &allocInfo, descriptorSets.data()) != VK_SUCCESS)
+    throw std::runtime_error("Failed to allocate descriptor sets");
+
+  writeDescriptorSets();
+  std::cout << GREEN << "[Vulkan] Descriptor sets allocated and updated" << ENDC << std::endl;
+}
+
+// Re-bind the current uniform buffer + texture sampler into existing descriptor
+// sets. Called from createDescriptorSets() and from setTexture() when the
+// texture image is swapped (no re-allocation -> safe to call repeatedly).
+void Vulkan42::Impl::writeDescriptorSets() {
+  for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; ++i) {
+    VkDescriptorBufferInfo bufInfo{};
+    bufInfo.buffer = uniformBuffers[i];
+    bufInfo.offset = 0;
+    bufInfo.range  = sizeof(UboMVP);
+
+    VkDescriptorImageInfo imgInfo{};
+    imgInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+    imgInfo.imageView   = textureImageView;
+    imgInfo.sampler     = textureSampler;
+
+    VkWriteDescriptorSet writes[2]{};
+    writes[0].sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+    writes[0].dstSet          = descriptorSets[i];
+    writes[0].dstBinding      = 0;
+    writes[0].descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    writes[0].descriptorCount = 1;
+    writes[0].pBufferInfo     = &bufInfo;
+
+    writes[1].sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+    writes[1].dstSet          = descriptorSets[i];
+    writes[1].dstBinding      = 1;
+    writes[1].descriptorType  = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    writes[1].descriptorCount = 1;
+    writes[1].pImageInfo      = &imgInfo;
+
+    vkUpdateDescriptorSets(device, 2, writes, 0, nullptr);
+  }
+}
+
+// -------------------------------------------------------------------------- //
+//  Buffer helpers                                                             //
+// -------------------------------------------------------------------------- //
+void Vulkan42::Impl::createBuffer(VkDeviceSize size, VkBufferUsageFlags usage,
+                                   VkMemoryPropertyFlags props,
+                                   VkBuffer& buffer, VkDeviceMemory& memory) const
+{
+  VkBufferCreateInfo bufInfo{};
+  bufInfo.sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+  bufInfo.size        = size;
+  bufInfo.usage       = usage;
+  bufInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+
+  if (vkCreateBuffer(device, &bufInfo, nullptr, &buffer) != VK_SUCCESS)
+    throw std::runtime_error("Failed to create buffer");
+
+  VkMemoryRequirements memReqs;
+  vkGetBufferMemoryRequirements(device, buffer, &memReqs);
+
+  VkMemoryAllocateInfo allocInfo{};
+  allocInfo.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+  allocInfo.allocationSize  = memReqs.size;
+  allocInfo.memoryTypeIndex = findMemoryType(memReqs.memoryTypeBits, props);
+
+  if (vkAllocateMemory(device, &allocInfo, nullptr, &memory) != VK_SUCCESS)
+    throw std::runtime_error("Failed to allocate buffer memory");
+
+  vkBindBufferMemory(device, buffer, memory, 0);
+}
+
+VkCommandBuffer Vulkan42::Impl::beginSingleTimeCommands() const {
+  VkCommandBufferAllocateInfo allocInfo{};
+  allocInfo.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+  allocInfo.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+  allocInfo.commandPool        = commandPool;
+  allocInfo.commandBufferCount = 1;
+
+  VkCommandBuffer cb;
+  vkAllocateCommandBuffers(device, &allocInfo, &cb);
+
+  VkCommandBufferBeginInfo beginInfo{};
+  beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+  beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+
+  vkBeginCommandBuffer(cb, &beginInfo);
+  return cb;
+}
+
+void Vulkan42::Impl::endSingleTimeCommands(VkCommandBuffer cb) const {
+  vkEndCommandBuffer(cb);
+
+  VkSubmitInfo submit{};
+  submit.sType              = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+  submit.commandBufferCount = 1;
+  submit.pCommandBuffers    = &cb;
+
+  // Simple wait-idle pattern -- fine for init-time uploads, not for hot path.
+  vkQueueSubmit(graphicsQueue, 1, &submit, VK_NULL_HANDLE);
+  vkQueueWaitIdle(graphicsQueue);
+  vkFreeCommandBuffers(device, commandPool, 1, &cb);
+}
+
+void Vulkan42::Impl::copyBuffer(VkBuffer src, VkBuffer dst, VkDeviceSize size) const {
+  VkCommandBuffer cb = beginSingleTimeCommands();
+  VkBufferCopy region{};
+  region.size = size;
+  vkCmdCopyBuffer(cb, src, dst, 1, &region);
+  endSingleTimeCommands(cb);
+}
+
+void Vulkan42::Impl::transitionImageLayout(VkImage image, VkFormat /*format*/,
+                                            VkImageLayout oldLayout,
+                                            VkImageLayout newLayout) const
+{
+  VkCommandBuffer cb = beginSingleTimeCommands();
+
+  VkImageMemoryBarrier barrier{};
+  barrier.sType                           = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+  barrier.oldLayout                       = oldLayout;
+  barrier.newLayout                       = newLayout;
+  barrier.srcQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+  barrier.dstQueueFamilyIndex             = VK_QUEUE_FAMILY_IGNORED;
+  barrier.image                           = image;
+  barrier.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
+  barrier.subresourceRange.baseMipLevel   = 0;
+  barrier.subresourceRange.levelCount     = 1;
+  barrier.subresourceRange.baseArrayLayer = 0;
+  barrier.subresourceRange.layerCount     = 1;
+
+  VkPipelineStageFlags srcStage, dstStage;
+
+  if (oldLayout == VK_IMAGE_LAYOUT_UNDEFINED &&
+      newLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
+    barrier.srcAccessMask = 0;
+    barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+    srcStage              = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+    dstStage              = VK_PIPELINE_STAGE_TRANSFER_BIT;
+  } else if (oldLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL &&
+             newLayout == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
+    barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+    barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+    srcStage              = VK_PIPELINE_STAGE_TRANSFER_BIT;
+    dstStage              = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+  } else {
+    throw std::runtime_error("Unsupported image layout transition");
+  }
+
+  vkCmdPipelineBarrier(cb, srcStage, dstStage, 0, 0, nullptr, 0, nullptr, 1, &barrier);
+  endSingleTimeCommands(cb);
+}
+
+void Vulkan42::Impl::copyBufferToImage(VkBuffer buffer, VkImage image,
+                                        uint32_t width, uint32_t height) const
+{
+  VkCommandBuffer cb = beginSingleTimeCommands();
+
+  VkBufferImageCopy region{};
+  region.bufferOffset                    = 0;
+  region.bufferRowLength                 = 0;
+  region.bufferImageHeight               = 0;
+  region.imageSubresource.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
+  region.imageSubresource.mipLevel       = 0;
+  region.imageSubresource.baseArrayLayer = 0;
+  region.imageSubresource.layerCount     = 1;
+  region.imageOffset                     = {0, 0, 0};
+  region.imageExtent                     = {width, height, 1};
+
+  vkCmdCopyBufferToImage(cb, buffer, image,
+                         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL, 1, &region);
+  endSingleTimeCommands(cb);
+}
+
+// -------------------------------------------------------------------------- //
+//  Mesh upload (vertex + index buffers via staging)                           //
+// -------------------------------------------------------------------------- //
+void Vulkan42::Impl::uploadMesh(const Mesh& m) {
+  destroyMeshBuffers(); // safe even if not allocated
+
+  const auto& verts = m.vertices();
+  const auto& idx   = m.indices();
+  if (verts.empty() || idx.empty()) {
+    meshUploaded = false;
+    return;
+  }
+
+  // --- Vertex buffer ---
+  {
+    const VkDeviceSize size = sizeof(Vertex) * verts.size();
+    VkBuffer       staging;
+    VkDeviceMemory stagingMem;
+    createBuffer(size,
+                 VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+                 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT
+                 | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                 staging, stagingMem);
+
+    void* data;
+    vkMapMemory(device, stagingMem, 0, size, 0, &data);
+    std::memcpy(data, verts.data(), static_cast<size_t>(size));
+    vkUnmapMemory(device, stagingMem);
+
+    createBuffer(size,
+                 VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,
+                 VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+                 vertexBuffer, vertexBufferMemory);
+    copyBuffer(staging, vertexBuffer, size);
+
+    vkDestroyBuffer(device, staging, nullptr);
+    vkFreeMemory(device, stagingMem, nullptr);
+  }
+
+  // --- Index buffer ---
+  {
+    const VkDeviceSize size = sizeof(uint32_t) * idx.size();
+    VkBuffer       staging;
+    VkDeviceMemory stagingMem;
+    createBuffer(size,
+                 VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+                 VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT
+                 | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+                 staging, stagingMem);
+
+    void* data;
+    vkMapMemory(device, stagingMem, 0, size, 0, &data);
+    std::memcpy(data, idx.data(), static_cast<size_t>(size));
+    vkUnmapMemory(device, stagingMem);
+
+    createBuffer(size,
+                 VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT,
+                 VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+                 indexBuffer, indexBufferMemory);
+    copyBuffer(staging, indexBuffer, size);
+
+    vkDestroyBuffer(device, staging, nullptr);
+    vkFreeMemory(device, stagingMem, nullptr);
+  }
+
+  indexCount   = static_cast<uint32_t>(idx.size());
+  meshUploaded = true;
+  std::cout << GREEN << "[Vulkan] Mesh uploaded ("
+            << verts.size() << " verts, " << idx.size() << " indices)" << ENDC << std::endl;
+}
+
+// -------------------------------------------------------------------------- //
+//  Texture upload (image + view + sampler)                                    //
+// -------------------------------------------------------------------------- //
+void Vulkan42::Impl::uploadTexture(const Texture& tex) {
+  destroyTexture();
+
+  const uint32_t w = tex.width();
+  const uint32_t h = tex.height();
+  const VkDeviceSize size = static_cast<VkDeviceSize>(w) * h * 4;
+
+  // 1. Staging buffer
+  VkBuffer       staging;
+  VkDeviceMemory stagingMem;
+  createBuffer(size,
+               VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+               VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT
+               | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+               staging, stagingMem);
+
+  void* data;
+  vkMapMemory(device, stagingMem, 0, size, 0, &data);
+  std::memcpy(data, tex.pixels().data(), static_cast<size_t>(size));
+  vkUnmapMemory(device, stagingMem);
+
+  // 2. Device-local image
+  createImage(w, h, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_TILING_OPTIMAL,
+              VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
+              VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
+              textureImage, textureImageMemory);
+
+  // 3. Layout transition -> transfer dst, copy, transition -> shader read
+  transitionImageLayout(textureImage, VK_FORMAT_R8G8B8A8_SRGB,
+                        VK_IMAGE_LAYOUT_UNDEFINED,
+                        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+  copyBufferToImage(staging, textureImage, w, h);
+  transitionImageLayout(textureImage, VK_FORMAT_R8G8B8A8_SRGB,
+                        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                        VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+
+  vkDestroyBuffer(device, staging, nullptr);
+  vkFreeMemory(device, stagingMem, nullptr);
+
+  // 4. View + sampler
+  textureImageView = createImageView(textureImage, VK_FORMAT_R8G8B8A8_SRGB,
+                                     VK_IMAGE_ASPECT_COLOR_BIT);
+
+  VkSamplerCreateInfo samplerInfo{};
+  samplerInfo.sType         = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+  samplerInfo.magFilter     = VK_FILTER_LINEAR;
+  samplerInfo.minFilter     = VK_FILTER_LINEAR;
+  samplerInfo.addressModeU  = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+  samplerInfo.addressModeV  = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+  samplerInfo.addressModeW  = VK_SAMPLER_ADDRESS_MODE_REPEAT;
+  // Anisotropy disabled -- it would require enabling samplerAnisotropy as a
+  // device feature, but the mandatory part doesn't need it.
+  samplerInfo.anisotropyEnable        = VK_FALSE;
+  samplerInfo.borderColor             = VK_BORDER_COLOR_INT_OPAQUE_BLACK;
+  samplerInfo.unnormalizedCoordinates = VK_FALSE;
+  samplerInfo.compareEnable           = VK_FALSE;
+  samplerInfo.compareOp               = VK_COMPARE_OP_ALWAYS;
+  samplerInfo.mipmapMode              = VK_SAMPLER_MIPMAP_MODE_LINEAR;
+
+  if (vkCreateSampler(device, &samplerInfo, nullptr, &textureSampler) != VK_SUCCESS)
+    throw std::runtime_error("Failed to create texture sampler");
+
+  std::cout << GREEN << "[Vulkan] Texture uploaded (" << w << "x" << h << ")" << ENDC << std::endl;
+}
+
+void Vulkan42::Impl::destroyTexture() {
+  if (textureSampler != VK_NULL_HANDLE)   { vkDestroySampler(device, textureSampler, nullptr);   textureSampler   = VK_NULL_HANDLE; }
+  if (textureImageView != VK_NULL_HANDLE) { vkDestroyImageView(device, textureImageView, nullptr); textureImageView = VK_NULL_HANDLE; }
+  if (textureImage != VK_NULL_HANDLE)     { vkDestroyImage(device, textureImage, nullptr);       textureImage     = VK_NULL_HANDLE; }
+  if (textureImageMemory != VK_NULL_HANDLE){vkFreeMemory(device, textureImageMemory, nullptr);   textureImageMemory = VK_NULL_HANDLE; }
+}
+
+void Vulkan42::Impl::destroyMeshBuffers() {
+  if (vertexBuffer != VK_NULL_HANDLE)      { vkDestroyBuffer(device, vertexBuffer, nullptr);     vertexBuffer       = VK_NULL_HANDLE; }
+  if (vertexBufferMemory != VK_NULL_HANDLE){ vkFreeMemory(device, vertexBufferMemory, nullptr);  vertexBufferMemory = VK_NULL_HANDLE; }
+  if (indexBuffer != VK_NULL_HANDLE)       { vkDestroyBuffer(device, indexBuffer, nullptr);      indexBuffer        = VK_NULL_HANDLE; }
+  if (indexBufferMemory != VK_NULL_HANDLE) { vkFreeMemory(device, indexBufferMemory, nullptr);   indexBufferMemory  = VK_NULL_HANDLE; }
+  indexCount   = 0;
+  meshUploaded = false;
+}
+
+// -------------------------------------------------------------------------- //
+//  Per-frame: update UBO, record command buffer                               //
+// -------------------------------------------------------------------------- //
+void Vulkan42::Impl::updateUniformBuffer(uint32_t frame, const FrameState& state) {
+  UboMVP ubo{};
+  ubo.proj  = state.camera.proj;
+  ubo.view  = state.camera.view;
+  ubo.model = state.model;
+  std::memcpy(uniformBuffersMapped[frame], &ubo, sizeof(ubo));
+}
+
+void Vulkan42::Impl::recordCommandBuffer(VkCommandBuffer cb, uint32_t imageIndex,
+                                          float blendFactor)
+{
+  VkCommandBufferBeginInfo beginInfo{};
+  beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+
+  if (vkBeginCommandBuffer(cb, &beginInfo) != VK_SUCCESS)
+    throw std::runtime_error("Failed to begin command buffer");
+
+  // Clear values: index must match render pass attachment order (color, depth)
+  VkClearValue clearValues[2]{};
+  clearValues[0].color        = {{0.05f, 0.05f, 0.07f, 1.f}};
+  clearValues[1].depthStencil = {1.f, 0};
+
+  VkRenderPassBeginInfo rpBegin{};
+  rpBegin.sType             = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+  rpBegin.renderPass        = renderPass;
+  rpBegin.framebuffer       = swapchainFramebuffers[imageIndex];
+  rpBegin.renderArea.offset = {0, 0};
+  rpBegin.renderArea.extent = swapchainExtent;
+  rpBegin.clearValueCount   = 2;
+  rpBegin.pClearValues      = clearValues;
+
+  vkCmdBeginRenderPass(cb, &rpBegin, VK_SUBPASS_CONTENTS_INLINE);
+  vkCmdBindPipeline(cb, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
+
+  // Dynamic viewport / scissor (declared in pipeline as dynamic states)
+  VkViewport viewport{};
+  viewport.x        = 0.f;
+  viewport.y        = 0.f;
+  viewport.width    = static_cast<float>(swapchainExtent.width);
+  viewport.height   = static_cast<float>(swapchainExtent.height);
+  viewport.minDepth = 0.f;
+  viewport.maxDepth = 1.f;
+  vkCmdSetViewport(cb, 0, 1, &viewport);
+
+  VkRect2D scissor{};
+  scissor.offset = {0, 0};
+  scissor.extent = swapchainExtent;
+  vkCmdSetScissor(cb, 0, 1, &scissor);
+
+  if (meshUploaded) {
+    VkBuffer     vbs[]    = {vertexBuffer};
+    VkDeviceSize offsets[] = {0};
+    vkCmdBindVertexBuffers(cb, 0, 1, vbs, offsets);
+    vkCmdBindIndexBuffer(cb, indexBuffer, 0, VK_INDEX_TYPE_UINT32);
+
+    vkCmdBindDescriptorSets(cb, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0,
+                            1, &descriptorSets[currentFrame], 0, nullptr);
+
+    // Push constants (blend factor) -- cheap per-draw uniform
+    PushConstants pc{};
+    pc.blendFactor = blendFactor;
+    vkCmdPushConstants(cb, pipelineLayout, VK_SHADER_STAGE_FRAGMENT_BIT,
+                       0, sizeof(PushConstants), &pc);
+
+    vkCmdDrawIndexed(cb, indexCount, 1, 0, 0, 0);
+  }
+
+  vkCmdEndRenderPass(cb);
+
+  if (vkEndCommandBuffer(cb) != VK_SUCCESS)
+    throw std::runtime_error("Failed to end command buffer");
+}
+
+// -------------------------------------------------------------------------- //
+//  Swapchain recreation (resize / VK_ERROR_OUT_OF_DATE_KHR)                   //
+// -------------------------------------------------------------------------- //
+void Vulkan42::Impl::recreateSwapchain() {
+  // Handle minimization: wait until we have a non-zero framebuffer
+  int w = 0, hh = 0;
+  glfwGetFramebufferSize(window->glfw_window, &w, &hh);
+  while (w == 0 || hh == 0) {
+    glfwGetFramebufferSize(window->glfw_window, &w, &hh);
+    glfwWaitEvents();
+  }
+
+  vkDeviceWaitIdle(device);
+  cleanupSwapchain();
+
+  createSwapchain();
+  createImageViews();
+  createDepthResources();
+  createFramebuffers();
+
+  // Per-image present semaphores were destroyed with the swapchain.
+  VkSemaphoreCreateInfo semInfo{};
+  semInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+  renderFinishedSemaphores.resize(swapchainImages.size());
+  for (size_t i = 0; i < swapchainImages.size(); ++i) {
+    if (vkCreateSemaphore(device, &semInfo, nullptr, &renderFinishedSemaphores[i]) != VK_SUCCESS)
+      throw std::runtime_error("Failed to recreate renderFinished semaphore");
+  }
+}
+
+// -------------------------------------------------------------------------- //
 //  Helpers                                                                    //
 // -------------------------------------------------------------------------- //
 bool Vulkan42::Impl::checkValidationLayerSupport() const {
@@ -986,6 +1656,18 @@ std::vector<const char*> Vulkan42::Impl::getRequiredExtensions() const {
 //  Cleanup                                                                    //
 // -------------------------------------------------------------------------- //
 void Vulkan42::Impl::cleanupSwapchain() {
+  // Per-image present semaphores are tied to swapchainImages -- destroy them
+  // with the swapchain so the recreation path can resize them cleanly.
+  for (auto s : renderFinishedSemaphores)
+    vkDestroySemaphore(device, s, nullptr);
+  renderFinishedSemaphores.clear();
+
+  // Framebuffers reference both the swapchain views and the depth view, so
+  // they must go first.
+  for (auto fb : swapchainFramebuffers)
+    vkDestroyFramebuffer(device, fb, nullptr);
+  swapchainFramebuffers.clear();
+
   if (depthImageView != VK_NULL_HANDLE) {
     vkDestroyImageView(device, depthImageView, nullptr);
     depthImageView = VK_NULL_HANDLE;
@@ -1011,8 +1693,42 @@ void Vulkan42::Impl::cleanupSwapchain() {
 }
 
 void Vulkan42::Impl::cleanup() {
-  // Destroy in reverse creation order
+  // Destroy in reverse creation order. waitIdle() is the caller's
+  // responsibility, but we are defensive here too.
+  if (device != VK_NULL_HANDLE) vkDeviceWaitIdle(device);
+
   cleanupSwapchain();
+
+  destroyTexture();
+  destroyMeshBuffers();
+
+  for (size_t i = 0; i < uniformBuffers.size(); ++i) {
+    if (uniformBuffersMapped[i]) vkUnmapMemory(device, uniformBuffersMemory[i]);
+    vkDestroyBuffer(device, uniformBuffers[i], nullptr);
+    vkFreeMemory   (device, uniformBuffersMemory[i], nullptr);
+  }
+  uniformBuffers.clear();
+  uniformBuffersMemory.clear();
+  uniformBuffersMapped.clear();
+
+  if (descriptorPool != VK_NULL_HANDLE) {
+    vkDestroyDescriptorPool(device, descriptorPool, nullptr);
+    descriptorPool = VK_NULL_HANDLE;
+  }
+
+  for (auto s : imageAvailableSemaphores) vkDestroySemaphore(device, s, nullptr);
+  for (auto s : renderFinishedSemaphores) vkDestroySemaphore(device, s, nullptr);
+  for (auto f : inFlightFences)           vkDestroyFence    (device, f, nullptr);
+  imageAvailableSemaphores.clear();
+  renderFinishedSemaphores.clear();
+  inFlightFences.clear();
+
+  if (commandPool != VK_NULL_HANDLE) {
+    // freeing the pool frees all its command buffers
+    vkDestroyCommandPool(device, commandPool, nullptr);
+    commandPool = VK_NULL_HANDLE;
+    commandBuffers.clear();
+  }
 
   if (graphicsPipeline != VK_NULL_HANDLE) {
     vkDestroyPipeline(device, graphicsPipeline, nullptr);
@@ -1076,7 +1792,17 @@ void Vulkan42::init(Window& window) {
   impl->createRenderPass();
   impl->createDescriptorSetLayout();
   impl->createGraphicsPipeline();
-  // Next steps: createFramebuffers, command pool, buffers, descriptors, sync, draw loop
+  impl->createFramebuffers();
+  impl->createCommandPool();
+
+  // Default texture before descriptor sets so the binding has a real sampler/view
+  impl->createFallbackTexture();
+
+  impl->createUniformBuffers();
+  impl->createDescriptorPool();
+  impl->createDescriptorSets();
+  impl->createCommandBuffers();
+  impl->createSyncObjects();
 
   impl->inited = true;
   std::cout << GREEN << "[Vulkan] Initialized " << impl->width << "x" << impl->height
@@ -1086,26 +1812,115 @@ void Vulkan42::init(Window& window) {
 void Vulkan42::resize(int width, int height) {
   impl->width  = width;
   impl->height = height;
-  // TODO: recreate swapchain
+  // We don't recreate immediately; setting the flag defers the work to the next
+  // draw(). This keeps Vulkan calls off the GLFW callback thread.
+  impl->framebufferResized = true;
 }
 
 void Vulkan42::setMesh(const Mesh& mesh) {
   impl->mesh = mesh;
-  // TODO: upload vertex/index buffers to GPU
+  if (!impl->inited) return;
+  // Avoid destroying buffers that might still be referenced by an in-flight frame
+  vkDeviceWaitIdle(impl->device);
+  impl->uploadMesh(mesh);
 }
 
 void Vulkan42::setTexture(const Texture* texture) {
   impl->texture = texture;
-  // TODO: create VkImage + sampler
+  if (!impl->inited) return;
+  vkDeviceWaitIdle(impl->device);
+
+  if (texture != nullptr && !texture->pixels().empty())
+    impl->uploadTexture(*texture);
+  else
+    impl->createFallbackTexture();
+
+  // The texture image+view+sampler were rebuilt -- rebinding (not re-allocating)
+  // the existing descriptor sets is enough.
+  if (!impl->descriptorSets.empty())
+    impl->writeDescriptorSets();
 }
 
 void Vulkan42::setRenderMode(RenderMode mode) {
   impl->mode = mode;
 }
 
-void Vulkan42::draw(const FrameState& /*state*/) {
+void Vulkan42::draw(const FrameState& state) {
   if (!impl->inited) return;
-  // TODO: update UBOs, record command buffer, submit, present
+
+  // 1. Wait for the previous use of this frame slot to finish
+  vkWaitForFences(impl->device, 1, &impl->inFlightFences[impl->currentFrame],
+                  VK_TRUE, UINT64_MAX);
+
+  // 2. Acquire next swapchain image
+  uint32_t imageIndex;
+  VkResult acquireRes = vkAcquireNextImageKHR(
+      impl->device, impl->swapchain, UINT64_MAX,
+      impl->imageAvailableSemaphores[impl->currentFrame],
+      VK_NULL_HANDLE, &imageIndex);
+
+  if (acquireRes == VK_ERROR_OUT_OF_DATE_KHR) {
+    impl->recreateSwapchain();
+    return; // skip this frame
+  } else if (acquireRes != VK_SUCCESS && acquireRes != VK_SUBOPTIMAL_KHR) {
+    throw std::runtime_error("Failed to acquire swapchain image");
+  }
+
+  // Only reset the fence once we know we're submitting -- otherwise we'd
+  // deadlock if we returned early above.
+  vkResetFences(impl->device, 1, &impl->inFlightFences[impl->currentFrame]);
+
+  // 3. Update per-frame data
+  impl->updateUniformBuffer(impl->currentFrame, state);
+
+  // 4. Re-record this frame's command buffer
+  VkCommandBuffer cb = impl->commandBuffers[impl->currentFrame];
+  vkResetCommandBuffer(cb, 0);
+  impl->recordCommandBuffer(cb, imageIndex, state.blendFactor);
+
+  // 5. Submit
+  VkSemaphore          waitSems[]   = {impl->imageAvailableSemaphores[impl->currentFrame]};
+  VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
+  // renderFinished is per swapchain image (not per frame-in-flight) so the
+  // present queue is never asked to reuse a still-pending semaphore.
+  VkSemaphore          signalSems[] = {impl->renderFinishedSemaphores[imageIndex]};
+
+  VkSubmitInfo submitInfo{};
+  submitInfo.sType                = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+  submitInfo.waitSemaphoreCount   = 1;
+  submitInfo.pWaitSemaphores      = waitSems;
+  submitInfo.pWaitDstStageMask    = waitStages;
+  submitInfo.commandBufferCount   = 1;
+  submitInfo.pCommandBuffers      = &cb;
+  submitInfo.signalSemaphoreCount = 1;
+  submitInfo.pSignalSemaphores    = signalSems;
+
+  if (vkQueueSubmit(impl->graphicsQueue, 1, &submitInfo,
+                    impl->inFlightFences[impl->currentFrame]) != VK_SUCCESS)
+    throw std::runtime_error("Failed to submit draw command buffer");
+
+  // 6. Present
+  VkPresentInfoKHR presentInfo{};
+  presentInfo.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+  presentInfo.waitSemaphoreCount = 1;
+  presentInfo.pWaitSemaphores    = signalSems;
+  presentInfo.swapchainCount     = 1;
+  presentInfo.pSwapchains        = &impl->swapchain;
+  presentInfo.pImageIndices      = &imageIndex;
+
+  VkResult presentRes = vkQueuePresentKHR(impl->presentQueue, &presentInfo);
+
+  if (presentRes == VK_ERROR_OUT_OF_DATE_KHR ||
+      presentRes == VK_SUBOPTIMAL_KHR        ||
+      impl->framebufferResized)
+  {
+    impl->framebufferResized = false;
+    impl->recreateSwapchain();
+  } else if (presentRes != VK_SUCCESS) {
+    throw std::runtime_error("Failed to present swapchain image");
+  }
+
+  impl->currentFrame = (impl->currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 }
 
 void Vulkan42::waitIdle() {

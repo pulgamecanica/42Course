@@ -30,7 +30,7 @@ Scop::Scop() {
 
   const float aspect = static_cast<float>(win->getWidth()) / static_cast<float>(win->getHeight());
   camera.setPerspective(60.0f * 3.1415926f / 180.f, aspect, 0.1f, 100.f);
-  camera.setLookAt({0.f, 0.f, 3.0f}, {0.f, 0.f, 0.f}, {0.f, 1.f, 0.f});
+  camera.setLookAt({3.f, 0.f, 3.0f}, {0.f, 0.f, 0.f}, {0.f, 1.f, 0.f});
 
   loadDefaultAssets();
   renderer->setMesh(mesh);
@@ -147,9 +147,10 @@ void Scop::loadDefaultAssets() {
   }
 
   try {
-    texture = Texture::fromPNG("assets/textures/ponies.png");
+    texture = Texture::fromPNG("assets/textures/tex1.png");
     renderer->setTexture(&texture);
   } catch (...) {
+    std::cout << "WOOO\n\n\nCouldnt convert!\n\n\n" ;
     renderer->setTexture(nullptr);
   }
 }
