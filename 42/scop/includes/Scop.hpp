@@ -11,6 +11,8 @@
 #include <memory>
 #include <cstdint>
 #include <iostream>
+#include <string>
+#include <vector>
 
 #include "colors.hpp"
 #include "Window.hpp"
@@ -33,7 +35,8 @@ enum class ScopStatus : uint8_t {
 
 class Scop {
 public:
-  Scop();
+  // initialModelPath empty => use the first .obj found in assets/models
+  explicit Scop(const std::string& initialModelPath = "");
   ~Scop();
 
   Scop(const Scop&) = delete;
@@ -63,6 +66,10 @@ private:
   Texture                    texture;
   RenderMode                 mode = RenderMode::Faces;
 
+  // Available models (discovered from assets/models at startup)
+  std::vector<std::string> modelPaths;
+  size_t                   currentModelIndex = 0;
+
   // Animation / transforms
   Vec3  translation{0.f, 0.f, 0.f};
   float autoRotateRadPerSec = 1.0f;
@@ -70,12 +77,21 @@ private:
   float blendFactor = 0.f;
   float blendTarget = 0.f;
 
+  // Rotation axis: 0=X, 1=Y, 2=Z. Default to X per project preference.
+  int  rotationAxisIndex = 0;
+  Vec3 axisFromIndex(int i) const;
+
   // Timing
   uint64_t created_at = 0;
   uint64_t updated_at = 0;
 
   // Helpers
-  void loadDefaultAssets();
+  void scanModelsDirectory(const std::string& dir);
+  void loadModel(const std::string& path);
+  void cycleModel();
+  void cycleRotationAxis();
+  void loadDefaultTexture();
+  void printControls() const;
   void updateBlend(float dt);
   Mat4 buildModel(float dt) const;
 };

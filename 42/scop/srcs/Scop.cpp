@@ -1,7 +1,11 @@
 #include "Scop.hpp"
+#include <algorithm>
 #include <cmath>
+#include <filesystem>
 
 namespace scop {
+
+namespace fs = std::filesystem;
 
 // --- GLFW callback wrappers ---
 static void key_callback(GLFWwindow* w, int key, int scancode, int action, int mods) {
@@ -22,7 +26,7 @@ static void window_size_callback(GLFWwindow* w, int width, int height) {
 }
 
 // --- Scop lifecycle ---
-Scop::Scop() {
+Scop::Scop(const std::string& initialModelPath) {
   win = new Window(1000, 650);
 
   renderer = std::unique_ptr<IRenderer>(new Vulkan42());
@@ -32,9 +36,22 @@ Scop::Scop() {
   camera.setPerspective(60.0f * 3.1415926f / 180.f, aspect, 0.1f, 100.f);
   camera.setLookAt({3.f, 0.f, 3.0f}, {0.f, 0.f, 0.f}, {0.f, 1.f, 0.f});
 
-  loadDefaultAssets();
-  renderer->setMesh(mesh);
-  renderer->setTexture(nullptr);
+  // Discover models and pick the starting one. CLI flag wins; otherwise we
+  // pick the first .obj alphabetically, falling back to the hard-coded teapot.
+  scanModelsDirectory("assets/models");
+  std::string startPath = initialModelPath;
+  if (startPath.empty()) {
+    startPath = modelPaths.empty() ? std::string("assets/models/teapot.obj")
+                                   : modelPaths.front();
+  }
+
+  // Align currentModelIndex with the chosen path so 'O' cycles from there
+  for (size_t i = 0; i < modelPaths.size(); ++i) {
+    if (modelPaths[i] == startPath) { currentModelIndex = i; break; }
+  }
+
+  loadModel(startPath);
+  loadDefaultTexture();
   renderer->setRenderMode(mode);
 
   status = ScopStatus::Rendering;
@@ -45,6 +62,8 @@ Scop::Scop() {
   glfwSetMouseButtonCallback(win->glfw_window, mouse_button_callback);
   glfwSetScrollCallback(win->glfw_window, mouse_scroll_callback);
   glfwSetWindowSizeCallback(win->glfw_window, window_size_callback);
+
+  printControls();
 }
 
 Scop::~Scop() {
@@ -80,6 +99,12 @@ void Scop::mouseScrollEvent(double xoffset, double yoffset) {
 
 void Scop::keyEvent(int key, int action, int mods) {
   (void)mods;
+  // 'O' (model cycle) reacts on press only -- repeats would spam reloads
+  if (action == GLFW_PRESS) {
+    if (key == GLFW_KEY_O)      { cycleModel();        return; }
+    if (key == GLFW_KEY_R)      { cycleRotationAxis(); return; }
+    if (key == GLFW_KEY_ESCAPE) { glfwSetWindowShouldClose(win->glfw_window, GLFW_TRUE); return; }
+  }
   if (action != GLFW_PRESS && action != GLFW_REPEAT) return;
 
   constexpr float moveStep = 0.05f;
@@ -137,22 +162,89 @@ void Scop::runScop() {
 }
 
 // --- Helpers ---
-void Scop::loadDefaultAssets() {
+void Scop::scanModelsDirectory(const std::string& dir) {
+  modelPaths.clear();
+  if (!fs::exists(dir) || !fs::is_directory(dir)) return;
+
+  for (const auto& entry : fs::directory_iterator(dir)) {
+    if (!entry.is_regular_file()) continue;
+    if (entry.path().extension() == ".obj")
+      modelPaths.push_back(entry.path().string());
+  }
+  std::sort(modelPaths.begin(), modelPaths.end());
+
+  if (!modelPaths.empty()) {
+    std::cout << GREEN << "[Scop] Found " << modelPaths.size()
+              << " model(s) in " << dir << ENDC << std::endl;
+  }
+}
+
+void Scop::loadModel(const std::string& path) {
   ObjLoader loader;
   try {
-    mesh = loader.load("assets/models/42.obj", true, true);
+    mesh = loader.load(path, true, true);
+    std::cout << GREEN << "[Scop] Model: " << path << ENDC << std::endl;
   } catch (const std::exception& e) {
-    std::cout << RED << "OBJ load failed: " << e.what() << ENDC << std::endl;
+    std::cout << RED << "OBJ load failed for '" << path << "': "
+              << e.what() << ENDC << std::endl;
     mesh = Mesh({}, {}, {0, 0, 0}, {0, 1, 0});
   }
+  // Reset angle so the new model starts in a clean orientation
+  angle = 0.f;
+  renderer->setMesh(mesh);
+}
 
-  try {
-    texture = Texture::fromPNG("assets/textures/tex1.png");
-    renderer->setTexture(&texture);
-  } catch (...) {
-    std::cout << "WOOO\n\n\nCouldnt convert!\n\n\n" ;
-    renderer->setTexture(nullptr);
+void Scop::cycleModel() {
+  if (modelPaths.empty()) return;
+  currentModelIndex = (currentModelIndex + 1) % modelPaths.size();
+  loadModel(modelPaths[currentModelIndex]);
+}
+
+Vec3 Scop::axisFromIndex(int i) const {
+  switch (i % 3) {
+    case 0: return {1.f, 0.f, 0.f};
+    case 1: return {0.f, 1.f, 0.f};
+    default: return {0.f, 0.f, 1.f};
   }
+}
+
+void Scop::cycleRotationAxis() {
+  rotationAxisIndex = (rotationAxisIndex + 1) % 3;
+  static const char* names[] = {"X", "Y", "Z"};
+  std::cout << GREEN << "[Scop] Rotation axis: " << names[rotationAxisIndex]
+            << ENDC << std::endl;
+}
+
+void Scop::loadDefaultTexture() {
+  // Same try-multiple-paths pattern as the model search
+  const char* candidates[] = {
+    "assets/textures/tex1.png",
+    "assets/textures/ponies.png",
+    "assets/textures/texture.png",
+  };
+  for (const char* path : candidates) {
+    try {
+      texture = Texture::fromPNG(path);
+      renderer->setTexture(&texture);
+      std::cout << GREEN << "[Scop] Texture: " << path << ENDC << std::endl;
+      return;
+    } catch (...) {}
+  }
+  std::cout << YELLOW << "[Scop] No texture found in assets/textures/, "
+                         "using fallback white" << ENDC << std::endl;
+  renderer->setTexture(nullptr);
+}
+
+void Scop::printControls() const {
+  std::cout << "\n" << GREEN
+            << "  Controls:\n"
+            << "    W/A/S/D  : translate in X/Y\n"
+            << "    Q/E      : translate in -Z/+Z\n"
+            << "    T        : toggle texture (smooth blend)\n"
+            << "    R        : cycle rotation axis (X -> Y -> Z)\n"
+            << "    O        : cycle model from assets/models/\n"
+            << "    ESC      : close window\n"
+            << ENDC << std::endl;
 }
 
 void Scop::updateBlend(float dt) {
@@ -167,12 +259,12 @@ void Scop::updateBlend(float dt) {
 
 Mat4 Scop::buildModel(float /*dt*/) const {
   const Vec3 c  = mesh.centroid();
-  const Vec3 ax = mesh.mainAxis();
+  const Vec3 ax = axisFromIndex(rotationAxisIndex);
 
-  Mat4 toOrigin  = Mat4::translate({-c.x, -c.y, -c.z});
-  Mat4 rotate    = Mat4::rotateAxisAngle(ax, angle);
+  Mat4 toOrigin   = Mat4::translate({-c.x, -c.y, -c.z});
+  Mat4 rotate     = Mat4::rotateAxisAngle(ax, angle);
   Mat4 fromOrigin = Mat4::translate({c.x, c.y, c.z});
-  Mat4 world     = Mat4::translate(translation);
+  Mat4 world      = Mat4::translate(translation);
 
   return world * (fromOrigin * (rotate * toOrigin));
 }
