@@ -130,11 +130,13 @@ Mesh ObjLoader::load(const std::string& path,
   if (size.x >= size.y && size.x >= size.z) axis = {1,0,0};
   else if (size.z >= size.x && size.z >= size.y) axis = {0,0,1};
 
-  // Note: when the OBJ had no `vt` lines we leave per-vertex uv at (0,0). The
-  // fragment shader uses triplanar projection from local position/normal
-  // instead, so explicit per-vertex UVs aren't needed.
+  // When the OBJ supplied `vt` lines we hand the real per-vertex UVs to the
+  // shader so it maps the texture exactly as authored. When it didn't (e.g.
+  // the teapot), uv stays at (0,0) and the shader falls back to triplanar
+  // projection from local position/normal.
+  const bool hasUV = !uvs.empty();
 
-  return Mesh(std::move(vertices), std::move(indices), c, axis);
+  return Mesh(std::move(vertices), std::move(indices), c, axis, hasUV);
 }
 
 } // namespace scop

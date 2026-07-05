@@ -12,6 +12,7 @@ layout(location = 0) out vec3      vLocalPos;
 layout(location = 1) out vec3      vLocalNormal;
 layout(location = 2) out vec3      vWorldNormal;
 layout(location = 3) out flat uint vFaceId;
+layout(location = 4) out vec2      vUV;
 
 layout(set = 0, binding = 0) uniform UBO {
     mat4 proj;
@@ -29,6 +30,7 @@ void main() {
     vLocalNormal = inNormal;
     vWorldNormal = mat3(ubo.model) * inNormal;
     vFaceId      = inFaceId;
+    vUV          = inUV;
 
     mat4 P = fixVulkanClip(ubo.proj);
     gl_Position = P * ubo.view * ubo.model * vec4(inPos, 1.0);

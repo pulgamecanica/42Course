@@ -51,7 +51,17 @@ Scop::Scop(const std::string& initialModelPath) {
   }
 
   loadModel(startPath);
-  loadDefaultTexture();
+
+  // Discover every texture in assets/textures and start on the first one
+  scanTexturesDirectory("assets/textures");
+  if (texturePaths.empty()) {
+    std::cout << YELLOW << "[Scop] No texture found in assets/textures/, "
+                           "using fallback white" << ENDC << std::endl;
+    renderer->setTexture(nullptr);
+  } else {
+    loadTexture(texturePaths.front());
+  }
+
   renderer->setRenderMode(mode);
 
   status = ScopStatus::Rendering;
@@ -94,7 +104,13 @@ void Scop::mouseMoveEvent(double xpos, double ypos) {
 }
 
 void Scop::mouseScrollEvent(double xoffset, double yoffset) {
-  (void)xoffset; (void)yoffset;
+  (void)xoffset;
+  // Each wheel notch scales the eye-to-center distance by ~10%. Scroll up
+  // (yoffset > 0) zooms in, scroll down zooms out. The look-at center is fixed
+  // so the model stays centred while we dolly.
+  constexpr float step = 0.1f;
+  const float factor = std::pow(1.f - step, static_cast<float>(yoffset));
+  camera.zoom(factor);
 }
 
 void Scop::keyEvent(int key, int action, int mods) {
@@ -102,6 +118,7 @@ void Scop::keyEvent(int key, int action, int mods) {
   // 'O' (model cycle) reacts on press only -- repeats would spam reloads
   if (action == GLFW_PRESS) {
     if (key == GLFW_KEY_O)      { cycleModel();        return; }
+    if (key == GLFW_KEY_P)      { cycleTexture();      return; }
     if (key == GLFW_KEY_R)      { cycleRotationAxis(); return; }
     if (key == GLFW_KEY_ESCAPE) { glfwSetWindowShouldClose(win->glfw_window, GLFW_TRUE); return; }
   }
@@ -215,24 +232,39 @@ void Scop::cycleRotationAxis() {
             << ENDC << std::endl;
 }
 
-void Scop::loadDefaultTexture() {
-  // Same try-multiple-paths pattern as the model search
-  const char* candidates[] = {
-    "assets/textures/tex1.png",
-    "assets/textures/ponies.png",
-    "assets/textures/texture.png",
-  };
-  for (const char* path : candidates) {
-    try {
-      texture = Texture::fromPNG(path);
-      renderer->setTexture(&texture);
-      std::cout << GREEN << "[Scop] Texture: " << path << ENDC << std::endl;
-      return;
-    } catch (...) {}
+void Scop::scanTexturesDirectory(const std::string& dir) {
+  texturePaths.clear();
+  if (!fs::exists(dir) || !fs::is_directory(dir)) return;
+
+  for (const auto& entry : fs::directory_iterator(dir)) {
+    if (!entry.is_regular_file()) continue;
+    if (entry.path().extension() == ".png")
+      texturePaths.push_back(entry.path().string());
   }
-  std::cout << YELLOW << "[Scop] No texture found in assets/textures/, "
-                         "using fallback white" << ENDC << std::endl;
-  renderer->setTexture(nullptr);
+  std::sort(texturePaths.begin(), texturePaths.end());
+
+  if (!texturePaths.empty()) {
+    std::cout << GREEN << "[Scop] Found " << texturePaths.size()
+              << " texture(s) in " << dir << ENDC << std::endl;
+  }
+}
+
+void Scop::loadTexture(const std::string& path) {
+  try {
+    texture = Texture::fromPNG(path);
+    renderer->setTexture(&texture);
+    std::cout << GREEN << "[Scop] Texture: " << path << ENDC << std::endl;
+  } catch (const std::exception& e) {
+    std::cout << RED << "Texture load failed for '" << path << "': "
+              << e.what() << ENDC << std::endl;
+    renderer->setTexture(nullptr);
+  }
+}
+
+void Scop::cycleTexture() {
+  if (texturePaths.empty()) return;
+  currentTextureIndex = (currentTextureIndex + 1) % texturePaths.size();
+  loadTexture(texturePaths[currentTextureIndex]);
 }
 
 void Scop::printControls() const {
@@ -243,6 +275,8 @@ void Scop::printControls() const {
             << "    T        : toggle texture (smooth blend)\n"
             << "    R        : cycle rotation axis (X -> Y -> Z)\n"
             << "    O        : cycle model from assets/models/\n"
+            << "    P        : cycle texture from assets/textures/\n"
+            << "    Scroll    : zoom in/out (keeps model centered)\n"
             << "    ESC      : close window\n"
             << ENDC << std::endl;
 }

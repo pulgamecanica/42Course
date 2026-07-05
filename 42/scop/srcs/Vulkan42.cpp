@@ -1571,9 +1571,10 @@ void Vulkan42::Impl::recordCommandBuffer(VkCommandBuffer cb, uint32_t imageIndex
     vkCmdBindDescriptorSets(cb, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0,
                             1, &descriptorSets[currentFrame], 0, nullptr);
 
-    // Push constants (blend factor) -- cheap per-draw uniform
+    // Push constants (blend factor + UV mode) -- cheap per-draw uniform
     PushConstants pc{};
     pc.blendFactor = blendFactor;
+    pc.useUV       = mesh.hasUV() ? 1u : 0u;
     vkCmdPushConstants(cb, pipelineLayout, VK_SHADER_STAGE_FRAGMENT_BIT,
                        0, sizeof(PushConstants), &pc);
 

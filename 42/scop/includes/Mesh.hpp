@@ -17,19 +17,22 @@ struct Vertex {
 class Mesh {
 public:
   Mesh() = default;
-  Mesh(std::vector<Vertex> v, std::vector<uint32_t> i, const Vec3& centroid, const Vec3& mainAxis);
+  Mesh(std::vector<Vertex> v, std::vector<uint32_t> i, const Vec3& centroid,
+       const Vec3& mainAxis, bool hasUV = false);
 
   const std::vector<Vertex>&   vertices() const;
   const std::vector<uint32_t>& indices() const;
 
   const Vec3& centroid() const;   // used to rotate about center
   const Vec3& mainAxis() const;   // default auto-rotation axis (e.g., Y)
+  bool        hasUV()    const;   // true when the OBJ supplied `vt` coords
 
 private:
   std::vector<Vertex>   _vertices;
   std::vector<uint32_t> _indices;
   Vec3 _centroid {0,0,0};
   Vec3 _mainAxis {0,1,0};
+  bool _hasUV = false;
 };
 
 } // namespace scop

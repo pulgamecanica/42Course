@@ -70,6 +70,10 @@ private:
   std::vector<std::string> modelPaths;
   size_t                   currentModelIndex = 0;
 
+  // Available textures (discovered from assets/textures at startup)
+  std::vector<std::string> texturePaths;
+  size_t                   currentTextureIndex = 0;
+
   // Animation / transforms
   Vec3  translation{0.f, 0.f, 0.f};
   float autoRotateRadPerSec = 1.0f;
@@ -90,7 +94,9 @@ private:
   void loadModel(const std::string& path);
   void cycleModel();
   void cycleRotationAxis();
-  void loadDefaultTexture();
+  void scanTexturesDirectory(const std::string& dir);
+  void loadTexture(const std::string& path);
+  void cycleTexture();
   void printControls() const;
   void updateBlend(float dt);
   Mat4 buildModel(float dt) const;

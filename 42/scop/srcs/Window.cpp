@@ -20,7 +20,7 @@ Window::Window(int width, int height) : _width(width), _height(height) {
     &images[0].pixels,
     reinterpret_cast<unsigned*>(&images[0].width),
     reinterpret_cast<unsigned*>(&images[0].height),
-    "icons/42logo.png"
+    "assets/icons/42logo.png"
   );
   if (iconpng_error) {
     glfwTerminate();

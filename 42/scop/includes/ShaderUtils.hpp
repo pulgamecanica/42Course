@@ -16,7 +16,8 @@ struct UboMVP {
 };
 
 struct PushConstants {
-  float blendFactor; // for smooth faces<->texture transition
+  float    blendFactor; // for smooth faces<->texture transition
+  uint32_t useUV;       // 1 => sample texture with per-vertex UVs, 0 => triplanar
   // (padding handled in Vulkan pipeline definition if needed)
 };
 

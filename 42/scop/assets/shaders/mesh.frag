@@ -4,6 +4,7 @@ layout(location = 0) in vec3      vLocalPos;
 layout(location = 1) in vec3      vLocalNormal;
 layout(location = 2) in vec3      vWorldNormal;
 layout(location = 3) in flat uint vFaceId;
+layout(location = 4) in vec2      vUV;
 
 layout(location = 0) out vec4 outColor;
 
@@ -11,6 +12,7 @@ layout(set = 0, binding = 1) uniform sampler2D uTex;
 
 layout(push_constant) uniform Push {
     float blend;
+    uint  useUV;   // 1 => sample with per-vertex UVs, 0 => triplanar fallback
 } pushc;
 
 // Per-face deterministic gray-ish color (so faces are visually distinguishable
@@ -45,12 +47,23 @@ vec3 triplanar(vec3 pos, vec3 normal, float scale) {
 void main() {
     vec3 n     = normalize(vWorldNormal);
     float ndl  = clamp(dot(n, normalize(vec3(0.4, 0.7, 0.6))), 0.0, 1.0);
+    // Shared diffuse term so both the face-color and textured views have the
+    // same sense of form (a fullbright texture reads as a flat, melted blob).
+    float shade = 0.4 + 0.6 * ndl;
 
-    vec3 cFace = faceColor(vFaceId) * (0.4 + 0.6 * ndl);
+    vec3 cFace = faceColor(vFaceId) * shade;
 
-    // Scale controls how many texture tiles fit across the model. 0.5 gives
-    // roughly 1-2 repeats on models with a bounding box of order ~3 units.
-    vec3 cTex  = triplanar(vLocalPos, vLocalNormal, 0.5);
+    // Prefer the model's authored UVs when it has them; otherwise fall back to
+    // triplanar projection (e.g. the teapot, which ships without vt coords).
+    // These assets author UVs with V=0 at the top, matching the PNG's row
+    // order, so we sample vUV directly -- flipping V would make each face of
+    // the dense per-face atlas hit an unrelated patch (a scrambled "camo" look).
+    vec3 albedo;
+    if (pushc.useUV != 0u)
+        albedo = texture(uTex, vUV).rgb;
+    else
+        albedo = triplanar(vLocalPos, vLocalNormal, 0.5);
+    vec3 cTex  = albedo * shade;
 
     vec3 rgb   = mix(cFace, cTex, clamp(pushc.blend, 0.0, 1.0));
     outColor   = vec4(rgb, 1.0);
