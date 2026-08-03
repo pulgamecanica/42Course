@@ -16,10 +16,13 @@
 
 | Folder | About |
 | ------ | ------ |
-| 42 | [42 Projects](42/) |
+| 42 | [42 Projects](42/) — 35 submodules, one per repo in [42-Course](https://github.com/42-Course) |
 | 42Core | [Common Core Projects](42Core/) |
 | 42Piscine | [Piscine at 42Lisboa](42Piscine/) |
 | 42Documentation | [Random Docuentation](42Documentation) |
+
+> `42/` holds submodules only. Clone with `--recurse-submodules`, or run
+> `git submodule update --init --recursive 42` in an existing checkout.
 
 _Random Documentation is anything from games, exams, tutorials, guides, templates ;etc..._
 

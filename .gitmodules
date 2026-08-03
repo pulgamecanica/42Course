@@ -1,0 +1,105 @@
+[submodule "42/42sh"]
+	path = 42/42sh
+	url = https://github.com/42-Course/42sh
+[submodule "42/abstract_data"]
+	path = 42/abstract_data
+	url = https://github.com/42-Course/abstract_data
+[submodule "42/abstract_vm"]
+	path = 42/abstract_vm
+	url = https://github.com/42-Course/abstract_vm
+[submodule "42/agent-smith"]
+	path = 42/agent-smith
+	url = https://github.com/42-Course/agent-smith
+[submodule "42/boot2root"]
+	path = 42/boot2root
+	url = https://github.com/42-Course/boot2root
+[submodule "42/camagru"]
+	path = 42/camagru
+	url = https://github.com/42-Course/camagru
+[submodule "42/cloud-1"]
+	path = 42/cloud-1
+	url = https://github.com/42-Course/cloud-1
+[submodule "42/electronics-design"]
+	path = 42/electronics-design
+	url = https://github.com/42-Course/electronics-design
+[submodule "42/ft_linear_regression"]
+	path = 42/ft_linear_regression
+	url = https://github.com/42-Course/ft_linear_regression
+[submodule "42/ft_linux"]
+	path = 42/ft_linux
+	url = https://github.com/42-Course/ft_linux
+[submodule "42/ft_ls"]
+	path = 42/ft_ls
+	url = https://github.com/42-Course/ft_ls
+[submodule "42/ft_malloc"]
+	path = 42/ft_malloc
+	url = https://github.com/42-Course/ft_malloc
+[submodule "42/ft_nm"]
+	path = 42/ft_nm
+	url = https://github.com/42-Course/ft_nm
+[submodule "42/ft_ping"]
+	path = 42/ft_ping
+	url = https://github.com/42-Course/ft_ping
+[submodule "42/ft_script"]
+	path = 42/ft_script
+	url = https://github.com/42-Course/ft_script
+[submodule "42/ft_ssl_md5"]
+	path = 42/ft_ssl_md5
+	url = https://github.com/42-Course/ft_ssl_md5
+[submodule "42/ft_traceroute"]
+	path = 42/ft_traceroute
+	url = https://github.com/42-Course/ft_traceroute
+[submodule "42/ft_turing"]
+	path = 42/ft_turing
+	url = https://github.com/42-Course/ft_turing
+[submodule "42/Gomoku"]
+	path = 42/Gomoku
+	url = https://github.com/42-Course/Gomoku
+[submodule "42/h42n42"]
+	path = 42/h42n42
+	url = https://github.com/42-Course/h42n42
+[submodule "42/hypertube"]
+	path = 42/hypertube
+	url = https://github.com/42-Course/hypertube
+[submodule "42/libasm"]
+	path = 42/libasm
+	url = https://github.com/42-Course/libasm
+[submodule "42/libftpp"]
+	path = 42/libftpp
+	url = https://github.com/42-Course/libftpp
+[submodule "42/matcha"]
+	path = 42/matcha
+	url = https://github.com/42-Course/matcha
+[submodule "42/matrix"]
+	path = 42/matrix
+	url = https://github.com/42-Course/matrix
+[submodule "42/override"]
+	path = 42/override
+	url = https://github.com/42-Course/override
+[submodule "42/Piscine-Django"]
+	path = 42/Piscine-Django
+	url = https://github.com/42-Course/Piscine-Django
+[submodule "42/Piscine-Embeded"]
+	path = 42/Piscine-Embeded
+	url = https://github.com/42-Course/Piscine-Embeded
+[submodule "42/Piscine-Object"]
+	path = 42/Piscine-Object
+	url = https://github.com/42-Course/Piscine-Object
+[submodule "42/Piscine-RoR"]
+	path = 42/Piscine-RoR
+	url = https://github.com/42-Course/Piscine-RoR
+[submodule "42/Python-for-Data-Science"]
+	path = 42/Python-for-Data-Science
+	url = https://github.com/42-Course/Python-for-Data-Science
+[submodule "42/rainfall"]
+	path = 42/rainfall
+	url = https://github.com/42-Course/rainfall
+[submodule "42/scop"]
+	path = 42/scop
+	url = https://github.com/42-Course/scop
+[submodule "42/snow-crash"]
+	path = 42/snow-crash
+	url = https://github.com/42-Course/snow-crash
+[submodule "42/Zappy"]
+	path = 42/Zappy
+	url = https://github.com/42-Course/Zappy
