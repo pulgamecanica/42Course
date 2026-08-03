@@ -13,13 +13,7 @@ folder directly — each project is big enough to own its history.
   <code>lsphere . --svg -d 3 --palette tableau10 --bg "#0d1117"</code></sub>
 </p>
 
-## Getting the code
-
-```sh
-git clone --recurse-submodules https://github.com/pulgamecanica/42Course
-# or, in an existing clone:
-git submodule update --init --recursive 42
-```
+---
 
 Pull a single project instead of all 35:
 
