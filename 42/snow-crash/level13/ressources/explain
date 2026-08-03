@@ -1,7 +1,0 @@
-gdb ./level13
-disas main              pour avoir laddresse du retour de getuid()
-b *(adresse)
-r
-i r
-set $eax=4242
-c

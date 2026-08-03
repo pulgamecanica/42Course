@@ -1,9 +1,0 @@
----
-- name: Update and install dependencies
-  apt:
-    name:
-      - curl
-      - net-tools
-      - make
-    state: present
-    update_cache: yes

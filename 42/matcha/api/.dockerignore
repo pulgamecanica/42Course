@@ -1,6 +1,0 @@
-# flyctl launch added from .gitignore
-**/.env
-
-# flyctl launch added from .ruby-lsp/.gitignore
-.ruby-lsp/**/*
-fly.toml

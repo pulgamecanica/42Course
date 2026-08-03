@@ -1,1 +1,0 @@
-../ex03/load_image.py
